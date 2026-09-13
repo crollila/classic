@@ -446,6 +446,10 @@ func (warrior *Warrior) registerDeathWishCD() {
 
 	actionID := core.ActionID{SpellID: 12328}
 
+	var fearImmunity *core.Aura
+	if warrior.Forever != nil {
+		fearImmunity = warrior.ForeverControlImmunityAura("Forever Death Wish Fear Immunity", actionID, []core.ForeverControlKind{core.ForeverFear}, 30*time.Second)
+	}
 	deathWishAura := warrior.RegisterAura(core.Aura{
 		Label:    "Death Wish",
 		ActionID: actionID,
@@ -488,6 +492,9 @@ func (warrior *Warrior) registerDeathWishCD() {
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			deathWishAura.Activate(sim)
+			if fearImmunity != nil {
+				fearImmunity.Activate(sim)
+			}
 		},
 	})
 

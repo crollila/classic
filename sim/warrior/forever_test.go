@@ -255,3 +255,34 @@ func TestForeverPhysicalControlCasts(t *testing.T) {
 		a.Deactivate(sim)
 	}
 }
+func TestForeverBloodCrazeTerminalTick(t *testing.T) {
+	sim, c := physicalSim(t, "Warrior", "warrior", physicalBuild(t, "warrior.talent.blood-craze"))
+	c.RemoveHealth(sim, c.MaxHealth()*.5)
+	before := c.CurrentHealth()
+	spell := c.Spellbook[0]
+	c.OnSpellHitTaken(sim, spell, &core.SpellResult{Target: &c.Unit, Outcome: core.OutcomeCrit, Damage: 1})
+	for sim.CurrentTime < 7*time.Second {
+		if sim.Step() {
+			break
+		}
+	}
+	actual := (c.CurrentHealth() - before) / c.MaxHealth()
+	if math.Abs(actual-.03) > 1e-8 {
+		t.Fatalf("Blood Craze gained %v want .03", actual)
+	}
+}
+func TestForeverImprovedArcaneShotCooldown(t *testing.T) {
+	_, c := physicalSim(t, "Hunter", "hunter", physicalBuild(t, "hunter.talent.improved-arcane-shot"))
+	found := false
+	for _, s := range c.Spellbook {
+		if s.SpellID == 14287 {
+			found = true
+			if s.CD.Duration != 4500*time.Millisecond {
+				t.Fatal("Arcane Shot cooldown", s.CD.Duration)
+			}
+		}
+	}
+	if !found {
+		t.Fatal("Arcane Shot absent")
+	}
+}

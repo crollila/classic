@@ -67,23 +67,24 @@ func (w *Warrior) registerForeverAbilities() {
 	if n := w.ForeverRank("warrior.talent.blood-craze"); n > 0 {
 		metric := w.NewHealthMetrics(w.ForeverAction("warrior.talent.blood-craze"))
 		hot := w.RegisterAura(core.Aura{Label: "Forever Blood Craze", Duration: 6 * time.Second})
-		var next time.Duration
-		core.MakePermanent(w.RegisterAura(core.Aura{Label: "Forever Blood Craze Trigger", OnReset: func(a *core.Aura, sim *core.Simulation) {
-			next = 0
-			core.StartPeriodicAction(sim, core.PeriodicActionOptions{Period: 2 * time.Second, OnAction: func(sim *core.Simulation) {
-				if hot.IsActive() && sim.CurrentTime >= next {
+		generation := 0
+		apply := func(sim *core.Simulation) {
+			generation++
+			current := generation
+			hot.Activate(sim)
+			core.StartPeriodicAction(sim, core.PeriodicActionOptions{Period: 2 * time.Second, NumTicks: 3, OnAction: func(sim *core.Simulation) {
+				if generation == current {
 					w.GainHealth(sim, w.MaxHealth()*.01*float64(n)/3, metric)
 				}
 			}})
-		}, OnSpellHitTaken: func(a *core.Aura, sim *core.Simulation, s *core.Spell, r *core.SpellResult) {
+		}
+		core.MakePermanent(w.RegisterAura(core.Aura{Label: "Forever Blood Craze Trigger", OnSpellHitTaken: func(a *core.Aura, sim *core.Simulation, s *core.Spell, r *core.SpellResult) {
 			if r.DidCrit() || r.Damage > w.MaxHealth()*.2 {
-				hot.Activate(sim)
-				next = sim.CurrentTime
+				apply(sim)
 			}
 		}, OnSpellHitDealt: func(a *core.Aura, sim *core.Simulation, s *core.Spell, r *core.SpellResult) {
 			if s.SpellCode == SpellCode_WarriorBloodthirst && r.Damage > 0 {
-				hot.Activate(sim)
-				next = sim.CurrentTime
+				apply(sim)
 			}
 		}}))
 	}
