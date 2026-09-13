@@ -1985,7 +1985,8 @@
     ],
     "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
     "remaining_unknowns": [
-      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional.",
+      "Only the movement-speed clause is restricted to Cat in the source; Dodge applies in every form provisionally."
     ]
   },
   "druid.talent.feral-instinct": {
@@ -2040,7 +2041,8 @@
     ],
     "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
     "remaining_unknowns": [
-      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional.",
+      "Armor uses the exact selected numerical coefficient (observed0.67); predicted higher ranks retain source-rounded coefficients, rather than silently treating two-thirds as exact."
     ]
   },
   "druid.talent.savage-fury": {
@@ -2250,7 +2252,8 @@
     ],
     "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
     "remaining_unknowns": [
-      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional.",
+      "Dodge-triggered Rage is not form-restricted in the source; it can accrue in any form, while Classic Bear shifting still resets Rage."
     ],
     "rank_overrides": [
       {

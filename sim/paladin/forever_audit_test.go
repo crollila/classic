@@ -327,3 +327,66 @@ func TestForeverAuditPartyEffects(t *testing.T) {
 		})
 	}
 }
+
+func TestForeverAuditUnqualifiedDodgeAndExactArmor(t *testing.T) {
+	for _, mode := range []proto.ForeverMode{proto.ForeverMode_STRICT, proto.ForeverMode_BEST_GUESS} {
+		t.Run(mode.String(), func(t *testing.T) {
+			_, base := hybridSim(t, "DRUID", map[string]int32{}, mode)
+			sim, c := hybridSim(t, "DRUID", hybridTalents(t, "druid.talent.feral-swiftness", 2), mode)
+			dodge := c.GetStat(stats.Dodge)
+			hybridNear(t, dodge-base.GetStat(stats.Dodge), 2*float64(c.ForeverRank("druid.talent.feral-swiftness")))
+			cat := c.GetSpell(core.ActionID{SpellID: 768})
+			cat.ApplyEffects(sim, &c.Unit, cat)
+			hybridNear(t, c.GetStat(stats.Dodge), dodge)
+			bear := c.GetSpell(core.ActionID{SpellID: 9634})
+			bear.ApplyEffects(sim, &c.Unit, bear)
+			hybridNear(t, c.GetStat(stats.Dodge), dodge)
+			sim, c = hybridSim(t, "DRUID", hybridTalents(t, "druid.talent.thick-hide", 3), mode)
+			c.AddStatDynamic(sim, stats.Defense, 100)
+			before := c.GetStat(stats.Armor)
+			cat = c.GetSpell(core.ActionID{SpellID: 768})
+			cat.ApplyEffects(sim, &c.Unit, cat)
+			hybridNear(t, c.GetStat(stats.Armor)-before, float64(c.Level)+100*c.ForeverValue("druid.talent.thick-hide", 1, 0))
+			sim, c = hybridSim(t, "DRUID", hybridTalents(t, "druid.talent.natural-reaction", 5), mode)
+			total := 0.0
+			for i := 0; i < 100; i++ {
+				c.SpendRage(sim, c.CurrentRage(), c.NewRageMetrics(core.ActionID{}))
+				c.OnSpellHitTaken(sim, &core.Spell{Unit: sim.Encounter.TargetUnits[0]}, &core.SpellResult{Target: &c.Unit, Outcome: core.OutcomeDodge})
+				if c.CurrentRage() > 0 {
+					hybridNear(t, c.CurrentRage(), 5)
+					total += c.CurrentRage()
+				}
+			}
+			if total == 0 {
+				t.Fatal("Natural Reaction failed outside Bear form")
+			}
+		})
+	}
+}
+
+func TestForeverAuditManaTideCastPosition(t *testing.T) {
+	for _, mode := range []proto.ForeverMode{proto.ForeverMode_STRICT, proto.ForeverMode_BEST_GUESS} {
+		t.Run(mode.String(), func(t *testing.T) {
+			sim, party := hybridAuditParty(t, "SHAMAN", hybridTalents(t, "shaman.talent.mana-tide-totem", 1), mode)
+			party[0].DistanceFromTarget = 40
+			party[1].DistanceFromTarget = 50
+			party[2].DistanceFromTarget = 90
+			c := party[0]
+			tide := c.GetSpell(c.ForeverAction("shaman.talent.mana-tide-totem"))
+			before := []float64{}
+			for _, c := range party {
+				c.SpendMana(sim, 1000, c.NewManaMetrics(tide.ActionID))
+				before = append(before, c.CurrentMana())
+			}
+			tide.ApplyEffects(sim, &c.Unit, tide)
+			for sim.CurrentTime < 3100*time.Millisecond {
+				if sim.Step() {
+					break
+				}
+			}
+			near := party[1].CurrentMana() - before[1]
+			far := party[2].CurrentMana() - before[2]
+			hybridNear(t, near-far, 88)
+		})
+	}
+}

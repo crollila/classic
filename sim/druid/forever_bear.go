@@ -23,7 +23,7 @@ func (d *Druid) registerForeverBear() {
 		d.AddStatsDynamic(sim, base)
 		d.ApplyDynamicEquipScaling(sim, stats.Armor, 4.6)
 		if d.fr("thick-hide") > 0 {
-			armor = float64(d.Level) + d.fr("thick-hide")*2/3*max(0, d.GetStat(stats.Defense))
+			armor = float64(d.Level) + d.ForeverValue("druid.talent.thick-hide", 1, .67)*max(0, d.GetStat(stats.Defense))
 			d.AddStatDynamic(sim, stats.Armor, armor*4.6)
 		}
 		d.PseudoStats.ThreatMultiplier *= 1.3

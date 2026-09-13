@@ -5,6 +5,7 @@ package shaman
 // file records predictions separately from observed tooltip values.
 import (
 	"fmt"
+	"math"
 	"time"
 
 	"github.com/wowsims/classic/sim/core"
@@ -256,12 +257,13 @@ func (s *Shaman) registerForeverSpells() {
 			}
 		}
 		sp := s.RegisterSpell(core.SpellConfig{ActionID: s.fa("mana-tide-totem"), Flags: core.SpellFlagAPL | core.SpellFlagHelpful | SpellFlagTotem, ManaCost: core.ManaCostOptions{FlatCost: 10, Multiplier: s.totemManaMultiplier()}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, CD: core.Cooldown{Timer: s.NewTimer(), Duration: 5 * time.Minute}}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, sp *core.Spell) {
+			position := s.DistanceFromTarget
 			s.ActiveTotems[WaterTotem] = sp
 			s.TotemExpirations[WaterTotem] = sim.CurrentTime + 12*time.Second
 			core.StartPeriodicAction(sim, core.PeriodicActionOptions{Period: 3 * time.Second, NumTicks: 4, OnAction: func(sim *core.Simulation) {
 				if s.ActiveTotems[WaterTotem] == sp {
 					for c, m := range metrics {
-						if c.DistanceFromTarget <= 30 {
+						if math.Abs(c.DistanceFromTarget-position) <= 30 {
 							c.AddMana(sim, 88, m)
 						}
 					}

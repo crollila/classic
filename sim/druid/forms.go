@@ -118,10 +118,9 @@ func (druid *Druid) registerCatFormSpell() {
 			}
 			druid.form = Cat
 			if druid.Forever != nil {
-				druid.AddStatDynamic(sim, stats.Dodge, 2*druid.fr("feral-swiftness"))
 				druid.AddStatDynamic(sim, stats.MeleeCrit, 3*druid.fr("sharpened-claws"))
 				if druid.fr("thick-hide") > 0 {
-					foreverArmor = float64(druid.Level) + druid.fr("thick-hide")*2/3*max(0, druid.GetStat(stats.Defense))
+					foreverArmor = float64(druid.Level) + druid.ForeverValue("druid.talent.thick-hide", 1, .67)*max(0, druid.GetStat(stats.Defense))
 					druid.AddStatDynamic(sim, stats.Armor, foreverArmor)
 				}
 				if druid.MovementHandler != nil {
@@ -164,7 +163,6 @@ func (druid *Druid) registerCatFormSpell() {
 				druid.foreverLastCatEnergy = druid.CurrentEnergy()
 				druid.foreverHumanoidSince = sim.CurrentTime
 				druid.foreverHumanoidTime = 0
-				druid.AddStatDynamic(sim, stats.Dodge, -2*druid.fr("feral-swiftness"))
 				druid.AddStatDynamic(sim, stats.MeleeCrit, -3*druid.fr("sharpened-claws"))
 				druid.AddStatDynamic(sim, stats.Armor, -foreverArmor)
 				if druid.MovementHandler != nil {
@@ -448,7 +446,7 @@ func (druid *Druid) registerMoonkinFormSpell() {
 				druid.SetShapeshift(aura)
 				druid.ApplyDynamicEquipScaling(sim, stats.Armor, 4.6)
 				if druid.fr("thick-hide") > 0 {
-					druid.AddStatDynamic(sim, stats.Armor, (float64(druid.Level)+druid.fr("thick-hide")*2.0/3*druid.GetStat(stats.Defense))*4.6)
+					druid.AddStatDynamic(sim, stats.Armor, (float64(druid.Level)+druid.ForeverValue("druid.talent.thick-hide", 1, .67)*druid.GetStat(stats.Defense))*4.6)
 				}
 				druid.foreverFormCrit(sim)
 			}
@@ -459,7 +457,7 @@ func (druid *Druid) registerMoonkinFormSpell() {
 				druid.SetShapeshift(nil)
 				druid.RemoveDynamicEquipScaling(sim, stats.Armor, 4.6)
 				if druid.fr("thick-hide") > 0 {
-					druid.AddStatDynamic(sim, stats.Armor, -(float64(druid.Level)+druid.fr("thick-hide")*2.0/3*druid.GetStat(stats.Defense))*4.6)
+					druid.AddStatDynamic(sim, stats.Armor, -(float64(druid.Level)+druid.ForeverValue("druid.talent.thick-hide", 1, .67)*druid.GetStat(stats.Defense))*4.6)
 				}
 				druid.foreverFormCrit(sim)
 			}

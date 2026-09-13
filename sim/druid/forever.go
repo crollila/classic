@@ -31,7 +31,7 @@ func (d *Druid) applyForeverTalents() {
 	d.PseudoStats.DamageDealtMultiplier *= 1 + .01*d.fr("naturalist")
 	d.AddStat(stats.MeleeHit, 2*d.fr("nature-s-reach"))
 	d.AddStat(stats.SpellHit, 2*d.fr("nature-s-reach"))
-	d.AddStat(stats.Dodge, d.fr("natural-reaction"))
+	d.AddStat(stats.Dodge, d.fr("natural-reaction")+2*d.fr("feral-swiftness"))
 	d.OnSpellRegistered(func(sp *core.Spell) {
 		if sp.SpellSchool.Matches(core.SpellSchoolArcane | core.SpellSchoolNature) {
 			sp.ThreatMultiplier *= 1 - .1*d.fr("subtlety")
@@ -113,7 +113,7 @@ func (d *Druid) applyForeverTalents() {
 	if d.fr("natural-reaction") > 0 {
 		m := d.NewRageMetrics(d.fa("natural-reaction"))
 		core.MakePermanent(d.RegisterAura(core.Aura{Label: "Forever Natural Reaction", OnSpellHitTaken: func(_ *core.Aura, sim *core.Simulation, sp *core.Spell, r *core.SpellResult) {
-			if r.Outcome.Matches(core.OutcomeDodge) && d.InForm(Bear) && sim.Proc(.2*d.fr("natural-reaction"), "Forever Natural Reaction") {
+			if r.Outcome.Matches(core.OutcomeDodge) && sim.Proc(.2*d.fr("natural-reaction"), "Forever Natural Reaction") {
 				d.AddRage(sim, 5, m)
 			}
 		}}))
