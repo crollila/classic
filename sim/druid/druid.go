@@ -5,6 +5,7 @@ import (
 	"github.com/wowsims/classic/sim/core"
 	"github.com/wowsims/classic/sim/core/proto"
 	"github.com/wowsims/classic/sim/core/stats"
+	"time"
 )
 
 const (
@@ -94,8 +95,12 @@ type Druid struct {
 
 	BleedCategories core.ExclusiveCategoryArray
 
-	form         DruidForm
-	disabledMCDs []*core.MajorCooldown
+	form                 DruidForm
+	foreverLastCatEnergy float64
+	foreverHumanoidSince time.Duration
+	foreverHumanoidTime  time.Duration
+	foreverPartyCrit     []*core.Aura
+	disabledMCDs         []*core.MajorCooldown
 }
 
 type SelfBuffs struct {
@@ -107,6 +112,9 @@ func (druid *Druid) GetCharacter() *core.Character {
 }
 
 func (druid *Druid) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
+	if druid.Forever != nil {
+		return
+	}
 	if (raidBuffs.GiftOfTheWild == proto.TristateEffect_TristateEffectRegular) && (druid.Talents.ImprovedMarkOfTheWild > 0) {
 		druid.AddStats(core.BuffSpellValues[core.MarkOfTheWild].Multiply(0.07 * float64(druid.Talents.ImprovedMarkOfTheWild)))
 	}
@@ -161,6 +169,7 @@ func (druid *Druid) Initialize() {
 
 	druid.registerFaerieFireSpell()
 	druid.registerInnervateCD()
+	druid.registerForeverSpells()
 }
 
 func (druid *Druid) RegisterBalanceSpells() {
@@ -203,6 +212,9 @@ func (druid *Druid) RegisterFeralTankSpells() {
 }
 
 func (druid *Druid) Reset(_ *core.Simulation) {
+	druid.foreverLastCatEnergy = 0
+	druid.foreverHumanoidSince = 0
+	druid.foreverHumanoidTime = 0
 	druid.BleedsActive = 0
 	druid.form = druid.StartingForm
 	druid.disabledMCDs = []*core.MajorCooldown{}
@@ -217,7 +229,15 @@ func New(character *core.Character, form DruidForm, selfBuffs SelfBuffs, talents
 		form:         form,
 	}
 	core.FillTalentsProto(druid.Talents.ProtoReflect(), talents, TalentTreeSizes)
+	if druid.Forever != nil && form == Moonkin && druid.fr("moonkin-form") == 0 {
+		druid.form = Humanoid
+		druid.StartingForm = Humanoid
+	}
 	druid.EnableManaBar()
+	if druid.Forever != nil {
+		druid.EnableEnergyBar(100)
+		druid.EnableRageBar(core.RageBarOptions{DamageDealtMultiplier: 1, DamageTakenMultiplier: 1})
+	}
 
 	druid.AddStatDependency(stats.Strength, stats.AttackPower, core.APPerStrength[character.Class])
 	druid.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[character.Class]*core.CritRatingPerCritChance)

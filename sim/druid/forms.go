@@ -98,10 +98,14 @@ func (druid *Druid) registerCatFormSpell() {
 	if druid.Talents.HeartOfTheWild > 0 {
 		hotwDep = druid.NewDynamicMultiplyStat(stats.Strength, 1.0+0.04*float64(druid.Talents.HeartOfTheWild))
 	}
+	if druid.Forever != nil && druid.fr("heart-of-the-wild") > 0 {
+		hotwDep = druid.NewDynamicMultiplyStat(stats.Strength, 1+.02*druid.fr("heart-of-the-wild"))
+	}
 
 	clawWeapon := druid.GetCatWeapon()
 
 	predBonus := stats.Stats{}
+	foreverArmor := 0.0
 
 	druid.CatFormAura = druid.RegisterAura(core.Aura{
 		Label:      "Cat Form",
@@ -113,6 +117,18 @@ func (druid *Druid) registerCatFormSpell() {
 				druid.CancelShapeshift(sim)
 			}
 			druid.form = Cat
+			if druid.Forever != nil {
+				druid.AddStatDynamic(sim, stats.Dodge, 2*druid.fr("feral-swiftness"))
+				druid.AddStatDynamic(sim, stats.MeleeCrit, 3*druid.fr("sharpened-claws"))
+				if druid.fr("thick-hide") > 0 {
+					foreverArmor = float64(druid.Level) + druid.fr("thick-hide")*2/3*max(0, druid.GetStat(stats.Defense))
+					druid.AddStatDynamic(sim, stats.Armor, foreverArmor)
+				}
+				if druid.MovementHandler != nil {
+					druid.AddMoveSpeedModifier(&aura.ActionID, 1+.15*druid.fr("feral-swiftness"))
+				}
+				druid.foreverFormCrit(sim)
+			}
 			druid.SetCurrentPowerBar(core.EnergyBar)
 
 			druid.AutoAttacks.SetMH(clawWeapon)
@@ -138,7 +154,21 @@ func (druid *Druid) registerCatFormSpell() {
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			if druid.Forever != nil {
+				druid.foreverLastCatEnergy = druid.CurrentEnergy()
+				druid.foreverHumanoidSince = sim.CurrentTime
+				druid.foreverHumanoidTime = 0
+				druid.AddStatDynamic(sim, stats.Dodge, -2*druid.fr("feral-swiftness"))
+				druid.AddStatDynamic(sim, stats.MeleeCrit, -3*druid.fr("sharpened-claws"))
+				druid.AddStatDynamic(sim, stats.Armor, -foreverArmor)
+				if druid.MovementHandler != nil {
+					druid.RemoveMoveSpeedModifier(&aura.ActionID)
+				}
+			}
 			druid.form = Humanoid
+			if druid.Forever != nil {
+				druid.foreverFormCrit(sim)
+			}
 			druid.SetCurrentPowerBar(core.ManaBar)
 
 			druid.TigersFuryAura.Deactivate(sim)
@@ -204,6 +234,14 @@ func (druid *Druid) registerCatFormSpell() {
 				spell.Cost.Multiplier += 100
 			} else {
 				maxShiftEnergy := core.TernaryFloat64(sim.RandomFloat("Furor") < furorProcChance, 40, 0)
+				if druid.Forever != nil {
+					outside := druid.foreverHumanoidTime
+					if druid.InForm(Humanoid | Moonkin) {
+						outside += sim.CurrentTime - druid.foreverHumanoidSince
+					}
+					maxShiftEnergy = min(20*druid.fr("furor"), druid.foreverLastCatEnergy*.2*druid.fr("furor")+2*outside.Seconds())
+					druid.foreverHumanoidTime = 0
+				}
 				maxShiftEnergy = core.TernaryFloat64(hasWolfheadBonus, maxShiftEnergy+20, maxShiftEnergy)
 				energyDelta := maxShiftEnergy - druid.CurrentEnergy()
 
@@ -399,9 +437,25 @@ func (druid *Druid) registerMoonkinFormSpell() {
 				druid.CancelShapeshift(sim)
 			}
 			druid.form = Moonkin
+			if druid.Forever != nil {
+				druid.SetShapeshift(aura)
+				druid.ApplyDynamicEquipScaling(sim, stats.Armor, 4.6)
+				if druid.fr("thick-hide") > 0 {
+					druid.AddStatDynamic(sim, stats.Armor, (float64(druid.Level)+druid.fr("thick-hide")*2.0/3*druid.GetStat(stats.Defense))*4.6)
+				}
+				druid.foreverFormCrit(sim)
+			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			druid.form = Humanoid
+			if druid.Forever != nil {
+				druid.SetShapeshift(nil)
+				druid.RemoveDynamicEquipScaling(sim, stats.Armor, 4.6)
+				if druid.fr("thick-hide") > 0 {
+					druid.AddStatDynamic(sim, stats.Armor, -(float64(druid.Level)+druid.fr("thick-hide")*2.0/3*druid.GetStat(stats.Defense))*4.6)
+				}
+				druid.foreverFormCrit(sim)
+			}
 		},
 	})
 
@@ -410,7 +464,8 @@ func (druid *Druid) registerMoonkinFormSpell() {
 		Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.35,
+			BaseCost:   core.TernaryFloat64(druid.Forever == nil, 0.35, 0),
+			FlatCost:   core.TernaryFloat64(druid.Forever != nil, 283, 0),
 			Multiplier: 100 - 10*druid.Talents.NaturalShapeshifter,
 		},
 		Cast: core.CastConfig{

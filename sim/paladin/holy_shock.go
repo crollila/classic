@@ -7,6 +7,9 @@ import (
 )
 
 func (paladin *Paladin) registerHolyShock() {
+	if paladin.Forever != nil {
+		return
+	}
 	if !paladin.Talents.HolyShock {
 		return
 	}

@@ -27,6 +27,9 @@ func (paladin *Paladin) registerHolyShield() {
 
 	numCharges := int32(4)
 	blockBonus := 30.0 * core.BlockRatingPerBlockChance
+	if paladin.Forever != nil {
+		blockBonus = 20 * core.BlockRatingPerBlockChance
+	}
 
 	for i, values := range HolyShieldValues {
 		rank := i + 1
@@ -35,6 +38,10 @@ func (paladin *Paladin) registerHolyShield() {
 		procID := values.procID
 		manaCost := values.manaCost
 		damage := values.damage
+		if paladin.Forever != nil {
+			damage = 110
+			manaCost = 150
+		}
 
 		if paladin.Level < level {
 			break

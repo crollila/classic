@@ -70,6 +70,9 @@ type Paladin struct {
 	// highest rank seal spell if available
 	sealOfRighteousness *core.Spell
 	sealOfCommand       *core.Spell
+	foreverHolyStrike   *core.Spell
+	foreverEcho         *core.Aura
+	foreverEchoSeal     *core.Aura
 }
 
 // Implemented by each Paladin spec.
@@ -124,6 +127,7 @@ func (paladin *Paladin) Initialize() {
 	paladin.registerStopAttackMacros()
 
 	paladin.ResetCurrentPaladinAura()
+	paladin.registerForeverSpells()
 }
 
 func (paladin *Paladin) Reset(_ *core.Simulation) {
@@ -202,6 +206,10 @@ func (paladin *Paladin) getPrimarySealSpell(primarySeal proto.PaladinSeal) *core
 
 func (paladin *Paladin) applySeal(newSeal *core.Aura, judgement *core.Spell, sim *core.Simulation) {
 	if paladin.currentSeal != nil {
+		if paladin.fr("twist-of-light") > 0 && paladin.currentSeal != newSeal && paladin.currentSeal.IsActive() {
+			paladin.foreverEchoSeal = paladin.currentSeal
+			paladin.foreverEcho.Activate(sim)
+		}
 		paladin.currentSeal.Deactivate(sim)
 	}
 

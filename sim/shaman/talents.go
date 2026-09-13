@@ -10,6 +10,7 @@ import (
 )
 
 func (shaman *Shaman) ApplyTalents() {
+	shaman.applyForeverTalents()
 	// Elemental Talents
 	shaman.applyConcussion()
 	shaman.applyElementalFocus()
@@ -87,6 +88,9 @@ func (shaman *Shaman) applyConcussion() {
 
 	additiveMultiplier := 0.01 * float64(shaman.Talents.Concussion)
 	affectedSpellCodes := []int32{SpellCode_ShamanLightningBolt, SpellCode_ShamanChainLightning, SpellCode_ShamanEarthShock, SpellCode_ShamanFlameShock, SpellCode_ShamanFrostShock}
+	if shaman.Forever != nil {
+		affectedSpellCodes = []int32{SpellCode_ShamanLightningBolt, SpellCode_ShamanChainLightning, SpellCode_ShamanEarthShock}
+	}
 
 	shaman.OnSpellRegistered(func(spell *core.Spell) {
 		if slices.Contains(affectedSpellCodes, spell.SpellCode) {
