@@ -152,7 +152,10 @@ func NewRogue(character *core.Character, options *proto.Player, rogueOptions *pr
 	rogue.PseudoStats.CanParry = true
 	maxEnergy := 100.0
 	if rogue.Talents.Vigor {
-		maxEnergy += 10
+		maxEnergy += rogue.ForeverValue("rogue.talent.vigor", 0, 10)
+	}
+	if rogue.HasForeverMechanic("racials.gnome.expansive-mind") {
+		maxEnergy *= 1.05
 	}
 	rogue.EnableEnergyBar(maxEnergy)
 

@@ -10,6 +10,12 @@ func (warrior *Warrior) registerBloodthirstSpell(cdTimer *core.Timer) {
 	if !warrior.Talents.Bloodthirst {
 		return
 	}
+	var movement *core.Aura
+	if warrior.ForeverRank("warrior.talent.bloodthirst") > 0 {
+		movement = warrior.RegisterAura(core.Aura{Label: "Forever Bloodthirst", ActionID: core.ActionID{SpellID: 23894}, Duration: 10 * time.Second,
+			OnGain:   func(a *core.Aura, sim *core.Simulation) { warrior.AddMoveSpeedModifier(&a.ActionID, 1.1) },
+			OnExpire: func(a *core.Aura, sim *core.Simulation) { warrior.RemoveMoveSpeedModifier(&a.ActionID) }})
+	}
 
 	warrior.Bloodthirst = warrior.RegisterSpell(AnyStance, core.SpellConfig{
 		SpellCode:   SpellCode_WarriorBloodthirst,
@@ -42,9 +48,14 @@ func (warrior *Warrior) registerBloodthirstSpell(cdTimer *core.Timer) {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 0.45 * spell.MeleeAttackPower(target)
+			if movement != nil {
+				baseDamage = 0.35*spell.MeleeAttackPower(target) + 30
+			}
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 			if !result.Landed() {
 				spell.IssueRefund(sim)
+			} else if movement != nil {
+				movement.Activate(sim)
 			}
 		},
 	})

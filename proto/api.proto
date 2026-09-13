@@ -15,7 +15,7 @@ import "shaman.proto";
 import "warlock.proto";
 import "warrior.proto";
 
-// NextIndex: 49
+// NextIndex: 50
 message Player {
 	// Label used for logging.
 	string name = 1;
@@ -34,6 +34,8 @@ message Player {
 
 	// Talents in wowhead format, e.g. '01102123133-12312312-'
 	string talents_string = 9;
+	// Opt-in discovery rules. Absent means the unchanged Classic ruleset.
+	ForeverOptions forever = 49;
 	Profession profession1 = 10;
 	Profession profession2 = 11;
 	Cooldowns cooldowns = 12;
@@ -83,6 +85,15 @@ message Player {
 		Warrior warrior = 37;
 		TankWarrior tank_warrior = 38;
 	}
+}
+
+// Simulator-private transport v1. Keys are research record IDs, never game IDs.
+// No implicit conversion from a Classic positional talent string is permitted.
+message ForeverOptions {
+	string ruleset_id = 1;
+	map<string, int32> talents = 2;
+	repeated string mechanics = 3;
+	bool experimental_estimated_ranks = 4;
 }
 
 message Party {

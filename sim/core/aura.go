@@ -390,8 +390,12 @@ func (at *auraTracker) registerAura(unit *Unit, aura Aura) *Aura {
 	if at.GetAura(aura.Label) != nil {
 		panic(fmt.Sprintf("Aura %s already registered!", aura.Label))
 	}
-	if len(at.auras) > 200 {
-		panic(fmt.Sprintf("Over 200 registered auras when registering %s! There is probably an aura being registered every iteration.", aura.Label))
+	limit := 200
+	if unit.Type == EnemyUnit && unit.Env != nil {
+		limit = max(limit, unit.Env.discoveryTargetAuraRegistrationLimit)
+	}
+	if len(at.auras) > limit {
+		panic(fmt.Sprintf("Over %d registered auras when registering %s! There is probably an aura being registered every iteration.", limit, aura.Label))
 	}
 
 	newAura := &Aura{}

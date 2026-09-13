@@ -17,3 +17,12 @@ if (isIndividualSim) {
 document.body.classList.add('new-tab');
 
 const detailedResults = new WindowedDetailedResults(document.body)
+
+if (import.meta.env.VITE_FOREVER === 'true') {
+	void import('../forever/metadata').then(async ({ el, getRelease, releaseSummary, confidencePanel }) => {
+		const release = await getRelease();
+		const status = el('aside', 'forever-detached-status');
+		status.append(releaseSummary(release), confidencePanel(release));
+		document.body.prepend(status);
+	});
+}

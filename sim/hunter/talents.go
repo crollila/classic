@@ -197,6 +197,14 @@ func (hunter *Hunter) applyCleverTraps() {
 }
 
 func (hunter *Hunter) applyEfficiency() {
+	if hunter.ForeverRank("hunter.talent.efficiency") > 0 {
+		hunter.OnSpellRegistered(func(s *core.Spell) {
+			if s.Cost != nil && (s.Flags.Matches(SpellFlagSting|SpellFlagShot) || s.ProcMask.Matches(core.ProcMaskMeleeSpecial)) {
+				s.Cost.Multiplier -= int32(hunter.ForeverValue("hunter.talent.efficiency", 0, 0))
+			}
+		})
+		return
+	}
 	hunter.OnSpellRegistered(func(spell *core.Spell) {
 		// applies to Stings, Shots, and Volley
 		if spell.Cost != nil && spell.Flags.Matches(SpellFlagSting|SpellFlagShot) || spell.SpellCode == SpellCode_HunterVolley {

@@ -102,7 +102,7 @@ export class Timeline extends ResultComponent {
 					enabled: false,
 				},
 				background: 'transparent',
-				foreColor: 'white',
+				foreColor: import.meta.env.VITE_FOREVER === 'true' ? '#4f574e' : 'white',
 				height: '100%',
 				id: 'dpsResources',
 				type: 'line',
@@ -176,7 +176,7 @@ export class Timeline extends ResultComponent {
 		const duration = this.resultData!.result.result.firstIterationDuration || 1;
 		const options: any = {
 			theme: {
-				mode: 'dark',
+				mode: import.meta.env.VITE_FOREVER === 'true' ? 'light' : 'dark',
 			},
 			series: [],
 			colors: [],
@@ -1016,10 +1016,10 @@ export class Timeline extends ResultComponent {
 		canvas.height = height;
 
 		const ctx = canvas.getContext('2d')!;
-		ctx.strokeStyle = 'white';
+		ctx.strokeStyle = import.meta.env.VITE_FOREVER === 'true' ? '#4f574e' : 'white';
 
 		ctx.font = 'bold 14px SimDefaultFont';
-		ctx.fillStyle = 'white';
+		ctx.fillStyle = import.meta.env.VITE_FOREVER === 'true' ? '#4f574e' : 'white';
 		ctx.lineWidth = 2;
 		ctx.beginPath();
 

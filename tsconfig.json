@@ -23,6 +23,8 @@
         "."
     ],
     "exclude": [
+        ".tools",
+        ".artifacts",
         "node_modules",
         "dist",
         "binary_dist",

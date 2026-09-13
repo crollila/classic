@@ -12,6 +12,11 @@ func (warrior *Warrior) registerBloodrageCD() {
 
 	instantRage := 10.0 + []float64{0, 2, 5}[warrior.Talents.ImprovedBloodrage]
 	ragePerSec := 1.0
+	if warrior.ForeverRank("warrior.talent.improved-bloodrage") > 0 {
+		multiplier := 1 + warrior.ForeverValue("warrior.talent.improved-bloodrage", 0, 0)/100
+		instantRage = 10 * multiplier
+		ragePerSec = multiplier
+	}
 
 	warrior.BloodrageAura = warrior.RegisterAura(core.Aura{
 		Label:    "Bloodrage",

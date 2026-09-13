@@ -16,7 +16,7 @@ export function addRaidSimAction(simUI: SimUI): RaidSimResultsManager {
 	let isRunning = false;
 	let waitAbort = false;
 
-	simUI.addAction('Simulate', 'dps-action', async ev => {
+	simUI.addAction(import.meta.env.VITE_FOREVER === 'true' ? 'Run Sim' : 'Simulate', 'dps-action', async ev => {
 		const button = ev.target as HTMLButtonElement;
 		button.disabled = true;
 		if (!isRunning) {
