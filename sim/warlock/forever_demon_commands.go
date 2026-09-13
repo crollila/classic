@@ -22,7 +22,7 @@ func (w *Warlock) registerForeverDemonCommands() {
 			sufferingDamage.CalcAndDealOutcome(sim, t, sufferingDamage.OutcomeAlwaysHit)
 		}
 	}})
-	shadows := w.Voidwalker.RegisterSpell(core.SpellConfig{ActionID: core.ActionID{SpellID: 17854}, SpellSchool: core.SpellSchoolShadow, ProcMask: core.ProcMaskSpellHealing, Flags: core.SpellFlagHelpful, DamageMultiplier: 1 + val("improved-voidwalker", 0)/100, ThreatMultiplier: 0, Hot: core.DotConfig{SelfOnly: true, Aura: core.Aura{Label: "Forever Consume Shadows"}, NumberOfTicks: 5, TickLength: 2 * time.Second, OnTick: func(sim *core.Simulation, t *core.Unit, d *core.Dot) {
+	shadows := w.Voidwalker.RegisterSpell(core.SpellConfig{DefenseType: core.DefenseTypeMagic, ActionID: core.ActionID{SpellID: 17854}, SpellSchool: core.SpellSchoolShadow, ProcMask: core.ProcMaskSpellHealing, Flags: core.SpellFlagHelpful, DamageMultiplier: 1 + val("improved-voidwalker", 0)/100, ThreatMultiplier: 0, Hot: core.DotConfig{SelfOnly: true, Aura: core.Aura{Label: "Forever Consume Shadows"}, NumberOfTicks: 5, TickLength: 2 * time.Second, OnTick: func(sim *core.Simulation, t *core.Unit, d *core.Dot) {
 		d.Spell.CalcAndDealHealing(sim, &w.Voidwalker.Unit, 216, d.Spell.OutcomeHealing)
 	}}})
 	w.RegisterSpell(core.SpellConfig{ActionID: core.ActionID{SpellID: 17854}, Flags: core.SpellFlagAPL | core.SpellFlagHelpful, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}}, ExtraCastCondition: func(sim *core.Simulation, t *core.Unit) bool { return w.ActivePet == w.Voidwalker }, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) { shadows.SelfHot().Apply(sim) }})
@@ -65,7 +65,7 @@ func (w *Warlock) registerForeverDemonCommands() {
 		t.ForeverInterrupt(sim)
 		lock.Get(t).Activate(sim)
 	}})
-	devour := w.Felhunter.RegisterSpell(core.SpellConfig{ActionID: core.ActionID{SpellID: 19736}, SpellSchool: core.SpellSchoolShadow, Flags: core.SpellFlagHelpful, ProcMask: core.ProcMaskSpellHealing, DamageMultiplier: 1 + val("improved-felhunter", 0)/100, ThreatMultiplier: 0})
+	devour := w.Felhunter.RegisterSpell(core.SpellConfig{DefenseType: core.DefenseTypeMagic, ActionID: core.ActionID{SpellID: 19736}, SpellSchool: core.SpellSchoolShadow, Flags: core.SpellFlagHelpful, ProcMask: core.ProcMaskSpellHealing, DamageMultiplier: 1 + val("improved-felhunter", 0)/100, ThreatMultiplier: 0})
 	w.RegisterSpell(core.SpellConfig{ActionID: core.ActionID{SpellID: 19736}, Flags: core.SpellFlagAPL | core.SpellFlagHelpful, Cast: core.CastConfig{CD: core.Cooldown{Timer: w.NewTimer(), Duration: 8 * time.Second}}, ExtraCastCondition: func(sim *core.Simulation, t *core.Unit) bool { return w.ActivePet == w.Felhunter }, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
 		t.ForeverDispel(sim, "magic")
 		devour.CalcAndDealHealing(sim, &w.Felhunter.Unit, 195, devour.OutcomeHealing)

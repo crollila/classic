@@ -90,7 +90,7 @@ func (p *Priest) registerForeverRacials() {
 			continue
 		}
 		id := id
-		p.RegisterSpell(core.SpellConfig{ActionID: p.ForeverAction(id), SpellSchool: core.SpellSchoolHoly, ProcMask: core.ProcMaskSpellHealing, Flags: SpellFlagPriest | core.SpellFlagHelpful | core.SpellFlagAPL, Cast: core.CastConfig{CD: core.Cooldown{Timer: p.NewTimer(), Duration: 10 * time.Minute}}, DamageMultiplier: 1, ThreatMultiplier: 0, BonusCoefficient: .429, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
+		p.RegisterSpell(core.SpellConfig{DefenseType: core.DefenseTypeMagic, ActionID: p.ForeverAction(id), SpellSchool: core.SpellSchoolHoly, ProcMask: core.ProcMaskSpellHealing, Flags: SpellFlagPriest | core.SpellFlagHelpful | core.SpellFlagAPL, Cast: core.CastConfig{CD: core.Cooldown{Timer: p.NewTimer(), Duration: 10 * time.Minute}}, DamageMultiplier: 1, ThreatMultiplier: 0, BonusCoefficient: .429, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
 			if id == "priest.racial.dwarf.desperate-prayer" {
 				t = &p.Unit
 			} else if a := p.WeakenedSouls.Get(t); a != nil {
@@ -101,7 +101,7 @@ func (p *Priest) registerForeverRacials() {
 	}
 	if p.HasForeverMechanic("priest.racial.gnome.contingency-plan") {
 		action := p.ForeverAction("priest.racial.gnome.contingency-plan")
-		heal := p.RegisterSpell(core.SpellConfig{ActionID: action.WithTag(-action.Tag), SpellSchool: core.SpellSchoolHoly, ProcMask: core.ProcMaskSpellHealing, Flags: core.SpellFlagHelpful | core.SpellFlagPassiveSpell | core.SpellFlagIgnoreAttackerModifiers, DamageMultiplier: 1, ThreatMultiplier: 0})
+		heal := p.RegisterSpell(core.SpellConfig{DefenseType: core.DefenseTypeMagic, ActionID: action.WithTag(-action.Tag), SpellSchool: core.SpellSchoolHoly, ProcMask: core.ProcMaskSpellHealing, Flags: core.SpellFlagHelpful | core.SpellFlagPassiveSpell | core.SpellFlagIgnoreAttackerModifiers, DamageMultiplier: 1, ThreatMultiplier: 0})
 		auras := p.NewRaidAuraArray(func(t *core.Unit) *core.Aura {
 			a := t.GetOrRegisterAura(core.Aura{Label: "Forever Contingency Plan", ActionID: action, Duration: 10 * time.Second})
 			t.AddDynamicDamageTakenModifier(func(sim *core.Simulation, s *core.Spell, r *core.SpellResult) {

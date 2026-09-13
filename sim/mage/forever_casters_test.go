@@ -34,6 +34,9 @@ func foreverCasterBuild(t *testing.T, class proto.Class, goals map[string]int32,
 	p := &proto.Player{Class: class, Race: proto.Race_RaceHuman, Equipment: &proto.EquipmentSpec{}, Rotation: &proto.APLRotation{Type: proto.APLRotation_TypeAPL}, BonusStats: &proto.UnitStats{Stats: make([]float64, 40)}, Forever: &proto.ForeverOptions{RulesetId: foreverdata.RulesetID, Mode: proto.ForeverMode_BEST_GUESS, Talents: map[string]int32{}, Mechanics: mechanics}}
 	p.BonusStats.Stats[stats.Mana] = 100000
 	p.BonusStats.Stats[stats.Health] = 100000
+	// Synthetic guaranteed-crit fixture exercises every critical damage/healing
+	// path; ordinary naked characters can leave these branches untested.
+	p.BonusStats.Stats[stats.SpellCrit] = 100 * core.SpellCritRatingPerCritChance
 	switch class {
 	case proto.Class_ClassMage:
 		p.Spec = &proto.Player_Mage{Mage: &proto.Mage{Options: &proto.Mage_Options{}}}
@@ -436,5 +439,182 @@ func TestForeverHealthEncounterEndsAfterLastFiniteTarget(t *testing.T) {
 	spell.CalcAndDealDamage(sim, sim.Encounter.TargetUnits[1], 1000, spell.OutcomeAlwaysHit)
 	if !sim.Step() {
 		t.Fatal("health encounter did not terminate at exact finite health total")
+	}
+}
+
+func TestForeverCasterExtraAbilitiesCritPaths(t *testing.T) {
+	for _, tc := range []struct {
+		id    string
+		class proto.Class
+		race  proto.Race
+		spell int32
+	}{
+		{"mage.baseline.frostfire-bolt", proto.Class_ClassMage, proto.Race_RaceHuman, 0},
+		{"warlock.baseline.incubus", proto.Class_ClassWarlock, proto.Race_RaceHuman, 0},
+		{"priest.baseline.shadow-word-death", proto.Class_ClassPriest, proto.Race_RaceHuman, 0},
+		{"priest.baseline.devouring-plague", proto.Class_ClassPriest, proto.Race_RaceHuman, 19280},
+		{"priest.baseline.fear-ward", proto.Class_ClassPriest, proto.Race_RaceHuman, 0},
+		{"priest.racial.dark-sacrifice", proto.Class_ClassPriest, proto.Race_RaceUndead, 0},
+		{"priest.racial.touch-of-weakness", proto.Class_ClassPriest, proto.Race_RaceUndead, 0},
+		{"priest.racial.starshards", proto.Class_ClassPriest, proto.Race_RaceNightElf, 19302},
+		{"priest.racial.elunes-grace", proto.Class_ClassPriest, proto.Race_RaceNightElf, 0},
+		{"priest.racial.dwarf.chastise", proto.Class_ClassPriest, proto.Race_RaceDwarf, 0},
+		{"priest.racial.dwarf.desperate-prayer", proto.Class_ClassPriest, proto.Race_RaceDwarf, 0},
+		{"priest.racial.gnome.confounding-flash", proto.Class_ClassPriest, proto.Race_RaceGnome, 0},
+		{"priest.racial.gnome.contingency-plan", proto.Class_ClassPriest, proto.Race_RaceGnome, 0},
+		{"priest.racial.human.divine-grace", proto.Class_ClassPriest, proto.Race_RaceHuman, 0},
+	} {
+		t.Run(tc.id, func(t *testing.T) {
+			p := foreverCasterBuild(t, tc.class, nil)
+			p.Race = tc.race
+			p.Forever.Mechanics = []string{tc.id}
+			sim, c := foreverCasterSim(t, p)
+			action := c.ForeverAction(tc.id)
+			if tc.spell != 0 {
+				action = core.ActionID{SpellID: tc.spell}
+			}
+			s := c.GetSpell(action)
+			if s == nil {
+				t.Fatal("missing action")
+			}
+			target := c.CurrentTarget
+			if s.Flags.Matches(core.SpellFlagHelpful) {
+				target = &c.Unit
+				c.RemoveHealth(sim, 10000)
+			}
+			if !s.Cast(sim, target) {
+				t.Fatal("extra ability cast failed")
+			}
+			foreverAdvance(sim, 16*time.Second)
+		})
+	}
+}
+
+func TestForeverRepeatedMissileBarrageChannels(t *testing.T) {
+	p := foreverCasterBuild(t, proto.Class_ClassMage, map[string]int32{"mage.talent.missile-barrage": 1, "mage.talent.arcane-blast": 1})
+	sim, c := foreverCasterSim(t, p)
+	s := c.GetSpell(core.ActionID{SpellID: 10212})
+	proc := c.GetAura("Forever Missile Barrage")
+	stacks := c.GetAura("Forever Arcane Blast")
+	for i := 0; i < 3; i++ {
+		start := sim.CurrentTime
+		before := s.Cost.Multiplier
+		stacks.Activate(sim)
+		stacks.SetStacks(sim, 4)
+		proc.Activate(sim)
+		if s.Cost.Multiplier != before-100 {
+			t.Fatal("Missile Barrage did not reduce cost")
+		}
+		if !s.Cast(sim, c.CurrentTarget) {
+			t.Fatal("Arcane Missiles cast failed")
+		}
+		if s.Dot(c.CurrentTarget).TickPeriod() != 500*time.Millisecond {
+			t.Fatal("proc did not shorten actual channel tick period")
+		}
+		foreverAdvance(sim, start+3*time.Second)
+		if s.Dot(c.CurrentTarget).IsActive() || stacks.IsActive() {
+			t.Fatal("channel or Arcane Blast stacks remained after completion")
+		}
+		if s.Dot(c.CurrentTarget).TickCount != 5 {
+			t.Fatalf("channel tick count %d", s.Dot(c.CurrentTarget).TickCount)
+		}
+	}
+}
+
+func TestForeverCriticalHealsTriggerAegisAndInspiration(t *testing.T) {
+	p := foreverCasterBuild(t, proto.Class_ClassPriest, map[string]int32{"priest.talent.divine-aegis": 3, "priest.talent.inspiration": 3})
+	p.BonusStats.Stats[stats.Armor] = 1000
+	sim, c := foreverCasterSim(t, p)
+	c.RemoveHealth(sim, 20000)
+	initialArmor := c.GetStat(stats.Armor)
+	heal := c.GetSpell(core.ActionID{SpellID: 10965})
+	for i := 0; i < 3; i++ {
+		start := sim.CurrentTime
+		if !heal.Cast(sim, &c.Unit) {
+			t.Fatal("Greater Heal cast failed")
+		}
+		foreverAdvance(sim, start+4*time.Second)
+	}
+	if !c.GetAura("Forever Divine Aegis-" + c.Label).IsActive() {
+		t.Fatal("critical heals did not create Aegis")
+	}
+	if c.GetStat(stats.Armor) <= initialArmor {
+		t.Fatal("critical heals did not trigger Inspiration")
+	}
+	r := &core.SpellResult{Target: &c.Unit, Damage: 200, Outcome: core.OutcomeHit}
+	incoming := &core.Spell{Unit: c.CurrentTarget, SpellSchool: core.SpellSchoolPhysical}
+	for _, mod := range c.DynamicDamageTakenModifiers {
+		mod(sim, incoming, r)
+	}
+	if r.Damage != 0 {
+		t.Fatal("Aegis did not absorb actual incoming damage")
+	}
+}
+
+func TestForeverRepeatedHotStreakCriticalCasts(t *testing.T) {
+	p := foreverCasterBuild(t, proto.Class_ClassMage, map[string]int32{"mage.talent.hot-streak": 1})
+	sim, c := foreverCasterSim(t, p)
+	fire := c.GetSpell(core.ActionID{SpellID: 10151})
+	pyro := c.GetSpell(core.ActionID{SpellID: 18809})
+	proc := c.GetAura("Forever Hot Streak")
+	for cycle := 0; cycle < 2; cycle++ {
+		for i := 0; i < 3; i++ {
+			start := sim.CurrentTime
+			if !fire.Cast(sim, c.CurrentTarget) {
+				t.Fatal("Fireball cast failed")
+			}
+			foreverAdvance(sim, start+4*time.Second)
+		}
+		if proc.GetStacks() != 3 || pyro.CastTime() != 1500*time.Millisecond {
+			t.Fatalf("Hot Streak stacks/cast time %d/%s", proc.GetStacks(), pyro.CastTime())
+		}
+		start := sim.CurrentTime
+		if !pyro.Cast(sim, c.CurrentTarget) {
+			t.Fatal("accelerated Pyroblast failed")
+		}
+		foreverAdvance(sim, start+3*time.Second)
+		if proc.IsActive() || pyro.CastTime() != 6*time.Second {
+			t.Fatal("Hot Streak did not restore cast time after consumption")
+		}
+	}
+}
+
+func TestForeverRepeatedShadowAndFlameGuaranteedRefunds(t *testing.T) {
+	p := foreverCasterBuild(t, proto.Class_ClassWarlock, map[string]int32{"warlock.talent.shadow-and-flame": 5, "warlock.talent.conflagrate": 1})
+	sim, c := foreverCasterSim(t, p)
+	immolate := c.GetSpell(core.ActionID{SpellID: 11668})
+	conflagrate := c.GetSpell(core.ActionID{SpellID: 17962})
+	shadowburn := c.GetSpell(core.ActionID{SpellID: 17877})
+	baseShadow, baseFire := c.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow], c.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire]
+	for cycle := 0; cycle < 3; cycle++ {
+		start := sim.CurrentTime
+		if !immolate.Cast(sim, c.CurrentTarget) {
+			t.Fatal("Immolate cast")
+		}
+		foreverAdvance(sim, start+3*time.Second)
+		if !conflagrate.Cast(sim, c.CurrentTarget) {
+			t.Fatal("Conflagrate cast")
+		}
+		if !immolate.Dot(c.CurrentTarget).IsActive() {
+			t.Fatal("guaranteed Shadow and Flame failed to preserve Immolate")
+		}
+		if c.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] != baseShadow*1.1 {
+			t.Fatal("Shadow buff missing or compounded")
+		}
+		foreverAdvance(sim, start+5*time.Second)
+		shards := c.GetAura("Forever Soul Shards").GetStacks()
+		if !shadowburn.Cast(sim, c.CurrentTarget) {
+			t.Fatal("Shadowburn cast")
+		}
+		if c.GetAura("Forever Soul Shards").GetStacks() != shards {
+			t.Fatal("guaranteed shard refund failed")
+		}
+		if c.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] != baseFire*1.1 {
+			t.Fatal("Fire buff missing or compounded")
+		}
+		foreverAdvance(sim, start+27*time.Second)
+		if c.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] != baseShadow || c.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] != baseFire {
+			t.Fatal("Shadow and Flame modifiers did not expire cleanly")
+		}
 	}
 }

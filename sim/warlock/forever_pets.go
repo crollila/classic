@@ -64,7 +64,7 @@ func (w *Warlock) applyForeverPetTalents() {
 		}})
 	}
 	if w.ForeverRank("warlock.talent.demonic-energies") > 0 {
-		healing := w.RegisterSpell(core.SpellConfig{ActionID: w.ForeverAction("warlock.talent.demonic-energies"), SpellSchool: core.SpellSchoolShadow, Flags: core.SpellFlagHelpful | core.SpellFlagPassiveSpell | core.SpellFlagIgnoreAttackerModifiers, ProcMask: core.ProcMaskSpellHealing, DamageMultiplier: 1, ThreatMultiplier: 0})
+		healing := w.RegisterSpell(core.SpellConfig{DefenseType: core.DefenseTypeMagic, ActionID: w.ForeverAction("warlock.talent.demonic-energies"), SpellSchool: core.SpellSchoolShadow, Flags: core.SpellFlagHelpful | core.SpellFlagPassiveSpell | core.SpellFlagIgnoreAttackerModifiers, ProcMask: core.ProcMaskSpellHealing, DamageMultiplier: 1, ThreatMultiplier: 0})
 		trigger := func(a *core.Aura, sim *core.Simulation, s *core.Spell, r *core.SpellResult) {
 			if w.ActivePet != nil && w.ActivePet.IsActive() && r.Damage > 0 && s.DefenseType == core.DefenseTypeMagic {
 				healing.CalcAndDealHealing(sim, &w.ActivePet.Unit, r.Damage*val("demonic-energies", 0)/100, healing.OutcomeHealing)
@@ -128,7 +128,7 @@ func (w *Warlock) registerForeverPetUtilities() {
 		w.SummonDemonSpells = append(w.SummonDemonSpells, s)
 	}
 	if w.ForeverRank("warlock.talent.improved-health-funnel") > 0 {
-		healthFunnel := w.RegisterSpell(core.SpellConfig{ActionID: w.ForeverAction("warlock.talent.improved-health-funnel"), SpellSchool: core.SpellSchoolShadow, ProcMask: core.ProcMaskSpellHealing, Flags: WarlockFlagDemonology | core.SpellFlagHelpful | core.SpellFlagAPL | core.SpellFlagChanneled, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}}, DamageMultiplier: 1 + val("improved-health-funnel", 0)/100, ThreatMultiplier: 1 - val("improved-health-funnel", 2)/100,
+		healthFunnel := w.RegisterSpell(core.SpellConfig{DefenseType: core.DefenseTypeMagic, ActionID: w.ForeverAction("warlock.talent.improved-health-funnel"), SpellSchool: core.SpellSchoolShadow, ProcMask: core.ProcMaskSpellHealing, Flags: WarlockFlagDemonology | core.SpellFlagHelpful | core.SpellFlagAPL | core.SpellFlagChanneled, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}}, DamageMultiplier: 1 + val("improved-health-funnel", 0)/100, ThreatMultiplier: 1 - val("improved-health-funnel", 2)/100,
 			Hot: core.DotConfig{SelfOnly: true, Aura: core.Aura{Label: "Forever Health Funnel"}, NumberOfTicks: 10, TickLength: time.Second, OnTick: func(sim *core.Simulation, t *core.Unit, d *core.Dot) {
 				if w.ActivePet == nil || w.CurrentHealth() <= 50 {
 					d.Deactivate(sim)

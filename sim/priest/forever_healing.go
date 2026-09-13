@@ -30,7 +30,7 @@ func (p *Priest) registerForeverHealing() {
 		if h.code != SpellCode_PriestFlashHeal {
 			cast -= time.Duration(float64(time.Second) * .1 * float64(p.ForeverRank("priest.talent.divine-fury")))
 		}
-		s := p.RegisterSpell(core.SpellConfig{ActionID: core.ActionID{SpellID: h.id}, SpellCode: h.code, SpellSchool: core.SpellSchoolHoly, ProcMask: core.ProcMaskSpellHealing, Flags: SpellFlagPriest | core.SpellFlagHelpful | core.SpellFlagAPL, ManaCost: core.ManaCostOptions{FlatCost: h.mana}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault, CastTime: cast}}, DamageMultiplier: 1, ThreatMultiplier: .5, BonusCoefficient: h.cast.Seconds() / 3.5, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
+		s := p.RegisterSpell(core.SpellConfig{DefenseType: core.DefenseTypeMagic, ActionID: core.ActionID{SpellID: h.id}, SpellCode: h.code, SpellSchool: core.SpellSchoolHoly, ProcMask: core.ProcMaskSpellHealing, Flags: SpellFlagPriest | core.SpellFlagHelpful | core.SpellFlagAPL, ManaCost: core.ManaCostOptions{FlatCost: h.mana}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault, CastTime: cast}}, DamageMultiplier: 1, ThreatMultiplier: .5, BonusCoefficient: h.cast.Seconds() / 3.5, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
 			s.CalcAndDealHealing(sim, t, sim.Roll(h.low, h.high), s.OutcomeHealingCrit)
 		}})
 		if h.code == SpellCode_PriestFlashHeal {
@@ -39,7 +39,7 @@ func (p *Priest) registerForeverHealing() {
 			p.GreaterHeal = append(p.GreaterHeal, s)
 		}
 	}
-	renew := p.RegisterSpell(core.SpellConfig{ActionID: core.ActionID{SpellID: 10929}, SpellCode: SpellCode_PriestRenew, SpellSchool: core.SpellSchoolHoly, ProcMask: core.ProcMaskSpellHealing, Flags: SpellFlagPriest | core.SpellFlagHelpful | core.SpellFlagAPL, ManaCost: core.ManaCostOptions{FlatCost: 365}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}}, DamageMultiplier: 1, ThreatMultiplier: .5,
+	renew := p.RegisterSpell(core.SpellConfig{DefenseType: core.DefenseTypeMagic, ActionID: core.ActionID{SpellID: 10929}, SpellCode: SpellCode_PriestRenew, SpellSchool: core.SpellSchoolHoly, ProcMask: core.ProcMaskSpellHealing, Flags: SpellFlagPriest | core.SpellFlagHelpful | core.SpellFlagAPL, ManaCost: core.ManaCostOptions{FlatCost: 365}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}}, DamageMultiplier: 1, ThreatMultiplier: .5,
 		Hot: core.DotConfig{Aura: core.Aura{Label: "Forever Renew-" + p.Label}, NumberOfTicks: 5, TickLength: 3 * time.Second, BonusCoefficient: .2, OnSnapshot: func(sim *core.Simulation, t *core.Unit, d *core.Dot, roll bool) { d.SnapshotHeal(t, 162, roll) }, OnTick: func(sim *core.Simulation, t *core.Unit, d *core.Dot) {
 			d.CalcAndDealPeriodicSnapshotHealing(sim, t, d.OutcomeTick)
 		}}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) { s.Hot(t).Apply(sim) },
@@ -63,14 +63,14 @@ func (p *Priest) registerForeverHealing() {
 		},
 	})
 	p.PowerWordShield = append(p.PowerWordShield, shield)
-	poh := p.RegisterSpell(core.SpellConfig{ActionID: core.ActionID{SpellID: 10961}, SpellSchool: core.SpellSchoolHoly, ProcMask: core.ProcMaskSpellHealing, Flags: SpellFlagPriest | core.SpellFlagHelpful | core.SpellFlagAPL, ManaCost: core.ManaCostOptions{FlatCost: 1030}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault, CastTime: 3 * time.Second}}, DamageMultiplier: 1, ThreatMultiplier: .5, BonusCoefficient: .286, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
+	poh := p.RegisterSpell(core.SpellConfig{DefenseType: core.DefenseTypeMagic, ActionID: core.ActionID{SpellID: 10961}, SpellSchool: core.SpellSchoolHoly, ProcMask: core.ProcMaskSpellHealing, Flags: SpellFlagPriest | core.SpellFlagHelpful | core.SpellFlagAPL, ManaCost: core.ManaCostOptions{FlatCost: 1030}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault, CastTime: 3 * time.Second}}, DamageMultiplier: 1, ThreatMultiplier: .5, BonusCoefficient: .286, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
 		for _, member := range p.Party.Players {
 			s.CalcAndDealHealing(sim, &member.GetCharacter().Unit, sim.Roll(939, 991), s.OutcomeHealingCrit)
 		}
 	}})
 	p.PrayerOfHealing = append(p.PrayerOfHealing, poh)
 	if p.ForeverRank("priest.talent.binding-heal") > 0 {
-		p.RegisterSpell(core.SpellConfig{ActionID: p.ForeverAction("priest.talent.binding-heal"), SpellCode: SpellCode_PriestBindingHeal, SpellSchool: core.SpellSchoolHoly, ProcMask: core.ProcMaskSpellHealing, Flags: SpellFlagPriest | core.SpellFlagHelpful | core.SpellFlagAPL, ManaCost: core.ManaCostOptions{FlatCost: 155}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault, CastTime: 1500 * time.Millisecond}}, DamageMultiplier: 1, ThreatMultiplier: .25, BonusCoefficient: 1.5 / 3.5 / 2,
+		p.RegisterSpell(core.SpellConfig{DefenseType: core.DefenseTypeMagic, ActionID: p.ForeverAction("priest.talent.binding-heal"), SpellCode: SpellCode_PriestBindingHeal, SpellSchool: core.SpellSchoolHoly, ProcMask: core.ProcMaskSpellHealing, Flags: SpellFlagPriest | core.SpellFlagHelpful | core.SpellFlagAPL, ManaCost: core.ManaCostOptions{FlatCost: 155}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault, CastTime: 1500 * time.Millisecond}}, DamageMultiplier: 1, ThreatMultiplier: .25, BonusCoefficient: 1.5 / 3.5 / 2,
 			ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
 				s.CalcAndDealHealing(sim, t, sim.Roll(382, 443), s.OutcomeHealingCrit)
 				if t != &p.Unit {
@@ -80,7 +80,7 @@ func (p *Priest) registerForeverHealing() {
 		})
 	}
 	if p.ForeverRank("priest.talent.holy-nova") > 0 {
-		heal := p.RegisterSpell(core.SpellConfig{ActionID: p.ForeverAction("priest.talent.holy-nova").WithTag(-p.ForeverAction("priest.talent.holy-nova").Tag), SpellCode: SpellCode_PriestHolyNova, SpellSchool: core.SpellSchoolHoly, ProcMask: core.ProcMaskSpellHealing, Flags: SpellFlagPriest | core.SpellFlagHelpful | core.SpellFlagPassiveSpell, DamageMultiplier: 1, ThreatMultiplier: 0, BonusCoefficient: .107})
+		heal := p.RegisterSpell(core.SpellConfig{DefenseType: core.DefenseTypeMagic, ActionID: p.ForeverAction("priest.talent.holy-nova").WithTag(-p.ForeverAction("priest.talent.holy-nova").Tag), SpellCode: SpellCode_PriestHolyNova, SpellSchool: core.SpellSchoolHoly, ProcMask: core.ProcMaskSpellHealing, Flags: SpellFlagPriest | core.SpellFlagHelpful | core.SpellFlagPassiveSpell, DamageMultiplier: 1, ThreatMultiplier: 0, BonusCoefficient: .107})
 		f.holyNova = p.RegisterSpell(core.SpellConfig{ActionID: p.ForeverAction("priest.talent.holy-nova"), SpellCode: SpellCode_PriestHolyNova, SpellSchool: core.SpellSchoolHoly, DefenseType: core.DefenseTypeMagic, ProcMask: core.ProcMaskSpellDamage, Flags: SpellFlagPriest | core.SpellFlagAPL, ManaCost: core.ManaCostOptions{FlatCost: 185}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}}, DamageMultiplier: 1, ThreatMultiplier: 0, BonusCoefficient: .107,
 			ExtraCastCondition: func(sim *core.Simulation, t *core.Unit) bool {
 				return p.DistanceFromTarget <= 10*(1+val("holy-reach", 0)/100) && (p.ShadowformAura == nil || !p.ShadowformAura.IsActive())
@@ -156,7 +156,7 @@ func (p *Priest) registerForeverHealing() {
 }
 func (p *Priest) registerForeverPrayerOfMending() {
 	action := p.ForeverAction("priest.talent.prayer-of-mending")
-	heal := p.RegisterSpell(core.SpellConfig{ActionID: action.WithTag(-action.Tag), SpellCode: SpellCode_PriestPrayerOfMending, SpellSchool: core.SpellSchoolHoly, ProcMask: core.ProcMaskSpellHealing, Flags: SpellFlagPriest | core.SpellFlagHelpful | core.SpellFlagPassiveSpell, DamageMultiplier: 1, ThreatMultiplier: .5, BonusCoefficient: .429})
+	heal := p.RegisterSpell(core.SpellConfig{DefenseType: core.DefenseTypeMagic, ActionID: action.WithTag(-action.Tag), SpellCode: SpellCode_PriestPrayerOfMending, SpellSchool: core.SpellSchoolHoly, ProcMask: core.ProcMaskSpellHealing, Flags: SpellFlagPriest | core.SpellFlagHelpful | core.SpellFlagPassiveSpell, DamageMultiplier: 1, ThreatMultiplier: .5, BonusCoefficient: .429})
 	charges := int32(0)
 	var current *core.Unit
 	busy := false
@@ -191,7 +191,7 @@ func (p *Priest) registerForeverPrayerOfMending() {
 	auras = p.NewRaidAuraArray(func(t *core.Unit) *core.Aura {
 		return t.GetOrRegisterAura(core.Aura{Label: "Forever Prayer of Mending-" + p.Label, ActionID: action, Duration: 30 * time.Second, OnSpellHitTaken: trigger, OnHealTaken: trigger})
 	})
-	p.PrayerOfMending = p.RegisterSpell(core.SpellConfig{ActionID: action, SpellCode: SpellCode_PriestPrayerOfMending, SpellSchool: core.SpellSchoolHoly, ProcMask: core.ProcMaskSpellHealing, Flags: SpellFlagPriest | core.SpellFlagHelpful | core.SpellFlagAPL, ManaCost: core.ManaCostOptions{FlatCost: 178}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, CD: core.Cooldown{Timer: p.NewTimer(), Duration: 10 * time.Second}}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
+	p.PrayerOfMending = p.RegisterSpell(core.SpellConfig{DefenseType: core.DefenseTypeMagic, ActionID: action, SpellCode: SpellCode_PriestPrayerOfMending, SpellSchool: core.SpellSchoolHoly, ProcMask: core.ProcMaskSpellHealing, Flags: SpellFlagPriest | core.SpellFlagHelpful | core.SpellFlagAPL, ManaCost: core.ManaCostOptions{FlatCost: 178}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, CD: core.Cooldown{Timer: p.NewTimer(), Duration: 10 * time.Second}}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
 		if current != nil {
 			auras.Get(current).Deactivate(sim)
 		}

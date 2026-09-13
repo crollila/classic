@@ -28,7 +28,7 @@ func (p *Priest) registerForeverReactiveTalents() {
 	}
 	if p.ForeverRank("priest.talent.blessed-recovery") > 0 {
 		pending := 0.0
-		recovery := p.RegisterSpell(core.SpellConfig{ActionID: p.ForeverAction("priest.talent.blessed-recovery"), SpellSchool: core.SpellSchoolHoly, Flags: core.SpellFlagHelpful | core.SpellFlagPassiveSpell | core.SpellFlagIgnoreAttackerModifiers, ProcMask: core.ProcMaskSpellHealing, DamageMultiplier: 1, ThreatMultiplier: 0, Hot: core.DotConfig{SelfOnly: true, Aura: core.Aura{Label: "Forever Blessed Recovery"}, NumberOfTicks: 3, TickLength: 2 * time.Second, OnSnapshot: func(sim *core.Simulation, t *core.Unit, d *core.Dot, roll bool) {
+		recovery := p.RegisterSpell(core.SpellConfig{DefenseType: core.DefenseTypeMagic, ActionID: p.ForeverAction("priest.talent.blessed-recovery"), SpellSchool: core.SpellSchoolHoly, Flags: core.SpellFlagHelpful | core.SpellFlagPassiveSpell | core.SpellFlagIgnoreAttackerModifiers, ProcMask: core.ProcMaskSpellHealing, DamageMultiplier: 1, ThreatMultiplier: 0, Hot: core.DotConfig{SelfOnly: true, Aura: core.Aura{Label: "Forever Blessed Recovery"}, NumberOfTicks: 3, TickLength: 2 * time.Second, OnSnapshot: func(sim *core.Simulation, t *core.Unit, d *core.Dot, roll bool) {
 			d.SnapshotBaseDamage = pending / 3
 			d.SnapshotAttackerMultiplier = 1
 		}, OnTick: func(sim *core.Simulation, t *core.Unit, d *core.Dot) {
