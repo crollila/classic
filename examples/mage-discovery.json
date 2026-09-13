@@ -1,0 +1,255 @@
+{
+  "simOptions": {
+    "isTest": true,
+    "iterations": 20,
+    "randomSeed": "101"
+  },
+  "encounter": {
+    "duration": 60,
+    "targets": [
+      {
+        "level": 63,
+        "mobType": "MobTypeDemon"
+      }
+    ]
+  },
+  "raid": {
+    "parties": [
+      {
+        "players": [
+          {
+            "equipment": {
+              "items": [
+                {
+                  "id": 14332,
+                  "randomSuffix": 1979,
+                  "enchant": 1509
+                },
+                {
+                  "id": 12103
+                },
+                {
+                  "id": 11782
+                },
+                {
+                  "id": 13386,
+                  "randomSuffix": 1965
+                },
+                {
+                  "id": 14152,
+                  "enchant": 1891
+                },
+                {
+                  "id": 11766,
+                  "randomSuffix": 1965,
+                  "enchant": 1883
+                },
+                {
+                  "id": 13253
+                },
+                {
+                  "id": 11662
+                },
+                {
+                  "id": 13170,
+                  "enchant": 1509
+                },
+                {
+                  "id": 10247,
+                  "randomSuffix": 1971,
+                  "enchant": 911
+                },
+                {
+                  "id": 942
+                },
+                {
+                  "id": 942
+                },
+                {
+                  "id": 13968
+                },
+                {
+                  "id": 12930
+                },
+                {
+                  "id": 13964,
+                  "enchant": 2504
+                },
+                {
+                  "id": 10796,
+                  "randomSuffix": 1965
+                },
+                {
+                  "id": 15283,
+                  "randomSuffix": 1959
+                }
+              ]
+            },
+            "name": "Classic baseline mage",
+            "class": "ClassMage",
+            "race": "RaceTroll",
+            "mage": {
+              "options": {
+                "armor": "MageArmor"
+              }
+            },
+            "talentsString": "",
+            "rotation": {
+              "type": "TypeAPL",
+              "priorityList": [
+                {
+                  "action": {
+                    "condition": {
+                      "auraIsKnown": {
+                        "auraId": {}
+                      }
+                    },
+                    "autocastOtherCooldowns": {}
+                  }
+                },
+                {
+                  "action": {
+                    "condition": {
+                      "cmp": {
+                        "op": "OpEq",
+                        "lhs": {
+                          "auraNumStacks": {
+                            "sourceUnit": {
+                              "type": "CurrentTarget"
+                            },
+                            "auraId": {
+                              "spellId": 12873,
+                              "rank": 3
+                            }
+                          }
+                        },
+                        "rhs": {
+                          "const": {
+                            "val": "5"
+                          }
+                        }
+                      }
+                    },
+                    "castSpell": {
+                      "spellId": {
+                        "spellId": 11129
+                      }
+                    }
+                  }
+                },
+                {
+                  "action": {
+                    "condition": {
+                      "and": {
+                        "vals": [
+                          {
+                            "auraIsKnown": {
+                              "auraId": {
+                                "spellId": 11129
+                              }
+                            }
+                          },
+                          {
+                            "or": {
+                              "vals": [
+                                {
+                                  "cmp": {
+                                    "op": "OpLt",
+                                    "lhs": {
+                                      "auraNumStacks": {
+                                        "sourceUnit": {
+                                          "type": "CurrentTarget"
+                                        },
+                                        "auraId": {
+                                          "spellId": 12873,
+                                          "rank": 3
+                                        }
+                                      }
+                                    },
+                                    "rhs": {
+                                      "const": {
+                                        "val": "5"
+                                      }
+                                    }
+                                  }
+                                },
+                                {
+                                  "cmp": {
+                                    "op": "OpLe",
+                                    "lhs": {
+                                      "auraRemainingTime": {
+                                        "sourceUnit": {
+                                          "type": "CurrentTarget"
+                                        },
+                                        "auraId": {
+                                          "spellId": 12873,
+                                          "rank": 3
+                                        }
+                                      }
+                                    },
+                                    "rhs": {
+                                      "const": {
+                                        "val": "5s"
+                                      }
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "castSpell": {
+                      "spellId": {
+                        "spellId": 10207,
+                        "rank": 7
+                      }
+                    }
+                  }
+                },
+                {
+                  "action": {
+                    "condition": {
+                      "spellIsKnown": {
+                        "spellId": {
+                          "spellId": 11129
+                        }
+                      }
+                    },
+                    "castSpell": {
+                      "spellId": {
+                        "spellId": 25306,
+                        "rank": 12
+                      }
+                    }
+                  }
+                },
+                {
+                  "action": {
+                    "castSpell": {
+                      "spellId": {
+                        "spellId": 25304,
+                        "rank": 10
+                      }
+                    }
+                  }
+                }
+              ]
+            },
+            "forever": {
+              "rulesetId": "forever-discovery-2026-09-13-v1",
+              "talents": {
+                "mage.talent.arcane-focus": 1,
+                "mage.talent.elemental-precision": 1,
+                "mage.talent.improved-frostbolt": 1
+              },
+              "mechanics": [],
+              "experimentalEstimatedRanks": false
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

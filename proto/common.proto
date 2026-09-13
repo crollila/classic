@@ -931,6 +931,7 @@ enum OtherAction {
 	OtherActionExplosives = 16; // Used by APL to generically refer to engineering explosives
 	OtherActionOffensiveEquip = 17; // Used by APL to generally refer to offensive on-use equipment
 	OtherActionDefensiveEquip = 18; // Used by APL to generally refer to defensive on-use equipment
+	OtherActionForever = 19; // Simulator-only action. Tag maps to a research record in foreverdata/trees.json; NOT a client spell ID.
 }
 
 message ActionID {

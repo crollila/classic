@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-09-13T09:07:31.238Z",
+  "ruleset_id": "forever-discovery-2026-09-13-v1",
+  "sim_tests": "PASS",
+  "command": "npm test",
+  "expanded_engine_command": "go test -count=1 --tags=with_db ./sim/... ./cmd/...",
+  "includes": [
+    "protobuf generation",
+    "WebAssembly build",
+    "full existing simulator regressions",
+    "Forever combat regression tests",
+    "strict CLI fixture tests",
+    "10-, 20-, and 40-player discovery raid construction",
+    "Classic and discovery aura-registration guard regression"
+  ],
+  "exit_code": 0,
+  "packages_reporting_ok": 24,
+  "packages_with_no_tests_to_run": 1,
+  "log_path": ".artifacts/discovery-full-suite.log",
+  "log_sha256": "8aa8676f2e22617b29d10ca8ad5c6dc995c17713afd8ae53215ef15113576b86",
+  "additional_checks": {
+    "typescript": "PASS",
+    "manifest_import_deterministic": "PASS",
+    "reviewed_classic_boundary": "PASS"
+  },
+  "limits": [
+    "Passing tests does not confirm undocumented interaction behavior.",
+    "Healing factories and unreachable talent paths are not counted as complete.",
+    "No upstream .results files were regenerated."
+  ]
+}

@@ -14,7 +14,9 @@ declare global {
 }
 
 Chart.register(...registerables);
-Chart.defaults.color = 'white';
+Chart.defaults.color = import.meta.env.VITE_FOREVER === 'true' ? '#4f574e' : 'white';
+
+if (import.meta.env.VITE_FOREVER === 'true') document.body.classList.add('forever-page');
 
 tippy.setDefaultProps({ arrow: false, allowHTML: true });
 window.Popper = Popper;

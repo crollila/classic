@@ -94,6 +94,9 @@ export abstract class SimUI extends Component {
 		this.simMain = document.createElement('main');
 		this.simMain.classList.add('sim-main', 'tab-content');
 		this.simContentContainer.appendChild(this.simMain);
+		if (import.meta.env.VITE_FOREVER === 'true' && !this.isWithinRaidSim) {
+			void import('../forever/shell').then(({ mountForever }) => mountForever(this, config.spec));
+		}
 
 		this.rootElem.classList.add(this.cssClass);
 
@@ -175,9 +178,11 @@ export abstract class SimUI extends Component {
 		this.resultsViewer = new ResultsViewer(resultsViewerElem);
 
 		const socialsContainer = this.rootElem.querySelector('.sim-sidebar-socials') as HTMLElement;
-		socialsContainer.appendChild(SocialLinks.buildDiscordLink());
-		socialsContainer.appendChild(SocialLinks.buildGitHubLink());
-		socialsContainer.appendChild(SocialLinks.buildPatreonLink());
+		if (import.meta.env.VITE_FOREVER !== 'true') {
+			socialsContainer.appendChild(SocialLinks.buildDiscordLink());
+			socialsContainer.appendChild(SocialLinks.buildGitHubLink());
+			socialsContainer.appendChild(SocialLinks.buildPatreonLink());
+		}
 
 		this.simTabContentsContainer = this.rootElem.querySelector('.sim-main.tab-content') as HTMLElement;
 
