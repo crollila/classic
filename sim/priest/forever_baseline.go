@@ -174,27 +174,40 @@ func (p *Priest) registerForeverBaseline() {
 		inner.Activate(sim)
 		inner.SetStacks(sim, inner.MaxStacks)
 	}})
-	// Devouring Contagion conserves remaining ticks when a health-backed target dies.
+	// Devouring Contagion also triggers when another attacker kills the afflicted target.
 	if p.ForeverRank("priest.talent.devouring-contagion") > 0 {
-		core.MakePermanent(p.RegisterAura(core.Aura{Label: "Forever Devouring Contagion", OnPeriodicDamageDealt: func(a *core.Aura, sim *core.Simulation, s *core.Spell, r *core.SpellResult) {
-			if s.SpellCode != SpellCode_PriestDevouringPlague || !r.Target.HasHealthBar() || r.Target.CurrentHealth() > 0 {
+		p.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.SpellCode != SpellCode_PriestDevouringPlague {
 				return
 			}
-			d := s.Dot(r.Target)
-			for _, next := range sim.Encounter.TargetUnits {
-				if next == r.Target || !next.IsActive() {
+			for _, d := range spell.Dots() {
+				if d == nil {
 					continue
 				}
-				copy := s.Dot(next)
-				copy.NumberOfTicks = d.MaxTicksRemaining()
-				if copy.NumberOfTicks > 0 {
-					copy.Apply(sim)
-					copy.SnapshotBaseDamage = d.SnapshotBaseDamage
-					copy.SnapshotAttackerMultiplier = d.SnapshotAttackerMultiplier
+				d := d
+				kill := func(a *core.Aura, sim *core.Simulation, damage *core.Spell, r *core.SpellResult) {
+					if !r.Target.HasHealthBar() || r.Target.CurrentHealth() > 0 || r.Damage <= 0 {
+						return
+					}
+					for _, next := range sim.Encounter.TargetUnits {
+						if next == r.Target || next.ForeverEnemyDead() || !next.IsActive() {
+							continue
+						}
+						copy := spell.Dot(next)
+						copy.NumberOfTicks = d.MaxTicksRemaining()
+						if copy.NumberOfTicks > 0 {
+							copy.Apply(sim)
+							copy.SnapshotBaseDamage = d.SnapshotBaseDamage
+							copy.SnapshotAttackerMultiplier = d.SnapshotAttackerMultiplier
+							copy.SnapshotCritChance = d.SnapshotCritChance
+						}
+						d.Deactivate(sim)
+						break
+					}
 				}
-				d.Deactivate(sim)
-				break
+				d.OnSpellHitTaken = kill
+				d.OnPeriodicDamageTaken = kill
 			}
-		}}))
+		})
 	}
 }

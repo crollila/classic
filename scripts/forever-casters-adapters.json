@@ -224,7 +224,9 @@
     "files": [
       "sim/mage/forever.go",
       "sim/mage/forever_defenses.go",
-      "sim/mage/blizzard.go"
+      "sim/mage/blizzard.go",
+      "sim/core/forever_enemy_health.go",
+      "sim/core/spell_result.go"
     ],
     "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
     "remaining_unknowns": [
@@ -232,6 +234,17 @@
       "Unless explicitly stated: eligible events, internal cooldown, per-target versus per-cast rolls, proc recursion and snapshot behavior require validation.",
       "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
       "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other."
+    ],
+    "parameters": [
+      {
+        "key": "scenario.enemy_health",
+        "label": "Finite Enemy Health (0 = duration target)",
+        "default": 0,
+        "min": 0,
+        "max": 1000000000000,
+        "confidence": "PROVISIONAL",
+        "reason": "Explicit encounter scenario; no assumed enemy health. Enables real kill triggers, retargeting and corpse suppression. Existing health encounters use their supplied target health."
+      }
     ]
   },
   "mage.talent.incineration": {
@@ -882,13 +895,26 @@
       "sim/warlock/forever.go",
       "sim/warlock/forever_pets.go",
       "sim/warlock/forever_shards.go",
-      "sim/warlock/forever_demon_commands.go"
+      "sim/warlock/forever_demon_commands.go",
+      "sim/core/forever_enemy_health.go",
+      "sim/core/spell_result.go"
     ],
     "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
     "remaining_unknowns": [
       "Ranks 2 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
       "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
       "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other."
+    ],
+    "parameters": [
+      {
+        "key": "scenario.enemy_health",
+        "label": "Finite Enemy Health (0 = duration target)",
+        "default": 0,
+        "min": 0,
+        "max": 1000000000000,
+        "confidence": "PROVISIONAL",
+        "reason": "Explicit encounter scenario; no assumed enemy health. Enables real kill triggers, retargeting and corpse suppression. Existing health encounters use their supplied target health."
+      }
     ]
   },
   "warlock.talent.improved-drains": {
@@ -1519,7 +1545,9 @@
       "sim/warlock/forever.go",
       "sim/warlock/forever_pets.go",
       "sim/warlock/forever_shards.go",
-      "sim/warlock/forever_demon_commands.go"
+      "sim/warlock/forever_demon_commands.go",
+      "sim/core/forever_enemy_health.go",
+      "sim/core/spell_result.go"
     ],
     "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
     "remaining_unknowns": [
@@ -1535,6 +1563,15 @@
         "max": 100,
         "confidence": "PREDICTED",
         "reason": "Prepared consumable inventory scenario; Classic sufficient-shard policy remains in STRICT."
+      },
+      {
+        "key": "scenario.enemy_health",
+        "label": "Finite Enemy Health (0 = duration target)",
+        "default": 0,
+        "min": 0,
+        "max": 1000000000000,
+        "confidence": "PROVISIONAL",
+        "reason": "Explicit encounter scenario; no assumed enemy health. Enables real kill triggers, retargeting and corpse suppression. Existing health encounters use their supplied target health."
       }
     ]
   },
@@ -2419,13 +2456,26 @@
       "sim/priest/forever.go",
       "sim/priest/forever_healing.go",
       "sim/priest/forever_baseline.go",
-      "sim/priest/forever_racials.go"
+      "sim/priest/forever_racials.go",
+      "sim/core/forever_enemy_health.go",
+      "sim/core/spell_result.go"
     ],
     "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
     "remaining_unknowns": [
       "Ranks 2, 3, 4, 5 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
       "Unless explicitly stated: eligible events, internal cooldown, per-target versus per-cast rolls, proc recursion and snapshot behavior require validation.",
       "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ],
+    "parameters": [
+      {
+        "key": "scenario.enemy_health",
+        "label": "Finite Enemy Health (0 = duration target)",
+        "default": 0,
+        "min": 0,
+        "max": 1000000000000,
+        "confidence": "PROVISIONAL",
+        "reason": "Explicit encounter scenario; no assumed enemy health. Enables real kill triggers, retargeting and corpse suppression. Existing health encounters use their supplied target health."
+      }
     ]
   },
   "priest.talent.improved-shadow-word-pain": {
@@ -2586,12 +2636,25 @@
       "sim/priest/forever.go",
       "sim/priest/forever_healing.go",
       "sim/priest/forever_baseline.go",
-      "sim/priest/forever_racials.go"
+      "sim/priest/forever_racials.go",
+      "sim/core/forever_enemy_health.go",
+      "sim/core/spell_result.go"
     ],
     "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
     "remaining_unknowns": [
       "Ranks 2 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
       "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ],
+    "parameters": [
+      {
+        "key": "scenario.enemy_health",
+        "label": "Finite Enemy Health (0 = duration target)",
+        "default": 0,
+        "min": 0,
+        "max": 1000000000000,
+        "confidence": "PROVISIONAL",
+        "reason": "Explicit encounter scenario; no assumed enemy health. Enables real kill triggers, retargeting and corpse suppression. Existing health encounters use their supplied target health."
+      }
     ]
   },
   "priest.talent.early-demise": {

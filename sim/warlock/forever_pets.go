@@ -98,11 +98,23 @@ func (w *Warlock) applyForeverPetTalents() {
 			w.PseudoStats.SpiritRegenRateCasting -= val("soul-harvesting", 1) / 100
 			w.PseudoStats.SpiritRegenMultiplier /= 1 + val("soul-harvesting", 2)/100
 		}})
-		core.MakePermanent(w.RegisterAura(core.Aura{Label: "Forever Soul Harvest Trigger", OnPeriodicDamageDealt: func(a *core.Aura, sim *core.Simulation, s *core.Spell, r *core.SpellResult) {
-			if s.SpellCode == SpellCode_WarlockDrainSoul && r.Target.HasHealthBar() && r.Target.CurrentHealth() <= 0 && r.Damage > 0 {
-				harvest.Activate(sim)
+		w.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.SpellCode != SpellCode_WarlockDrainSoul {
+				return
 			}
-		}}))
+			for _, dot := range spell.Dots() {
+				if dot == nil {
+					continue
+				}
+				kill := func(a *core.Aura, sim *core.Simulation, damage *core.Spell, r *core.SpellResult) {
+					if r.Target.HasHealthBar() && r.Target.CurrentHealth() <= 0 && r.Damage > 0 {
+						harvest.Activate(sim)
+					}
+				}
+				dot.OnSpellHitTaken = kill
+				dot.OnPeriodicDamageTaken = kill
+			}
+		})
 	}
 }
 func (w *Warlock) registerForeverPetUtilities() {

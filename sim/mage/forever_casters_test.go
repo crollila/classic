@@ -330,3 +330,100 @@ func TestForeverClassicIdentityUtilityCasts(t *testing.T) {
 		foreverAdvance(sim, 12*time.Second)
 	}
 }
+
+func TestForeverFiniteEnemyHealthKillEffects(t *testing.T) {
+	for _, tc := range []struct {
+		class  proto.Class
+		talent string
+		rank   int32
+		spell  int32
+		aura   string
+	}{
+		{proto.Class_ClassMage, "mage.talent.wake-of-fire", 1, 10151, "Forever Wake of Fire"},
+		{proto.Class_ClassPriest, "priest.talent.spirit-tap", 5, 10947, "Spirit Tap"},
+		{proto.Class_ClassWarlock, "warlock.talent.soul-harvesting", 1, 11675, "Forever Soul Harvest"},
+	} {
+		t.Run(tc.talent, func(t *testing.T) {
+			p := foreverCasterBuild(t, tc.class, map[string]int32{tc.talent: tc.rank})
+			p.Forever.Parameters = map[string]float64{"scenario.enemy_health.0": 1, "scenario.enemy_health.1": 100000}
+			if tc.class == proto.Class_ClassWarlock {
+				p.GetWarlock().Options.Summon = proto.WarlockOptions_NoSummon
+			}
+			sim, c := foreverCasterSim(t, p)
+			target := sim.Encounter.TargetUnits[0]
+			s := c.GetSpell(core.ActionID{SpellID: tc.spell})
+			if !s.Cast(sim, target) {
+				t.Fatal("killing cast failed")
+			}
+			foreverAdvance(sim, 4*time.Second)
+			if !target.ForeverEnemyDead() {
+				t.Fatalf("finite target did not die: hp=%f", target.CurrentHealth())
+			}
+			buff := c.GetAura(tc.aura)
+			if buff == nil || !buff.IsActive() {
+				t.Fatalf("kill did not activate %s", tc.aura)
+			}
+			if c.CurrentTarget != sim.Encounter.TargetUnits[1] {
+				t.Fatal("caster did not switch to surviving target")
+			}
+			if s.CanCast(sim, target) || s.Cast(sim, target) {
+				t.Fatal("cast allowed a dead target")
+			}
+			before, expires := s.SpellMetrics[target.UnitIndex].TotalDamage, buff.ExpiresAt()
+			s.CalcAndDealDamage(sim, target, 100, s.OutcomeAlwaysHit)
+			if s.SpellMetrics[target.UnitIndex].TotalDamage != before || buff.ExpiresAt() != expires {
+				t.Fatal("corpse generated damage or another kill proc")
+			}
+		})
+	}
+}
+
+func TestForeverContagionSpreadsOnOtherDamageKill(t *testing.T) {
+	p := foreverCasterBuild(t, proto.Class_ClassPriest, map[string]int32{"priest.talent.devouring-contagion": 1}, "priest.baseline.devouring-plague")
+	p.Forever.Parameters = map[string]float64{"scenario.enemy_health.0": 100, "scenario.enemy_health.1": 100000}
+	sim, c := foreverCasterSim(t, p)
+	target, next := sim.Encounter.TargetUnits[0], sim.Encounter.TargetUnits[1]
+	plague := c.GetSpell(core.ActionID{SpellID: 19279})
+	if !plague.Cast(sim, target) {
+		t.Fatal("plague cast")
+	}
+	if !plague.Dot(target).IsActive() {
+		t.Fatal("plague missed in deterministic fixture")
+	}
+	// A distinct spell kills the target before the first plague tick.
+	bolt := c.GetSpell(core.ActionID{SpellID: 10947})
+	bolt.CalcAndDealDamage(sim, target, 1000, bolt.OutcomeAlwaysHit)
+	if !target.ForeverEnemyDead() || !plague.Dot(next).IsActive() {
+		t.Fatal("Contagion did not spread on a non-plague killing hit")
+	}
+	if plague.Dot(next).NumberOfTicks != plague.Dot(target).NumberOfTicks {
+		t.Fatal("spread lost remaining duration")
+	}
+}
+
+func TestForeverFiniteEnemyHealthRequiresScenario(t *testing.T) {
+	p := foreverCasterBuild(t, proto.Class_ClassMage, map[string]int32{})
+	_, c := foreverCasterSim(t, p)
+	if c.Env.Encounter.TargetUnits[0].HasHealthBar() {
+		t.Fatal("default duration encounter gained finite target health")
+	}
+}
+
+func TestForeverHealthEncounterEndsAfterLastFiniteTarget(t *testing.T) {
+	p := foreverCasterBuild(t, proto.Class_ClassMage, map[string]int32{})
+	targetStats := make([]float64, 40)
+	targetStats[stats.Health] = 2
+	r := &proto.RaidSimRequest{Raid: &proto.Raid{Parties: []*proto.Party{{Players: []*proto.Player{p}}}}, Encounter: &proto.Encounter{UseHealth: true, Targets: []*proto.Target{{Level: 60, Stats: targetStats}, {Level: 60, Stats: targetStats}}}, SimOptions: &proto.SimOptions{Iterations: 1, RandomSeed: 123, IsTest: true, Interactive: true}}
+	sim := core.NewSim(r, simsignals.Signals{})
+	sim.Reset()
+	c := sim.Raid.Parties[0].Players[0].GetCharacter()
+	spell := c.GetSpell(core.ActionID{SpellID: 10151})
+	spell.CalcAndDealDamage(sim, sim.Encounter.TargetUnits[0], 1000, spell.OutcomeAlwaysHit)
+	if sim.Encounter.DamageTaken != 2 {
+		t.Fatal("overkill advanced aggregate health past a surviving target")
+	}
+	spell.CalcAndDealDamage(sim, sim.Encounter.TargetUnits[1], 1000, spell.OutcomeAlwaysHit)
+	if !sim.Step() {
+		t.Fatal("health encounter did not terminate at exact finite health total")
+	}
+}

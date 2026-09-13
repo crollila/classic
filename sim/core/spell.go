@@ -501,6 +501,9 @@ func (spell *Spell) TimeToReady(sim *Simulation) time.Duration {
 
 // Returns whether a call to Cast() would be successful, without actually doing a cast.
 func (spell *Spell) CanCast(sim *Simulation, target *Unit) bool {
+	if spell == nil || spell.Unit.ForeverEnemyDead() || (target.ForeverEnemyDead() && spell.Unit.IsOpponent(target)) {
+		return false
+	}
 	if spell == nil {
 		return false
 	}
@@ -565,6 +568,9 @@ func (spell *Spell) CanCast(sim *Simulation, target *Unit) bool {
 func (spell *Spell) Cast(sim *Simulation, target *Unit) bool {
 	if target == nil {
 		target = spell.Unit.CurrentTarget
+	}
+	if spell.Unit.ForeverEnemyDead() || (target.ForeverEnemyDead() && spell.Unit.IsOpponent(target)) {
+		return false
 	}
 	return spell.castFn(sim, target)
 }

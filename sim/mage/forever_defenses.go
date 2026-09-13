@@ -173,13 +173,14 @@ func (m *Mage) registerForeverDefenses() {
 			}
 		}
 	}, OnCastComplete: func(a *core.Aura, sim *core.Simulation, s *core.Spell) {
-		if s.SpellCode == SpellCode_MageFireBlast {
+		if s.SpellCode == SpellCode_MageFireBlast && a.RemainingDuration(sim) != a.Duration {
 			a.Deactivate(sim)
 		}
 	}})
-	core.MakePermanent(m.RegisterAura(core.Aura{Label: "Forever Wake of Fire trigger", OnSpellHitDealt: func(a *core.Aura, sim *core.Simulation, s *core.Spell, r *core.SpellResult) {
+	killTrigger := func(a *core.Aura, sim *core.Simulation, s *core.Spell, r *core.SpellResult) {
 		if m.ForeverRank("mage.talent.wake-of-fire") > 0 && r.Target.HasHealthBar() && r.Target.CurrentHealth() <= 0 && r.Damage > 0 && r.Target.Level >= m.Level-8 {
 			wake.Activate(sim)
 		}
-	}}))
+	}
+	core.MakePermanent(m.RegisterAura(core.Aura{Label: "Forever Wake of Fire trigger", OnSpellHitDealt: killTrigger, OnPeriodicDamageDealt: killTrigger}))
 }
