@@ -209,3 +209,49 @@ func TestForeverHawkCastAndCap(t *testing.T) {
 		t.Fatal("Hawk cap", count)
 	}
 }
+func TestForeverPhysicalControlCasts(t *testing.T) {
+	sim, c := physicalSim(t, "Warrior", "warrior", physicalBuild(t, "warrior.talent.mortal-strike"))
+	var mortal *core.Spell
+	for _, s := range c.Spellbook {
+		if s.SpellID == 21553 {
+			mortal = s
+		}
+	}
+	if mortal == nil {
+		t.Fatal("Mortal Strike missing")
+	}
+	mortal.BonusHitRating = 100
+	for i := 0; i < 10 && !c.CurrentTarget.HasActiveAura("Forever Mortal Strike"); i++ {
+		c.AddRage(sim, 100, c.NewRageMetrics(mortal.ActionID))
+		c.GCD.Reset()
+		mortal.CD.Reset()
+		mortal.Cast(sim, c.CurrentTarget)
+	}
+	if c.CurrentTarget.PseudoStats.HealingTakenMultiplier != .5 {
+		t.Fatal("Mortal Strike healing reduction absent")
+	}
+	sim, c = physicalSim(t, "Rogue", "rogue", physicalBuild(t, "rogue.talent.improved-kidney-shot"))
+	var kidney *core.Spell
+	for _, s := range c.Spellbook {
+		if s.SpellID == 8643 {
+			kidney = s
+		}
+	}
+	for _, cp := range []int32{1, 5} {
+		c.AddComboPoints(sim, cp, c.CurrentTarget, kidney.ComboPointMetrics())
+		c.AddEnergy(sim, 100, c.NewEnergyMetrics(kidney.ActionID))
+		c.GCD.Reset()
+		kidney.CD.Reset()
+		if !kidney.Cast(sim, c.CurrentTarget) {
+			t.Fatal("Kidney Shot failed")
+		}
+		if !c.CurrentTarget.ForeverControlled(core.ForeverStun) {
+			t.Fatal("Kidney Shot does not control target")
+		}
+		a := c.CurrentTarget.GetAura("Kidney Shot")
+		if a.RemainingDuration(sim) != time.Duration(cp+1)*time.Second {
+			t.Fatal("Kidney Shot duration", a.RemainingDuration(sim))
+		}
+		a.Deactivate(sim)
+	}
+}

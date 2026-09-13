@@ -290,6 +290,12 @@ func (r *Rogue) registerForeverUtility() {
 			cd = 20 * time.Second
 			duration = 6 * time.Second
 		}
+		var kidneyAuras core.AuraArray
+		if kind == "Kidney Shot" && r.ForeverRank("rogue.talent.improved-kidney-shot") > 0 {
+			kidneyAuras = r.NewEnemyAuraArray(func(t *core.Unit) *core.Aura {
+				return t.GetOrRegisterAura(core.Aura{Label: "Improved Kidney Shot-" + r.Label, Duration: 6 * time.Second})
+			})
+		}
 		var timer *core.Timer
 		if cd > 0 {
 			timer = r.NewTimer()
@@ -321,7 +327,8 @@ func (r *Rogue) registerForeverUtility() {
 				r.AddComboPoints(sim, 1, t, s.ComboPointMetrics())
 			}
 			if kind == "Kidney Shot" && a.IsActive() && r.ForeverRank("rogue.talent.improved-kidney-shot") > 0 {
-				buff := t.GetOrRegisterAura(core.Aura{Label: "Improved Kidney Shot-" + r.Label, Duration: d})
+				buff := kidneyAuras.Get(t)
+				buff.Duration = d
 				buff.Activate(sim)
 			}
 		}})
