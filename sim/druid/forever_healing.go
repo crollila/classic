@@ -2,6 +2,7 @@ package druid
 
 import (
 	"github.com/wowsims/classic/sim/core"
+	"math"
 	"time"
 )
 
@@ -75,8 +76,12 @@ func (d *Druid) registerForeverHealing() {
 			if !hot.IsActive() {
 				hot = regrowth.Hot(t)
 			}
-			heal := hot.SnapshotBaseDamage * float64(hot.OriginalNumberOfTicks)
+			// Consume the complete snapshotted periodic effect, including HoT-only talents.
+			heal := hot.SnapshotBaseDamage * hot.SnapshotAttackerMultiplier * float64(hot.OriginalNumberOfTicks)
+			oldFlags := sp.Flags
+			sp.Flags |= core.SpellFlagIgnoreAttackerModifiers
 			sp.CalcAndDealHealing(sim, t, heal, sp.OutcomeHealingCrit)
+			sp.Flags = oldFlags
 			hot.Deactivate(sim)
 		}})
 	}
@@ -95,7 +100,9 @@ func (d *Druid) registerForeverHealing() {
 				party = d.Party
 			}
 			for _, a := range party.Players {
-				sp.Hot(&a.GetCharacter().Unit).Apply(sim)
+				if math.Abs(a.GetCharacter().DistanceFromTarget-t.DistanceFromTarget) <= 43 {
+					sp.Hot(&a.GetCharacter().Unit).Apply(sim)
+				}
 			}
 		}})
 	}
@@ -103,7 +110,7 @@ func (d *Druid) registerForeverHealing() {
 	// party ticks and a real channel, retaining Classic threat/cooldown analogs.
 	d.RegisterSpell(Humanoid, core.SpellConfig{ActionID: core.ActionID{SpellID: 9863}, SpellCode: foreverTranquility, SpellSchool: core.SpellSchoolNature, DefenseType: core.DefenseTypeMagic, ProcMask: core.ProcMaskSpellHealing, Flags: core.SpellFlagAPL | core.SpellFlagHelpful | core.SpellFlagChanneled, ManaCost: core.ManaCostOptions{FlatCost: 925 * (1 - .02*d.fr("tranquil-spirit"))}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, CD: core.Cooldown{Timer: d.NewTimer(), Duration: time.Duration(float64(5*time.Minute) * (1 - .3*d.fr("improved-tranquility")))}}, DamageMultiplier: 1, ThreatMultiplier: .5 * (1 - .5*d.fr("improved-tranquility")), Hot: core.DotConfig{SelfOnly: true, Aura: core.Aura{Label: "Forever Tranquility"}, NumberOfTicks: 5, TickLength: 2 * time.Second, DamageMultiplier: 1, OnTick: func(sim *core.Simulation, t *core.Unit, dot *core.Dot) {
 		for _, a := range d.Party.Players {
-			dot.Spell.CalcAndDealHealing(sim, &a.GetCharacter().Unit, 294, dot.Spell.OutcomeHealing)
+			dot.Spell.CalcAndDealHealing(sim, &a.GetCharacter().Unit, 294*dot.DamageMultiplier, dot.Spell.OutcomeHealing)
 		}
 	}}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, sp *core.Spell) { sp.SelfHot().Apply(sim) }})
 	if d.fr("nature-s-swiftness") > 0 {

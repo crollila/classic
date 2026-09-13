@@ -84,7 +84,7 @@ func (paladin *Paladin) registerSealOfCommand() {
 				baseDamage := sim.Roll(minDamage, maxDamage) * 0.5 // unless stunned
 				if paladin.Forever != nil {
 					baseDamage = sim.Roll(68, 73)
-					if target.ForeverControlled(core.ForeverStun) || target.ForeverControlled(core.ForeverFear) {
+					if target.ForeverControlled(core.ForeverStun) || target.ForeverControlled(core.ForeverIncapacitate) {
 						baseDamage = sim.Roll(137, 146)
 					}
 				}

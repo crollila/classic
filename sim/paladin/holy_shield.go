@@ -31,6 +31,10 @@ func (paladin *Paladin) registerHolyShield() {
 		blockBonus = 20 * core.BlockRatingPerBlockChance
 	}
 
+	var foreverCooldown *core.Timer
+	if paladin.Forever != nil {
+		foreverCooldown = paladin.NewTimer()
+	}
 	for i, values := range HolyShieldValues {
 		rank := i + 1
 		level := values.level
@@ -87,6 +91,10 @@ func (paladin *Paladin) registerHolyShield() {
 			},
 		})
 
+		timer := foreverCooldown
+		if timer == nil {
+			timer = paladin.NewTimer()
+		}
 		paladin.RegisterSpell(core.SpellConfig{
 			ActionID:      core.ActionID{SpellID: spellID},
 			SpellCode:     SpellCode_PaladinHolyShield,
@@ -101,12 +109,22 @@ func (paladin *Paladin) registerHolyShield() {
 					GCD: core.GCDDefault,
 				},
 				CD: core.Cooldown{
-					Timer:    paladin.NewTimer(),
+					Timer:    timer,
 					Duration: time.Second * 10,
 				},
 			},
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				if paladin.Forever != nil {
+					for _, aura := range paladin.holyShieldAura {
+						if aura != nil && aura != paladin.holyShieldAura[i] {
+							aura.Deactivate(sim)
+						}
+					}
+				}
 				paladin.holyShieldAura[i].Activate(sim)
+				if paladin.Forever != nil {
+					paladin.holyShieldAura[i].SetStacks(sim, numCharges)
+				}
 			},
 		})
 	}

@@ -18,6 +18,7 @@ func (d *Druid) registerForeverBear() {
 		d.foreverFormCrit(sim)
 		d.SetCurrentPowerBar(core.RageBar)
 		d.SetShapeshift(a)
+		d.foreverShiftDispel(sim)
 		d.EnableDynamicStatDep(sim, stam)
 		d.AddStatsDynamic(sim, base)
 		d.ApplyDynamicEquipScaling(sim, stats.Armor, 4.6)

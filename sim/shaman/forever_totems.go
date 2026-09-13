@@ -3,6 +3,7 @@ package shaman
 import (
 	"github.com/wowsims/classic/sim/core"
 	"github.com/wowsims/classic/sim/core/stats"
+	"math"
 	"time"
 )
 
@@ -57,15 +58,23 @@ func (s *Shaman) registerForeverTotems() {
 		}})
 	}
 	if s.fr("guardian-totems") > 0 {
-		shield := core.NewForeverAbsorb(&s.Unit, "Forever Grounding Totem", core.ActionID{SpellID: 8177}, 45*time.Second, core.SpellSchoolArcane|core.SpellSchoolFire|core.SpellSchoolFrost|core.SpellSchoolHoly|core.SpellSchoolNature|core.SpellSchoolShadow)
-		shield.Aura.OnSpellHitTaken = func(a *core.Aura, sim *core.Simulation, sp *core.Spell, r *core.SpellResult) {
-			if sp.DefenseType == core.DefenseTypeMagic && r.Landed() {
-				a.Deactivate(sim)
-			}
+		// One totem charge is shared by nearby party members. Unknown direct-AoE
+		// classification retains the engine's existing spell classification; periodic
+		// AoE spells are explicitly excluded rather than spending the shield on them.
+		position := 0.0
+		aura := s.RegisterAura(core.Aura{Label: "Forever Grounding Totem", ActionID: core.ActionID{SpellID: 8177}, Duration: 45 * time.Second})
+		for _, agent := range s.Party.Players {
+			c := agent.GetCharacter()
+			c.AddDynamicDamageTakenModifier(func(sim *core.Simulation, sp *core.Spell, r *core.SpellResult) {
+				if aura.IsActive() && r.Damage > 0 && sp.DefenseType == core.DefenseTypeMagic && sp.AOEDot() == nil && math.Abs(c.DistanceFromTarget-position) <= 20 {
+					r.Damage = 0
+					aura.Deactivate(sim)
+				}
+			})
 		}
-		s.RegisterSpell(core.SpellConfig{ActionID: shield.Aura.ActionID, Flags: core.SpellFlagAPL | SpellFlagTotem, ManaCost: core.ManaCostOptions{BaseCost: .06, Multiplier: s.totemManaMultiplier()}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, CD: core.Cooldown{Timer: s.NewTimer(), Duration: 15*time.Second - time.Duration(s.fr("guardian-totems"))*time.Second}}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, sp *core.Spell) {
-			s.setActiveAirTotem(sim, sp, shield.Aura)
-			shield.Apply(sim, 1e15, false)
+		s.RegisterSpell(core.SpellConfig{ActionID: aura.ActionID, Flags: core.SpellFlagAPL | SpellFlagTotem, ManaCost: core.ManaCostOptions{BaseCost: .06, Multiplier: s.totemManaMultiplier()}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, CD: core.Cooldown{Timer: s.NewTimer(), Duration: 15*time.Second - time.Duration(s.fr("guardian-totems"))*time.Second}}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, sp *core.Spell) {
+			position = s.DistanceFromTarget
+			s.setActiveAirTotem(sim, sp, aura)
 		}})
 	}
 }

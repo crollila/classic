@@ -2,6 +2,7 @@ package shaman
 
 import (
 	"github.com/wowsims/classic/sim/core"
+	"math"
 	"time"
 )
 
@@ -53,10 +54,14 @@ func (s *Shaman) registerForeverUtility() {
 		snares := s.NewEnemyAuraArray(func(t *core.Unit) *core.Aura {
 			return t.ForeverControlAura("Forever Earthbind-"+s.Label, core.ActionID{SpellID: 2484}, core.ForeverSnare, 5*time.Second)
 		})
-		sp := s.RegisterSpell(core.SpellConfig{ActionID: core.ActionID{SpellID: 2484}, Flags: core.SpellFlagAPL | SpellFlagTotem, ManaCost: core.ManaCostOptions{FlatCost: 20, Multiplier: s.totemManaMultiplier()}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, CD: core.Cooldown{Timer: s.NewTimer(), Duration: 15 * time.Second}}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, sp *core.Spell) {
+		s.RegisterSpell(core.SpellConfig{ActionID: core.ActionID{SpellID: 2484}, Flags: core.SpellFlagAPL | SpellFlagTotem, ManaCost: core.ManaCostOptions{FlatCost: 20, Multiplier: s.totemManaMultiplier()}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, CD: core.Cooldown{Timer: s.NewTimer(), Duration: 15 * time.Second}}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, sp *core.Spell) {
+			position := s.DistanceFromTarget
+			radius := 10 * (1 + .1*s.fr("earth-s-grasp"))
 			if s.fr("earthbound") > 0 {
 				for _, target := range s.Env.Encounter.Targets {
-					auras.Get(&target.Unit).Activate(sim)
+					if math.Abs(target.DistanceFromTarget-position) <= radius {
+						auras.Get(&target.Unit).Activate(sim)
+					}
 				}
 			}
 			s.ActiveTotems[EarthTotem] = sp
@@ -64,12 +69,13 @@ func (s *Shaman) registerForeverUtility() {
 			core.StartPeriodicAction(sim, core.PeriodicActionOptions{Period: 5 * time.Second, NumTicks: 9, TickImmediately: true, OnAction: func(sim *core.Simulation) {
 				if s.ActiveTotems[EarthTotem] == sp {
 					for _, target := range s.Env.Encounter.Targets {
-						snares.Get(&target.Unit).Activate(sim)
+						if math.Abs(target.DistanceFromTarget-position) <= radius {
+							snares.Get(&target.Unit).Activate(sim)
+						}
 					}
 				}
 			}})
 		}})
-		s.ForeverSpellRange(sp, 10*(1+.1*s.fr("earth-s-grasp")))
 	}
 	if s.fr("improved-ghost-wolf") > 0 {
 		a := s.RegisterAura(core.Aura{Label: "Forever Ghost Wolf", ActionID: core.ActionID{SpellID: 2645}, Duration: core.NeverExpires, OnGain: func(a *core.Aura, sim *core.Simulation) { s.AddMoveSpeedModifier(&a.ActionID, 1.4) }, OnExpire: func(a *core.Aura, sim *core.Simulation) { s.RemoveMoveSpeedModifier(&a.ActionID) }, OnCastComplete: func(a *core.Aura, sim *core.Simulation, sp *core.Spell) {

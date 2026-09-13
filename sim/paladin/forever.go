@@ -14,6 +14,7 @@ const (
 	foreverFlashOfLight
 	foreverVigil
 	foreverHolyStrike
+	foreverJudgementOfFury
 )
 
 func (p *Paladin) fr(name string) float64       { return float64(p.ForeverRank("paladin.talent." + name)) }
@@ -29,6 +30,7 @@ func (p *Paladin) applyForeverTalents() {
 		p.PseudoStats.ThreatMultiplier *= 1 - .1*p.fr("instrument-of-law")
 	}
 	p.ForeverControlReduction(core.ForeverFear, .15*p.fr("unyielding-faith"))
+	p.ForeverControlReduction(core.ForeverIncapacitate, .15*p.fr("unyielding-faith"))
 	if p.fr("pursuit-of-justice") > 0 {
 		id := p.fa("pursuit-of-justice")
 		p.RegisterAura(core.Aura{Label: "Forever Pursuit of Justice", ActionID: id, OnInit: func(a *core.Aura, sim *core.Simulation) {
@@ -39,7 +41,7 @@ func (p *Paladin) applyForeverTalents() {
 		if sp.DefaultCast.CastTime == 0 && sp.Cost != nil && sp.Cost.CostType() == core.CostTypeMana {
 			sp.Cost.Multiplier -= int32(2 * p.fr("benediction"))
 		}
-		if sp.ProcMask.Matches(core.ProcMaskSpellHealing) && sp.SpellCode != SpellCode_PaladinHolyShock {
+		if sp.SpellCode == foreverHolyLight || sp.SpellCode == foreverFlashOfLight {
 			sp.DamageMultiplier *= 1 + .04*p.fr("healing-light")
 		}
 		if sp.SpellCode == foreverHolyLight || sp.SpellCode == foreverFlashOfLight || sp.SpellCode == foreverVigil {
@@ -63,7 +65,7 @@ func (p *Paladin) applyForeverTalents() {
 			}
 		}
 		// Seal procs and Judgements share Classic triggered spell handling.
-		if sp.SpellCode == SpellCode_PaladinJudgementOfCommand || sp.SpellCode == SpellCode_PaladinJudgementOfRighteousness || (sp.SpellSchool.Matches(core.SpellSchoolHoly) && sp.ProcMask.Matches(core.ProcMaskMeleeMHSpecial) && !sp.Flags.Matches(core.SpellFlagAPL)) {
+		if sp.SpellCode == foreverJudgementOfFury || sp.SpellCode == SpellCode_PaladinJudgementOfCommand || sp.SpellCode == SpellCode_PaladinJudgementOfRighteousness || (sp.SpellSchool.Matches(core.SpellSchoolHoly) && sp.ProcMask.Matches(core.ProcMaskMeleeMHSpecial) && !sp.Flags.Matches(core.SpellFlagAPL)) {
 			sp.DamageMultiplier *= 1 + .05*p.fr("improved-seals")
 		}
 	})
@@ -180,7 +182,11 @@ func (p *Paladin) applyForeverTalents() {
 			old := p.foreverEchoSeal
 			a.Deactivate(sim)
 			if old != nil && old.OnSpellHitDealt != nil {
-				old.OnSpellHitDealt(old, sim, sp, r)
+				// Preserve Classic seal proc rules while allowing the documented next
+				// melee special to carry the echo. Never mutate the real spell.
+				echoAttack := *sp
+				echoAttack.ProcMask = core.ProcMaskMeleeMHAuto
+				old.OnSpellHitDealt(old, sim, &echoAttack, r)
 			}
 		}})
 	}
@@ -192,6 +198,7 @@ func (p *Paladin) registerForeverSpells() {
 	}
 	p.registerForeverHealing()
 	p.registerForeverDefenses()
+	p.registerForeverJustice()
 	// Baseline Holy Strike is only named in direct tooltips. Normal Holy weapon
 	// damage, 6 sec cooldown and 6% base mana are explicitly PREDICTED analogs.
 	iron := p.RegisterAura(core.Aura{Label: "Forever Iron Creed", ActionID: p.fa("iron-creed"), Duration: 6 * time.Second, OnGain: func(_ *core.Aura, sim *core.Simulation) {
@@ -256,12 +263,30 @@ func (p *Paladin) registerForeverHealing() {
 			sp.CalcAndDealHealing(sim, t, sim.Roll(v.low, v.high), sp.OutcomeHealingCrit)
 		}})
 	}
-	var shock *core.Spell
+	var shock, vigilEffect *core.Spell
 	vigils := map[*core.Unit]*core.Aura{}
 	if p.fr("light-s-vigil") > 0 {
 		for _, t := range p.Env.AllUnits {
 			vigils[t] = t.RegisterAura(core.Aura{Label: fmt.Sprintf("Forever Light's Vigil-%d", p.UnitIndex), ActionID: p.fa("light-s-vigil"), Duration: 30 * time.Second})
 		}
+		// A distinct triggered action keeps Vigil crit/refund attribution separate
+		// from Holy Shock. The observed 730 Mana is retained for Illumination;
+		// ApplyEffects executes this free secondary effect without charging twice.
+		effectAction := p.fa("light-s-vigil")
+		effectAction.Tag = -effectAction.Tag
+		vigilEffect = p.RegisterSpell(core.SpellConfig{ActionID: effectAction, SpellCode: foreverVigil, SpellSchool: core.SpellSchoolHoly, DefenseType: core.DefenseTypeMagic, ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellHealing, Flags: core.SpellFlagNoOnCastComplete, ManaCost: core.ManaCostOptions{FlatCost: 730}, DamageMultiplier: 1, ThreatMultiplier: 1, BonusCoefficient: .429, ApplyEffects: func(sim *core.Simulation, t *core.Unit, sp *core.Spell) {
+			if p.IsOpponent(t) {
+				sp.CalcAndDealDamage(sim, t, sim.Roll(175, 189), sp.OutcomeMagicHitAndCrit)
+			} else {
+				party := p.Env.Raid.GetPlayerParty(t)
+				if party == nil || len(party.Players) == 0 {
+					party = p.Party
+				}
+				for _, agent := range party.Players {
+					sp.CalcAndDealHealing(sim, &agent.GetCharacter().Unit, sim.Roll(315, 333), sp.OutcomeHealingCrit)
+				}
+			}
+		}})
 		p.RegisterSpell(core.SpellConfig{ActionID: p.fa("light-s-vigil"), SpellCode: foreverVigil, SpellSchool: core.SpellSchoolHoly, Flags: core.SpellFlagAPL, ManaCost: core.ManaCostOptions{FlatCost: 730}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault, CastTime: 1500 * time.Millisecond}, CD: core.Cooldown{Timer: p.NewTimer(), Duration: 6 * time.Second}}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, sp *core.Spell) {
 			for u, a := range vigils {
 				if p.IsOpponent(t) && p.IsOpponent(u) || !p.IsOpponent(t) && p.Env.Raid.GetPlayerParty(u) == p.Env.Raid.GetPlayerParty(t) {
@@ -285,17 +310,9 @@ func (p *Paladin) registerForeverHealing() {
 			if a := vigils[t]; a != nil && a.IsActive() {
 				a.Deactivate(sim)
 				sp.CD.Reset()
+				vigilEffect.ApplyEffects(sim, t, vigilEffect)
 				if p.IsOpponent(t) {
-					sp.CalcAndDealDamage(sim, t, sim.Roll(175, 189), sp.OutcomeMagicHitAndCrit)
 					p.AddMana(sim, 730*.75, metrics)
-				} else {
-					party := p.Env.Raid.GetPlayerParty(t)
-					if party == nil || len(party.Players) == 0 {
-						party = p.Party
-					}
-					for _, a := range party.Players {
-						sp.CalcAndDealHealing(sim, &a.GetCharacter().Unit, sim.Roll(315, 333), sp.OutcomeHealingCrit)
-					}
 				}
 			}
 		}})

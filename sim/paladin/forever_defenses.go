@@ -74,7 +74,7 @@ func (p *Paladin) registerForeverDefenses() {
 		duration, cd time.Duration
 		kind         core.ForeverControlKind
 		enabled      bool
-	}{{853, "improved-hammer-of-justice", 6 * time.Second, 60*time.Second - time.Duration(5*p.fr("improved-hammer-of-justice"))*time.Second, core.ForeverStun, true}, {20066, "repentance", 6 * time.Second, time.Minute, core.ForeverFear, p.fr("repentance") > 0}} {
+	}{{853, "improved-hammer-of-justice", 6 * time.Second, 60*time.Second - time.Duration(5*p.fr("improved-hammer-of-justice"))*time.Second, core.ForeverStun, true}, {20066, "repentance", 6 * time.Second, time.Minute, core.ForeverIncapacitate, p.fr("repentance") > 0}} {
 		if !v.enabled {
 			continue
 		}
@@ -185,7 +185,7 @@ func (p *Paladin) registerForeverDefenses() {
 				shield.Apply(sim, 60, false)
 			}
 		}})
-		judge := p.RegisterSpell(core.SpellConfig{ActionID: action.WithTag(-action.Tag), SpellSchool: core.SpellSchoolHoly, DefenseType: core.DefenseTypeMagic, ProcMask: core.ProcMaskSpellDamage, DamageMultiplier: 1, ThreatMultiplier: 2, ApplyEffects: func(sim *core.Simulation, t *core.Unit, sp *core.Spell) {
+		judge := p.RegisterSpell(core.SpellConfig{ActionID: action.WithTag(-action.Tag), SpellCode: foreverJudgementOfFury, SpellSchool: core.SpellSchoolHoly, DefenseType: core.DefenseTypeMagic, ProcMask: core.ProcMaskSpellDamage, DamageMultiplier: 1, ThreatMultiplier: 2, ApplyEffects: func(sim *core.Simulation, t *core.Unit, sp *core.Spell) {
 			sp.CalcAndDealDamage(sim, t, 60, sp.OutcomeMagicHitAndCrit)
 		}})
 		p.RegisterSpell(core.SpellConfig{ActionID: action, Flags: core.SpellFlagAPL, ManaCost: core.ManaCostOptions{FlatCost: 60}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, sp *core.Spell) { p.applySeal(a, judge, sim) }})

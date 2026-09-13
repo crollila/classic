@@ -249,7 +249,8 @@
     ],
     "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
     "remaining_unknowns": [
-      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional.",
+      "Vigil secondary healing/damage uses its own action and730Mana baseline for Illumination. Party-critical refund eligibility retains per-heal Classic callbacks provisionally."
     ],
     "auto_priority": 22,
     "healing": true,
@@ -625,7 +626,8 @@
     ],
     "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
     "remaining_unknowns": [
-      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional.",
+      "Unmounted combat movement bonus is active; mounted travel is outside the raid encounter model."
     ]
   },
   "paladin.talent.eye-for-an-eye": {
@@ -744,11 +746,25 @@
     "files": [
       "sim/paladin/forever.go",
       "sim/paladin/talents.go",
-      "sim/paladin/forever_defenses.go"
+      "sim/paladin/forever_defenses.go",
+      "sim/paladin/forever_seal_justice.go",
+      "sim/paladin/paladin.go"
     ],
-    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "scope": "Next melee attack echoes the replaced Command/Righteousness/Fury/Justice seal with Classic proc rules. Justice baseline uses an exposed PREDICTED proc rate in BEST_GUESS only.",
     "remaining_unknowns": [
-      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional.",
+      "Classic seal proc chances are retained for the next melee attack echo. Seal of Justice is BEST_GUESS-only with predicted 2 PPM; Judgement of Justice prevents fleeing, but current encounter AI has no fleeing behavior."
+    ],
+    "parameters": [
+      {
+        "key": "seal_of_justice_ppm",
+        "label": "Seal of Justice procs per minute",
+        "default": 2,
+        "min": 0,
+        "max": 60,
+        "confidence": "PREDICTED",
+        "reason": "Explicit Classic-like proc-rate prediction; direct seal tooltip specifies chance but no rate. BEST_GUESS only."
+      }
     ]
   },
   "shaman.talent.convection": {
@@ -1088,7 +1104,8 @@
     ],
     "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
     "remaining_unknowns": [
-      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional.",
+      "Grounding Totem shares one damage-spell interception across party members within20yards; non-damaging spell redirection and direct-AoE classification remain uncertain in the current encounter spell model. The observed cooldown reduction is active."
     ]
   },
   "shaman.talent.mental-dexterity": {
@@ -1650,7 +1667,8 @@
     ],
     "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
     "remaining_unknowns": [
-      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional.",
+      "Periodic multiplier includes self/area channels (Tranquility and Hurricane), with Classic snapshot stacking retained."
     ]
   },
   "druid.talent.moonglow": {
@@ -1915,7 +1933,8 @@
     ],
     "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
     "remaining_unknowns": [
-      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional.",
+      "Party aura/radius checks use the engine one-dimensional DistanceFromTarget positions as a provisional spatial projection."
     ]
   },
   "druid.talent.ferocity": {
@@ -1979,11 +1998,13 @@
       "sim/druid/forever_bear.go",
       "sim/druid/forever_healing.go",
       "sim/druid/forever_utility.go",
-      "sim/druid/forms.go"
+      "sim/druid/forms.go",
+      "sim/druid/forever_prowl.go"
     ],
-    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "scope": "Swipe damage modifier and Prowl/Pounce combat opener eligibility are active; stealth-detection geometry is outside raid encounter scope.",
     "remaining_unknowns": [
-      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional.",
+      "Prowl opener eligibility is simulated; stealth-detection geometry is outside the current raid encounter model, consistent with Rogue stealth detection."
     ]
   },
   "druid.talent.brutal-impact": {
@@ -1996,11 +2017,13 @@
       "sim/druid/forever_bear.go",
       "sim/druid/forever_healing.go",
       "sim/druid/forever_utility.go",
-      "sim/druid/forms.go"
+      "sim/druid/forms.go",
+      "sim/druid/forever_prowl.go"
     ],
     "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
     "remaining_unknowns": [
-      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional.",
+      "Prowl/Pounce use cached Classic level-60 IDs, 50 Energy, 150 bleed over18seconds, behind-target and prepull stealth requirements."
     ]
   },
   "druid.talent.thick-hide": {
@@ -2047,11 +2070,13 @@
       "sim/druid/forever_bear.go",
       "sim/druid/forever_healing.go",
       "sim/druid/forever_utility.go",
-      "sim/druid/forms.go"
+      "sim/druid/forms.go",
+      "sim/core/forever_control.go"
     ],
     "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
     "remaining_unknowns": [
-      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional.",
+      "Bear charge locks the actually interrupted school for4seconds; Cat charge sets behind-target position."
     ]
   },
   "druid.talent.sharpened-claws": {
@@ -2190,7 +2215,8 @@
     ],
     "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
     "remaining_unknowns": [
-      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional.",
+      "Party aura/radius checks use the engine one-dimensional DistanceFromTarget positions as a provisional spatial projection."
     ]
   },
   "druid.talent.king-of-the-jungle": {
@@ -2615,7 +2641,8 @@
     ],
     "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
     "remaining_unknowns": [
-      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional.",
+      "Party aura/radius checks use the engine one-dimensional DistanceFromTarget positions as a provisional spatial projection."
     ],
     "healing": true,
     "auto_priority": 16

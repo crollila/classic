@@ -136,6 +136,9 @@ func (druid *Druid) registerCatFormSpell() {
 			druid.PseudoStats.ThreatMultiplier *= 0.71
 			druid.AddStatDynamic(sim, stats.Dodge, 2*float64(druid.Talents.FelineSwiftness))
 			druid.SetShapeshift(aura)
+			if druid.Forever != nil {
+				druid.foreverShiftDispel(sim)
+			}
 
 			predBonus = druid.GetDynamicPredStrikeStats()
 			druid.AddStatsDynamic(sim, predBonus)
@@ -155,6 +158,9 @@ func (druid *Druid) registerCatFormSpell() {
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			if druid.Forever != nil {
+				if prowl := druid.GetAura("Forever Prowl"); prowl != nil {
+					prowl.Deactivate(sim)
+				}
 				druid.foreverLastCatEnergy = druid.CurrentEnergy()
 				druid.foreverHumanoidSince = sim.CurrentTime
 				druid.foreverHumanoidTime = 0
@@ -438,6 +444,7 @@ func (druid *Druid) registerMoonkinFormSpell() {
 			}
 			druid.form = Moonkin
 			if druid.Forever != nil {
+				druid.foreverShiftDispel(sim)
 				druid.SetShapeshift(aura)
 				druid.ApplyDynamicEquipScaling(sim, stats.Armor, 4.6)
 				if druid.fr("thick-hide") > 0 {

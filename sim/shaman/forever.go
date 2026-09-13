@@ -96,6 +96,7 @@ func (s *Shaman) applyForeverTalents() {
 		// Each duplicate owns its result buffers and travel callbacks. Reusing the
 		// original Chain Lightning closure would overwrite its remaining bounces.
 		overloads := map[*core.Spell]*core.Spell{}
+		primaryTargets := map[*core.Spell]*core.Unit{}
 		s.OnSpellRegistered(func(sp *core.Spell) {
 			if sp.Tag != 0 {
 				return
@@ -117,6 +118,8 @@ func (s *Shaman) applyForeverTalents() {
 			cfg.DamageMultiplier *= .5
 			cfg.ThreatMultiplier = 0
 			overloads[sp] = s.RegisterSpell(cfg)
+			original := sp.ApplyEffects
+			sp.ApplyEffects = func(sim *core.Simulation, t *core.Unit, sp *core.Spell) { primaryTargets[sp] = t; original(sim, t, sp) }
 		})
 		core.MakePermanent(s.RegisterAura(core.Aura{Label: "Forever Lightning Overload", OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, sp *core.Spell, r *core.SpellResult) {
 			extra := overloads[sp]
@@ -124,7 +127,7 @@ func (s *Shaman) applyForeverTalents() {
 				return
 			}
 			// A Chain Lightning cast rolls once on its first selected target.
-			if sp.SpellCode == SpellCode_ShamanChainLightning && r.Target != s.CurrentTarget {
+			if sp.SpellCode == SpellCode_ShamanChainLightning && r.Target != primaryTargets[sp] {
 				return
 			}
 			if sim.Proc(.03*s.fr("lightning-overload"), "Forever Lightning Overload") {
@@ -286,11 +289,13 @@ func (s *Shaman) registerForeverHealing() {
 				}
 				heal := sim.Roll(v.low, v.high)
 				if v.code == SpellCode_ShamanChainHeal {
+					originalMultiplier := sp.DamageMultiplier
+					defer func() { sp.DamageMultiplier = originalMultiplier }()
 					if hot := t.GetAura(fmt.Sprintf("Forever Riptide-%d", s.UnitIndex)); hot != nil && hot.IsActive() {
-						heal *= 1.25
+						sp.DamageMultiplier *= 1.25
 					}
 					sp.CalcAndDealHealing(sim, t, heal, sp.OutcomeHealingCrit)
-					bounce := heal * .5
+					sp.DamageMultiplier *= .5
 					n := 0
 					party := s.Env.Raid.GetPlayerParty(t)
 					if party == nil || len(party.Players) == 0 {
@@ -299,8 +304,8 @@ func (s *Shaman) registerForeverHealing() {
 					for _, a := range party.Players {
 						u := &a.GetCharacter().Unit
 						if u != t && n < 2 {
-							sp.CalcAndDealHealing(sim, u, bounce, sp.OutcomeHealingCrit)
-							bounce *= .5
+							sp.CalcAndDealHealing(sim, u, heal, sp.OutcomeHealingCrit)
+							sp.DamageMultiplier *= .5
 							n++
 						}
 					}

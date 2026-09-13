@@ -5,6 +5,7 @@ import (
 	"github.com/wowsims/classic/sim/core"
 	"github.com/wowsims/classic/sim/core/proto"
 	"github.com/wowsims/classic/sim/core/stats"
+	"strings"
 )
 
 var TalentTreeSizes = [3]int{14, 15, 15}
@@ -206,7 +207,7 @@ func (paladin *Paladin) getPrimarySealSpell(primarySeal proto.PaladinSeal) *core
 
 func (paladin *Paladin) applySeal(newSeal *core.Aura, judgement *core.Spell, sim *core.Simulation) {
 	if paladin.currentSeal != nil {
-		if paladin.fr("twist-of-light") > 0 && paladin.currentSeal != newSeal && paladin.currentSeal.IsActive() {
+		if paladin.fr("twist-of-light") > 0 && paladin.currentSeal != newSeal && paladin.currentSeal.IsActive() && (strings.HasPrefix(paladin.currentSeal.Label, "Seal of Righteousness") || strings.HasPrefix(paladin.currentSeal.Label, "Seal of Command") || paladin.currentSeal.Label == "Forever Seal of Fury" || paladin.currentSeal.Label == "Forever Seal of Justice") {
 			paladin.foreverEchoSeal = paladin.currentSeal
 			paladin.foreverEcho.Activate(sim)
 		}

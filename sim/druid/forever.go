@@ -3,6 +3,7 @@ package druid
 import (
 	"github.com/wowsims/classic/sim/core"
 	"github.com/wowsims/classic/sim/core/stats"
+	"math"
 	"time"
 )
 
@@ -69,7 +70,11 @@ func (d *Druid) applyForeverTalents() {
 			}
 		}
 		if d.fr("genesis") > 0 || d.fr("nature-s-splendor") > 0 {
-			for _, dot := range sp.Dots() {
+			dots := append([]*core.Dot{}, sp.Dots()...)
+			if sp.AOEDot() != nil {
+				dots = append(dots, sp.AOEDot())
+			}
+			for _, dot := range dots {
 				if dot == nil {
 					continue
 				}
@@ -181,7 +186,7 @@ func (d *Druid) applyForeverTalents() {
 	if d.fr("balance-of-nature") > 0 {
 		var nature, arcane []*core.Spell
 		d.OnSpellRegistered(func(sp *core.Spell) {
-			if sp.DefenseType == core.DefenseTypeMagic {
+			if sp.ProcMask.Matches(core.ProcMaskSpellDamage) {
 				if sp.SpellSchool.Matches(core.SpellSchoolNature) {
 					nature = append(nature, sp)
 				}
@@ -200,7 +205,7 @@ func (d *Druid) applyForeverTalents() {
 					sp.DamageMultiplier /= 1 + .01*d.fr("balance-of-nature")
 				}
 			}, OnCastComplete: func(a *core.Aura, sim *core.Simulation, sp *core.Spell) {
-				if sp.SpellSchool.Matches(school) && sp.DefenseType == core.DefenseTypeMagic {
+				if sp.SpellSchool.Matches(school) && sp.ProcMask.Matches(core.ProcMaskSpellDamage) {
 					a.Deactivate(sim)
 				}
 			}})
@@ -236,6 +241,9 @@ func (d *Druid) registerForeverSpells() {
 			d.foreverPartyCrit = append(d.foreverPartyCrit, a)
 		}
 	}
+	d.RegisterAura(core.Aura{Label: "Forever Form Aura Range", OnReset: func(_ *core.Aura, sim *core.Simulation) {
+		core.StartPeriodicAction(sim, core.PeriodicActionOptions{Period: 200 * time.Millisecond, OnAction: d.foreverFormCrit})
+	}})
 	d.registerForeverBear()
 	d.registerForeverHealing()
 	d.registerForeverUtility()
@@ -254,7 +262,7 @@ func (d *Druid) registerForeverSpells() {
 func (d *Druid) foreverFormCrit(sim *core.Simulation) {
 	active := (d.InForm(Moonkin) && d.fr("moonkin-form") > 0) || (d.InForm(Bear|Cat) && d.fr("leader-of-the-pack") > 0)
 	for _, a := range d.foreverPartyCrit {
-		if active {
+		if active && math.Abs(d.DistanceFromTarget-a.Unit.DistanceFromTarget) <= 45 {
 			a.Activate(sim)
 		} else {
 			a.Deactivate(sim)

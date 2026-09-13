@@ -2,10 +2,12 @@ package druid
 
 import (
 	"github.com/wowsims/classic/sim/core"
+	"strings"
 	"time"
 )
 
 func (d *Druid) registerForeverUtility() {
+	d.registerForeverProwl()
 	// Rank-6 Classic Roots supplies the provisional base damage; Overgrowth
 	// replaces the oldest root when the selected capacity has been reached.
 	var rooted []*core.Aura
@@ -73,12 +75,23 @@ func (d *Druid) registerForeverUtility() {
 			d.DistanceFromTarget = 0
 			if d.InForm(Bear) {
 				d.SpendRage(sim, 5, rageMetrics)
-				t.ForeverInterrupt(sim)
+				t.ForeverInterruptSchool(sim, 4*time.Second)
 				auras.Get(t).Activate(sim)
 			} else {
 				sp.CD.Timer.Set(sim.CurrentTime + 30*time.Second)
+				d.PseudoStats.InFrontOfTarget = false
 				catAuras.Get(t).Activate(sim)
 			}
 		}})
+	}
+}
+
+// Shapeshifting removes movement restrictions and Polymorph, as on Classic.
+// Other incapacitates remain in place; their names must not be generalized.
+func (d *Druid) foreverShiftDispel(sim *core.Simulation) {
+	for _, aura := range d.GetAuras() {
+		if aura.IsActive() && (aura.Tag == "forever-control-root" || aura.Tag == "forever-control-snare" || strings.Contains(strings.ToLower(aura.Label), "polymorph")) {
+			aura.Deactivate(sim)
+		}
 	}
 }
