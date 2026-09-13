@@ -253,11 +253,17 @@ func (h *Hunter) registerForeverTrueshot() {
 	auras := []*core.Aura{}
 	for _, a := range h.Party.Players {
 		c := a.GetCharacter()
-		auras = append(auras, c.GetOrRegisterAura(core.Aura{Label: "Forever Trueshot Aura", ActionID: id, Duration: 30 * time.Minute}).AttachStatsBuff(stats.Stats{stats.RangedAttackPower: 30}))
+		aura := c.GetAura("Forever Trueshot Aura")
+		if aura == nil {
+			aura = c.RegisterAura(core.Aura{Label: "Forever Trueshot Aura", ActionID: id, Duration: 30 * time.Minute}).AttachStatsBuff(stats.Stats{stats.RangedAttackPower: 30})
+		}
+		auras = append(auras, aura)
 	}
 	h.RegisterSpell(core.SpellConfig{ActionID: id, Flags: core.SpellFlagAPL, ManaCost: core.ManaCostOptions{FlatCost: 180}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
 		for _, a := range auras {
-			a.Activate(sim)
+			if a.Unit.DistanceFromTarget-h.DistanceFromTarget <= 45 && h.DistanceFromTarget-a.Unit.DistanceFromTarget <= 45 {
+				a.Activate(sim)
+			}
 		}
 	}})
 }

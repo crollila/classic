@@ -58,6 +58,9 @@ func (warrior *Warrior) registerShieldSlamSpell() {
 			}
 			result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMeleeSpecialHitAndCrit)
 
+			if warrior.Forever != nil && result.Landed() && sim.Proc(.5, "Forever Shield Slam Dispel") {
+				target.ForeverDispelOne(sim, "magic-buff")
+			}
 			if !result.Landed() {
 				spell.IssueRefund(sim)
 			}

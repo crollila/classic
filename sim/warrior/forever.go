@@ -99,12 +99,23 @@ func (w *Warrior) registerForeverAbilities() {
 		}}))
 	}
 	if w.ForeverRank("warrior.talent.spearing-strike") > 0 {
-		w.RegisterSpell(AnyStance, core.SpellConfig{ActionID: w.ForeverAction("warrior.talent.spearing-strike"), SpellSchool: core.SpellSchoolPhysical, DefenseType: core.DefenseTypeMelee, ProcMask: core.ProcMaskMeleeMHSpecial, Flags: SpellFlagOffensive | core.SpellFlagAPL | core.SpellFlagMeleeMetrics, RageCost: core.RageCostOptions{Cost: 15, Refund: .8}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, IgnoreHaste: true, CD: core.Cooldown{Timer: w.NewTimer(), Duration: 20 * time.Second}}, DamageMultiplier: 1, ThreatMultiplier: 1, BonusCoefficient: 1, CritDamageBonus: w.impale(), ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
+		mounted := map[*core.Unit]bool{}
+		w.RegisterResetEffect(func(sim *core.Simulation) {
+			for _, target := range w.Env.Encounter.TargetUnits {
+				mounted[target] = w.ForeverParameter("scenario.target_mounted", 0) > 0
+			}
+		})
+		w.RegisterSpell(AnyStance, core.SpellConfig{ActionID: w.ForeverAction("warrior.talent.spearing-strike"), ExtraCastCondition: func(sim *core.Simulation, t *core.Unit) bool {
+			return w.DistanceFromTarget <= core.MaxMeleeAttackDistance
+		}, SpellSchool: core.SpellSchoolPhysical, DefenseType: core.DefenseTypeMelee, ProcMask: core.ProcMaskMeleeMHSpecial, Flags: SpellFlagOffensive | core.SpellFlagAPL | core.SpellFlagMeleeMetrics, RageCost: core.RageCostOptions{Cost: 15, Refund: .8}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, IgnoreHaste: true, CD: core.Cooldown{Timer: w.NewTimer(), Duration: 20 * time.Second}}, DamageMultiplier: 1, ThreatMultiplier: 1, BonusCoefficient: 1, CritDamageBonus: w.impale(), ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
 			mult := .4
-			if t.MobType == proto.MobType_MobTypeGiant || t.MobType == proto.MobType_MobTypeDragonkin {
+			if t.MobType == proto.MobType_MobTypeGiant || t.MobType == proto.MobType_MobTypeDragonkin || mounted[t] {
 				mult += .8
 			}
 			r := s.CalcAndDealDamage(sim, t, mult*w.MHWeaponDamage(sim, s.MeleeAttackPower(t)), s.OutcomeMeleeWeaponSpecialHitAndCrit)
+			if r.Landed() {
+				mounted[t] = false
+			}
 			if !r.Landed() {
 				s.IssueRefund(sim)
 			}
@@ -164,7 +175,23 @@ func (w *Warrior) foreverControl(record string, id core.ActionID, stance Stance,
 	if cd > 0 {
 		timer = w.NewTimer()
 	}
-	w.RegisterSpell(stance, core.SpellConfig{ActionID: id, Flags: core.SpellFlagAPL | SpellFlagOffensive, RageCost: core.RageCostOptions{Cost: cost}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, IgnoreHaste: true, CD: core.Cooldown{Timer: timer, Duration: cd}}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
+	w.RegisterSpell(stance, core.SpellConfig{ActionID: id, ExtraCastCondition: func(sim *core.Simulation, t *core.Unit) bool {
+		if record == "warrior.talent.piercing-howl" {
+			return true
+		}
+		return w.DistanceFromTarget <= core.MaxMeleeAttackDistance && (record != "warrior.talent.improved-shield-bash" || w.OffHand().WeaponType == proto.WeaponType_WeaponTypeShield)
+	}, Flags: core.SpellFlagAPL | SpellFlagOffensive, RageCost: core.RageCostOptions{Cost: cost}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, IgnoreHaste: true, CD: core.Cooldown{Timer: timer, Duration: cd}}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
+		if record == "warrior.talent.piercing-howl" {
+			for _, enemy := range w.Env.Encounter.TargetUnits {
+				if absForeverDistance(enemy.DistanceFromTarget-w.DistanceFromTarget) <= 10 {
+					enemy.ForeverSnareAura(record, id, duration, .5).Activate(sim)
+				}
+			}
+			return
+		}
+		if record == "warrior.talent.improved-shield-bash" {
+			t.ForeverInterrupt(sim)
+		}
 		if record == "warrior.talent.improved-shield-bash" && !sim.Proc(w.ForeverValue(record, 0, 0)/100, "Improved Shield Bash") {
 			return
 		}

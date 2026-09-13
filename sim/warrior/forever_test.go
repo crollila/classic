@@ -437,3 +437,58 @@ func TestForeverMutilateConsumesColdBloodAfterBothWeapons(t *testing.T) {
 		t.Fatal("Cold Blood not consumed")
 	}
 }
+
+func TestForeverTrueshotDoesNotStackPerHunter(t *testing.T) {
+	talents := physicalBuild(t, "hunter.talent.trueshot-aura")
+	makePlayer := func(name string, distance float64) *proto.Player {
+		return &proto.Player{Name: name, Class: proto.Class_ClassHunter, Race: proto.Race_RaceTroll, DistanceFromTarget: distance, Spec: &proto.Player_Hunter{Hunter: &proto.Hunter{Options: &proto.Hunter_Options{}}}, Equipment: &proto.EquipmentSpec{}, Rotation: &proto.APLRotation{Type: proto.APLRotation_TypeAPL}, Forever: &proto.ForeverOptions{RulesetId: foreverdata.RulesetID, Talents: talents, Mode: proto.ForeverMode_BEST_GUESS}}
+	}
+	sim := core.NewSim(&proto.RaidSimRequest{Raid: &proto.Raid{Parties: []*proto.Party{{Players: []*proto.Player{makePlayer("first", 0), makePlayer("second", 0), makePlayer("far", 80)}}}}, Encounter: &proto.Encounter{Duration: 60, Targets: []*proto.Target{{Level: 60}}}, SimOptions: &proto.SimOptions{Iterations: 1, Interactive: true, IsTest: true}}, simsignals.Signals{})
+	sim.Reset()
+	players := sim.Raid.Parties[0].Players
+	before := []float64{}
+	for _, p := range players {
+		before = append(before, p.GetCharacter().GetStat(stats.RangedAttackPower))
+	}
+	for i := 0; i < 2; i++ {
+		c := players[i].GetCharacter()
+		if !physicalSpell(t, c, "hunter.talent.trueshot-aura").Cast(sim, c.CurrentTarget) {
+			t.Fatal("Trueshot cast failed")
+		}
+	}
+	for i, p := range players {
+		expected := 30.
+		if i == 2 {
+			expected = 0
+		}
+		if delta := p.GetCharacter().GetStat(stats.RangedAttackPower) - before[i]; math.Abs(delta-expected) > 1e-8 {
+			t.Fatal("Trueshot stacked or ignored range", i, delta)
+		}
+	}
+	sim.Cleanup()
+	sim.Reset()
+	for i, p := range players {
+		if p.GetCharacter().GetStat(stats.RangedAttackPower) != before[i] {
+			t.Fatal("Trueshot leaked into next iteration")
+		}
+	}
+}
+func TestForeverBerserkerStanceReversesDamageTaken(t *testing.T) {
+	sim, c := physicalSim(t, "Warrior", "warrior", nil)
+	battle, berserk := physicalID(t, c, 2457), physicalID(t, c, 2458)
+	battle.Cast(sim, c.CurrentTarget)
+	before := c.PseudoStats.DamageTakenMultiplier
+	for i := 0; i < 3; i++ {
+		berserk.CD.Reset()
+		if !berserk.Cast(sim, c.CurrentTarget) {
+			t.Fatal("Berserker failed")
+		}
+		battle.CD.Reset()
+		if !battle.Cast(sim, c.CurrentTarget) {
+			t.Fatal("Battle failed")
+		}
+	}
+	if math.Abs(c.PseudoStats.DamageTakenMultiplier-before) > 1e-8 {
+		t.Fatal("stance amplified incoming damage repeatedly", before, c.PseudoStats.DamageTakenMultiplier)
+	}
+}

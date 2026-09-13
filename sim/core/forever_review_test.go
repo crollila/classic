@@ -94,6 +94,10 @@ func init() {
 		a := mage.NewMage(c, p)
 		u := a.GetCharacter()
 		u.GetOrRegisterAura(core.Aura{Label: "review-poison", Tag: "forever-debuff-poison", Duration: 20 * time.Second})
+		u.GetOrRegisterAura(core.Aura{Label: "review-poison-two", Tag: "forever-debuff-poison", Duration: 20 * time.Second})
+		u.GetOrRegisterAura(core.Aura{Label: "review-resistant-poison", Tag: "forever-debuff-poison", Duration: 20 * time.Second, ForeverDispelResistance: 1})
+		u.GetOrRegisterAura(core.Aura{Label: "review-magic-buff", Tag: "forever-buff-magic", Duration: 20 * time.Second})
+		u.GetOrRegisterAura(core.Aura{Label: "review-magic-debuff", Tag: "forever-debuff-magic", Duration: 20 * time.Second})
 		u.ForeverDebuffImmunity("review-immunity", core.ActionID{SpellID: 20594}, []string{"poison"}, 8*time.Second)
 		u.ForeverControlImmunityChargesAura("review-fear-ward", core.ActionID{SpellID: 6346}, []core.ForeverControlKind{core.ForeverFear}, 30*time.Second, 1)
 		u.ForeverInterruptResistanceAura("review-interrupt-resistance", core.ActionID{SpellID: 14743}, 6*time.Second, 1)
@@ -374,5 +378,32 @@ func TestForeverReviewInterruptResistance(t *testing.T) {
 	c.ForeverInterrupt(sim)
 	if c.Hardcast.Expires > sim.CurrentTime {
 		t.Fatal("interrupt not applied")
+	}
+}
+
+func TestForeverReviewDispelSelectionAndResistance(t *testing.T) {
+	sim, c := reviewSim(t)
+	first, second := c.GetAura("review-poison"), c.GetAura("review-poison-two")
+	first.Activate(sim)
+	second.Activate(sim)
+	if !c.ForeverDispelOne(sim, "poison") || first.IsActive() == second.IsActive() {
+		t.Fatal("single cleanse did not remove exactly one")
+	}
+	first.Deactivate(sim)
+	second.Deactivate(sim)
+	resistant := c.GetAura("review-resistant-poison")
+	resistant.Activate(sim)
+	if c.ForeverDispelOne(sim, "poison") || !resistant.IsActive() {
+		t.Fatal("dispel resistance ignored")
+	}
+	c.GetAura("review-immunity").Activate(sim)
+	if resistant.IsActive() {
+		t.Fatal("immunity cleanup incorrectly resisted")
+	}
+	buff, debuff := c.GetAura("review-magic-buff"), c.GetAura("review-magic-debuff")
+	buff.Activate(sim)
+	debuff.Activate(sim)
+	if !c.ForeverDispelOne(sim, "magic-buff") || buff.IsActive() || !debuff.IsActive() {
+		t.Fatal("offensive dispel selected wrong polarity")
 	}
 }

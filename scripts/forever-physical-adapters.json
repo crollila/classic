@@ -900,9 +900,11 @@
     "mode": "classic",
     "files": [
       "sim/rogue/",
-      "sim/core/forever.go"
+      "sim/core/forever.go",
+      "sim/rogue/forever.go",
+      "sim/core/forever_dispel.go"
     ],
-    "scope": "Existing Forever adapter or audited Classic bridge."
+    "scope": "4%/rank poison damage plus8%/rank resistance to ordinary dispels for actual poison debuffs; immunity cleansing bypasses resistance."
   },
   "rogue.talent.vigor": {
     "confidence": "PROVISIONAL",
@@ -1182,13 +1184,14 @@
     "confidence": "PROVISIONAL",
     "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
     "remaining_unknowns": [
-      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional.",
+      "Offensive dispel identifies beneficial magic by the explicit forever-buff-magic tag; unclassified custom encounter auras are not guessed as removable buffs."
     ],
     "mode": "class",
     "files": [
       "sim/warrior/forever.go"
     ],
-    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+    "scope": "421\u2013439 plus BlockValue damage, Classic threat fallback,50%chance to dispel one explicitly tagged beneficial magic effect."
   },
   "warrior.talent.improved-berserker-rage": {
     "confidence": "PROVISIONAL",
@@ -1247,8 +1250,17 @@
     "files": [
       "sim/warrior/forever.go"
     ],
-    "scope": "Active combat effects, castable abilities, or encounter-control behavior.",
-    "auto_priority": 7
+    "scope": "40%weapon damage plus80%against Giant/Dragonkin or a mounted target; successful hit clears the explicit mounted scenario state.",
+    "auto_priority": 7,
+    "parameters": [
+      {
+        "key": "scenario.target_mounted",
+        "label": "Target begins mounted (Spearing Strike dismounts on hit)",
+        "default": 0,
+        "min": 0,
+        "max": 1
+      }
+    ]
   },
   "warrior.talent.bloodthrill": {
     "confidence": "PROVISIONAL",
@@ -1338,7 +1350,7 @@
     "files": [
       "sim/warrior/forever.go"
     ],
-    "scope": "Active combat effects, castable abilities, or encounter-control behavior.",
+    "scope": "50%slow for6s to all enemies within the Classic10yd radius using closest1D encounter coordinates.",
     "game_spell_ids": [
       12323
     ]
@@ -1440,7 +1452,7 @@
     "files": [
       "sim/warrior/forever.go"
     ],
-    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+    "scope": "Shield-equipped melee interrupt, with50%/rank chance of3s silence."
   },
   "warrior.talent.focused-rage": {
     "confidence": "PROVISIONAL",
@@ -1792,7 +1804,7 @@
     "files": [
       "sim/hunter/forever.go"
     ],
-    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+    "scope": "Actual30RAP party buff within45yd, shared non-stacking aura across Hunters,30min duration,180mana."
   },
   "hunter.talent.rapid-recuperation": {
     "confidence": "PROVISIONAL",

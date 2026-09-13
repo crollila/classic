@@ -150,6 +150,19 @@ func (r *Rogue) registerForeverAbilities() {
 			}
 		})
 	}
+	if n := r.ForeverRank("rogue.talent.vile-poisons"); n > 0 {
+		for _, dot := range r.deadlyPoisonTick.Dots() {
+			if dot != nil {
+				dot.ForeverDispelResistance = .08 * float64(n)
+			}
+		}
+		for _, a := range r.woundPoisonDebuffAuras {
+			if a != nil {
+				a.Tag = "forever-debuff-poison"
+				a.ForeverDispelResistance = .08 * float64(n)
+			}
+		}
+	}
 	r.registerForeverUtility()
 	r.registerForeverRemorseless()
 	r.RegisterResetEffect(func(sim *core.Simulation) {
