@@ -249,7 +249,7 @@ func (p *Paladin) registerForeverHealing() {
 		cast            time.Duration
 	}{{25292, foreverHolyLight, 660, 1590, 1770, 2500 * time.Millisecond}, {19943, foreverFlashOfLight, 140, 348, 389, 1500 * time.Millisecond}} {
 		v := v
-		p.RegisterSpell(core.SpellConfig{ActionID: core.ActionID{SpellID: v.id}, SpellCode: v.code, SpellSchool: core.SpellSchoolHoly, ProcMask: core.ProcMaskSpellHealing, Flags: core.SpellFlagAPL | core.SpellFlagHelpful, ManaCost: core.ManaCostOptions{FlatCost: v.mana}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault, CastTime: v.cast}}, DamageMultiplier: 1, ThreatMultiplier: .5, BonusCoefficient: v.cast.Seconds() / 3.5, ApplyEffects: func(sim *core.Simulation, t *core.Unit, sp *core.Spell) {
+		p.RegisterSpell(core.SpellConfig{ActionID: core.ActionID{SpellID: v.id}, SpellCode: v.code, SpellSchool: core.SpellSchoolHoly, DefenseType: core.DefenseTypeMagic, ProcMask: core.ProcMaskSpellHealing, Flags: core.SpellFlagAPL | core.SpellFlagHelpful, ManaCost: core.ManaCostOptions{FlatCost: v.mana}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault, CastTime: v.cast}}, DamageMultiplier: 1, ThreatMultiplier: .5, BonusCoefficient: v.cast.Seconds() / 3.5, ApplyEffects: func(sim *core.Simulation, t *core.Unit, sp *core.Spell) {
 			if p.IsOpponent(t) {
 				t = &p.Unit
 			}

@@ -31,7 +31,7 @@ func (d *Druid) registerForeverHealing() {
 		if v.code == foreverRegrowth {
 			crit = 10 * d.fr("improved-regrowth") * core.SpellCritRatingPerCritChance
 		}
-		config := core.SpellConfig{ActionID: core.ActionID{SpellID: v.id}, SpellCode: v.code, SpellSchool: core.SpellSchoolNature, ProcMask: core.ProcMaskSpellHealing, Flags: core.SpellFlagAPL | core.SpellFlagHelpful, ManaCost: core.ManaCostOptions{FlatCost: mana}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault, CastTime: cast}}, DamageMultiplier: multi, ThreatMultiplier: .5, BonusCoefficient: v.cast.Seconds() / 3.5, BonusCritRating: crit, ApplyEffects: func(sim *core.Simulation, t *core.Unit, sp *core.Spell) {
+		config := core.SpellConfig{ActionID: core.ActionID{SpellID: v.id}, SpellCode: v.code, SpellSchool: core.SpellSchoolNature, DefenseType: core.DefenseTypeMagic, ProcMask: core.ProcMaskSpellHealing, Flags: core.SpellFlagAPL | core.SpellFlagHelpful, ManaCost: core.ManaCostOptions{FlatCost: mana}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault, CastTime: cast}}, DamageMultiplier: multi, ThreatMultiplier: .5, BonusCoefficient: v.cast.Seconds() / 3.5, BonusCritRating: crit, ApplyEffects: func(sim *core.Simulation, t *core.Unit, sp *core.Spell) {
 			if d.IsOpponent(t) {
 				t = &d.Unit
 			}
@@ -62,7 +62,7 @@ func (d *Druid) registerForeverHealing() {
 		}
 	}
 	if d.fr("swiftmend") > 0 {
-		d.RegisterSpell(Humanoid, core.SpellConfig{ActionID: core.ActionID{SpellID: 18562}, SpellCode: foreverSwiftmend, SpellSchool: core.SpellSchoolNature, ProcMask: core.ProcMaskSpellHealing, Flags: core.SpellFlagAPL | core.SpellFlagHelpful, ManaCost: core.ManaCostOptions{FlatCost: 162}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault - time.Duration(500*d.fr("gift-of-the-earthmother"))*time.Millisecond}, CD: core.Cooldown{Timer: d.NewTimer(), Duration: 15 * time.Second}}, DamageMultiplier: 1, ThreatMultiplier: .5, ExtraCastCondition: func(sim *core.Simulation, t *core.Unit) bool {
+		d.RegisterSpell(Humanoid, core.SpellConfig{ActionID: core.ActionID{SpellID: 18562}, SpellCode: foreverSwiftmend, SpellSchool: core.SpellSchoolNature, DefenseType: core.DefenseTypeMagic, ProcMask: core.ProcMaskSpellHealing, Flags: core.SpellFlagAPL | core.SpellFlagHelpful, ManaCost: core.ManaCostOptions{FlatCost: 162}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault - time.Duration(500*d.fr("gift-of-the-earthmother"))*time.Millisecond}, CD: core.Cooldown{Timer: d.NewTimer(), Duration: 15 * time.Second}}, DamageMultiplier: 1, ThreatMultiplier: .5, ExtraCastCondition: func(sim *core.Simulation, t *core.Unit) bool {
 			if d.IsOpponent(t) {
 				t = &d.Unit
 			}
@@ -81,7 +81,7 @@ func (d *Druid) registerForeverHealing() {
 		}})
 	}
 	if d.fr("wild-growth") > 0 {
-		d.RegisterSpell(Humanoid, core.SpellConfig{ActionID: d.fa("wild-growth"), SpellCode: foreverWildGrowth, SpellSchool: core.SpellSchoolNature, ProcMask: core.ProcMaskSpellHealing, Flags: core.SpellFlagAPL | core.SpellFlagHelpful, ManaCost: core.ManaCostOptions{FlatCost: 550}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault - time.Duration(500*d.fr("gift-of-the-earthmother"))*time.Millisecond}, CD: core.Cooldown{Timer: d.NewTimer(), Duration: 6 * time.Second}}, DamageMultiplier: 1, ThreatMultiplier: .5, Hot: core.DotConfig{Aura: core.Aura{Label: "Forever Wild Growth"}, NumberOfTicks: 7, TickLength: time.Second, DamageMultiplier: 1, OnSnapshot: func(sim *core.Simulation, t *core.Unit, dot *core.Dot, b bool) {
+		d.RegisterSpell(Humanoid, core.SpellConfig{ActionID: d.fa("wild-growth"), SpellCode: foreverWildGrowth, SpellSchool: core.SpellSchoolNature, DefenseType: core.DefenseTypeMagic, ProcMask: core.ProcMaskSpellHealing, Flags: core.SpellFlagAPL | core.SpellFlagHelpful, ManaCost: core.ManaCostOptions{FlatCost: 550}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault - time.Duration(500*d.fr("gift-of-the-earthmother"))*time.Millisecond}, CD: core.Cooldown{Timer: d.NewTimer(), Duration: 6 * time.Second}}, DamageMultiplier: 1, ThreatMultiplier: .5, Hot: core.DotConfig{Aura: core.Aura{Label: "Forever Wild Growth"}, NumberOfTicks: 7, TickLength: time.Second, DamageMultiplier: 1, OnSnapshot: func(sim *core.Simulation, t *core.Unit, dot *core.Dot, b bool) {
 			dot.SnapshotBaseDamage = 285 + .7*dot.Spell.HealingPower(t)
 			dot.SnapshotAttackerMultiplier = dot.Spell.CasterHealingMultiplier() * dot.DamageMultiplier
 		}, OnTick: func(sim *core.Simulation, t *core.Unit, dot *core.Dot) {
@@ -101,7 +101,7 @@ func (d *Druid) registerForeverHealing() {
 	}
 	// Tranquility's Classic 10-second channel is represented by five 2-second
 	// party ticks and a real channel, retaining Classic threat/cooldown analogs.
-	d.RegisterSpell(Humanoid, core.SpellConfig{ActionID: core.ActionID{SpellID: 9863}, SpellCode: foreverTranquility, SpellSchool: core.SpellSchoolNature, ProcMask: core.ProcMaskSpellHealing, Flags: core.SpellFlagAPL | core.SpellFlagHelpful | core.SpellFlagChanneled, ManaCost: core.ManaCostOptions{FlatCost: 925 * (1 - .02*d.fr("tranquil-spirit"))}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, CD: core.Cooldown{Timer: d.NewTimer(), Duration: time.Duration(float64(5*time.Minute) * (1 - .3*d.fr("improved-tranquility")))}}, DamageMultiplier: 1, ThreatMultiplier: .5 * (1 - .5*d.fr("improved-tranquility")), Hot: core.DotConfig{SelfOnly: true, Aura: core.Aura{Label: "Forever Tranquility"}, NumberOfTicks: 5, TickLength: 2 * time.Second, DamageMultiplier: 1, OnTick: func(sim *core.Simulation, t *core.Unit, dot *core.Dot) {
+	d.RegisterSpell(Humanoid, core.SpellConfig{ActionID: core.ActionID{SpellID: 9863}, SpellCode: foreverTranquility, SpellSchool: core.SpellSchoolNature, DefenseType: core.DefenseTypeMagic, ProcMask: core.ProcMaskSpellHealing, Flags: core.SpellFlagAPL | core.SpellFlagHelpful | core.SpellFlagChanneled, ManaCost: core.ManaCostOptions{FlatCost: 925 * (1 - .02*d.fr("tranquil-spirit"))}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, CD: core.Cooldown{Timer: d.NewTimer(), Duration: time.Duration(float64(5*time.Minute) * (1 - .3*d.fr("improved-tranquility")))}}, DamageMultiplier: 1, ThreatMultiplier: .5 * (1 - .5*d.fr("improved-tranquility")), Hot: core.DotConfig{SelfOnly: true, Aura: core.Aura{Label: "Forever Tranquility"}, NumberOfTicks: 5, TickLength: 2 * time.Second, DamageMultiplier: 1, OnTick: func(sim *core.Simulation, t *core.Unit, dot *core.Dot) {
 		for _, a := range d.Party.Players {
 			dot.Spell.CalcAndDealHealing(sim, &a.GetCharacter().Unit, 294, dot.Spell.OutcomeHealing)
 		}

@@ -41,7 +41,7 @@ func (s *Shaman) applyForeverTalents() {
 		}
 	}
 	s.OnSpellRegistered(func(sp *core.Spell) {
-		if sp.DefenseType == core.DefenseTypeMagic && sp.SpellSchool.Matches(core.SpellSchoolFire|core.SpellSchoolFrost|core.SpellSchoolNature) {
+		if sp.DefenseType == core.DefenseTypeMagic && !sp.ProcMask.Matches(core.ProcMaskSpellHealing) && sp.SpellSchool.Matches(core.SpellSchoolFire|core.SpellSchoolFrost|core.SpellSchoolNature) {
 			sp.CritDamageBonus += .2 * s.fr("elemental-fury")
 		}
 		if sp.ProcMask.Matches(core.ProcMaskSpellHealing) {
@@ -279,7 +279,7 @@ func (s *Shaman) registerForeverHealing() {
 		cast            time.Duration
 	}{{25357, SpellCode_ShamanHealingWave, 620, 1620, 1850, 3 * time.Second}, {10468, SpellCode_ShamanLesserHealingWave, 380, 832, 928, 1500 * time.Millisecond}, {10623, SpellCode_ShamanChainHeal, 405, 567, 646, 2500 * time.Millisecond}} {
 		v := v
-		sp := s.RegisterSpell(core.SpellConfig{ActionID: core.ActionID{SpellID: v.id}, SpellCode: v.code, SpellSchool: core.SpellSchoolNature, ProcMask: core.ProcMaskSpellHealing, Flags: SpellFlagShaman | core.SpellFlagHelpful | core.SpellFlagAPL, ManaCost: core.ManaCostOptions{FlatCost: v.mana, Multiplier: 100 - int32(s.fr("tidal-focus"))}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault, CastTime: v.cast}}, DamageMultiplier: 1, ThreatMultiplier: .5, BonusCoefficient: v.cast.Seconds() / 3.5,
+		sp := s.RegisterSpell(core.SpellConfig{ActionID: core.ActionID{SpellID: v.id}, SpellCode: v.code, SpellSchool: core.SpellSchoolNature, DefenseType: core.DefenseTypeMagic, ProcMask: core.ProcMaskSpellHealing, Flags: SpellFlagShaman | core.SpellFlagHelpful | core.SpellFlagAPL, ManaCost: core.ManaCostOptions{FlatCost: v.mana, Multiplier: 100 - int32(s.fr("tidal-focus"))}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault, CastTime: v.cast}}, DamageMultiplier: 1, ThreatMultiplier: .5, BonusCoefficient: v.cast.Seconds() / 3.5,
 			ApplyEffects: func(sim *core.Simulation, t *core.Unit, sp *core.Spell) {
 				if s.IsOpponent(t) {
 					t = &s.Unit
@@ -319,7 +319,7 @@ func (s *Shaman) registerForeverHealing() {
 		}
 	}
 	if s.fr("riptide") > 0 {
-		s.RegisterSpell(core.SpellConfig{ActionID: s.fa("riptide"), SpellSchool: core.SpellSchoolNature, ProcMask: core.ProcMaskSpellHealing, Flags: SpellFlagShaman | core.SpellFlagHelpful | core.SpellFlagAPL, ManaCost: core.ManaCostOptions{FlatCost: 245, Multiplier: 100 - int32(s.fr("tidal-focus"))}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, CD: core.Cooldown{Timer: s.NewTimer(), Duration: 6 * time.Second}}, DamageMultiplier: 1, ThreatMultiplier: .5, BonusCoefficient: .429,
+		s.RegisterSpell(core.SpellConfig{ActionID: s.fa("riptide"), SpellSchool: core.SpellSchoolNature, DefenseType: core.DefenseTypeMagic, ProcMask: core.ProcMaskSpellHealing, Flags: SpellFlagShaman | core.SpellFlagHelpful | core.SpellFlagAPL, ManaCost: core.ManaCostOptions{FlatCost: 245, Multiplier: 100 - int32(s.fr("tidal-focus"))}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, CD: core.Cooldown{Timer: s.NewTimer(), Duration: 6 * time.Second}}, DamageMultiplier: 1, ThreatMultiplier: .5, BonusCoefficient: .429,
 			Hot: core.DotConfig{Aura: core.Aura{Label: "Forever Riptide"}, NumberOfTicks: 5, TickLength: 3 * time.Second, OnSnapshot: func(sim *core.Simulation, t *core.Unit, d *core.Dot, b bool) {
 				d.SnapshotBaseDamage = 499.0/5 + .1*d.Spell.HealingPower(t)
 				d.SnapshotAttackerMultiplier = d.Spell.CasterHealingMultiplier()

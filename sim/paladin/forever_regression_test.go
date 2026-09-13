@@ -285,7 +285,7 @@ func TestForeverHybridFactoryPlanningRotations(t *testing.T) {
 	for _, mode := range []proto.ForeverMode{proto.ForeverMode_STRICT, proto.ForeverMode_BEST_GUESS} {
 		for _, spec := range []string{"HOLY", "RESTO_SHAMAN", "RESTO_DRUID", "BEAR"} {
 			t.Run(spec+mode.String(), func(t *testing.T) {
-				p := &proto.Player{Equipment: &proto.EquipmentSpec{}, Consumes: &proto.Consumes{}, DistanceFromTarget: 0, BonusStats: &proto.UnitStats{Stats: stats.Stats{stats.Health: 10000, stats.Mana: 20000, stats.AttackPower: 1000, stats.SpellPower: 200, stats.MeleeHit: 20, stats.SpellHit: 20}.ToFloatArray()}, Forever: &proto.ForeverOptions{RulesetId: foreverdata.RulesetID, Mode: mode, ExperimentalEstimatedRanks: true}}
+				p := &proto.Player{Equipment: &proto.EquipmentSpec{}, Consumes: &proto.Consumes{}, DistanceFromTarget: 0, BonusStats: &proto.UnitStats{Stats: stats.Stats{stats.Health: 10000, stats.Mana: 20000, stats.AttackPower: 1000, stats.SpellPower: 200, stats.SpellCrit: 100 * core.SpellCritRatingPerCritChance, stats.MeleeHit: 20, stats.SpellHit: 20}.ToFloatArray()}, Forever: &proto.ForeverOptions{RulesetId: foreverdata.RulesetID, Mode: mode, ExperimentalEstimatedRanks: true}}
 				ids := []int32{}
 				switch spec {
 				case "HOLY":
@@ -406,5 +406,107 @@ func TestForeverStoneskinReplacementAndVoiceImmunity(t *testing.T) {
 	c.ForeverInterrupt(sim)
 	if c.Hardcast.Expires != ends {
 		t.Fatal("Voice of Truth did not prevent interruption")
+	}
+}
+
+// Exercise the actual critical healing branch, not just low-crit construction.
+// Use legal 51-point builds and both mode filters; every registered hybrid heal
+// is invoked, including triggered Healing Stream and periodic/channel spells.
+func TestForeverHybridEveryHealingSpellForcedCrit(t *testing.T) {
+	raw, err := os.ReadFile("../core/foreverdata/trees.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	var data struct{ Records []foreverdata.Record }
+	if err = json.Unmarshal(raw, &data); err != nil {
+		t.Fatal(err)
+	}
+	sort.SliceStable(data.Records, func(i, j int) bool { return data.Records[i].Row < data.Records[j].Row })
+	for _, v := range []struct{ class, goal string }{{"PALADIN", "paladin.talent.light-s-vigil"}, {"SHAMAN", "shaman.talent.riptide"}, {"DRUID", "druid.talent.wild-growth"}, {"DRUID", "druid.talent.swiftmend"}} {
+		for _, mode := range []proto.ForeverMode{proto.ForeverMode_STRICT, proto.ForeverMode_BEST_GUESS} {
+			t.Run(v.goal+mode.String(), func(t *testing.T) {
+				talents := hybridTalents(t, v.goal, 1)
+				goal, _ := foreverdata.Lookup(v.goal)
+				total := int32(0)
+				for _, n := range talents {
+					total += n
+				}
+				for _, r := range data.Records {
+					if r.Class != v.class || r.Tree != goal.Tree {
+						continue
+					}
+					for talents[r.ID] < r.MaxRank && total < 51 {
+						below := int32(0)
+						for id, n := range talents {
+							other, _ := foreverdata.Lookup(id)
+							if other.Row < r.Row {
+								below += n
+							}
+						}
+						legal := below >= r.RequiredPoints
+						for _, pre := range r.Prerequisites {
+							legal = legal && talents[pre.ID] >= pre.Rank
+						}
+						if !legal {
+							break
+						}
+						talents[r.ID]++
+						total++
+					}
+				}
+				for _, r := range data.Records {
+					if r.Class == v.class && r.RequiredPoints == 0 && len(r.Prerequisites) == 0 {
+						for total < 51 && talents[r.ID] < r.MaxRank {
+							talents[r.ID]++
+							total++
+						}
+					}
+				}
+				if total != 51 {
+					t.Fatal("test build must use51 points", total)
+				}
+				sim, c := hybridSim(t, v.class, talents, mode)
+				c.AddStatDynamic(sim, stats.SpellCrit, 100*core.SpellCritRatingPerCritChance)
+				c.RemoveHealth(sim, c.MaxHealth()*.9)
+				if v.class == "PALADIN" {
+					if vigil := c.GetSpell(c.ForeverAction("paladin.talent.light-s-vigil")); vigil != nil {
+						vigil.ApplyEffects(sim, &c.Unit, vigil)
+					}
+				}
+				tested := 0
+				for _, sp := range c.Spellbook {
+					if !sp.ProcMask.Matches(core.ProcMaskSpellHealing) || sp.ApplyEffects == nil {
+						continue
+					}
+					if sp.DefenseType != core.DefenseTypeMagic {
+						t.Fatalf("healing spell %s lacks Magic defense type", sp.ActionID)
+					}
+					if sp.SpellID == 18562 {
+						rejuv := c.GetSpell(core.ActionID{SpellID: 25299})
+						rejuv.ApplyEffects(sim, &c.Unit, rejuv)
+					}
+					before := sp.SpellMetrics[c.UnitIndex].Crits
+					sp.ApplyEffects(sim, &c.Unit, sp)
+					switch sp.SpellID {
+					case 25292, 19943, 25357, 10468, 10623, 25297, 9858, 18562:
+						if sp.SpellMetrics[c.UnitIndex].Crits <= before {
+							t.Fatalf("direct heal %s did not execute critical outcome", sp.ActionID)
+						}
+					}
+					if sp.OtherID == proto.OtherAction_OtherActionForever && (sp.ActionID == c.ForeverAction(v.goal) || v.class == "PALADIN") && sp.ActionID != c.ForeverAction("druid.talent.wild-growth") && sp.SpellMetrics[c.UnitIndex].Crits <= before {
+						t.Fatalf("talented heal %s did not crit", sp.ActionID)
+					}
+					tested++
+				}
+				for sim.CurrentTime < 11*time.Second {
+					if sim.Step() {
+						break
+					}
+				}
+				if tested < 3 || c.CurrentHealth() <= c.MaxHealth()*.1 {
+					t.Fatal("healing paths did not execute", tested)
+				}
+			})
+		}
 	}
 }

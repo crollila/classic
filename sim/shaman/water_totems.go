@@ -54,6 +54,7 @@ func (shaman *Shaman) newHealingStreamTotemSpellConfig(rank int) core.SpellConfi
 	healSpell := shaman.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: healId},
 		SpellSchool: core.SpellSchoolNature,
+		DefenseType: core.Ternary(shaman.Forever != nil, core.DefenseTypeMagic, core.DefenseTypeNone),
 		ProcMask:    core.ProcMaskSpellHealing,
 		Flags:       core.SpellFlagHelpful | core.SpellFlagNoOnCastComplete | core.SpellFlagNoLogs | core.SpellFlagNoMetrics,
 
