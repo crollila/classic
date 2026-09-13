@@ -127,20 +127,22 @@ func (w *Warlock) registerForeverPetUtilities() {
 		s := w.RegisterSpell(core.SpellConfig{ProcMask: core.ProcMaskEmpty, ActionID: w.ForeverAction("warlock.baseline.incubus"), SpellSchool: core.SpellSchoolShadow, Flags: core.SpellFlagAPL, ManaCost: core.ManaCostOptions{FlatCost: w.BaseMana}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault, CastTime: 10 * time.Second}, ModifyCast: func(sim *core.Simulation, s *core.Spell, c *core.Cast) { w.changeActivePet(sim, nil, false) }}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) { w.changeActivePet(sim, w.Succubus, false) }})
 		w.SummonDemonSpells = append(w.SummonDemonSpells, s)
 	}
-	healthFunnel := w.RegisterSpell(core.SpellConfig{ActionID: w.ForeverAction("warlock.talent.improved-health-funnel"), SpellSchool: core.SpellSchoolShadow, ProcMask: core.ProcMaskSpellHealing, Flags: WarlockFlagDemonology | core.SpellFlagHelpful | core.SpellFlagAPL | core.SpellFlagChanneled, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}}, DamageMultiplier: 1 + val("improved-health-funnel", 0)/100, ThreatMultiplier: 1 - val("improved-health-funnel", 2)/100,
-		Hot: core.DotConfig{SelfOnly: true, Aura: core.Aura{Label: "Forever Health Funnel"}, NumberOfTicks: 10, TickLength: time.Second, OnTick: func(sim *core.Simulation, t *core.Unit, d *core.Dot) {
-			if w.ActivePet == nil || w.CurrentHealth() <= 50 {
-				d.Deactivate(sim)
-				return
-			}
-			w.RemoveHealth(sim, 50*(1-val("improved-health-funnel", 1)/100))
-			d.Spell.CalcAndDealHealing(sim, &w.ActivePet.Unit, 50, d.Spell.OutcomeHealing)
-		}},
-		ExtraCastCondition: func(sim *core.Simulation, t *core.Unit) bool {
-			return w.ActivePet != nil && (w.ForeverRank("warlock.talent.improved-health-funnel") > 0 || w.ActivePet.CurrentHealth() < w.ActivePet.MaxHealth())
-		}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) { s.SelfHot().Apply(sim) },
-	})
-	_ = healthFunnel
+	if w.ForeverRank("warlock.talent.improved-health-funnel") > 0 {
+		healthFunnel := w.RegisterSpell(core.SpellConfig{ActionID: w.ForeverAction("warlock.talent.improved-health-funnel"), SpellSchool: core.SpellSchoolShadow, ProcMask: core.ProcMaskSpellHealing, Flags: WarlockFlagDemonology | core.SpellFlagHelpful | core.SpellFlagAPL | core.SpellFlagChanneled, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}}, DamageMultiplier: 1 + val("improved-health-funnel", 0)/100, ThreatMultiplier: 1 - val("improved-health-funnel", 2)/100,
+			Hot: core.DotConfig{SelfOnly: true, Aura: core.Aura{Label: "Forever Health Funnel"}, NumberOfTicks: 10, TickLength: time.Second, OnTick: func(sim *core.Simulation, t *core.Unit, d *core.Dot) {
+				if w.ActivePet == nil || w.CurrentHealth() <= 50 {
+					d.Deactivate(sim)
+					return
+				}
+				w.RemoveHealth(sim, 50*(1-val("improved-health-funnel", 1)/100))
+				d.Spell.CalcAndDealHealing(sim, &w.ActivePet.Unit, 50, d.Spell.OutcomeHealing)
+			}},
+			ExtraCastCondition: func(sim *core.Simulation, t *core.Unit) bool {
+				return w.ActivePet != nil && (w.ForeverRank("warlock.talent.improved-health-funnel") > 0 || w.ActivePet.CurrentHealth() < w.ActivePet.MaxHealth())
+			}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) { s.SelfHot().Apply(sim) },
+		})
+		_ = healthFunnel
+	}
 	// Fire Shield damage is a real retaliation on melee hits while the Imp lives.
 	fireShield := w.RegisterSpell(core.SpellConfig{ProcMask: core.ProcMaskEmpty, ActionID: w.ForeverAction("warlock.talent.improved-imp"), SpellSchool: core.SpellSchoolFire, Flags: core.SpellFlagPassiveSpell, DamageMultiplier: 1 + val("improved-imp", 0)/100, ThreatMultiplier: 1})
 	core.MakePermanent(w.RegisterAura(core.Aura{Label: "Forever Fire Shield", OnSpellHitTaken: func(a *core.Aura, sim *core.Simulation, s *core.Spell, r *core.SpellResult) {

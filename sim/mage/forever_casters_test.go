@@ -249,6 +249,17 @@ func TestForeverCasterStrictPredictionPolicy(t *testing.T) {
 	if strict.GetSpell(action) != nil {
 		t.Fatal("STRICT enabled predicted Frostfire Bolt")
 	}
+	p = foreverCasterBuild(t, proto.Class_ClassWarlock, map[string]int32{"warlock.talent.improved-health-funnel": 1})
+	_, best = foreverCasterSim(t, p)
+	action = best.ForeverAction("warlock.talent.improved-health-funnel")
+	if best.GetSpell(action) == nil {
+		t.Fatal("BEST_GUESS missing predicted Health Funnel")
+	}
+	p.Forever.Mode = proto.ForeverMode_STRICT
+	_, strict = foreverCasterSim(t, p)
+	if strict.GetSpell(action) != nil {
+		t.Fatal("STRICT registered a predicted Health Funnel base transfer")
+	}
 }
 
 func TestForeverSoulShardInventoryAndStrictPreparation(t *testing.T) {
