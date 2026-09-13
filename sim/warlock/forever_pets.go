@@ -55,7 +55,11 @@ func (w *Warlock) applyForeverPetTalents() {
 			if aura.IsActive() && w.ActivePet != nil && w.ActivePet.IsActive() {
 				transfer := r.Damage * .3
 				r.Damage -= transfer
-				w.ActivePet.RemoveHealth(sim, transfer)
+				pet := w.ActivePet
+				pet.RemoveHealth(sim, transfer)
+				if pet.CurrentHealth() <= 0 {
+					w.changeActivePet(sim, nil, false)
+				}
 			}
 		})
 		w.RegisterSpell(core.SpellConfig{ProcMask: core.ProcMaskEmpty, ActionID: core.ActionID{SpellID: 19028}, SpellSchool: core.SpellSchoolShadow, Flags: core.SpellFlagAPL | core.SpellFlagHelpful, ManaCost: core.ManaCostOptions{FlatCost: 173}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}}, ExtraCastCondition: func(sim *core.Simulation, t *core.Unit) bool { return w.ActivePet != nil }, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {

@@ -182,7 +182,12 @@ func (mage *Mage) applyArcaneConcentration() {
 			if !spell.Flags.Matches(SpellFlagMage) {
 				return
 			}
-			if spell.Cost != nil && spell.Cost.GetCurrentCost() == 0 {
+			if mage.Forever != nil {
+				// Check the base cost: Clearcasting itself makes current cost zero.
+				if !spell.ProcMask.Matches(core.ProcMaskSpellDamage) || spell.Cost == nil || spell.Cost.BaseCost <= 0 {
+					return
+				}
+			} else if spell.Cost != nil && spell.Cost.GetCurrentCost() == 0 {
 				return
 			}
 			aura.Deactivate(sim)

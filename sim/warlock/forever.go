@@ -84,6 +84,9 @@ func (w *Warlock) applyForeverCasterTalents() {
 					}
 				}
 			}
+			if curse := w.ActiveCurseAura.Get(at.Defender); curse != nil && curse.IsActive() {
+				count++
+			}
 			bonus := min(float64(count)*val("improved-drains", 0), val("improved-drains", 1)) / 100
 			if s.SpellCode == SpellCode_WarlockDrainSoul && (f.execute20 || (at.Defender.HasHealthBar() && at.Defender.CurrentHealthPercent() < .2)) {
 				bonus *= 3
@@ -130,6 +133,9 @@ func (w *Warlock) applyForeverCasterTalents() {
 		}
 		if s.SpellCode == SpellCode_WarlockDrainLife || s.SpellCode == SpellCode_WarlockDrainSoul {
 			s.PushbackReduction += val("fel-concentration", 0) / 100
+		}
+		if d := s.AOEDot(); d != nil {
+			d.DamageMultiplier *= 1 + val("malediction", 0)/100
 		}
 		for _, d := range s.Dots() {
 			if d == nil {
@@ -281,6 +287,7 @@ func (w *Warlock) registerForeverSpells() {
 	}
 	// Health Funnel is a channeled health transfer. The Classic 10-second channel
 	// and 50-per-second transfer are explicit best-guess baseline parameters.
+	w.registerForeverMissingAffliction()
 	w.registerForeverPetUtilities()
 	w.registerForeverSoulShards()
 }

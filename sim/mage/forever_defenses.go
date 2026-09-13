@@ -46,7 +46,7 @@ func (m *Mage) registerForeverDefenses() {
 		}
 	}
 	if m.ForeverRank("mage.talent.ice-block") > 0 {
-		a := m.RegisterAura(core.Aura{Label: "Forever Ice Block", ActionID: m.ForeverAction("mage.talent.ice-block"), Duration: 10 * time.Second})
+		a := m.ForeverImmobileAura("Forever Ice Block", m.ForeverAction("mage.talent.ice-block"), 10*time.Second)
 		m.OnSpellRegistered(func(s *core.Spell) {
 			if !s.Flags.Matches(core.SpellFlagAPL) {
 				return
@@ -109,7 +109,7 @@ func (m *Mage) registerForeverDefenses() {
 	oldCounter := m.Counterspell.ApplyEffects
 	m.Counterspell.ApplyEffects = func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
 		oldCounter(sim, t, s)
-		t.ForeverInterrupt(sim)
+		t.ForeverInterruptSchool(sim, 10*time.Second)
 		if val("improved-counterspell", 0) > 0 {
 			silences.Get(t).Activate(sim)
 		}

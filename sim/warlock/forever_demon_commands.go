@@ -62,7 +62,7 @@ func (w *Warlock) registerForeverDemonCommands() {
 		return t.ForeverControlAura("Forever Spell Lock-"+w.Label, core.ActionID{SpellID: 19647}, core.ForeverSilence, 3*time.Second)
 	})
 	w.RegisterSpell(core.SpellConfig{ActionID: core.ActionID{SpellID: 19647}, SpellSchool: core.SpellSchoolShadow, Flags: core.SpellFlagAPL, Cast: core.CastConfig{CD: core.Cooldown{Timer: w.NewTimer(), Duration: 30*time.Second - time.Duration(val("improved-felhunter", 1)*float64(time.Second))}}, ExtraCastCondition: func(sim *core.Simulation, t *core.Unit) bool { return w.ActivePet == w.Felhunter }, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
-		t.ForeverInterrupt(sim)
+		t.ForeverInterruptSchool(sim, 8*time.Second)
 		lock.Get(t).Activate(sim)
 	}})
 	devour := w.Felhunter.RegisterSpell(core.SpellConfig{DefenseType: core.DefenseTypeMagic, ActionID: core.ActionID{SpellID: 19736}, SpellSchool: core.SpellSchoolShadow, Flags: core.SpellFlagHelpful, ProcMask: core.ProcMaskSpellHealing, DamageMultiplier: 1 + val("improved-felhunter", 0)/100, ThreatMultiplier: 0})

@@ -4,6 +4,7 @@ import (
 	"github.com/wowsims/classic/sim/core"
 	"github.com/wowsims/classic/sim/core/proto"
 	"github.com/wowsims/classic/sim/core/stats"
+	"slices"
 	"time"
 )
 
@@ -182,7 +183,7 @@ func (m *Mage) applyForeverCasterTalents() {
 		if s.SpellSchool.Matches(core.SpellSchoolFire) {
 			yards += value("flame-throwing", 0, 0)
 		}
-		if s.SpellCode == SpellCode_MageFrostbolt || s.SpellCode == SpellCode_MageFrostfireBolt {
+		if s.SpellCode == SpellCode_MageFrostbolt || s.SpellCode == SpellCode_MageFrostfireBolt || slices.Contains(BlizzardSpellId[1:], s.SpellID) {
 			yards *= 1 + value("arctic-reach", 0, 0)/100
 		}
 		m.ForeverSpellRange(s, yards)

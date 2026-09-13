@@ -33,7 +33,12 @@ func (p *Priest) applyForeverCasterTalents() {
 		return t.GetOrRegisterAura(core.Aura{Label: "Forever Shadow Weaving-" + p.Label, ActionID: p.ForeverAction("priest.talent.shadow-weaving"), Duration: 15 * time.Second, MaxStacks: 5})
 	})
 	f.embrace = p.NewEnemyAuraArray(func(t *core.Unit) *core.Aura {
-		return t.GetOrRegisterAura(core.Aura{Label: "Forever Vampiric Embrace-" + p.Label, ActionID: p.ForeverAction("priest.talent.vampiric-embrace"), Duration: 30 * time.Second})
+		kill := func(a *core.Aura, sim *core.Simulation, s *core.Spell, r *core.SpellResult) {
+			if s.Unit != &p.Unit && p.SpiritTapAura != nil && r.Damage > 0 && t.HasHealthBar() && t.CurrentHealth() <= 0 && t.Level >= p.Level-8 && sim.Proc(val("spirit-tap", 0)/100, "Forever Embrace Spirit Tap") {
+				p.SpiritTapAura.Activate(sim)
+			}
+		}
+		return t.GetOrRegisterAura(core.Aura{Label: "Forever Vampiric Embrace-" + p.Label, ActionID: p.ForeverAction("priest.talent.vampiric-embrace"), Duration: 30 * time.Second, OnSpellHitTaken: kill, OnPeriodicDamageTaken: kill})
 	})
 	f.freeNova = p.RegisterAura(core.Aura{Label: "Forever Searing Light", ActionID: p.ForeverAction("priest.talent.searing-light"), Duration: 15 * time.Second, OnGain: func(a *core.Aura, sim *core.Simulation) {
 		if f.holyNova != nil {
@@ -120,21 +125,7 @@ func (p *Priest) applyForeverCasterTalents() {
 				return (p.ShadowformAura == nil || !p.ShadowformAura.IsActive()) && (oldCondition == nil || oldCondition(sim, t))
 			}
 		}
-		old := s.ApplyEffects
-		s.ApplyEffects = func(sim *core.Simulation, t *core.Unit, sp *core.Spell) {
-			renewed := (sp.SpellCode == SpellCode_PriestFlashHeal || sp.SpellCode == SpellCode_PriestHeal || sp.SpellCode == SpellCode_PriestGreaterHeal || sp.SpellCode == SpellCode_PriestBindingHeal || sp.SpellCode == SpellCode_PriestPenance) && !p.IsOpponent(t) && p.WeakenedSouls.Get(t).IsActive()
-			crit := 0.0
-			if renewed {
-				crit = val("renewed-hope", 0) * core.SpellCritRatingPerCritChance
-			}
-			sp.BonusCritRating += crit
-			old(sim, t, sp)
-			sp.BonusCritRating -= crit
-			if renewed && p.ForeverRank("priest.talent.renewed-hope") > 0 {
-				a := p.WeakenedSouls.Get(t)
-				a.UpdateExpires(sim, max(sim.CurrentTime, a.ExpiresAt()-time.Duration(val("renewed-hope", 1)*float64(time.Second))))
-			}
-		}
+
 	})
 	// Non-periodic critical heals only; each healer owns its Divine Aegis pool.
 	inspiration := p.NewRaidAuraArray(func(t *core.Unit) *core.Aura {

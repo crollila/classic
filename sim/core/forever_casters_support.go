@@ -5,6 +5,16 @@ import (
 	"time"
 )
 
+// Self-imposed immobility must not be shortened by racial control reductions or
+// removed by the immunity that accompanies Ice Block / Spirit of Redemption.
+func (u *Unit) ForeverImmobileAura(label string, action ActionID, duration time.Duration) *Aura {
+	state := u.initForeverControl()
+	return u.GetOrRegisterAura(Aura{Label: label, ActionID: action, Duration: duration,
+		OnGain:   func(a *Aura, sim *Simulation) { state.active[ForeverRoot]++ },
+		OnExpire: func(a *Aura, sim *Simulation) { state.active[ForeverRoot]-- },
+	})
+}
+
 // ForeverDamageMultiplier composes a caster-owned modifier without changing
 // shared target debuffs. The predicate is evaluated for each damage event.
 func (c *Character) ForeverDamageMultiplier(effect func(*Spell, *AttackTable) float64) {

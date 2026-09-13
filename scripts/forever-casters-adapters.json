@@ -66,9 +66,10 @@
     "files": [
       "sim/mage/forever.go",
       "sim/mage/forever_defenses.go",
-      "sim/mage/blizzard.go"
+      "sim/mage/blizzard.go",
+      "sim/mage/talents.go"
     ],
-    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "scope": "Classic Clearcasting proc and mana reduction; Forever consumes the next eligible damage spell after its free cast.",
     "remaining_unknowns": [
       "Unless explicitly stated: eligible events, internal cooldown, per-target versus per-cast rolls, proc recursion and snapshot behavior require validation."
     ]
@@ -148,7 +149,7 @@
       "sim/mage/forever_defenses.go",
       "sim/mage/blizzard.go"
     ],
-    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "scope": "Observed blanket silence plus Classic Counterspell 10-second lockout of the interrupted school.",
     "remaining_unknowns": [
       "Ranks 2 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
       "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
@@ -694,8 +695,10 @@
       "sim/mage/forever_defenses.go",
       "sim/mage/blizzard.go"
     ],
-    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
-    "remaining_unknowns": []
+    "scope": "Extends actual Frostbolt/Blizzard cast eligibility and Frost Nova/Cone of Cold radius at all ranks.",
+    "remaining_unknowns": [
+      "Multiple enemy positions inherit the current encounter distance model."
+    ]
   },
   "mage.talent.ice-block": {
     "mode": "class-new",
@@ -704,9 +707,10 @@
     "files": [
       "sim/mage/forever.go",
       "sim/mage/forever_defenses.go",
-      "sim/mage/blizzard.go"
+      "sim/mage/blizzard.go",
+      "sim/core/forever_casters_support.go"
     ],
-    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "scope": "Actual damage immunity, control immunity, blocked casting and movement for 10 seconds.",
     "remaining_unknowns": [
       "Displayed damage/healing and resource costs may reflect demo character level, spell rank, equipment, or talents. Level-60 rank tables and unlisted AP/SP coefficients are not established by this tooltip."
     ]
@@ -881,7 +885,7 @@
       "sim/warlock/forever_shards.go",
       "sim/warlock/forever_demon_commands.go"
     ],
-    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "scope": "All selectable ranks multiply target DoT and AoE-channel periodic damage, including Rain of Fire and Hellfire.",
     "remaining_unknowns": [
       "Ranks 2, 3, 4, 5 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
       "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
@@ -925,13 +929,15 @@
       "sim/warlock/forever.go",
       "sim/warlock/forever_pets.go",
       "sim/warlock/forever_shards.go",
-      "sim/warlock/forever_demon_commands.go"
+      "sim/warlock/forever_demon_commands.go",
+      "sim/warlock/forever_affliction.go"
     ],
-    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "scope": "Per-target other Affliction DoTs and active curse count, capped damage/healing bonus, execute multiplier and Drain Life range.",
     "remaining_unknowns": [
       "Ranks 2, 3 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
       "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
-      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other."
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other.",
+      "Active non-damaging curses count as other Affliction effects; secondary effect classification remains provisional."
     ],
     "rank_overrides": [
       {
@@ -984,13 +990,15 @@
       "sim/warlock/forever.go",
       "sim/warlock/forever_pets.go",
       "sim/warlock/forever_shards.go",
-      "sim/warlock/forever_demon_commands.go"
+      "sim/warlock/forever_demon_commands.go",
+      "sim/warlock/forever_affliction.go"
     ],
-    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "scope": "Damage pushback protection applies to Drain Life, Drain Soul, and playable Drain Mana11704.",
     "remaining_unknowns": [
       "Ranks 2, 3 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
       "Unless explicitly stated: eligible events, internal cooldown, per-target versus per-cast rolls, proc recursion and snapshot behavior require validation.",
-      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Drain Mana uses cached Classic11704 baseline:310 mana,20 yards,140 mana each second for5 seconds. Encounter mana is an explicit input, not an inferred boss pool."
     ],
     "rank_overrides": [
       {
@@ -1011,6 +1019,17 @@
         "confidence": "PREDICTED",
         "reason": "Rounded fractional progression toward the analogous 50%,70%,100% or25% cap; directly observed ranks retain their authoritative values."
       }
+    ],
+    "parameters": [
+      {
+        "key": "scenario.enemy_mana",
+        "label": "Enemy starting mana",
+        "default": 0,
+        "min": 0,
+        "max": 10000000,
+        "confidence": "PREDICTED",
+        "reason": "Explicit finite enemy mana scenario; zero preserves absent resource pools."
+      }
     ]
   },
   "warlock.talent.amplify-curse": {
@@ -1021,12 +1040,14 @@
       "sim/warlock/forever.go",
       "sim/warlock/forever_pets.go",
       "sim/warlock/forever_shards.go",
-      "sim/warlock/forever_demon_commands.go"
+      "sim/warlock/forever_demon_commands.go",
+      "sim/warlock/forever_affliction.go"
     ],
-    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "scope": "Amplifies Bane of Agony, Curse of Exhaustion and playable Curse of Weakness11708.",
     "remaining_unknowns": [
       "Displayed damage/healing and resource costs may reflect demo character level, spell rank, equipment, or talents. Level-60 rank tables and unlisted AP/SP coefficients are not established by this tooltip.",
-      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Curse of Weakness uses cached Classic11708 baseline:175 mana,31 physical damage reduction for2 minutes; amplified strength46.5 before engine final damage rounding."
     ]
   },
   "warlock.talent.pandemic": {
@@ -1180,12 +1201,14 @@
       "sim/warlock/forever.go",
       "sim/warlock/forever_pets.go",
       "sim/warlock/forever_shards.go",
-      "sim/warlock/forever_demon_commands.go"
+      "sim/warlock/forever_demon_commands.go",
+      "sim/warlock/armors.go"
     ],
-    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "scope": "Demon Armor armor, resistance and actual health regeneration are scaled by the selected rank.",
     "remaining_unknowns": [
       "Ranks 2 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
-      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Simulator level presets use their corresponding Demon Armor ranks; the lower-level Demon Skin spellbook is outside these level presets. Cached Classic armor regeneration is7/11/13/15 health every5 seconds at supported levels25/40/50/60."
     ]
   },
   "warlock.talent.improved-voidwalker": {
@@ -1240,9 +1263,10 @@
       "sim/warlock/forever_shards.go",
       "sim/warlock/forever_demon_commands.go"
     ],
-    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "scope": "Lash of Pain damage, Soothing Kiss threat reduction, and Seduction/Lesser Invisibility aura durations.",
     "remaining_unknowns": [
-      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other."
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other.",
+      "Lesser Invisibility uses a combat concealment analogue that prevents damage until the pet attacks; patrol perception and stealth detection are outside the encounter model."
     ]
   },
   "warlock.talent.demonic-sacrifice": {
@@ -1333,10 +1357,11 @@
       "sim/warlock/forever_shards.go",
       "sim/warlock/forever_demon_commands.go"
     ],
-    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "scope": "Tainted Blood attack-power reduction, Devour Magic healing and Spell Lock cooldown; interruption includes Classic eight-second interrupted-school lockout.",
     "remaining_unknowns": [
       "Ranks 2, 3 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
-      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Paranoia detection level is outside deterministic raid combat geometry; no hostile stealth/perception model is claimed."
     ]
   },
   "warlock.talent.soul-link": {
@@ -1347,13 +1372,15 @@
       "sim/warlock/forever.go",
       "sim/warlock/forever_pets.go",
       "sim/warlock/forever_shards.go",
-      "sim/warlock/forever_demon_commands.go"
+      "sim/warlock/forever_demon_commands.go",
+      "sim/warlock/pet.go"
     ],
-    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "scope": "Damage transfer into the living pet health pool, both damage bonuses, fatal-transfer dismissal, and removal of bonuses on dismissal.",
     "remaining_unknowns": [
       "Displayed damage/healing and resource costs may reflect demo character level, spell rank, equipment, or talents. Level-60 rank tables and unlisted AP/SP coefficients are not established by this tooltip.",
       "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
-      "Damage transfer uses30% of incoming damage after prior damage modifiers and bypasses a second pet mitigation pass."
+      "Damage transfer uses30% of incoming damage after prior damage modifiers and bypasses a second pet mitigation pass.",
+      "Pet resummons restore health using the Classic summon analogue. The killing blow retains its30% split; pet overkill is not returned to the owner."
     ]
   },
   "warlock.talent.master-demonologist": {
@@ -1549,7 +1576,7 @@
       "sim/core/forever_enemy_health.go",
       "sim/core/spell_result.go"
     ],
-    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "scope": "Actual damage, shard expenditure, eight-second own/other direct or periodic killing-blow refund, plus Shadow and Flame refund if selected.",
     "remaining_unknowns": [
       "Displayed damage/healing and resource costs may reflect demo character level, spell rank, equipment, or talents. Level-60 rank tables and unlisted AP/SP coefficients are not established by this tooltip.",
       "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
@@ -2043,13 +2070,26 @@
       "sim/priest/forever.go",
       "sim/priest/forever_healing.go",
       "sim/priest/forever_baseline.go",
-      "sim/priest/forever_racials.go"
+      "sim/priest/forever_racials.go",
+      "sim/core/forever_hunter_support.go"
     ],
-    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "scope": "Mana Burn cast-time reduction with actual finite enemy mana removal and damage, without requiring a hunter.",
     "remaining_unknowns": [
       "Ranks 2 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
       "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
-      "Independent screenshot values below take precedence for the same rank/context. Original calculator estimates remain preserved and labeled; differing character-context active tooltips remain separate variants."
+      "Independent screenshot values below take precedence for the same rank/context. Original calculator estimates remain preserved and labeled; differing character-context active tooltips remain separate variants.",
+      "Encounter mana is supplied by the explicit scenario.enemy_mana input or target mana stat; default0 does not invent a boss resource pool."
+    ],
+    "parameters": [
+      {
+        "key": "scenario.enemy_mana",
+        "label": "Enemy starting mana",
+        "default": 0,
+        "min": 0,
+        "max": 10000000,
+        "confidence": "PREDICTED",
+        "reason": "Explicit finite enemy mana scenario; zero preserves absent resource pools."
+      }
     ]
   },
   "priest.talent.penance": {
@@ -2081,13 +2121,15 @@
       "sim/priest/forever.go",
       "sim/priest/forever_healing.go",
       "sim/priest/forever_baseline.go",
-      "sim/priest/forever_racials.go"
+      "sim/priest/forever_racials.go",
+      "sim/priest/forever_heal_effects.go"
     ],
-    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "scope": "Crit bonus and Weakened Soul duration reduction for each eligible healing recipient, including both Binding Heal recipients and all three Penance bolts.",
     "remaining_unknowns": [
       "Ranks 2, 3, 4, 5 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
       "Unless explicitly stated: eligible events, internal cooldown, per-target versus per-cast rolls, proc recursion and snapshot behavior require validation.",
-      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Per-bolt Penance duration reduction is provisional; each bolt uses current target Weakened Soul rather than a cast-start snapshot."
     ]
   },
   "priest.talent.divine-aegis": {
@@ -2388,9 +2430,10 @@
       "sim/priest/forever.go",
       "sim/priest/forever_healing.go",
       "sim/priest/forever_baseline.go",
-      "sim/priest/forever_racials.go"
+      "sim/priest/forever_racials.go",
+      "sim/core/forever_casters_support.go"
     ],
-    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "scope": "Lethal-damage transition, fifteen seconds of free ally healing, damage/control immunity, inability to move/attack/be spell-targeted, then death.",
     "remaining_unknowns": [
       "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
     ]
@@ -2422,13 +2465,14 @@
       "sim/priest/forever_baseline.go",
       "sim/priest/forever_racials.go"
     ],
-    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "scope": "Actual reactive healing on direct/periodic damage or nonperiodic healing, single target aura, and up to five transfers after the initial heal.",
     "remaining_unknowns": [
       "Displayed damage/healing and resource costs may reflect demo character level, spell rank, equipment, or talents. Level-60 rank tables and unlisted AP/SP coefficients are not established by this tooltip.",
       "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
       "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other.",
       "Independent screenshot values below take precedence for the same rank/context. Original calculator estimates remain preserved and labeled; differing character-context active tooltips remain separate variants.",
-      "Bounce selection uses the lowest-health other ally; the raid is provisionally treated as packed within20yards because friendly geometry is absent."
+      "Bounce selection uses the lowest-health other ally; the raid is provisionally treated as packed within20yards because friendly geometry is absent.",
+      "Literal five jumps is interpreted as six total healing triggers. Eligible raid member is selected by current health with the raid modeled within20 yards; spatial positioning requires future encounter geometry."
     ],
     "healing": true
   },
@@ -2573,11 +2617,12 @@
       "sim/priest/forever_baseline.go",
       "sim/priest/forever_racials.go"
     ],
-    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "scope": "Own Shadow damage heals the party; another actor killing the embraced enemy can trigger the priest Spirit Tap using its selected chance.",
     "remaining_unknowns": [
       "Displayed damage/healing and resource costs may reflect demo character level, spell rank, equipment, or talents. Level-60 rank tables and unlisted AP/SP coefficients are not established by this tooltip.",
       "Unless explicitly stated: eligible events, internal cooldown, per-target versus per-cast rolls, proc recursion and snapshot behavior require validation.",
-      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "The raid party is modeled as in healing range. Kill scenarios use finite enemy health, not fabricated periodic kills."
     ]
   },
   "priest.talent.shadow-weaving": {

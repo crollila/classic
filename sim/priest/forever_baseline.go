@@ -56,7 +56,11 @@ func (p *Priest) registerForeverReactiveTalents() {
 	}
 	if p.ForeverRank("priest.talent.spirit-of-redemption") > 0 {
 		used := false
+		immobile := p.ForeverImmobileAura("Forever Redemption immobility", p.ForeverAction("priest.talent.spirit-of-redemption"), 15*time.Second)
+		immunity := p.ForeverControlImmunityAura("Forever Redemption control immunity", p.ForeverAction("priest.talent.spirit-of-redemption"), []core.ForeverControlKind{core.ForeverRoot, core.ForeverStun, core.ForeverFear, core.ForeverSilence, core.ForeverCharm, core.ForeverSleep, core.ForeverIncapacitate}, 15*time.Second)
 		spirit := p.RegisterAura(core.Aura{Label: "Forever Spirit of Redemption", ActionID: p.ForeverAction("priest.talent.spirit-of-redemption"), Duration: 15 * time.Second, OnGain: func(a *core.Aura, sim *core.Simulation) {
+			immobile.Activate(sim)
+			immunity.Activate(sim)
 			for _, s := range p.Spellbook {
 				if s.Flags.Matches(core.SpellFlagHelpful) && s.Cost != nil {
 					s.Cost.Multiplier -= 100
@@ -68,8 +72,20 @@ func (p *Priest) registerForeverReactiveTalents() {
 					s.Cost.Multiplier += 100
 				}
 			}
+			immobile.Deactivate(sim)
+			immunity.Deactivate(sim)
 			p.RemoveHealth(sim, p.CurrentHealth())
 		}})
+		p.Env.RegisterPreFinalizeEffect(func() {
+			for _, u := range p.Env.AllUnits {
+				for _, s := range u.Spellbook {
+					old := s.ExtraCastCondition
+					s.ExtraCastCondition = func(sim *core.Simulation, t *core.Unit) bool {
+						return (t != &p.Unit || !spirit.IsActive()) && (old == nil || old(sim, t))
+					}
+				}
+			}
+		})
 		p.AddDynamicDamageTakenModifier(func(sim *core.Simulation, s *core.Spell, r *core.SpellResult) {
 			if spirit.IsActive() {
 				r.Damage = 0
@@ -92,6 +108,9 @@ func (p *Priest) registerForeverReactiveTalents() {
 }
 func (p *Priest) registerForeverBaseline() {
 	val := func(id string, index int) float64 { return p.ForeverValue("priest.talent."+id, index, 0) }
+	for _, t := range p.Env.Encounter.Targets {
+		t.ForeverEnableManaPool(max(t.GetStat(stats.Mana), p.ForeverParameter("scenario.enemy_mana", 0)))
+	}
 	if p.HasForeverMechanic("priest.baseline.shadow-word-death") {
 		p.RegisterSpell(core.SpellConfig{ActionID: p.ForeverAction("priest.baseline.shadow-word-death"), SpellCode: SpellCode_PriestShadowWordDeath, SpellSchool: core.SpellSchoolShadow, DefenseType: core.DefenseTypeMagic, ProcMask: core.ProcMaskSpellDamage, Flags: SpellFlagPriest | core.SpellFlagAPL, ManaCost: core.ManaCostOptions{FlatCost: 350}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, CD: core.Cooldown{Timer: p.NewTimer(), Duration: 12 * time.Second}}, DamageMultiplier: 1, ThreatMultiplier: 1, BonusCoefficient: .429,
 			ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
@@ -123,7 +142,7 @@ func (p *Priest) registerForeverBaseline() {
 		p.RegisterSpell(core.SpellConfig{ProcMask: core.ProcMaskEmpty, ActionID: p.ForeverAction("priest.talent.silence"), SpellSchool: core.SpellSchoolShadow, Flags: SpellFlagPriest | core.SpellFlagAPL, ManaCost: core.ManaCostOptions{FlatCost: 225}, Cast: core.CastConfig{CD: core.Cooldown{Timer: p.NewTimer(), Duration: 45 * time.Second}}, ExtraCastCondition: func(sim *core.Simulation, t *core.Unit) bool {
 			return p.DistanceFromTarget <= 20*(1+val("shadow-reach", 0)/100)
 		}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
-			t.ForeverInterrupt(sim)
+			t.ForeverInterruptSchool(sim, 3*time.Second)
 			silence.Get(t).Activate(sim)
 		}})
 	}
@@ -160,8 +179,11 @@ func (p *Priest) registerForeverBaseline() {
 	}
 	p.RegisterSpell(core.SpellConfig{ActionID: core.ActionID{SpellID: 10876}, SpellSchool: core.SpellSchoolShadow, DefenseType: core.DefenseTypeMagic, Flags: SpellFlagPriest | core.SpellFlagAPL, ProcMask: core.ProcMaskSpellDamage, ManaCost: core.ManaCostOptions{FlatCost: 165}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault, CastTime: 3*time.Second - time.Duration(val("improved-mana-burn", 0)*float64(time.Second))}}, DamageMultiplier: 1, ThreatMultiplier: 1, ExtraCastCondition: func(sim *core.Simulation, t *core.Unit) bool { return t.HasManaBar() }, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
 		amount := min(t.CurrentMana(), 600.0)
-		t.SpendMana(sim, amount, burnMetrics[t.UnitIndex])
-		s.CalcAndDealDamage(sim, t, amount*.5, s.OutcomeMagicHitAndCrit)
+		result := s.CalcDamage(sim, t, amount*.5, s.OutcomeMagicHitAndCrit)
+		if result.Landed() {
+			t.SpendMana(sim, amount, burnMetrics[t.UnitIndex])
+		}
+		s.DealDamage(sim, result)
 	}})
 	// Inner Fire's baseline armor and finite charges now participate in tank tests.
 	armor := 1395 * (1 + val("improved-inner-fire", 0)/100)

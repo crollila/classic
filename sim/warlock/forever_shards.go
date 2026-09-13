@@ -31,12 +31,13 @@ func (w *Warlock) registerForeverSoulShards() {
 		}
 	}
 	debuffs := w.NewEnemyAuraArray(func(t *core.Unit) *core.Aura {
-		return t.GetOrRegisterAura(core.Aura{Label: "Forever Shadowburn refund-" + w.Label, ActionID: action, Duration: 8 * time.Second, OnSpellHitTaken: func(a *core.Aura, sim *core.Simulation, s *core.Spell, r *core.SpellResult) {
+		kill := func(a *core.Aura, sim *core.Simulation, s *core.Spell, r *core.SpellResult) {
 			if t.HasHealthBar() && t.CurrentHealth() <= 0 && r.Damage > 0 && t.Level >= w.Level-8 {
 				a.Deactivate(sim)
 				add(sim)
 			}
-		}})
+		}
+		return t.GetOrRegisterAura(core.Aura{Label: "Forever Shadowburn refund-" + w.Label, ActionID: action, Duration: 8 * time.Second, OnSpellHitTaken: kill, OnPeriodicDamageTaken: kill})
 	})
 	core.MakePermanent(w.RegisterAura(core.Aura{Label: "Forever Soul Shard Rules", OnCastComplete: func(a *core.Aura, sim *core.Simulation, s *core.Spell) {
 		if costs[s] && !(s.SpellCode == SpellCode_WarlockSoulFire && w.foreverState.decimation.IsActive()) {
