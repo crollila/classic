@@ -33,6 +33,9 @@ func (warrior *Warrior) registerDemoralizingShoutSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
+				if warrior.Forever != nil && warrior.DistanceFromTarget > 10*(1+.1*float64(warrior.ForeverRank("warrior.talent.booming-voice"))) {
+					continue
+				}
 				result := spell.CalcAndDealOutcome(sim, aoeTarget, spell.OutcomeMagicHit)
 				if result.Landed() {
 					warrior.DemoralizingShoutAuras.Get(aoeTarget).Activate(sim)

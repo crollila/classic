@@ -57,6 +57,9 @@ func (rogue *Rogue) registerGhostlyStrikeSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
 			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower(target))
+			if rogue.Forever != nil && rogue.HasDagger(core.MainHand) {
+				baseDamage *= 1.8 / 1.25
+			}
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 

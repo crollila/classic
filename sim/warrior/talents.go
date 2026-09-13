@@ -19,6 +19,7 @@ func (warrior *Warrior) ApplyTalents() {
 	warrior.AddStat(stats.Defense, 2*float64(warrior.Talents.Anticipation))
 	warrior.AddStat(stats.Parry, 1*float64(warrior.Talents.Deflection))
 
+	warrior.applyForeverTalents()
 	warrior.applyAngerManagement()
 	warrior.applyDeepWounds()
 	warrior.applyOneHandedWeaponSpecialization()

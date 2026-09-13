@@ -84,6 +84,10 @@ type Rogue struct {
 	VanishAura         *core.Aura
 
 	woundPoisonDebuffAuras core.AuraArray
+	ForeverCutthroat       *core.Aura
+	ForeverHemorrhage      core.AuraArray
+	ForeverSprint          *core.Spell
+	foreverPoisonCharges   [2]int32
 }
 
 func (rogue *Rogue) GetCharacter() *core.Character {
@@ -126,6 +130,7 @@ func (rogue *Rogue) Initialize() {
 	// Stealth
 	rogue.registerStealthAura()
 	rogue.registerVanishSpell()
+	rogue.registerForeverAbilities()
 }
 
 func (rogue *Rogue) ApplyEnergyTickMultiplier(multiplier float64) {

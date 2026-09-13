@@ -88,6 +88,7 @@ func (hunter *Hunter) ApplyTalents() {
 		hunter.MultiplyStat(stats.Agility, 1.0+agiBonus)
 	}
 
+	hunter.applyForeverTalents()
 	hunter.applyEfficiency()
 	hunter.applyTrapMastery()
 	hunter.applyCleverTraps()
@@ -147,7 +148,8 @@ func (hunter *Hunter) registerBestialWrathCD() {
 		Flags:    core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.12,
+			BaseCost: core.TernaryFloat64(hunter.Forever != nil, 0, .12),
+			FlatCost: core.TernaryFloat64(hunter.Forever != nil, 125, 0),
 		},
 
 		Cast: core.CastConfig{

@@ -11,7 +11,7 @@ func (warrior *Warrior) registerMortalStrikeSpell(cdTimer *core.Timer) {
 		return
 	}
 
-	bonusDamage := 160.0
+	bonusDamage := warrior.ForeverValue("warrior.talent.mortal-strike", 0, 160)
 	spellID := int32(21553)
 
 	warrior.MortalStrike = warrior.RegisterSpell(AnyStance, core.SpellConfig{
@@ -48,6 +48,10 @@ func (warrior *Warrior) registerMortalStrikeSpell(cdTimer *core.Timer) {
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
+			if warrior.Forever != nil && result.Landed() {
+				a := target.GetOrRegisterAura(core.Aura{Label: "Forever Mortal Strike", ActionID: spell.ActionID, Duration: 10 * time.Second, OnGain: func(a *core.Aura, sim *core.Simulation) { target.PseudoStats.HealingTakenMultiplier *= .5 }, OnExpire: func(a *core.Aura, sim *core.Simulation) { target.PseudoStats.HealingTakenMultiplier /= .5 }})
+				a.Activate(sim)
+			}
 			if !result.Landed() {
 				spell.IssueRefund(sim)
 			}

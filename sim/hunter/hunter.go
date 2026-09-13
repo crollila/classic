@@ -169,6 +169,7 @@ func (hunter *Hunter) Initialize() {
 	hunter.registerFreezingTrapSpell(traps)
 
 	hunter.registerRapidFire()
+	hunter.registerForeverAbilities(arcaneShotTimer)
 }
 
 func (hunter *Hunter) Reset(sim *core.Simulation) {
@@ -263,6 +264,9 @@ func NewHunter(character *core.Character, options *proto.Player) *Hunter {
 		return !hunter.IsCasting(sim)
 	}
 	hunter.AutoAttacks.RangedConfig().CritDamageBonus = hunter.mortalShots()
+	if hunter.Forever != nil {
+		hunter.AutoAttacks.RangedConfig().CritDamageBonus = 0
+	}
 	hunter.AutoAttacks.RangedConfig().BonusCoefficient = 1
 	hunter.AutoAttacks.RangedConfig().ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		baseDamage := hunter.RangedWeaponDamage(sim, spell.RangedAttackPower(target, false)) +

@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/classic/sim/core"
+	"github.com/wowsims/classic/sim/core/proto"
 	"github.com/wowsims/classic/sim/core/stats"
 )
 
@@ -37,6 +38,9 @@ func (warrior *Warrior) makeStanceSpell(stance Stance, aura *core.Aura, stanceCD
 	}[stance]
 	actionID := aura.ActionID
 	maxRetainedRage := 5 * float64(warrior.Talents.TacticalMastery)
+	if warrior.Forever != nil { // PREDICTED baseline Tactical Mastery: TBC analogue retains 10, plus observed 3/rank.
+		maxRetainedRage = core.TernaryFloat64(warrior.Forever.Mode != proto.ForeverMode_STRICT, 10, 0) + warrior.ForeverValue("warrior.talent.improved-tactical-mastery", 0, 0)
+	}
 	rageMetrics := warrior.NewRageMetrics(actionID)
 
 	stanceSpell := warrior.RegisterSpell(AnyStance, core.SpellConfig{
@@ -99,6 +103,12 @@ func (warrior *Warrior) registerBattleStanceAura() {
 func (warrior *Warrior) registerDefensiveStanceAura() {
 	warrior.defensiveStanceThreatMultiplier = 1.3 * []float64{1, 1.03, 1.06, 1.09, 1.12, 1.15}[warrior.Talents.Defiance]
 
+	if warrior.Forever != nil {
+		warrior.defensiveStanceThreatMultiplier = 1.3
+		if warrior.PseudoStats.CanBlock {
+			warrior.defensiveStanceThreatMultiplier *= 1 + warrior.ForeverValue("warrior.talent.defiance", 0, 0)/100
+		}
+	}
 	warrior.DefensiveStanceAura = warrior.RegisterAura(core.Aura{
 		Label:    "Defensive Stance",
 		ActionID: core.ActionID{SpellID: 71},

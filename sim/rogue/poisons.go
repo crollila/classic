@@ -83,7 +83,7 @@ func (rogue *Rogue) applyInstantPoison() {
 				return
 			}
 
-			if sim.RandomFloat("Instant Poison") < rogue.GetInstantPoisonProcChance() {
+			if sim.RandomFloat("Instant Poison") < rogue.GetInstantPoisonProcChance() && rogue.consumeForeverPoisonCharge(sim, spell) {
 				rogue.InstantPoison.Cast(sim, result.Target)
 			}
 		},
@@ -107,7 +107,7 @@ func (rogue *Rogue) applyDeadlyPoison() {
 			if !result.Landed() || !spell.ProcMask.Matches(procMask) {
 				return
 			}
-			if sim.RandomFloat("Deadly Poison") < rogue.GetDeadlyPoisonProcChance() {
+			if sim.RandomFloat("Deadly Poison") < rogue.GetDeadlyPoisonProcChance() && rogue.consumeForeverPoisonCharge(sim, spell) {
 				rogue.DeadlyPoison.Cast(sim, result.Target)
 			}
 		},
@@ -132,7 +132,7 @@ func (rogue *Rogue) applyWoundPoison() {
 				return
 			}
 
-			if sim.RandomFloat("Wound Poison") < rogue.GetWoundPoisonProcChance() {
+			if sim.RandomFloat("Wound Poison") < rogue.GetWoundPoisonProcChance() && rogue.consumeForeverPoisonCharge(sim, spell) {
 				rogue.WoundPoison.Cast(sim, result.Target)
 			}
 		},

@@ -66,7 +66,7 @@ func (warrior *Warrior) registerCleaveSpell(realismICD *core.Cooldown) {
 		Flags:       core.SpellFlagMeleeMetrics | SpellFlagOffensive,
 
 		RageCost: core.RageCostOptions{
-			Cost: 20 - warrior.ForeverValue("warrior.talent.improved-cleave", 0, 0),
+			Cost: 20 - 2*float64(warrior.ForeverRank("warrior.talent.raging-blows")) - warrior.ForeverValue("warrior.talent.improved-cleave", 0, 0),
 		},
 
 		CritDamageBonus: warrior.impale(),

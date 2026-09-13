@@ -9,6 +9,7 @@ import (
 )
 
 func (rogue *Rogue) ApplyTalents() {
+	rogue.applyForeverTalents()
 	rogue.applyRuthlessness()
 	rogue.applyMurder()
 	rogue.applyRelentlessStrikes()
@@ -199,7 +200,7 @@ func (rogue *Rogue) applyInitiative() {
 		return
 	}
 
-	procChance := 0.25 * float64(rogue.Talents.Initiative)
+	procChance := rogue.ForeverValue("rogue.talent.initiative", 0, 25*float64(rogue.Talents.Initiative)) / 100
 	cpMetrics := rogue.NewComboPointMetrics(core.ActionID{SpellID: 13980})
 
 	rogue.RegisterAura(core.Aura{

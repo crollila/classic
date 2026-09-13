@@ -57,6 +57,13 @@ func (warrior *Warrior) registerBerserkerRageSpell() {
 				warrior.AddRage(sim, instantRage, rageMetrics)
 			}
 			warrior.BerserkerRageAura.Activate(sim)
+			if warrior.Forever != nil && sim.Proc(.5*float64(warrior.ForeverRank("warrior.talent.improved-berserker-rage")), "Improved Berserker Rage") {
+				for _, kind := range []core.ForeverControlKind{core.ForeverRoot, core.ForeverSnare} {
+					for _, a := range warrior.GetAurasWithTag("forever-control-" + string(kind)) {
+						a.Deactivate(sim)
+					}
+				}
+			}
 		},
 	})
 
