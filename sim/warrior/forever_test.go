@@ -534,3 +534,20 @@ func TestForeverPhysicalActualEnemyKills(t *testing.T) {
 		})
 	}
 }
+
+func TestForeverTacticalMasteryKeepsKnownStrictBonus(t *testing.T) {
+	build := physicalBuild(t, "warrior.talent.improved-tactical-mastery")
+	build["warrior.talent.improved-tactical-mastery"] = 1
+	for _, mode := range []proto.ForeverMode{proto.ForeverMode_STRICT, proto.ForeverMode_BEST_GUESS} {
+		sim, c := physicalSim(t, "Warrior", "warrior", build, func(p *proto.Player) { p.Forever.Mode = mode })
+		c.AddRage(sim, 100, c.NewRageMetrics(core.ActionID{SpellID: 2687}))
+		physicalID(t, c, 2458).Cast(sim, c.CurrentTarget)
+		expected := 3.
+		if mode == proto.ForeverMode_BEST_GUESS {
+			expected = 13
+		}
+		if c.CurrentRage() != expected {
+			t.Fatal("Tactical retention", mode, c.CurrentRage(), expected)
+		}
+	}
+}

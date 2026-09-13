@@ -1121,8 +1121,8 @@
     "scope": "Removed selection is excluded and corresponding Classic field remains zero."
   },
   "warrior.talent.improved-tactical-mastery": {
-    "confidence": "PREDICTED",
-    "reason": "Observed +3 rage per talent rank; baseline 10 retained rage predicted from TBC Tactical Mastery counterpart.",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed additional3rage/rank is active in both modes. Unknown baseline Tactical Mastery predicts10rage from TBC only in BEST_GUESS; STRICT baseline remains0.",
     "remaining_unknowns": [
       "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
     ],
@@ -1130,7 +1130,10 @@
     "files": [
       "sim/warrior/forever.go"
     ],
-    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior.",
+    "predicted_components": [
+      "10rage baseline Tactical Mastery retention"
+    ]
   },
   "warrior.talent.improved-slam": {
     "confidence": "PROVISIONAL",
