@@ -61,7 +61,11 @@ func (r *Rogue) applyForeverTalents() {
 	if n := r.ForeverRank("rogue.talent.setup"); n > 0 {
 		m := r.NewComboPointMetrics(r.ForeverAction("rogue.talent.setup"))
 		core.MakePermanent(r.RegisterAura(core.Aura{Label: "Setup", OnSpellHitTaken: func(a *core.Aura, sim *core.Simulation, s *core.Spell, result *core.SpellResult) {
-			if (result.DidDodge() || (!s.SpellSchool.Matches(core.SpellSchoolPhysical) && result.Damage == 0 && result.Landed())) && sim.Proc(min(1, .33*float64(n)), "Setup") {
+			// Classic's magic hit table represents both a failed spell hit and
+			// a full binary resistance as OutcomeMiss. This provisional analogue
+			// excludes landed zero-damage debuffs and fully absorbed hits.
+			fullResist := s.DefenseType == core.DefenseTypeMagic && result.Outcome.Matches(core.OutcomeMiss)
+			if (result.DidDodge() || fullResist) && sim.Proc(min(1, .33*float64(n)), "Setup") {
 				r.AddComboPoints(sim, 1, r.CurrentTarget, m)
 			}
 		}}))
@@ -321,7 +325,26 @@ func (r *Rogue) registerForeverUtility() {
 		if cd > 0 {
 			timer = r.NewTimer()
 		}
-		spell := r.RegisterSpell(core.SpellConfig{ActionID: id, Flags: core.SpellFlagAPL, EnergyCost: core.EnergyCostOptions{Cost: cost}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: time.Second}, IgnoreHaste: true, CD: core.Cooldown{Timer: timer, Duration: cd}}, ExtraCastCondition: func(sim *core.Simulation, t *core.Unit) bool {
+		mask, flags, critBonus := core.ProcMaskEmpty, core.SpellFlagAPL, 0.0
+		if kind == "Gouge" || kind == "Kick" {
+			mask = core.ProcMaskMeleeMHSpecial
+			flags |= core.SpellFlagMeleeMetrics
+			if kind == "Gouge" {
+				id.SpellID = 11286 // Cached Classic level-60 rank: 75 damage.
+				flags |= SpellFlagBuilder
+				critBonus = r.lethality()
+			}
+		}
+		spell := r.RegisterSpell(core.SpellConfig{ActionID: id, SpellSchool: core.SpellSchoolPhysical, DefenseType: core.DefenseTypeMelee, ProcMask: mask, Flags: flags, DamageMultiplier: 1, ThreatMultiplier: 1, CritDamageBonus: critBonus, EnergyCost: core.EnergyCostOptions{Cost: cost, Refund: .8}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: time.Second}, IgnoreHaste: true, CD: core.Cooldown{Timer: timer, Duration: cd}}, ExtraCastCondition: func(sim *core.Simulation, t *core.Unit) bool {
+			if kind != "Blind" && r.DistanceFromTarget > core.MaxMeleeAttackDistance {
+				return false
+			}
+			if kind == "Blind" && r.DistanceFromTarget > 10 {
+				return false
+			}
+			if kind == "Gouge" && !r.PseudoStats.InFrontOfTarget {
+				return false
+			}
 			if kind == "Sap" || kind == "Cheap Shot" {
 				return r.IsStealthed() && (kind != "Sap" || sim.CurrentTime <= 0)
 			}
@@ -333,8 +356,19 @@ func (r *Rogue) registerForeverUtility() {
 				d = time.Duration(r.ComboPoints()+1) * time.Second
 				r.SpendComboPoints(sim, s)
 			}
+			if kind == "Gouge" || kind == "Kick" {
+				damage := 80.0 // Cached Classic Kick rank 4, spell 1769.
+				if kind == "Gouge" {
+					damage = 75
+				}
+				result := s.CalcAndDealDamage(sim, t, damage, s.OutcomeMeleeSpecialHitAndCrit)
+				if !result.Landed() {
+					s.IssueRefund(sim)
+					return
+				}
+			}
 			if kind == "Kick" {
-				t.ForeverInterrupt(sim)
+				t.ForeverInterruptSchool(sim, 5*time.Second)
 				if !sim.Proc(.5*float64(r.ForeverRank("rogue.talent.improved-kick")), "Improved Kick") {
 					return
 				}
@@ -348,6 +382,7 @@ func (r *Rogue) registerForeverUtility() {
 				}
 			}
 			if kind == "Gouge" {
+				r.AutoAttacks.CancelAutoSwing(sim)
 				r.AddComboPoints(sim, 1, t, s.ComboPointMetrics())
 			}
 			if kind == "Kidney Shot" && a.IsActive() && r.ForeverRank("rogue.talent.improved-kidney-shot") > 0 {

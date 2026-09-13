@@ -15,7 +15,7 @@ func (h *Hunter) applyForeverTalents() {
 	h.ForeverControlReduction(core.ForeverSnare, h.ForeverValue("hunter.talent.surefooted", 1, 0)/100)
 	h.ForeverControlReduction(core.ForeverRoot, h.ForeverValue("hunter.talent.surefooted", 1, 0)/100)
 	h.OnSpellRegistered(func(s *core.Spell) {
-		if s.Flags.Matches(SpellFlagShot) {
+		if s.Flags.Matches(SpellFlagShot) || s.ProcMask.Matches(core.ProcMaskRangedAuto) {
 			old := s.ExtraCastCondition
 			s.ExtraCastCondition = func(sim *core.Simulation, t *core.Unit) bool {
 				return h.DistanceFromTarget <= 35+2*float64(h.ForeverRank("hunter.talent.hawk-eye")) && (old == nil || old(sim, t))
@@ -55,9 +55,19 @@ func (h *Hunter) applyForeverTalents() {
 		})
 	}
 	if h.pet != nil {
+		if distance := h.ForeverParameter("scenario.pet_starting_distance", 0); distance > core.MaxMeleeAttackDistance {
+			h.pet.ApplyOnPetEnable(func(sim *core.Simulation) {
+				h.pet.DistanceFromTarget = distance
+				core.StartDelayedAction(sim, core.DelayedActionOptions{DoAt: max(0, sim.CurrentTime) + time.Nanosecond, OnAction: func(sim *core.Simulation) {
+					if h.pet.IsEnabled() {
+						h.pet.MoveTo(core.MaxMeleeAttackDistance, sim)
+					}
+				}})
+			})
+		}
 		if h.ForeverRank("hunter.talent.bestial-swiftness") > 0 {
 			id := h.ForeverAction("hunter.talent.bestial-swiftness")
-			h.pet.AddMoveSpeedModifier(&id, 1.3)
+			h.Env.RegisterPostFinalizeEffect(func() { h.pet.AddMoveSpeedModifier(&id, 1.3) })
 		}
 		if n := h.ForeverRank("hunter.talent.spirit-bond"); n > 0 {
 			id := h.ForeverAction("hunter.talent.spirit-bond")
@@ -145,13 +155,17 @@ func (h *Hunter) registerForeverAbilities(arcaneTimer *core.Timer) {
 	// Aspect selection is real and mutually exclusive with Classic Hawk.
 	for _, kind := range []string{"Beast", "Monkey", "Cheetah", "Pack"} {
 		id := core.ActionID{SpellID: 13161}
+		mana := 50.0
 		switch kind {
 		case "Monkey":
 			id.SpellID = 13163
+			mana = 20
 		case "Cheetah":
 			id.SpellID = 5118
+			mana = 40
 		case "Pack":
 			id.SpellID = 13159
+			mana = 100
 		}
 		a := h.RegisterAura(core.Aura{Label: "Aspect of the " + kind, ActionID: id, Duration: core.NeverExpires})
 		a.NewExclusiveEffect("Aspect", true, core.ExclusiveEffect{})
@@ -171,10 +185,7 @@ func (h *Hunter) registerForeverAbilities(arcaneTimer *core.Timer) {
 			}
 		}
 		if kind == "Cheetah" || kind == "Pack" {
-			a.OnGain = func(a *core.Aura, sim *core.Simulation) {
-				h.AddMoveSpeedModifier(&id, 1.3+.03*float64(h.ForeverRank("hunter.talent.pathfinding")))
-			}
-			a.OnExpire = func(a *core.Aura, sim *core.Simulation) { h.RemoveMoveSpeedModifier(&id) }
+			h.foreverMovementAspect(a, id, kind == "Pack")
 		}
 		if kind == "Beast" && h.ForeverRank("hunter.talent.deadly-aspects") > 0 {
 			quick := h.RegisterAura(core.Aura{Label: "Deadly Beast", Duration: 12 * time.Second, OnGain: func(a *core.Aura, sim *core.Simulation) { h.MultiplyMeleeSpeed(sim, 1.3) }, OnExpire: func(a *core.Aura, sim *core.Simulation) { h.MultiplyMeleeSpeed(sim, 1/1.3) }})
@@ -184,7 +195,7 @@ func (h *Hunter) registerForeverAbilities(arcaneTimer *core.Timer) {
 				}
 			}
 		}
-		h.RegisterSpell(core.SpellConfig{ActionID: id, Flags: core.SpellFlagAPL, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) { a.Activate(sim) }})
+		h.RegisterSpell(core.SpellConfig{ActionID: id, Flags: core.SpellFlagAPL, ManaCost: core.ManaCostOptions{FlatCost: mana}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) { a.Activate(sim) }})
 	}
 	if h.ForeverRank("hunter.talent.deterrence") > 0 {
 		id := h.ForeverAction("hunter.talent.deterrence")

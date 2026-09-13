@@ -185,6 +185,11 @@ func (warrior *Warrior) applyUnbridledWrath() {
 			if !result.Landed() {
 				return
 			}
+			// Forever requires weapon damage, not merely a landed melee outcome
+			// such as Sunder Armor. Keep the Classic white-hit filter unchanged.
+			if warrior.Forever != nil && result.Damage <= 0 {
+				return
+			}
 
 			if spell.ProcMask.Matches(procMask) && sim.RandomFloat("Unbrided Wrath") < procChance {
 				rage := 1.0
@@ -524,6 +529,11 @@ func (warrior *Warrior) registerLastStandCD() {
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			warrior.AddStatsDynamic(sim, stats.Stats{stats.Health: -bonusHealth})
+			if warrior.Forever != nil {
+				// Temporary health is lost on expiration, but its expiration cannot
+				// kill the warrior. Preserve the equivalent Classic 1-HP floor.
+				warrior.RemoveHealth(sim, min(bonusHealth, max(0, warrior.CurrentHealth()-1)))
+			}
 		},
 	})
 

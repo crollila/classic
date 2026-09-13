@@ -12,6 +12,7 @@ func (w *Warrior) applyForeverTalents() {
 	if w.Forever == nil {
 		return
 	}
+	w.registerForeverRageDecayScenario()
 	w.ForeverControlReduction(core.ForeverStun, w.ForeverValue("warrior.talent.iron-will", 0, 0)/100)
 	w.ForeverControlReduction(core.ForeverFear, w.ForeverValue("warrior.talent.iron-will", 0, 0)/100)
 	w.OnSpellRegistered(func(s *core.Spell) {
@@ -48,6 +49,35 @@ func (w *Warrior) applyForeverTalents() {
 			}
 		}}))
 	}
+}
+
+// Anger Management's known 30% reduction can be evaluated without inventing
+// a Forever base decay rate. Both waiting time and base rage loss are explicit
+// scenario inputs, and the loss occurs only before combat starts.
+func (w *Warrior) registerForeverRageDecayScenario() {
+	wait := w.ForeverParameter("scenario.precombat_rage_wait_seconds", 0)
+	rate := w.ForeverParameter("scenario.precombat_rage_loss_per_second", 0)
+	if wait <= 0 || rate <= 0 {
+		return
+	}
+	mult := 1.0
+	if w.ForeverRank("warrior.talent.anger-management") > 0 {
+		mult = .7
+	}
+	metrics := w.NewRageMetrics(w.ForeverAction("warrior.talent.anger-management"))
+	w.RegisterPrepullAction(-time.Duration(wait*float64(time.Second)), func(sim *core.Simulation) {
+		var tick func(*core.Simulation)
+		last := sim.CurrentTime
+		tick = func(sim *core.Simulation) {
+			elapsed := (sim.CurrentTime - last).Seconds()
+			w.SpendRage(sim, min(w.CurrentRage(), rate*elapsed*mult), metrics)
+			last = sim.CurrentTime
+			if sim.CurrentTime < 0 {
+				core.StartDelayedAction(sim, core.DelayedActionOptions{DoAt: min(0, sim.CurrentTime+time.Second), OnAction: tick})
+			}
+		}
+		core.StartDelayedAction(sim, core.DelayedActionOptions{DoAt: min(0, sim.CurrentTime+time.Second), OnAction: tick})
+	})
 }
 
 func (w *Warrior) registerForeverAbilities() {
@@ -190,7 +220,7 @@ func (w *Warrior) foreverControl(record string, id core.ActionID, stance Stance,
 			return
 		}
 		if record == "warrior.talent.improved-shield-bash" {
-			t.ForeverInterrupt(sim)
+			t.ForeverInterruptSchool(sim, 6*time.Second)
 		}
 		if record == "warrior.talent.improved-shield-bash" && !sim.Proc(w.ForeverValue(record, 0, 0)/100, "Improved Shield Bash") {
 			return

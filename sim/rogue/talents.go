@@ -110,6 +110,17 @@ func (rogue *Rogue) registerColdBloodCD() {
 	}
 
 	actionID := core.ActionID{SpellID: 14177}
+	eligible := func(spell *core.Spell) bool {
+		if rogue.Forever == nil {
+			return spell.Flags.Matches(SpellFlagColdBlooded)
+		}
+		switch spell.SpellCode {
+		case SpellCode_RogueSinisterStrike, SpellCode_RogueBackstab, SpellCode_RogueAmbush, SpellCode_RogueEviscerate:
+			return true
+		}
+		mutilate := rogue.ForeverAction("rogue.talent.mutilate")
+		return spell.OtherID == mutilate.OtherID && (spell.Tag == -mutilate.Tag*10 || spell.Tag == -mutilate.Tag*10-1)
+	}
 
 	coldBloodAura := rogue.RegisterAura(core.Aura{
 		Label:    "Cold Blood",
@@ -117,20 +128,20 @@ func (rogue *Rogue) registerColdBloodCD() {
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range rogue.Spellbook {
-				if spell.Flags.Matches(SpellFlagColdBlooded) {
+				if eligible(spell) {
 					spell.BonusCritRating += 100 * core.CritRatingPerCritChance
 				}
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range rogue.Spellbook {
-				if spell.Flags.Matches(SpellFlagColdBlooded) {
+				if eligible(spell) {
 					spell.BonusCritRating -= 100 * core.CritRatingPerCritChance
 				}
 			}
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.Flags.Matches(SpellFlagColdBlooded) && !(rogue.Forever != nil && spell.OtherID == proto.OtherAction_OtherActionForever && spell.Tag < 0) {
+			if eligible(spell) && !(rogue.Forever != nil && spell.OtherID == proto.OtherAction_OtherActionForever && spell.Tag < 0) {
 				aura.Deactivate(sim)
 			}
 		},

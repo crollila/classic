@@ -1,11 +1,82 @@
 package hunter
 
 import (
+	"fmt"
 	"github.com/wowsims/classic/sim/core"
 	"github.com/wowsims/classic/sim/core/foreverdata"
 	"github.com/wowsims/classic/sim/core/stats"
 	"time"
 )
+
+// Pathfinding modifies the actual Cheetah/Pack recipients. The Classic Pack
+// baseline supplies the 30-yard party radius and four-second damage daze.
+// Source: assets/db_inputs/wowhead_spell_tooltips.csv, spells 5118 and 13159.
+// Party separation uses the engine's one-dimensional distance convention;
+// the 250-ms range refresh and 50% daze slow remain provisional analogues.
+func (h *Hunter) foreverMovementAspect(aspect *core.Aura, id core.ActionID, pack bool) {
+	units := []*core.Unit{&h.Unit}
+	if pack {
+		units = nil
+		for _, player := range h.Party.Players {
+			c := player.GetCharacter()
+			units = append(units, &c.Unit)
+			for _, pet := range c.Pets {
+				units = append(units, &pet.Unit)
+			}
+		}
+	}
+	benefits := make([]*core.Aura, 0, len(units))
+	for _, unit := range units {
+		key := id // Separate modifier identity for each source/recipient pair.
+		daze := unit.ForeverSnareAura("Aspect Daze", id, 4*time.Second, .5)
+		onDamage := func(_ *core.Aura, sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
+			if result.Damage > 0 {
+				daze.Activate(sim)
+			}
+		}
+		benefits = append(benefits, unit.RegisterAura(core.Aura{
+			Label: fmt.Sprintf("%s benefit-%s", aspect.Label, h.Label), ActionID: id, Duration: core.NeverExpires,
+			OnGain: func(a *core.Aura, sim *core.Simulation) {
+				unit.AddMoveSpeedModifier(&key, 1.3+.03*float64(h.ForeverRank("hunter.talent.pathfinding")))
+			},
+			OnExpire:        func(a *core.Aura, sim *core.Simulation) { unit.RemoveMoveSpeedModifier(&key) },
+			OnSpellHitTaken: onDamage, OnPeriodicDamageTaken: onDamage,
+		}))
+	}
+	refresh := func(sim *core.Simulation) {
+		for _, benefit := range benefits {
+			distance := benefit.Unit.DistanceFromTarget - h.DistanceFromTarget
+			if benefit.Unit.IsEnabled() && distance >= -30 && distance <= 30 {
+				benefit.Activate(sim)
+			} else {
+				benefit.Deactivate(sim)
+			}
+		}
+	}
+	generation := 0
+	aspect.OnGain = func(a *core.Aura, sim *core.Simulation) {
+		generation++
+		current := generation
+		refresh(sim)
+		if pack {
+			var tick func(*core.Simulation)
+			tick = func(sim *core.Simulation) {
+				if !aspect.IsActive() || current != generation {
+					return
+				}
+				refresh(sim)
+				core.StartDelayedAction(sim, core.DelayedActionOptions{DoAt: sim.CurrentTime + 250*time.Millisecond, OnAction: tick})
+			}
+			core.StartDelayedAction(sim, core.DelayedActionOptions{DoAt: sim.CurrentTime + 250*time.Millisecond, OnAction: tick})
+		}
+	}
+	aspect.OnExpire = func(a *core.Aura, sim *core.Simulation) {
+		generation++
+		for _, benefit := range benefits {
+			benefit.Deactivate(sim)
+		}
+	}
+}
 
 // Baselines are retained from the Classic spell tables. The only added cooldown
 // assumption is Viper's TBC 15s cooldown, explicitly excluded from STRICT.

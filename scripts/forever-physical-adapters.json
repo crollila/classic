@@ -315,7 +315,8 @@
     "confidence": "PROVISIONAL",
     "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
     "remaining_unknowns": [
-      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional.",
+      "Expiration removes temporary current health with the Classic analogue 1-HP survival floor."
     ],
     "mode": "class",
     "files": [
@@ -887,7 +888,8 @@
     "mode": "classic",
     "files": [
       "sim/rogue/",
-      "sim/core/forever.go"
+      "sim/core/forever.go",
+      "sim/rogue/forever.go"
     ],
     "scope": "Existing Forever adapter or audited Classic bridge."
   },
@@ -1223,13 +1225,29 @@
     "confidence": "PROVISIONAL",
     "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
     "remaining_unknowns": [
-      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+      "Forever baseline out-of-combat decay rate and initial grace period; scenario inputs make these explicit rather than assumed."
     ],
     "mode": "class",
     "files": [
       "sim/warrior/forever.go"
     ],
-    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+    "scope": "Generates 1 Rage each 3 combat seconds; reduces explicitly configured precombat rage loss by 30%.",
+    "parameters": [
+      {
+        "key": "scenario.precombat_rage_wait_seconds",
+        "label": "Precombat rage decay wait (seconds; 0 disables)",
+        "default": 0,
+        "min": 0,
+        "max": 3600
+      },
+      {
+        "key": "scenario.precombat_rage_loss_per_second",
+        "label": "Base precombat rage loss per second (explicit scenario)",
+        "default": 0,
+        "min": 0,
+        "max": 100
+      }
+    ]
   },
   "warrior.talent.improved-charge": {
     "confidence": "PROVISIONAL",
@@ -1455,7 +1473,7 @@
     "files": [
       "sim/warrior/forever.go"
     ],
-    "scope": "Shield-equipped melee interrupt, with50%/rank chance of3s silence."
+    "scope": "Shield Bash interrupts for Classic six-second school lockout; talent adds50%/rank chance of a separate three-second silence."
   },
   "warrior.talent.focused-rage": {
     "confidence": "PROVISIONAL",
@@ -1608,13 +1626,14 @@
     "confidence": "PROVISIONAL",
     "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
     "remaining_unknowns": [
-      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+      "Classic mana costs and 30-yard Pack radius retained. The 250-ms range refresh, 50% damage-triggered four-second daze and one-dimensional party separation are provisional analogues."
     ],
     "mode": "class-new",
     "files": [
-      "sim/hunter/forever.go"
+      "sim/hunter/forever.go",
+      "sim/hunter/forever_utility.go"
     ],
-    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+    "scope": "Cheetah self and Pack party/pets gain sourced speed bonus; Pack dynamically checks Classic 30-yard radius and actual movement consumes the modifier."
   },
   "hunter.talent.improved-revive-pet": {
     "confidence": "PROVISIONAL",
@@ -1632,13 +1651,23 @@
     "confidence": "PROVISIONAL",
     "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
     "remaining_unknowns": [
-      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+      "Movement uses the sourced30% bonus. Explicit starting-distance scenario supplies travel distance; generic pet pursuit geometry and terrain remain outside the one-dimensional encounter model."
     ],
     "mode": "class-new",
     "files": [
-      "sim/hunter/forever.go"
+      "sim/hunter/forever.go",
+      "sim/hunter/pet.go"
     ],
-    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+    "scope": "Pet movement is 30% faster. Explicit starting-distance scenario makes the pet travel before attacking; speed changes time to first attack.",
+    "parameters": [
+      {
+        "key": "scenario.pet_starting_distance",
+        "label": "Pet distance from enemy on summon (yards; 0 = melee)",
+        "default": 0,
+        "min": 0,
+        "max": 1000
+      }
+    ]
   },
   "hunter.talent.improved-mend-pet": {
     "confidence": "PROVISIONAL",
@@ -1719,7 +1748,7 @@
     "files": [
       "sim/hunter/forever.go"
     ],
-    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+    "scope": "Adds 2 yards/rank to shots, stings and scheduled ranged-auto maximum range; movement into range resumes autoattacks."
   },
   "hunter.talent.improved-concussive-shot": {
     "confidence": "PROVISIONAL",
@@ -2020,7 +2049,7 @@
     "files": [
       "sim/rogue/forever.go"
     ],
-    "scope": "Active combat effects, castable abilities, or encounter-control behavior.",
+    "scope": "Guaranteed crit only for named Sinister Strike, Backstab, Ambush, Eviscerate, and both Mutilate weapon strikes; unlisted builders do not consume it.",
     "game_spell_ids": [
       14177
     ]
@@ -2205,7 +2234,7 @@
     "files": [
       "sim/rogue/forever.go"
     ],
-    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+    "scope": "Gouge rank5 uses cached Classic75damage, physical hit/crit and Lethality, then applies4s+.5s/rank breakable incapacitate, awardsCP and stops autoattacks."
   },
   "rogue.talent.remorseless-attacks": {
     "confidence": "PROVISIONAL",
@@ -2354,7 +2383,7 @@
     "files": [
       "sim/rogue/forever.go"
     ],
-    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+    "scope": "Kick uses Classic80damage and five-second interrupted-school lockout; talent adds50%/rank chance of a separate two-second silence."
   },
   "rogue.talent.restless-blades": {
     "confidence": "PROVISIONAL",
@@ -2474,7 +2503,7 @@
     "confidence": "PROVISIONAL",
     "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
     "remaining_unknowns": [
-      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+      "Classic engine combines failed magic hit checks and binary full resistance as OutcomeMiss; both use the provisional resist trigger. Landed zero-damage utility and absorbs are excluded."
     ],
     "mode": "class-new",
     "files": [
@@ -2498,7 +2527,8 @@
     "confidence": "PROVISIONAL",
     "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
     "remaining_unknowns": [
-      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional.",
+      "The stealth-detection level subclause is outside the raid encounter model; the numerical ranged/magic hit avoidance is active. No claim of stealth detection simulation."
     ],
     "mode": "class-new",
     "files": [
