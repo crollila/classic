@@ -27,6 +27,8 @@ func (warlock *Warlock) applyDemonArmor() {
 		60: 15.0,
 	}[warlock.Level]
 
+	armor *= 1 + warlock.ForeverValue("warlock.talent.demonic-aegis", 0, 0)/100
+	shadowRes *= 1 + warlock.ForeverValue("warlock.talent.demonic-aegis", 0, 0)/100
 	warlock.AddStat(stats.Armor, armor)
 	warlock.AddStat(stats.ShadowResistance, shadowRes)
 

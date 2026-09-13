@@ -55,7 +55,7 @@ func (warlock *Warlock) getDrainSoulBaseConfig(rank int) core.SpellConfig {
 				dot.Snapshot(target, baseDamage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, warlock.foreverDotOutcome(dot))
 			},
 		},
 

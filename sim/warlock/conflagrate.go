@@ -12,7 +12,14 @@ func (warlock *Warlock) getConflagrateConfig(rank int) core.SpellConfig {
 	spellId := [ConflagrateRanks + 1]int32{0, 17962, 18930, 18931, 18932}[rank]
 	baseDamageMin := [ConflagrateRanks + 1]float64{0, 249, 319, 395, 447}[rank]
 	baseDamageMax := [ConflagrateRanks + 1]float64{0, 316, 400, 491, 557}[rank]
+	if warlock.Forever != nil && rank == 1 {
+		baseDamageMin = 109
+		baseDamageMax = 132
+	}
 	manaCost := [ConflagrateRanks + 1]float64{0, 165, 200, 230, 255}[rank]
+	if warlock.Forever != nil && rank == 1 {
+		manaCost = 100
+	}
 	level := [ConflagrateRanks + 1]int{0, 0, 48, 54, 60}[rank]
 
 	spCoeff := 0.429
@@ -53,7 +60,7 @@ func (warlock *Warlock) getConflagrateConfig(rank int) core.SpellConfig {
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			immoSpell := warlock.getActiveImmolateSpell(target)
-			if immoSpell != nil {
+			if immoSpell != nil && !(warlock.ForeverRank("warlock.talent.shadow-and-flame") > 0 && sim.Proc(warlock.ForeverValue("warlock.talent.shadow-and-flame", 4, 0)/100, "Forever Shadow and Flame")) {
 				immoSpell.Dot(target).Deactivate(sim)
 			}
 		},

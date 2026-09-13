@@ -70,7 +70,7 @@ func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
 				dot.Snapshot(target, snapshotBaseDmgNoBonus, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, warlock.foreverDotOutcome(dot))
 				if dot.TickCount%4 == 0 { // CoA ramp up
 					dot.SnapshotBaseDamage += snapshotBaseDmgNoBonus
 				}
@@ -364,7 +364,7 @@ func (warlock *Warlock) registerCurseOfDoomSpell() {
 				dot.Snapshot(target, 3200, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, warlock.foreverDotOutcome(dot))
 			},
 		},
 

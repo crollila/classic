@@ -48,12 +48,19 @@ func (priest *Priest) newStarshardsSpellConfig(rank int, tickIdx int32) core.Spe
 
 	spellId := StarshardsSpellId[rank]
 	baseDamage := StarshardsBaseDamage[rank] / float64(ticks)
+	if priest.HasForeverMechanic("priest.racial.starshards") && rank == 4 {
+		baseDamage = 816 / float64(ticks)
+	}
 	manaCost := StarshardsManaCost[rank]
 	level := StarshardsLevel[rank]
 
 	spellCoeff := 0.167
 
 	tickLength := time.Second
+	cd := core.Cooldown{}
+	if priest.HasForeverMechanic("priest.racial.starshards") {
+		cd = core.Cooldown{Timer: priest.NewTimer(), Duration: 30 * time.Second}
+	}
 
 	return core.SpellConfig{
 		SpellCode:   SpellCode_PriestStarshards,
@@ -71,6 +78,7 @@ func (priest *Priest) newStarshardsSpellConfig(rank int, tickIdx int32) core.Spe
 		},
 
 		Cast: core.CastConfig{
+			CD: cd,
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},

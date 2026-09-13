@@ -40,6 +40,11 @@ func (mage *Mage) newPyroblastSpellConfig(rank int) core.SpellConfig {
 	baseDamageLow := PyroblastBaseDamage[rank][0]
 	baseDamageHigh := PyroblastBaseDamage[rank][1]
 	baseDotDamage := PyroblastDotDamage[rank] / float64(numTicks)
+	if mage.Forever != nil && rank == 1 {
+		baseDamageLow = 155
+		baseDamageHigh = 185
+		baseDotDamage = 76 / float64(numTicks)
+	}
 	manaCost := PyroblastManaCost[rank]
 	level := PyroblastLevel[rank]
 

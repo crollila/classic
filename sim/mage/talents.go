@@ -12,6 +12,7 @@ func (mage *Mage) ApplyTalents() {
 	mage.applyArcaneTalents()
 	mage.applyFireTalents()
 	mage.applyFrostTalents()
+	mage.applyForeverCasterTalents()
 }
 
 func (mage *Mage) applyArcaneTalents() {

@@ -1,0 +1,2951 @@
+{
+  "mage.talent.wand-specialization": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": []
+  },
+  "mage.talent.improved-channeling": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3, 4, 5 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Unless explicitly stated: eligible events, internal cooldown, per-target versus per-cast rolls, proc recursion and snapshot behavior require validation.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ]
+  },
+  "mage.talent.arcane-subtlety": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other."
+    ]
+  },
+  "mage.talent.magic-absorption": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "The Classic outcome model merges complete spell misses and full resists; its magic OutcomeMiss event is the provisional full-resist analogue."
+    ]
+  },
+  "mage.talent.arcane-concentration": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Unless explicitly stated: eligible events, internal cooldown, per-target versus per-cast rolls, proc recursion and snapshot behavior require validation."
+    ]
+  },
+  "mage.talent.arcane-geometry": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other."
+    ]
+  },
+  "mage.talent.arcane-blast": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Displayed damage/healing and resource costs may reflect demo character level, spell rank, equipment, or talents. Level-60 rank tables and unlisted AP/SP coefficients are not established by this tooltip.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ],
+    "auto_priority": 160,
+    "auto_condition": {
+      "cmp": {
+        "op": "OpLt",
+        "lhs": {
+          "auraNumStacks": {
+            "auraId": {
+              "otherId": 19,
+              "tag": 468
+            }
+          }
+        },
+        "rhs": {
+          "const": {
+            "val": "4"
+          }
+        }
+      }
+    }
+  },
+  "mage.talent.arcane-shielding": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other."
+    ]
+  },
+  "mage.talent.improved-counterspell": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other."
+    ]
+  },
+  "mage.talent.missile-barrage": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Unless explicitly stated: eligible events, internal cooldown, per-target versus per-cast rolls, proc recursion and snapshot behavior require validation.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ]
+  },
+  "mage.talent.presence-of-mind": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Displayed damage/healing and resource costs may reflect demo character level, spell rank, equipment, or talents. Level-60 rank tables and unlisted AP/SP coefficients are not established by this tooltip."
+    ]
+  },
+  "mage.talent.arcane-instability": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Unless explicitly stated: eligible events, internal cooldown, per-target versus per-cast rolls, proc recursion and snapshot behavior require validation.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other."
+    ]
+  },
+  "mage.talent.arcane-power": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Displayed damage/healing and resource costs may reflect demo character level, spell rank, equipment, or talents. Level-60 rank tables and unlisted AP/SP coefficients are not established by this tooltip.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other."
+    ]
+  },
+  "mage.talent.wake-of-fire": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Unless explicitly stated: eligible events, internal cooldown, per-target versus per-cast rolls, proc recursion and snapshot behavior require validation.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other."
+    ]
+  },
+  "mage.talent.incineration": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Unless explicitly stated: eligible events, internal cooldown, per-target versus per-cast rolls, proc recursion and snapshot behavior require validation.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other."
+    ]
+  },
+  "mage.talent.improved-fireball": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3, 4, 5 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other."
+    ]
+  },
+  "mage.talent.ignite": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": []
+  },
+  "mage.talent.flame-throwing": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": []
+  },
+  "mage.talent.impact": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Unless explicitly stated: eligible events, internal cooldown, per-target versus per-cast rolls, proc recursion and snapshot behavior require validation.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other."
+    ]
+  },
+  "mage.talent.burning-soul": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Unless explicitly stated: eligible events, internal cooldown, per-target versus per-cast rolls, proc recursion and snapshot behavior require validation.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other."
+    ],
+    "rank_overrides": [
+      {
+        "rank": 2,
+        "values": [
+          47,
+          20
+        ],
+        "effect": "Gives your Fire spells a 47% chance to not lose casting time when you take damage and reduces the threat caused by your Fire spells by 20%.",
+        "confidence": "PREDICTED",
+        "reason": "Rounded fractional progression toward the analogous 50%,70%,100% or25% cap; directly observed ranks retain their authoritative values."
+      },
+      {
+        "rank": 3,
+        "values": [
+          70,
+          30
+        ],
+        "effect": "Gives your Fire spells a 70% chance to not lose casting time when you take damage and reduces the threat caused by your Fire spells by 30%.",
+        "confidence": "PREDICTED",
+        "reason": "Rounded fractional progression toward the analogous 50%,70%,100% or25% cap; directly observed ranks retain their authoritative values."
+      }
+    ]
+  },
+  "mage.talent.improved-flamestrike": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Unless explicitly stated: eligible events, internal cooldown, per-target versus per-cast rolls, proc recursion and snapshot behavior require validation."
+    ]
+  },
+  "mage.talent.pyroblast": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Displayed damage/healing and resource costs may reflect demo character level, spell rank, equipment, or talents. Level-60 rank tables and unlisted AP/SP coefficients are not established by this tooltip.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ]
+  },
+  "mage.talent.improved-scorch": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Unless explicitly stated: eligible events, internal cooldown, per-target versus per-cast rolls, proc recursion and snapshot behavior require validation.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other."
+    ],
+    "rank_overrides": [
+      {
+        "rank": 3,
+        "values": [
+          100,
+          3,
+          30,
+          5
+        ],
+        "effect": "Your Scorch spell has a 100% chance to cause your target to be vulnerable to Fire damage. This vulnerability increases all Fire damage you deal to your target by 3% and lasts 30 sec, stacking up to 5 times.",
+        "confidence": "PREDICTED",
+        "reason": "Rounded fractional progression toward the analogous 50%,70%,100% or25% cap; directly observed ranks retain their authoritative values."
+      }
+    ]
+  },
+  "mage.talent.improved-fire-ward": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Unless explicitly stated: eligible events, internal cooldown, per-target versus per-cast rolls, proc recursion and snapshot behavior require validation."
+    ]
+  },
+  "mage.talent.hot-streak": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ]
+  },
+  "mage.talent.master-of-elements": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other."
+    ]
+  },
+  "mage.talent.critical-mass": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Unless explicitly stated: eligible events, internal cooldown, per-target versus per-cast rolls, proc recursion and snapshot behavior require validation."
+    ]
+  },
+  "mage.talent.blast-wave": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Displayed damage/healing and resource costs may reflect demo character level, spell rank, equipment, or talents. Level-60 rank tables and unlisted AP/SP coefficients are not established by this tooltip.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ]
+  },
+  "mage.talent.fire-power": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": []
+  },
+  "mage.talent.combustion": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Displayed damage/healing and resource costs may reflect demo character level, spell rank, equipment, or talents. Level-60 rank tables and unlisted AP/SP coefficients are not established by this tooltip.",
+      "Unless explicitly stated: eligible events, internal cooldown, per-target versus per-cast rolls, proc recursion and snapshot behavior require validation.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ]
+  },
+  "mage.talent.frost-warding": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Unless explicitly stated: eligible events, internal cooldown, per-target versus per-cast rolls, proc recursion and snapshot behavior require validation.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other."
+    ]
+  },
+  "mage.talent.improved-frostbolt": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": []
+  },
+  "mage.talent.ice-shards": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": []
+  },
+  "mage.talent.permafrost": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other."
+    ]
+  },
+  "mage.talent.improved-frost-nova": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": []
+  },
+  "mage.talent.frostbite": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Unless explicitly stated: eligible events, internal cooldown, per-target versus per-cast rolls, proc recursion and snapshot behavior require validation."
+    ]
+  },
+  "mage.talent.piercing-ice": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": []
+  },
+  "mage.talent.frost-channeling": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": []
+  },
+  "mage.talent.ice-lance": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Displayed damage/healing and resource costs may reflect demo character level, spell rank, equipment, or talents. Level-60 rank tables and unlisted AP/SP coefficients are not established by this tooltip.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ],
+    "auto_priority": 150,
+    "auto_condition": {
+      "or": {
+        "vals": [
+          {
+            "auraIsActive": {
+              "auraId": {
+                "otherId": 19,
+                "tag": 510
+              }
+            }
+          },
+          {
+            "auraIsActive": {
+              "sourceUnit": {
+                "type": "CurrentTarget"
+              },
+              "auraId": {
+                "otherId": 19,
+                "tag": 500
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "mage.talent.improved-blizzard": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other."
+    ]
+  },
+  "mage.talent.arctic-reach": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": []
+  },
+  "mage.talent.ice-block": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Displayed damage/healing and resource costs may reflect demo character level, spell rank, equipment, or talents. Level-60 rank tables and unlisted AP/SP coefficients are not established by this tooltip."
+    ]
+  },
+  "mage.talent.shatter": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Unless explicitly stated: eligible events, internal cooldown, per-target versus per-cast rolls, proc recursion and snapshot behavior require validation.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other."
+    ],
+    "rank_overrides": [
+      {
+        "rank": 2,
+        "values": [
+          33
+        ],
+        "effect": "Increases the critical strike chance of all your spells against Frozen targets by 33%.",
+        "confidence": "PREDICTED",
+        "reason": "Rounded fractional progression toward the analogous 50%,70%,100% or25% cap; directly observed ranks retain their authoritative values."
+      },
+      {
+        "rank": 3,
+        "values": [
+          50
+        ],
+        "effect": "Increases the critical strike chance of all your spells against Frozen targets by 50%.",
+        "confidence": "PREDICTED",
+        "reason": "Rounded fractional progression toward the analogous 50%,70%,100% or25% cap; directly observed ranks retain their authoritative values."
+      }
+    ]
+  },
+  "mage.talent.improved-cone-of-cold": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other."
+    ]
+  },
+  "mage.talent.cold-snap": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Displayed damage/healing and resource costs may reflect demo character level, spell rank, equipment, or talents. Level-60 rank tables and unlisted AP/SP coefficients are not established by this tooltip.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ]
+  },
+  "mage.talent.fingers-of-frost": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Unless explicitly stated: eligible events, internal cooldown, per-target versus per-cast rolls, proc recursion and snapshot behavior require validation.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ]
+  },
+  "mage.talent.winter-s-chill": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3, 4, 5 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Unless explicitly stated: eligible events, internal cooldown, per-target versus per-cast rolls, proc recursion and snapshot behavior require validation.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other."
+    ]
+  },
+  "mage.talent.ice-barrier": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Displayed damage/healing and resource costs may reflect demo character level, spell rank, equipment, or talents. Level-60 rank tables and unlisted AP/SP coefficients are not established by this tooltip.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ]
+  },
+  "mage.baseline.frostfire-bolt": {
+    "mode": "ability",
+    "confidence": "PREDICTED",
+    "reason": "Explicit best-guess analogue from the named Classic ability or closely described ability; numeric preparation/activation defaults are isolated in the class implementation.",
+    "files": [
+      "sim/mage/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "Registered playable action or baseline registration with named evidence.",
+    "remaining_unknowns": [
+      "Referenced by talent text, not a complete baseline ability tooltip. Costs, cooldowns, damage/healing, level/rank table, coefficients and exact targeting are missing."
+    ],
+    "auto_priority": 180
+  },
+  "warlock.talent.improved-life-tap": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": []
+  },
+  "warlock.talent.improved-corruption": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3, 4, 5 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ]
+  },
+  "warlock.talent.malediction": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3, 4, 5 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ]
+  },
+  "warlock.talent.soul-harvesting": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other."
+    ]
+  },
+  "warlock.talent.improved-drains": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other."
+    ],
+    "rank_overrides": [
+      {
+        "rank": 2,
+        "values": [
+          4,
+          12,
+          20,
+          6
+        ],
+        "effect": "Increases the damage done or health drained by your Drain Life and Drain Soul spells by 4% per each of your other Affliction effects active on the target, up to a maximum increase of 12%. When your Drain Soul damages targets below 20% health, this bonus is tripled. Additionally, your Drain Life range is extended by 6 yards.",
+        "confidence": "PREDICTED",
+        "reason": "Linear per-rank damage, maximum and range progression; retain the observed fixed execute threshold instead of scaling 20% to40%/60%."
+      },
+      {
+        "rank": 3,
+        "values": [
+          6,
+          18,
+          20,
+          9
+        ],
+        "effect": "Increases the damage done or health drained by your Drain Life and Drain Soul spells by 6% per each of your other Affliction effects active on the target, up to a maximum increase of 18%. When your Drain Soul damages targets below 20% health, this bonus is tripled. Additionally, your Drain Life range is extended by 9 yards.",
+        "confidence": "PREDICTED",
+        "reason": "Linear per-rank damage, maximum and range progression; retain the observed fixed execute threshold instead of scaling 20% to40%/60%."
+      }
+    ]
+  },
+  "warlock.talent.improved-bane-of-agony": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ]
+  },
+  "warlock.talent.fel-concentration": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Unless explicitly stated: eligible events, internal cooldown, per-target versus per-cast rolls, proc recursion and snapshot behavior require validation.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ],
+    "rank_overrides": [
+      {
+        "rank": 2,
+        "values": [
+          47
+        ],
+        "effect": "Gives you a 47% chance to avoid interruption caused by damage while channeling or casting your Drain Life, Drain Mana, or Drain Soul spells.",
+        "confidence": "PREDICTED",
+        "reason": "Rounded fractional progression toward the analogous 50%,70%,100% or25% cap; directly observed ranks retain their authoritative values."
+      },
+      {
+        "rank": 3,
+        "values": [
+          70
+        ],
+        "effect": "Gives you a 70% chance to avoid interruption caused by damage while channeling or casting your Drain Life, Drain Mana, or Drain Soul spells.",
+        "confidence": "PREDICTED",
+        "reason": "Rounded fractional progression toward the analogous 50%,70%,100% or25% cap; directly observed ranks retain their authoritative values."
+      }
+    ]
+  },
+  "warlock.talent.amplify-curse": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Displayed damage/healing and resource costs may reflect demo character level, spell rank, equipment, or talents. Level-60 rank tables and unlisted AP/SP coefficients are not established by this tooltip.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ]
+  },
+  "warlock.talent.pandemic": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other."
+    ],
+    "rank_overrides": [
+      {
+        "rank": 3,
+        "values": [
+          100
+        ],
+        "effect": "Increases the critical strike damage bonus of your Corruption, Bane of Agony, Bane of Doom, Drain Soul, Drain Life, Siphon Life, and Drain Hope spells by 100%.",
+        "confidence": "PREDICTED",
+        "reason": "Rounded fractional progression toward the analogous 50%,70%,100% or25% cap; directly observed ranks retain their authoritative values."
+      }
+    ]
+  },
+  "warlock.talent.nightfall": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Unless explicitly stated: eligible events, internal cooldown, per-target versus per-cast rolls, proc recursion and snapshot behavior require validation.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other."
+    ]
+  },
+  "warlock.talent.curse-of-exhaustion": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Displayed damage/healing and resource costs may reflect demo character level, spell rank, equipment, or talents. Level-60 rank tables and unlisted AP/SP coefficients are not established by this tooltip.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ]
+  },
+  "warlock.talent.siphon-life": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Displayed damage/healing and resource costs may reflect demo character level, spell rank, equipment, or talents. Level-60 rank tables and unlisted AP/SP coefficients are not established by this tooltip."
+    ]
+  },
+  "warlock.talent.soul-siphon": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ]
+  },
+  "warlock.talent.drain-hope": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Displayed damage/healing and resource costs may reflect demo character level, spell rank, equipment, or talents. Level-60 rank tables and unlisted AP/SP coefficients are not established by this tooltip.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ],
+    "auto_priority": 140,
+    "channel": true
+  },
+  "warlock.talent.improved-health-funnel": {
+    "mode": "class-new",
+    "confidence": "PREDICTED",
+    "reason": "Observed transfer/cost/threat talent multipliers, with predicted 50-health-per-second base transfer over10seconds; disabled in STRICT.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ]
+  },
+  "warlock.talent.improved-imp": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ]
+  },
+  "warlock.talent.demonic-aegis": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ]
+  },
+  "warlock.talent.improved-voidwalker": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": []
+  },
+  "warlock.talent.demonic-energies": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other."
+    ],
+    "rank_overrides": [
+      {
+        "rank": 2,
+        "values": [
+          16,
+          100
+        ],
+        "effect": "You heal your pet for 16% of all spell damage you deal. When you gain Mana from Life Tap, your summoned demon gains 100% of the Mana you gain.",
+        "confidence": "PREDICTED",
+        "reason": "Scale both numerical benefits linearly from observed rank1; retain fixed durations, trigger counts and debuff magnitude. This corrects calculator single-field scaling."
+      }
+    ]
+  },
+  "warlock.talent.improved-sayaad": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other."
+    ]
+  },
+  "warlock.talent.demonic-sacrifice": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Displayed damage/healing and resource costs may reflect demo character level, spell rank, equipment, or talents. Level-60 rank tables and unlisted AP/SP coefficients are not established by this tooltip.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ]
+  },
+  "warlock.talent.master-summoner": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": []
+  },
+  "warlock.talent.decimation": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other."
+    ]
+  },
+  "warlock.talent.fel-domination": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Displayed damage/healing and resource costs may reflect demo character level, spell rank, equipment, or talents. Level-60 rank tables and unlisted AP/SP coefficients are not established by this tooltip."
+    ]
+  },
+  "warlock.talent.demonic-brand": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other."
+    ]
+  },
+  "warlock.talent.improved-felhunter": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ]
+  },
+  "warlock.talent.soul-link": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Displayed damage/healing and resource costs may reflect demo character level, spell rank, equipment, or talents. Level-60 rank tables and unlisted AP/SP coefficients are not established by this tooltip.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Damage transfer uses30% of incoming damage after prior damage modifiers and bypasses a second pet mitigation pass."
+    ]
+  },
+  "warlock.talent.master-demonologist": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3, 4, 5 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ]
+  },
+  "warlock.talent.demonic-pact": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other."
+    ]
+  },
+  "warlock.talent.destructive-reach": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ]
+  },
+  "warlock.talent.improved-shadow-bolt": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3, 4, 5 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other."
+    ]
+  },
+  "warlock.talent.bane": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3, 4, 5 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ]
+  },
+  "warlock.talent.cataclysm": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ]
+  },
+  "warlock.talent.aftermath": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3, 4, 5 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Unless explicitly stated: eligible events, internal cooldown, per-target versus per-cast rolls, proc recursion and snapshot behavior require validation.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other."
+    ],
+    "rank_overrides": [
+      {
+        "rank": 2,
+        "values": [
+          20,
+          40,
+          50,
+          5
+        ],
+        "effect": "Increases the initial damage of your Immolate spell by 20% and your Conflagrate spell has a 40% chance to Daze the target, reducing the target's movement speed by 50% for 5 sec.",
+        "confidence": "PREDICTED",
+        "reason": "Scale both numerical benefits linearly from observed rank1; retain fixed durations, trigger counts and debuff magnitude. This corrects calculator single-field scaling."
+      },
+      {
+        "rank": 3,
+        "values": [
+          30,
+          60,
+          50,
+          5
+        ],
+        "effect": "Increases the initial damage of your Immolate spell by 30% and your Conflagrate spell has a 60% chance to Daze the target, reducing the target's movement speed by 50% for 5 sec.",
+        "confidence": "PREDICTED",
+        "reason": "Scale both numerical benefits linearly from observed rank1; retain fixed durations, trigger counts and debuff magnitude. This corrects calculator single-field scaling."
+      },
+      {
+        "rank": 4,
+        "values": [
+          40,
+          80,
+          50,
+          5
+        ],
+        "effect": "Increases the initial damage of your Immolate spell by 40% and your Conflagrate spell has a 80% chance to Daze the target, reducing the target's movement speed by 50% for 5 sec.",
+        "confidence": "PREDICTED",
+        "reason": "Scale both numerical benefits linearly from observed rank1; retain fixed durations, trigger counts and debuff magnitude. This corrects calculator single-field scaling."
+      },
+      {
+        "rank": 5,
+        "values": [
+          50,
+          100,
+          50,
+          5
+        ],
+        "effect": "Increases the initial damage of your Immolate spell by 50% and your Conflagrate spell has a 100% chance to Daze the target, reducing the target's movement speed by 50% for 5 sec.",
+        "confidence": "PREDICTED",
+        "reason": "Scale both numerical benefits linearly from observed rank1; retain fixed durations, trigger counts and debuff magnitude. This corrects calculator single-field scaling."
+      }
+    ]
+  },
+  "warlock.talent.ruin": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3, 4, 5 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ]
+  },
+  "warlock.talent.shadowburn": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Displayed damage/healing and resource costs may reflect demo character level, spell rank, equipment, or talents. Level-60 rank tables and unlisted AP/SP coefficients are not established by this tooltip.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ],
+    "parameters": [
+      {
+        "key": "warlock.soul_shards",
+        "label": "Prepared Soul Shards",
+        "default": 20,
+        "min": 0,
+        "max": 100,
+        "confidence": "PREDICTED",
+        "reason": "Prepared consumable inventory scenario; Classic sufficient-shard policy remains in STRICT."
+      }
+    ]
+  },
+  "warlock.talent.intensity": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Unless explicitly stated: eligible events, internal cooldown, per-target versus per-cast rolls, proc recursion and snapshot behavior require validation.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ],
+    "rank_overrides": [
+      {
+        "rank": 2,
+        "values": [
+          47
+        ],
+        "effect": "Gives you a 47% chance to resist interruption caused by damage while casting or channeling any Destruction spell.",
+        "confidence": "PREDICTED",
+        "reason": "Rounded fractional progression toward the analogous 50%,70%,100% or25% cap; directly observed ranks retain their authoritative values."
+      },
+      {
+        "rank": 3,
+        "values": [
+          70
+        ],
+        "effect": "Gives you a 70% chance to resist interruption caused by damage while casting or channeling any Destruction spell.",
+        "confidence": "PREDICTED",
+        "reason": "Rounded fractional progression toward the analogous 50%,70%,100% or25% cap; directly observed ranks retain their authoritative values."
+      }
+    ]
+  },
+  "warlock.talent.agonizing-flames": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Unless explicitly stated: eligible events, internal cooldown, per-target versus per-cast rolls, proc recursion and snapshot behavior require validation.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ]
+  },
+  "warlock.talent.conflagrate": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Displayed damage/healing and resource costs may reflect demo character level, spell rank, equipment, or talents. Level-60 rank tables and unlisted AP/SP coefficients are not established by this tooltip.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ]
+  },
+  "warlock.talent.pyroclasm": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Unless explicitly stated: eligible events, internal cooldown, per-target versus per-cast rolls, proc recursion and snapshot behavior require validation.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other."
+    ]
+  },
+  "warlock.talent.bane-of-havoc": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Displayed damage/healing and resource costs may reflect demo character level, spell rank, equipment, or talents. Level-60 rank tables and unlisted AP/SP coefficients are not established by this tooltip.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ],
+    "auto_priority": 30,
+    "auto_target": {
+      "type": "Target",
+      "index": 1
+    },
+    "auto_condition": {
+      "not": {
+        "val": {
+          "auraIsActive": {
+            "sourceUnit": {
+              "type": "Target",
+              "index": 1
+            },
+            "auraId": {
+              "otherId": 19,
+              "tag": 563
+            }
+          }
+        }
+      }
+    }
+  },
+  "warlock.talent.fire-and-brimstone": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Unless explicitly stated: eligible events, internal cooldown, per-target versus per-cast rolls, proc recursion and snapshot behavior require validation.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ]
+  },
+  "warlock.talent.shadow-and-flame": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3, 4, 5 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Unless explicitly stated: eligible events, internal cooldown, per-target versus per-cast rolls, proc recursion and snapshot behavior require validation.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other."
+    ],
+    "rank_overrides": [
+      {
+        "rank": 2,
+        "values": [
+          4,
+          20,
+          4,
+          20,
+          40,
+          40
+        ],
+        "effect": "Hitting an enemy with Conflagrate increases all Shadow damage you deal by 4% for 20 sec, and hitting an enemy with Shadowburn increases all Fire damage you deal by 4% for 20 sec. In addition, Conflagrate has a 40% chance not to consume Immolate, and Shadowburn has a 40% chance to instantly refund a Soul Shard.",
+        "confidence": "PREDICTED",
+        "reason": "Scale both numerical benefits linearly from observed rank1; retain fixed durations, trigger counts and debuff magnitude. This corrects calculator single-field scaling."
+      },
+      {
+        "rank": 3,
+        "values": [
+          6,
+          20,
+          6,
+          20,
+          60,
+          60
+        ],
+        "effect": "Hitting an enemy with Conflagrate increases all Shadow damage you deal by 6% for 20 sec, and hitting an enemy with Shadowburn increases all Fire damage you deal by 6% for 20 sec. In addition, Conflagrate has a 60% chance not to consume Immolate, and Shadowburn has a 60% chance to instantly refund a Soul Shard.",
+        "confidence": "PREDICTED",
+        "reason": "Scale both numerical benefits linearly from observed rank1; retain fixed durations, trigger counts and debuff magnitude. This corrects calculator single-field scaling."
+      },
+      {
+        "rank": 4,
+        "values": [
+          8,
+          20,
+          8,
+          20,
+          80,
+          80
+        ],
+        "effect": "Hitting an enemy with Conflagrate increases all Shadow damage you deal by 8% for 20 sec, and hitting an enemy with Shadowburn increases all Fire damage you deal by 8% for 20 sec. In addition, Conflagrate has a 80% chance not to consume Immolate, and Shadowburn has a 80% chance to instantly refund a Soul Shard.",
+        "confidence": "PREDICTED",
+        "reason": "Scale both numerical benefits linearly from observed rank1; retain fixed durations, trigger counts and debuff magnitude. This corrects calculator single-field scaling."
+      },
+      {
+        "rank": 5,
+        "values": [
+          10,
+          20,
+          10,
+          20,
+          100,
+          100
+        ],
+        "effect": "Hitting an enemy with Conflagrate increases all Shadow damage you deal by 10% for 20 sec, and hitting an enemy with Shadowburn increases all Fire damage you deal by 10% for 20 sec. In addition, Conflagrate has a 100% chance not to consume Immolate, and Shadowburn has a 100% chance to instantly refund a Soul Shard.",
+        "confidence": "PREDICTED",
+        "reason": "Scale both numerical benefits linearly from observed rank1; retain fixed durations, trigger counts and debuff magnitude. This corrects calculator single-field scaling."
+      }
+    ]
+  },
+  "warlock.talent.incinerate": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Displayed damage/healing and resource costs may reflect demo character level, spell rank, equipment, or talents. Level-60 rank tables and unlisted AP/SP coefficients are not established by this tooltip.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ],
+    "auto_priority": 170
+  },
+  "warlock.baseline.bane-of-agony": {
+    "mode": "ability",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "Registered playable action or baseline registration with named evidence.",
+    "remaining_unknowns": [
+      "Referenced by talent text, not a complete baseline ability tooltip. Costs, cooldowns, damage/healing, level/rank table, coefficients and exact targeting are missing."
+    ]
+  },
+  "warlock.baseline.bane-of-doom": {
+    "mode": "ability",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "Registered playable action or baseline registration with named evidence.",
+    "remaining_unknowns": [
+      "Referenced by talent text, not a complete baseline ability tooltip. Costs, cooldowns, damage/healing, level/rank table, coefficients and exact targeting are missing."
+    ]
+  },
+  "warlock.baseline.incubus": {
+    "mode": "ability",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/warlock/forever.go",
+      "sim/warlock/forever_pets.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "Registered playable action or baseline registration with named evidence.",
+    "remaining_unknowns": [
+      "Referenced by talent text, not a complete baseline ability tooltip. Costs, cooldowns, damage/healing, level/rank table, coefficients and exact targeting are missing."
+    ]
+  },
+  "priest.talent.power-in-light": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3, 4, 5 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent screenshot values below take precedence for the same rank/context. Original calculator estimates remain preserved and labeled; differing character-context active tooltips remain separate variants."
+    ]
+  },
+  "priest.talent.wand-specialization": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent screenshot values below take precedence for the same rank/context. Original calculator estimates remain preserved and labeled; differing character-context active tooltips remain separate variants."
+    ],
+    "rank_overrides": [
+      {
+        "rank": 2,
+        "values": [
+          25
+        ],
+        "effect": "Wand damage increased by 25%.",
+        "confidence": "PREDICTED",
+        "reason": "Mage has the same observed 13%/25% two-rank Wand Specialization; reuse that directly analogous progression."
+      }
+    ]
+  },
+  "priest.talent.twin-disciplines": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3, 4, 5 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent screenshot values below take precedence for the same rank/context. Original calculator estimates remain preserved and labeled; differing character-context active tooltips remain separate variants."
+    ]
+  },
+  "priest.talent.silent-resolve": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent screenshot values below take precedence for the same rank/context. Original calculator estimates remain preserved and labeled; differing character-context active tooltips remain separate variants."
+    ]
+  },
+  "priest.talent.improved-power-word-shield": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent screenshot values below take precedence for the same rank/context. Original calculator estimates remain preserved and labeled; differing character-context active tooltips remain separate variants."
+    ]
+  },
+  "priest.talent.martyrdom": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Unless explicitly stated: eligible events, internal cooldown, per-target versus per-cast rolls, proc recursion and snapshot behavior require validation.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other."
+    ]
+  },
+  "priest.talent.mental-agility": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent screenshot values below take precedence for the same rank/context. Original calculator estimates remain preserved and labeled; differing character-context active tooltips remain separate variants."
+    ]
+  },
+  "priest.talent.inner-focus": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Displayed damage/healing and resource costs may reflect demo character level, spell rank, equipment, or talents. Level-60 rank tables and unlisted AP/SP coefficients are not established by this tooltip.",
+      "Unless explicitly stated: eligible events, internal cooldown, per-target versus per-cast rolls, proc recursion and snapshot behavior require validation."
+    ]
+  },
+  "priest.talent.improved-inner-fire": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent screenshot values below take precedence for the same rank/context. Original calculator estimates remain preserved and labeled; differing character-context active tooltips remain separate variants."
+    ]
+  },
+  "priest.talent.soul-warding": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent screenshot values below take precedence for the same rank/context. Original calculator estimates remain preserved and labeled; differing character-context active tooltips remain separate variants."
+    ]
+  },
+  "priest.talent.improved-mana-burn": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent screenshot values below take precedence for the same rank/context. Original calculator estimates remain preserved and labeled; differing character-context active tooltips remain separate variants."
+    ]
+  },
+  "priest.talent.penance": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Displayed damage/healing and resource costs may reflect demo character level, spell rank, equipment, or talents. Level-60 rank tables and unlisted AP/SP coefficients are not established by this tooltip.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other.",
+      "Independent screenshot values below take precedence for the same rank/context. Original calculator estimates remain preserved and labeled; differing character-context active tooltips remain separate variants."
+    ],
+    "auto_priority": 90,
+    "channel": true,
+    "alternate_healing_action": true
+  },
+  "priest.talent.renewed-hope": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3, 4, 5 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Unless explicitly stated: eligible events, internal cooldown, per-target versus per-cast rolls, proc recursion and snapshot behavior require validation.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ]
+  },
+  "priest.talent.divine-aegis": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent screenshot values below take precedence for the same rank/context. Original calculator estimates remain preserved and labeled; differing character-context active tooltips remain separate variants."
+    ]
+  },
+  "priest.talent.power-infusion": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Displayed damage/healing and resource costs may reflect demo character level, spell rank, equipment, or talents. Level-60 rank tables and unlisted AP/SP coefficients are not established by this tooltip.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent screenshot values below take precedence for the same rank/context. Original calculator estimates remain preserved and labeled; differing character-context active tooltips remain separate variants."
+    ]
+  },
+  "priest.talent.twilight-focus": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Unless explicitly stated: eligible events, internal cooldown, per-target versus per-cast rolls, proc recursion and snapshot behavior require validation.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other.",
+      "Independent screenshot values below take precedence for the same rank/context. Original calculator estimates remain preserved and labeled; differing character-context active tooltips remain separate variants."
+    ],
+    "rank_overrides": [
+      {
+        "rank": 2,
+        "values": [
+          47
+        ],
+        "effect": "Gives you a 47% chance to avoid interruption caused by damage while casting any spell.",
+        "confidence": "PREDICTED",
+        "reason": "Rounded fractional progression toward the analogous 50%,70%,100% or25% cap; directly observed ranks retain their authoritative values."
+      }
+    ]
+  },
+  "priest.talent.improved-renew": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Independent screenshot values below take precedence for the same rank/context. Original calculator estimates remain preserved and labeled; differing character-context active tooltips remain separate variants."
+    ]
+  },
+  "priest.talent.holy-specialization": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Tooltip edge was cut off in the video; \"chance of\" is inferred.",
+      "Unless explicitly stated: eligible events, internal cooldown, per-target versus per-cast rolls, proc recursion and snapshot behavior require validation.",
+      "Independent screenshot values below take precedence for the same rank/context. Original calculator estimates remain preserved and labeled; differing character-context active tooltips remain separate variants."
+    ]
+  },
+  "priest.talent.spell-warding": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Independent screenshot values below take precedence for the same rank/context. Original calculator estimates remain preserved and labeled; differing character-context active tooltips remain separate variants."
+    ]
+  },
+  "priest.talent.divine-fury": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Independent screenshot values below take precedence for the same rank/context. Original calculator estimates remain preserved and labeled; differing character-context active tooltips remain separate variants."
+    ]
+  },
+  "priest.talent.holy-nova": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Displayed damage/healing and resource costs may reflect demo character level, spell rank, equipment, or talents. Level-60 rank tables and unlisted AP/SP coefficients are not established by this tooltip.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other."
+    ]
+  },
+  "priest.talent.blessed-recovery": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other.",
+      "Independent screenshot values below take precedence for the same rank/context. Original calculator estimates remain preserved and labeled; differing character-context active tooltips remain separate variants."
+    ]
+  },
+  "priest.talent.inspiration": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other.",
+      "Independent screenshot values below take precedence for the same rank/context. Original calculator estimates remain preserved and labeled; differing character-context active tooltips remain separate variants."
+    ],
+    "rank_overrides": [
+      {
+        "rank": 2,
+        "values": [
+          17,
+          15
+        ],
+        "effect": "Your non-periodic critical heals increase your target's Armor by 17% for 15 sec.",
+        "confidence": "PREDICTED",
+        "reason": "Rounded fractional progression toward the analogous 50%,70%,100% or25% cap; directly observed ranks retain their authoritative values."
+      }
+    ]
+  },
+  "priest.talent.holy-reach": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Independent screenshot values below take precedence for the same rank/context. Original calculator estimates remain preserved and labeled; differing character-context active tooltips remain separate variants."
+    ]
+  },
+  "priest.talent.improved-healing": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent screenshot values below take precedence for the same rank/context. Original calculator estimates remain preserved and labeled; differing character-context active tooltips remain separate variants."
+    ]
+  },
+  "priest.talent.searing-light": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Unless explicitly stated: eligible events, internal cooldown, per-target versus per-cast rolls, proc recursion and snapshot behavior require validation.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other.",
+      "Independent screenshot values below take precedence for the same rank/context. Original calculator estimates remain preserved and labeled; differing character-context active tooltips remain separate variants."
+    ],
+    "rank_overrides": [
+      {
+        "rank": 2,
+        "values": [
+          4,
+          10
+        ],
+        "effect": "Holy damage increased by 4%; each Holy Fire periodic damage event has 10% chance to make next Holy Nova cost no Mana.",
+        "confidence": "PREDICTED",
+        "reason": "Scale both numerical benefits linearly from observed rank1; retain fixed durations, trigger counts and debuff magnitude. This corrects calculator single-field scaling."
+      }
+    ]
+  },
+  "priest.talent.binding-heal": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Displayed damage/healing and resource costs may reflect demo character level, spell rank, equipment, or talents. Level-60 rank tables and unlisted AP/SP coefficients are not established by this tooltip.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other.",
+      "Independent screenshot values below take precedence for the same rank/context. Original calculator estimates remain preserved and labeled; differing character-context active tooltips remain separate variants."
+    ],
+    "healing": true
+  },
+  "priest.talent.litany-of-light": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent screenshot values below take precedence for the same rank/context. Original calculator estimates remain preserved and labeled; differing character-context active tooltips remain separate variants."
+    ]
+  },
+  "priest.talent.spirit-of-redemption": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ]
+  },
+  "priest.talent.spiritual-healing": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent screenshot values below take precedence for the same rank/context. Original calculator estimates remain preserved and labeled; differing character-context active tooltips remain separate variants."
+    ]
+  },
+  "priest.talent.prayer-of-mending": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Displayed damage/healing and resource costs may reflect demo character level, spell rank, equipment, or talents. Level-60 rank tables and unlisted AP/SP coefficients are not established by this tooltip.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other.",
+      "Independent screenshot values below take precedence for the same rank/context. Original calculator estimates remain preserved and labeled; differing character-context active tooltips remain separate variants.",
+      "Bounce selection uses the lowest-health other ally; the raid is provisionally treated as packed within20yards because friendly geometry is absent."
+    ],
+    "healing": true
+  },
+  "priest.talent.blackout": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Unless explicitly stated: eligible events, internal cooldown, per-target versus per-cast rolls, proc recursion and snapshot behavior require validation.",
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other."
+    ]
+  },
+  "priest.talent.spirit-tap": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3, 4, 5 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Unless explicitly stated: eligible events, internal cooldown, per-target versus per-cast rolls, proc recursion and snapshot behavior require validation.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ]
+  },
+  "priest.talent.improved-shadow-word-pain": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": []
+  },
+  "priest.talent.shadow-reach": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ]
+  },
+  "priest.talent.improved-mind-blast": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": []
+  },
+  "priest.talent.improved-psychic-scream": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": []
+  },
+  "priest.talent.mind-flay": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Displayed damage/healing and resource costs may reflect demo character level, spell rank, equipment, or talents. Level-60 rank tables and unlisted AP/SP coefficients are not established by this tooltip.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other."
+    ]
+  },
+  "priest.talent.improved-fade": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": []
+  },
+  "priest.talent.vampiric-embrace": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Displayed damage/healing and resource costs may reflect demo character level, spell rank, equipment, or talents. Level-60 rank tables and unlisted AP/SP coefficients are not established by this tooltip.",
+      "Unless explicitly stated: eligible events, internal cooldown, per-target versus per-cast rolls, proc recursion and snapshot behavior require validation.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ]
+  },
+  "priest.talent.shadow-weaving": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Unless explicitly stated: eligible events, internal cooldown, per-target versus per-cast rolls, proc recursion and snapshot behavior require validation.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions.",
+      "Independent calculator differs on one or more ranks. Differences may be wording, inferred Classic ranks, or demo character context; neither source silently overrides the other."
+    ],
+    "rank_overrides": [
+      {
+        "rank": 3,
+        "values": [
+          100,
+          2,
+          15,
+          5
+        ],
+        "effect": "Your Shadow damage spells have a 100% chance to increase the Shadow damage you deal by 2% for 15 sec, stacking up to 5 times.",
+        "confidence": "PREDICTED",
+        "reason": "Rounded fractional progression toward the analogous 50%,70%,100% or25% cap; directly observed ranks retain their authoritative values."
+      }
+    ]
+  },
+  "priest.talent.silence": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Displayed damage/healing and resource costs may reflect demo character level, spell rank, equipment, or talents. Level-60 rank tables and unlisted AP/SP coefficients are not established by this tooltip.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ]
+  },
+  "priest.talent.devouring-contagion": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ]
+  },
+  "priest.talent.early-demise": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Unless explicitly stated: eligible events, internal cooldown, per-target versus per-cast rolls, proc recursion and snapshot behavior require validation.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ]
+  },
+  "priest.talent.darkness": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Ranks 2, 3, 4, 5 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ]
+  },
+  "priest.talent.shadowform": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "All selectable ranks; actual spell/stat/proc/target/aura behavior.",
+    "remaining_unknowns": [
+      "Displayed damage/healing and resource costs may reflect demo character level, spell rank, equipment, or talents. Level-60 rank tables and unlisted AP/SP coefficients are not established by this tooltip.",
+      "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. New analogue parameters and corrected rank progressions are explicitly labeled predictions."
+    ]
+  },
+  "priest.baseline.fear-ward": {
+    "mode": "ability",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "Registered playable action or baseline registration with named evidence.",
+    "remaining_unknowns": [
+      "Confirmed cooldown/duration, charges, target restrictions, dispel behavior and learned ranks."
+    ]
+  },
+  "priest.racial.dark-sacrifice": {
+    "mode": "ability",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "Registered playable action or baseline registration with named evidence.",
+    "remaining_unknowns": [
+      "Tick timing, interruption/lethality rules, healing/regen interactions, max-level ranks and coefficients. Level 38 context is community attribution, not shown in this crop."
+    ]
+  },
+  "priest.racial.touch-of-weakness": {
+    "mode": "ability",
+    "confidence": "PREDICTED",
+    "reason": "Explicit best-guess analogue from the named Classic ability or closely described ability; numeric preparation/activation defaults are isolated in the class implementation.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "Registered playable action or baseline registration with named evidence.",
+    "remaining_unknowns": [
+      "Forever damage, debuff amount, duration, trigger and cooldown; availability alone does not prove unchanged mechanics."
+    ]
+  },
+  "priest.racial.starshards": {
+    "mode": "ability",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "Registered playable action or baseline registration with named evidence.",
+    "remaining_unknowns": [
+      "816 is displayed damage in an unknown gear/talent context, not proven base damage. Coefficient, tick distribution and other ranks unresolved."
+    ]
+  },
+  "priest.racial.elunes-grace": {
+    "mode": "ability",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "Registered playable action or baseline registration with named evidence.",
+    "remaining_unknowns": [
+      "Attack-table implementation, qualifying misses, multi-target charge consumption, other ranks and context-dependent mana cost."
+    ]
+  },
+  "priest.racial.dwarf.chastise": {
+    "mode": "ability",
+    "confidence": "PREDICTED",
+    "reason": "Explicit best-guess analogue from the named Classic ability or closely described ability; numeric preparation/activation defaults are isolated in the class implementation.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "Registered playable action or baseline registration with named evidence.",
+    "remaining_unknowns": [
+      "Exact rank table, damage/heal amount, range, cooldown, duration and cost are not supplied. “Like TBC” or “like Guardian Spirit” is not evidence for importing that expansion’s numerical implementation."
+    ]
+  },
+  "priest.racial.dwarf.desperate-prayer": {
+    "mode": "ability",
+    "confidence": "PREDICTED",
+    "reason": "Explicit best-guess analogue from the named Classic ability or closely described ability; numeric preparation/activation defaults are isolated in the class implementation.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "Registered playable action or baseline registration with named evidence.",
+    "remaining_unknowns": [
+      "Exact rank table, damage/heal amount, range, cooldown, duration and cost are not supplied. “Like TBC” or “like Guardian Spirit” is not evidence for importing that expansion’s numerical implementation."
+    ]
+  },
+  "priest.racial.gnome.confounding-flash": {
+    "mode": "ability",
+    "confidence": "PREDICTED",
+    "reason": "Explicit best-guess analogue from the named Classic ability or closely described ability; numeric preparation/activation defaults are isolated in the class implementation.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "Registered playable action or baseline registration with named evidence.",
+    "remaining_unknowns": [
+      "Exact rank table, damage/heal amount, range, cooldown, duration and cost are not supplied. “Like TBC” or “like Guardian Spirit” is not evidence for importing that expansion’s numerical implementation."
+    ]
+  },
+  "priest.racial.gnome.contingency-plan": {
+    "mode": "ability",
+    "confidence": "PREDICTED",
+    "reason": "Explicit best-guess analogue from the named Classic ability or closely described ability; numeric preparation/activation defaults are isolated in the class implementation.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "Registered playable action or baseline registration with named evidence.",
+    "remaining_unknowns": [
+      "Exact rank table, damage/heal amount, range, cooldown, duration and cost are not supplied. “Like TBC” or “like Guardian Spirit” is not evidence for importing that expansion’s numerical implementation."
+    ]
+  },
+  "priest.racial.human.divine-grace": {
+    "mode": "ability",
+    "confidence": "PREDICTED",
+    "reason": "Explicit best-guess analogue from the named Classic ability or closely described ability; numeric preparation/activation defaults are isolated in the class implementation.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "Registered playable action or baseline registration with named evidence.",
+    "remaining_unknowns": [
+      "Exact rank table, damage/heal amount, range, cooldown, duration and cost are not supplied. “Like TBC” or “like Guardian Spirit” is not evidence for importing that expansion’s numerical implementation."
+    ]
+  },
+  "priest.racial.troll-unknown": {
+    "mode": "blocked",
+    "confidence": "UNKNOWN",
+    "reason": "No name or behavior for a Forever Troll priest-specific spell has been documented; no meaningful mechanic can be inferred from an unspecified spell.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "Unspecified racial identity",
+    "remaining_unknowns": [
+      "Names, retention of Hex of Weakness/Shadowguard, full tooltips and values."
+    ]
+  },
+  "priest.baseline.shadow-word-death": {
+    "mode": "ability",
+    "confidence": "PREDICTED",
+    "reason": "Explicit best-guess analogue from the named Classic ability or closely described ability; numeric preparation/activation defaults are isolated in the class implementation.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "Registered playable action or baseline registration with named evidence.",
+    "remaining_unknowns": [
+      "Referenced by talent text, not a complete baseline ability tooltip. Costs, cooldowns, damage/healing, level/rank table, coefficients and exact targeting are missing."
+    ],
+    "auto_priority": 60
+  },
+  "priest.baseline.devouring-plague": {
+    "mode": "ability",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical effects use caster-owned spell/aura/event hooks and Classic analogue stacking, coefficients and targeting where Forever evidence is silent.",
+    "files": [
+      "sim/priest/forever.go",
+      "sim/priest/forever_healing.go",
+      "sim/priest/forever_baseline.go",
+      "sim/priest/forever_racials.go"
+    ],
+    "scope": "Registered playable action or baseline registration with named evidence.",
+    "remaining_unknowns": [
+      "Referenced by talent text, not a complete baseline ability tooltip. Costs, cooldowns, damage/healing, level/rank table, coefficients and exact targeting are missing.",
+      "Becoming available to all priests is inferred from generic talent support; an Undead spellbook screenshot alone does not prove cross-race availability."
+    ]
+  },
+  "priest.talent.meditation": {
+    "mode": "replace",
+    "confidence": "PROVISIONAL",
+    "reason": "Existing core adapter with explicit disciplined rank predictions.",
+    "files": [
+      "sim/core/forever.go"
+    ],
+    "scope": "Numerical rank progression; Classic stacking.",
+    "remaining_unknowns": [],
+    "rank_overrides": [
+      {
+        "rank": 2,
+        "values": [
+          33
+        ],
+        "effect": "33% of Mana regeneration continues while casting.",
+        "confidence": "PREDICTED",
+        "reason": "Rounded fractional progression toward the analogous 50%,70%,100% or25% cap; directly observed ranks retain their authoritative values."
+      },
+      {
+        "rank": 3,
+        "values": [
+          50
+        ],
+        "effect": "50% of Mana regeneration continues while casting.",
+        "confidence": "PREDICTED",
+        "reason": "Rounded fractional progression toward the analogous 50%,70%,100% or25% cap; directly observed ranks retain their authoritative values."
+      }
+    ]
+  },
+  "priest.talent.improved-mind-flay": {
+    "mode": "replace",
+    "confidence": "PROVISIONAL",
+    "reason": "Existing core adapter with explicit disciplined rank predictions.",
+    "files": [
+      "sim/core/forever.go"
+    ],
+    "scope": "Numerical rank progression; Classic stacking.",
+    "remaining_unknowns": [],
+    "rank_overrides": [
+      {
+        "rank": 2,
+        "values": [
+          20,
+          10,
+          20
+        ],
+        "effect": "Your Mind Flay now deals 20% more damage, gains 10 yards increased range, but slows the target's movement speed by 20%.",
+        "confidence": "PREDICTED",
+        "reason": "Linear +10% damage and +5 yard range per rank; remaining slow decreases 15 percentage points per rank from the Classic50% baseline (35%,20%)."
+      }
+    ]
+  },
+  "mage.talent.arcane-meditation": {
+    "mode": "replace",
+    "confidence": "PROVISIONAL",
+    "reason": "Existing core adapter with explicit disciplined rank predictions.",
+    "files": [
+      "sim/core/forever.go",
+      "sim/mage/forever_defenses.go",
+      "sim/mage/blizzard.go"
+    ],
+    "scope": "Numerical rank progression; Classic stacking.",
+    "remaining_unknowns": [],
+    "rank_overrides": [
+      {
+        "rank": 2,
+        "values": [
+          33
+        ],
+        "effect": "Allows 33% of your Mana regeneration to continue while casting.",
+        "confidence": "PREDICTED",
+        "reason": "Rounded fractional progression toward the analogous 50%,70%,100% or25% cap; directly observed ranks retain their authoritative values."
+      },
+      {
+        "rank": 3,
+        "values": [
+          50
+        ],
+        "effect": "Allows 50% of your Mana regeneration to continue while casting.",
+        "confidence": "PREDICTED",
+        "reason": "Rounded fractional progression toward the analogous 50%,70%,100% or25% cap; directly observed ranks retain their authoritative values."
+      }
+    ]
+  },
+  "warlock.talent.demonic-knowledge": {
+    "mode": "replace",
+    "confidence": "PROVISIONAL",
+    "reason": "Existing core adapter with explicit disciplined rank predictions.",
+    "files": [
+      "sim/core/forever.go",
+      "sim/warlock/forever_shards.go",
+      "sim/warlock/forever_demon_commands.go"
+    ],
+    "scope": "Numerical rank progression; Classic stacking.",
+    "remaining_unknowns": [],
+    "rank_overrides": [
+      {
+        "rank": 3,
+        "values": [
+          100
+        ],
+        "effect": "Spell damage and healing increased by up to 100% of character level while a summoned Demon pet is active.",
+        "confidence": "PREDICTED",
+        "reason": "Rounded fractional progression toward the analogous 50%,70%,100% or25% cap; directly observed ranks retain their authoritative values."
+      }
+    ]
+  }
+}

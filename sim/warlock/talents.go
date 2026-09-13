@@ -34,6 +34,7 @@ func (warlock *Warlock) ApplyTalents() {
 	warlock.applyDevastation()
 	warlock.applyRuin()
 	warlock.applyEmberstorm()
+	warlock.applyForeverCasterTalents()
 }
 
 func (warlock *Warlock) applyWeaponImbue() {
@@ -178,7 +179,7 @@ func (warlock *Warlock) applyNightfall() {
 	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label: "Nightfall Hidden Aura",
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if (spell.SpellCode == SpellCode_WarlockCorruption || spell.SpellCode == SpellCode_WarlockDrainLife) && sim.Proc(procChance, "Nightfall") {
+			if (spell.SpellCode == SpellCode_WarlockCorruption || spell.SpellCode == SpellCode_WarlockDrainLife || (warlock.Forever != nil && spell.SpellCode == SpellCode_WarlockDrainSoul)) && sim.Proc(procChance, "Nightfall") {
 				shadowTranceAura.Activate(sim)
 			}
 		},
@@ -551,6 +552,9 @@ func (warlock *Warlock) applyDemonicSacrifice() {
 		oldOnPetEnable := pet.OnPetEnable
 		pet.OnPetEnable = func(sim *core.Simulation) {
 			oldOnPetEnable(sim)
+			if forever && warlock.ForeverRank("warlock.talent.demonic-pact") > 0 && warlock.foreverState != nil && warlock.foreverState.sacrificed != pet {
+				return
+			}
 			for _, dsAura := range dsAuras {
 				dsAura.Deactivate(sim)
 			}
@@ -568,6 +572,9 @@ func (warlock *Warlock) applyDemonicSacrifice() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			if warlock.foreverState != nil {
+				warlock.foreverState.sacrificed = warlock.ActivePet
+			}
 			switch warlock.ActivePet {
 			case warlock.Felhunter:
 				felhunterAura.Activate(sim)
@@ -657,6 +664,9 @@ func (warlock *Warlock) applyDevastation() {
 }
 
 func (warlock *Warlock) improvedImmolateBonus() float64 {
+	if warlock.Forever != nil {
+		return warlock.ForeverValue("warlock.talent.aftermath", 0, 0) / 100
+	}
 	return 0.05 * float64(warlock.Talents.ImprovedImmolate)
 }
 
