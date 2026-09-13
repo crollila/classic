@@ -371,7 +371,7 @@ func (h *Hunter) registerForeverRapidKilling() {
 	}})
 	for _, target := range h.Env.Encounter.TargetUnits {
 		kill := func(_ *core.Aura, sim *core.Simulation, s *core.Spell, result *core.SpellResult) {
-			if result.Damage > 0 && result.Target.HasHealthBar() && result.Target.CurrentHealth() <= 0 &&
+			if result.Damage > 0 && result.Target.ForeverEnemyDead() &&
 				(s.Unit == &h.Unit || (h.pet != nil && s.Unit == &h.pet.Unit) || h.SerpentSting.Dot(result.Target).IsActive()) {
 				a.Activate(sim)
 			}

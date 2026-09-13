@@ -409,7 +409,7 @@ func (r *Rogue) registerForeverRemorseless() {
 		}
 	}})
 	kill := func(_ *core.Aura, sim *core.Simulation, s *core.Spell, result *core.SpellResult) {
-		if result.Damage > 0 && result.Target.HasHealthBar() && result.Target.CurrentHealth() <= 0 {
+		if result.Damage > 0 && result.Target.ForeverEnemyDead() {
 			a.Activate(sim)
 		}
 	}

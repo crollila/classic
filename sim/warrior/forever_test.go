@@ -492,3 +492,45 @@ func TestForeverBerserkerStanceReversesDamageTaken(t *testing.T) {
 		t.Fatal("stance amplified incoming damage repeatedly", before, c.PseudoStats.DamageTakenMultiplier)
 	}
 }
+
+func TestForeverPhysicalActualEnemyKills(t *testing.T) {
+	for _, item := range []struct{ class, spec, talent, mechanic, aura string }{{"Warrior", "warrior", "", "warrior.baseline.victory-rush", "Victorious"}, {"Hunter", "hunter", "hunter.talent.rapid-killing", "", "Rapid Killing"}, {"Rogue", "rogue", "rogue.talent.remorseless-attacks", "", "Remorseless Attacks"}} {
+		t.Run(item.class, func(t *testing.T) {
+			build := map[string]int32{}
+			if item.talent != "" {
+				build = physicalBuild(t, item.talent)
+			}
+			sim, c := physicalSim(t, item.class, item.spec, build, func(p *proto.Player) {
+				p.Equipment = core.GetGearSet("../../ui/rogue/gear_sets", "combat_backstab_prebis").GearSet
+				p.Forever.Parameters = map[string]float64{"scenario.enemy_health": 1}
+				if item.mechanic != "" {
+					p.Forever.Mechanics = []string{item.mechanic}
+				}
+			})
+			a := c.GetAura(item.aura)
+			if a == nil || a.IsActive() {
+				t.Fatal("kill aura missing or active before kill")
+			}
+			target := c.CurrentTarget
+			s := c.AutoAttacks.MHAuto()
+			s.BonusHitRating = 100
+			for i := 0; i < 10 && !target.ForeverEnemyDead(); i++ {
+				s.Cast(sim, target)
+				physicalAdvance(t, sim, sim.CurrentTime+20*time.Millisecond)
+			}
+			if !target.ForeverEnemyDead() || !a.IsActive() {
+				t.Fatal("actual kill did not trigger", target.CurrentHealth(), a.IsActive())
+			}
+			a.Deactivate(sim)
+			s.Cast(sim, target)
+			if a.IsActive() {
+				t.Fatal("corpse generated repeated kill")
+			}
+			sim.Cleanup()
+			sim.Reset()
+			if a.IsActive() || target.ForeverEnemyDead() {
+				t.Fatal("kill state leaked across iteration")
+			}
+		})
+	}
+}

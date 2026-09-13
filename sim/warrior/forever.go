@@ -215,7 +215,7 @@ func (w *Warrior) registerForeverVictoryRush() {
 	id := core.ActionID{SpellID: 34428}
 	a := w.RegisterAura(core.Aura{Label: "Victorious", ActionID: id, Duration: 20 * time.Second})
 	kill := func(_ *core.Aura, sim *core.Simulation, s *core.Spell, r *core.SpellResult) {
-		if r.Damage > 0 && r.Target.HasHealthBar() && r.Target.CurrentHealth() <= 0 {
+		if r.Damage > 0 && r.Target.ForeverEnemyDead() {
 			a.Activate(sim)
 		}
 	}
