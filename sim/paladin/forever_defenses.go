@@ -64,8 +64,9 @@ func (p *Paladin) registerForeverDefenses() {
 		p.RegisterSpell(core.SpellConfig{ActionID: p.fa("templar-s-bulwark"), Flags: core.SpellFlagAPL | core.SpellFlagHelpful | SpellFlag_Forbearance, ManaCost: core.ManaCostOptions{FlatCost: 110}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, CD: core.Cooldown{Timer: p.NewTimer(), Duration: 5*time.Minute - time.Duration(30*p.fr("sacred-duty"))*time.Second}}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, sp *core.Spell) { shield.Apply(sim, p.MaxHealth(), false) }})
 	}
 	if p.fr("voice-of-truth") > 0 {
+		interrupt := p.ForeverInterruptResistanceAura("Forever Voice of Truth Interrupt Immunity", p.fa("voice-of-truth"), 6*time.Second, 1)
 		a := p.ForeverControlImmunityAura("Forever Voice of Truth", p.fa("voice-of-truth"), []core.ForeverControlKind{core.ForeverSilence}, 6*time.Second)
-		p.RegisterSpell(core.SpellConfig{ActionID: p.fa("voice-of-truth"), Flags: core.SpellFlagAPL | core.SpellFlagHelpful, Cast: core.CastConfig{CD: core.Cooldown{Timer: p.NewTimer(), Duration: 3 * time.Minute}}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, sp *core.Spell) { a.Activate(sim) }})
+		p.RegisterSpell(core.SpellConfig{ActionID: p.fa("voice-of-truth"), Flags: core.SpellFlagAPL | core.SpellFlagHelpful, Cast: core.CastConfig{CD: core.Cooldown{Timer: p.NewTimer(), Duration: 3 * time.Minute}}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, sp *core.Spell) { a.Activate(sim); interrupt.Activate(sim) }})
 	}
 	for _, v := range []struct {
 		id           int32
@@ -100,10 +101,41 @@ func (p *Paladin) registerForeverDefenses() {
 		}})
 	}
 	if p.fr("guardian-s-favor") > 0 {
-		a := p.ForeverControlImmunityAura("Forever Blessing of Freedom", core.ActionID{SpellID: 1044}, []core.ForeverControlKind{core.ForeverRoot, core.ForeverSnare}, 10*time.Second+time.Duration(3*p.fr("guardian-s-favor"))*time.Second)
-		p.RegisterSpell(core.SpellConfig{ActionID: a.ActionID, Flags: core.SpellFlagAPL | core.SpellFlagHelpful, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, CD: core.Cooldown{Timer: p.NewTimer(), Duration: 20 * time.Second}}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, sp *core.Spell) { a.Activate(sim) }})
-		shield := core.NewForeverAbsorb(&p.Unit, "Forever Blessing of Protection", core.ActionID{SpellID: 10278}, 10*time.Second, core.SpellSchoolPhysical)
-		p.RegisterSpell(core.SpellConfig{ActionID: shield.Aura.ActionID, Flags: core.SpellFlagAPL | core.SpellFlagHelpful | SpellFlag_Forbearance, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, CD: core.Cooldown{Timer: p.NewTimer(), Duration: 5*time.Minute - time.Duration(p.fr("guardian-s-favor"))*time.Minute}}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, sp *core.Spell) { shield.Apply(sim, 1e15, false) }})
+		freedom := map[*core.Unit]*core.Aura{}
+		protection := map[*core.Unit]*core.ForeverAbsorb{}
+		for _, u := range p.Env.AllUnits {
+			if p.IsOpponent(u) {
+				continue
+			}
+			target := u
+			freedom[target] = target.ForeverControlImmunityAura("Forever Blessing of Freedom-"+p.Label, core.ActionID{SpellID: 1044}, []core.ForeverControlKind{core.ForeverRoot, core.ForeverSnare}, 10*time.Second+time.Duration(3*p.fr("guardian-s-favor"))*time.Second)
+			shield := core.NewForeverAbsorb(target, "Forever Blessing of Protection-"+p.Label, core.ActionID{SpellID: 10278}, 10*time.Second, core.SpellSchoolPhysical)
+			protection[target] = shield
+			shield.Aura.OnGain = func(_ *core.Aura, sim *core.Simulation) { target.AutoAttacks.CancelAutoSwing(sim) }
+			expire := shield.Aura.OnExpire
+			shield.Aura.OnExpire = func(a *core.Aura, sim *core.Simulation) { expire(a, sim); target.AutoAttacks.EnableAutoSwing(sim) }
+			target.OnSpellRegistered(func(sp *core.Spell) {
+				if !sp.SpellSchool.Matches(core.SpellSchoolPhysical) {
+					return
+				}
+				old := sp.ExtraCastCondition
+				sp.ExtraCastCondition = func(sim *core.Simulation, t *core.Unit) bool {
+					return !shield.Aura.IsActive() && (old == nil || old(sim, t))
+				}
+			})
+		}
+		p.RegisterSpell(core.SpellConfig{ActionID: core.ActionID{SpellID: 1044}, Flags: core.SpellFlagAPL | core.SpellFlagHelpful, ManaCost: core.ManaCostOptions{BaseCost: .10}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, CD: core.Cooldown{Timer: p.NewTimer(), Duration: 20 * time.Second}}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, sp *core.Spell) {
+			if p.IsOpponent(t) {
+				t = &p.Unit
+			}
+			freedom[t].Activate(sim)
+		}})
+		p.RegisterSpell(core.SpellConfig{ActionID: core.ActionID{SpellID: 10278}, Flags: core.SpellFlagAPL | core.SpellFlagHelpful | SpellFlag_Forbearance, ManaCost: core.ManaCostOptions{BaseCost: .07}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, CD: core.Cooldown{Timer: p.NewTimer(), Duration: 5*time.Minute - time.Duration(p.fr("guardian-s-favor"))*time.Minute}}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, sp *core.Spell) {
+			if p.IsOpponent(t) {
+				t = &p.Unit
+			}
+			protection[t].Apply(sim, 1e15, false)
+		}})
 	}
 	if p.fr("divine-favor") > 0 {
 		var affected []*core.Spell

@@ -167,6 +167,25 @@ func (s *Shaman) registerForeverSpells() {
 	s.registerForeverHealing()
 	s.registerForeverUtility()
 	s.registerForeverTotems()
+
+	if s.fr("improved-reincarnation") > 0 {
+		// Classic Reincarnation's 20% health/Mana restoration and 60-minute
+		// cooldown, modified by the observed Forever talent. Death occurrence
+		// remains recorded in metrics even when the player resurrects.
+		action := core.ActionID{SpellID: 20608}
+		health := s.NewHealthMetrics(action)
+		mana := s.NewManaMetrics(action)
+		s.RegisterSpell(core.SpellConfig{ActionID: action, Flags: core.SpellFlagAPL | core.SpellFlagHelpful, Cast: core.CastConfig{CD: core.Cooldown{Timer: s.NewTimer(), Duration: time.Hour - time.Duration(10*s.fr("improved-reincarnation"))*time.Minute}}, ExtraCastCondition: func(sim *core.Simulation, t *core.Unit) bool { return s.CurrentHealth() <= 0 }, ApplyEffects: func(sim *core.Simulation, t *core.Unit, sp *core.Spell) {
+			fraction := .2 + .1*s.fr("improved-reincarnation")
+			s.GainHealth(sim, s.MaxHealth()*fraction, health)
+			delta := s.MaxMana()*fraction - s.CurrentMana()
+			if delta >= 0 {
+				s.AddMana(sim, delta, mana)
+			} else {
+				s.SpendMana(sim, -delta, mana)
+			}
+		}})
+	}
 	if s.fr("lava-burst") > 0 {
 		sp := s.RegisterSpell(core.SpellConfig{ActionID: s.fa("lava-burst"), SpellSchool: core.SpellSchoolFire, DefenseType: core.DefenseTypeMagic, ProcMask: core.ProcMaskSpellDamage, Flags: SpellFlagShaman | core.SpellFlagAPL,
 			ManaCost: core.ManaCostOptions{FlatCost: 165, Multiplier: 100 - 2*s.Talents.Convection}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault, CastTime: 2500*time.Millisecond - time.Duration(s.ForeverValue("shaman.talent.elemental-alacrity", 0, 0)*1000)*time.Millisecond}, CD: core.Cooldown{Timer: s.NewTimer(), Duration: 10 * time.Second}}, PushbackReduction: s.fr("eye-of-the-storm") * .23,

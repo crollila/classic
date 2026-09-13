@@ -303,7 +303,8 @@
     "files": [
       "sim/paladin/forever.go",
       "sim/paladin/talents.go",
-      "sim/paladin/forever_defenses.go"
+      "sim/paladin/forever_defenses.go",
+      "sim/paladin/forbearance.go"
     ],
     "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
     "remaining_unknowns": [
@@ -1082,7 +1083,8 @@
       "sim/shaman/forever_melee.go",
       "sim/shaman/water_totems.go",
       "sim/shaman/forever_totems.go",
-      "sim/shaman/air_totems.go"
+      "sim/shaman/air_totems.go",
+      "sim/shaman/earth_totems.go"
     ],
     "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
     "remaining_unknowns": [
@@ -1431,7 +1433,7 @@
     ],
     "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
     "remaining_unknowns": [
-      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+      "Classic Reincarnation20%health/Mana and60-minute cooldown retained, modified by observed additional10%perrank restoration and10-minute-perrank cooldown reduction. Simulator records the death and permits explicit APL resurrection; Ankh inventory is not consumed."
     ]
   },
   "shaman.talent.ancestral-healing": {

@@ -84,6 +84,24 @@ func (shaman *Shaman) newStoneskinTotemSpellConfig(rank int) core.SpellConfig {
 	spell := shaman.newTotemSpellConfig(manaCost, spellId)
 	spell.RequiredLevel = level
 	spell.Rank = rank
+	if shaman.Forever != nil {
+		aura := shaman.RegisterAura(core.Aura{Label: "Forever Stoneskin-" + core.ActionID{SpellID: spellId}.String(), ActionID: core.ActionID{SpellID: spellId}, Duration: duration})
+		amount := []float64{0, 4, 7, 11, 16, 22, 30}[rank] * (1 + .1*shaman.fr("guardian-totems"))
+		for _, agent := range shaman.Party.Players {
+			agent.GetCharacter().AddDynamicDamageTakenModifier(func(sim *core.Simulation, sp *core.Spell, r *core.SpellResult) {
+				active := shaman.ActiveTotems[EarthTotem]
+				if aura.IsActive() && active != nil && active.SpellID == spellId && sp.DefenseType == core.DefenseTypeMelee {
+					r.Damage = max(0, r.Damage-amount)
+				}
+			})
+		}
+		spell.ApplyEffects = func(sim *core.Simulation, _ *core.Unit, sp *core.Spell) {
+			shaman.TotemExpirations[EarthTotem] = sim.CurrentTime + duration
+			shaman.ActiveTotems[EarthTotem] = sp
+			aura.Activate(sim)
+		}
+		return spell
+	}
 	spell.ApplyEffects = func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 		shaman.TotemExpirations[EarthTotem] = sim.CurrentTime + duration
 		shaman.ActiveTotems[EarthTotem] = spell

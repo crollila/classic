@@ -161,11 +161,13 @@ func (shaman *Shaman) newWindwallTotemSpellConfig(rank int) core.SpellConfig {
 	var foreverAura *core.Aura
 	if shaman.Forever != nil {
 		foreverAura = shaman.RegisterAura(core.Aura{Label: fmt.Sprintf("Forever Windwall-%d", rank), ActionID: core.ActionID{SpellID: spellId}, Duration: 2 * time.Minute})
-		shaman.AddDynamicDamageTakenModifier(func(sim *core.Simulation, sp *core.Spell, r *core.SpellResult) {
-			if foreverAura.IsActive() && sp.ProcMask.Matches(core.ProcMaskRanged) {
-				r.Damage = max(0, r.Damage-float64(16+16*rank)*(1+.1*shaman.fr("guardian-totems")))
-			}
-		})
+		for _, agent := range shaman.Party.Players {
+			agent.GetCharacter().AddDynamicDamageTakenModifier(func(sim *core.Simulation, sp *core.Spell, r *core.SpellResult) {
+				if foreverAura.IsActive() && sp.ProcMask.Matches(core.ProcMaskRanged) {
+					r.Damage = max(0, r.Damage-float64(16+16*rank)*(1+.1*shaman.fr("guardian-totems")))
+				}
+			})
+		}
 	}
 	spell.ApplyEffects = func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 		shaman.setActiveAirTotem(sim, spell, foreverAura)

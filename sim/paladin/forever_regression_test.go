@@ -333,3 +333,78 @@ func TestForeverHybridFactoryPlanningRotations(t *testing.T) {
 		}
 	}
 }
+
+func TestForeverReincarnationUsesObservedRestoration(t *testing.T) {
+	sim, c := hybridSim(t, "SHAMAN", hybridTalents(t, "shaman.talent.improved-reincarnation", 2), proto.ForeverMode_BEST_GUESS)
+	sp := c.GetSpell(core.ActionID{SpellID: 20608})
+	if sp == nil || sp.CD.Duration != 40*time.Minute {
+		t.Fatal("missing reduced Reincarnation cooldown")
+	}
+	c.RemoveHealth(sim, c.MaxHealth())
+	if !sp.Cast(sim, &c.Unit) {
+		t.Fatal("Reincarnation unavailable at zero health")
+	}
+	if math.Abs(c.CurrentHealthPercent()-.4) > .0001 || math.Abs(c.CurrentManaPercent()-.4) > .0001 {
+		t.Fatal("Reincarnation did not restore40%health andMana")
+	}
+}
+func TestForeverLaceratePredictionModeAndRage(t *testing.T) {
+	for _, mode := range []proto.ForeverMode{proto.ForeverMode_STRICT, proto.ForeverMode_BEST_GUESS} {
+		sim, c := hybridSim(t, "DRUID", hybridTalents(t, "druid.talent.shredding-attacks", 3), mode)
+		id := c.ForeverAction("druid.talent.shredding-attacks")
+		id.Tag = -id.Tag
+		sp := c.GetSpell(id)
+		if mode == proto.ForeverMode_STRICT {
+			if sp != nil {
+				t.Fatal("Lacerate prediction active in STRICT")
+			}
+			continue
+		}
+		if sp == nil || sp.Cost.GetCurrentCost() != 12 {
+			t.Fatal("Lacerate Rage reduction missing")
+		}
+		bear := c.GetSpell(core.ActionID{SpellID: 9634})
+		bear.ApplyEffects(sim, &c.Unit, bear)
+		for range 5 {
+			sp.ApplyEffects(sim, sim.Encounter.TargetUnits[0], sp)
+		}
+		dot := sp.Dot(sim.Encounter.TargetUnits[0])
+		if dot.GetStacks() != 5 || dot.SnapshotBaseDamage != 155 {
+			t.Fatal("Lacerate stacking baseline failed", dot.GetStacks(), dot.SnapshotBaseDamage)
+		}
+	}
+}
+
+func TestForeverStoneskinReplacementAndVoiceImmunity(t *testing.T) {
+	sim, c := hybridSim(t, "SHAMAN", hybridTalents(t, "shaman.talent.guardian-totems", 2), proto.ForeverMode_BEST_GUESS)
+	skin := c.GetSpell(core.ActionID{SpellID: 10408})
+	skin.ApplyEffects(sim, &c.Unit, skin)
+	incoming := &core.Spell{SpellSchool: core.SpellSchoolPhysical, DefenseType: core.DefenseTypeMelee, ProcMask: core.ProcMaskMeleeMHAuto}
+	damage := func() float64 {
+		r := &core.SpellResult{Target: &c.Unit, Damage: 100}
+		for _, f := range c.DynamicDamageTakenModifiers {
+			f(sim, incoming, r)
+		}
+		return r.Damage
+	}
+	if math.Abs(damage()-64) > .001 {
+		t.Fatal("Stoneskin did not apply36 reduction", damage())
+	}
+	strength := c.GetSpell(core.ActionID{SpellID: 25361})
+	strength.ApplyEffects(sim, &c.Unit, strength)
+	if damage() != 100 {
+		t.Fatal("replaced Stoneskin still reduces damage", damage())
+	}
+	sim, c = hybridSim(t, "PALADIN", hybridTalents(t, "paladin.talent.voice-of-truth", 1), proto.ForeverMode_BEST_GUESS)
+	voice := c.GetSpell(c.ForeverAction("paladin.talent.voice-of-truth"))
+	voice.ApplyEffects(sim, &c.Unit, voice)
+	heal := c.GetSpell(core.ActionID{SpellID: 25292})
+	if !heal.Cast(sim, &c.Unit) {
+		t.Fatal("healing cast failed")
+	}
+	ends := c.Hardcast.Expires
+	c.ForeverInterrupt(sim)
+	if c.Hardcast.Expires != ends {
+		t.Fatal("Voice of Truth did not prevent interruption")
+	}
+}
