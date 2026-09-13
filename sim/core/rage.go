@@ -16,19 +16,22 @@ type OnRageChange func(aura *Aura, sim *Simulation, metrics *ResourceMetrics)
 type rageBar struct {
 	unit *Unit
 
-	damageDealtMultiplier float64 // Multiplier for rage generation from damage dealt
-	damageTakenMultiplier float64 // Multiplier for rage generation from damage taken
+	damageDealtMultiplier        float64 // Multiplier for rage generation from damage dealt
+	damageTakenMultiplier        float64 // Multiplier for rage generation from damage taken
+	offHandDamageDealtMultiplier float64
 
 	flatDamageDealtBonusRage float64
 	flatDamageTakenBonusRage float64
 
 	startingRage float64
+	maxRage      float64
 	currentRage  float64
 
 	RageRefundMetrics *ResourceMetrics
 }
 
 type RageBarOptions struct {
+	MaxRage               float64 // Zero preserves Classic's 100 cap.
 	StartingRage          float64
 	DamageDealtMultiplier float64
 	DamageTakenMultiplier float64
@@ -50,6 +53,10 @@ func GetRageConversion(attacker_level int32) float64 {
 }
 
 func (unit *Unit) EnableRageBar(options RageBarOptions) {
+	capacity := options.MaxRage
+	if capacity == 0 {
+		capacity = MaxRage
+	}
 	rageFromDamageTakenMetrics := unit.NewRageMetrics(ActionID{OtherID: proto.OtherAction_OtherActionDamageTaken})
 	rageConversion := GetRageConversion(unit.Level)
 
@@ -91,6 +98,9 @@ func (unit *Unit) EnableRageBar(options RageBarOptions) {
 
 			generatedRage := damage * 7.5 / rageConversion
 			generatedRage *= unit.rageBar.damageDealtMultiplier
+			if spell.ProcMask == ProcMaskMeleeOHAuto {
+				generatedRage *= unit.rageBar.offHandDamageDealtMultiplier
+			}
 			generatedRage += unit.rageBar.flatDamageDealtBonusRage
 
 			var metrics *ResourceMetrics
@@ -123,11 +133,13 @@ func (unit *Unit) EnableRageBar(options RageBarOptions) {
 	})
 
 	unit.rageBar = rageBar{
-		unit:                  unit,
-		damageDealtMultiplier: options.DamageDealtMultiplier,
-		damageTakenMultiplier: options.DamageTakenMultiplier,
-		startingRage:          max(0, min(options.StartingRage, MaxRage)),
-		RageRefundMetrics:     unit.NewRageMetrics(ActionID{OtherID: proto.OtherAction_OtherActionRefund}),
+		unit:                         unit,
+		damageDealtMultiplier:        options.DamageDealtMultiplier,
+		damageTakenMultiplier:        options.DamageTakenMultiplier,
+		startingRage:                 max(0, min(options.StartingRage, capacity)),
+		maxRage:                      capacity,
+		offHandDamageDealtMultiplier: 1,
+		RageRefundMetrics:            unit.NewRageMetrics(ActionID{OtherID: proto.OtherAction_OtherActionRefund}),
 	}
 }
 
@@ -155,12 +167,23 @@ func (rb *rageBar) CurrentRage() float64 {
 	return rb.currentRage
 }
 
+func (unit *Unit) MultiplyOffHandRageGeneration(multiplier float64) {
+	unit.rageBar.offHandDamageDealtMultiplier *= multiplier
+}
+
+func (rb *rageBar) MaxRage() float64 {
+	if rb.maxRage == 0 {
+		return MaxRage
+	}
+	return rb.maxRage
+}
+
 func (rb *rageBar) AddRage(sim *Simulation, amount float64, metrics *ResourceMetrics) {
 	if amount < 0 {
 		panic("Trying to add negative rage!")
 	}
 
-	newRage := min(rb.currentRage+amount, MaxRage)
+	newRage := min(rb.currentRage+amount, rb.MaxRage())
 	metrics.AddEvent(amount, newRage-rb.currentRage)
 
 	if sim.Log != nil {

@@ -166,7 +166,7 @@ export class SimTitleDropdown extends Component {
 				<div className="sim-link-content">
 					<img src={this.getSimIconPath(data)} className="sim-link-icon" />
 					<div className="d-flex flex-column">
-						<span className="sim-link-label text-white">WoWSims - Classic</span>
+						<span className="sim-link-label text-white">{import.meta.env.VITE_FOREVER === 'true' ? 'Forever Simulator' : 'WoWSims - Classic'}</span>
 						<span className="sim-link-title">{label}</span>
 						{this.launchStatusLabel(data)}
 					</div>
@@ -240,6 +240,7 @@ export class SimTitleDropdown extends Component {
 
 		return (
 			<span className="launch-status-label text-brand">
+				{import.meta.env.VITE_FOREVER === 'true' && <>Upstream · </>}
 				{status === LaunchStatus.Unlaunched ? (
 					<>Not Yet Supported</>
 				) : (

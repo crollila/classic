@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "ruleset_id": "forever-classic-baseline-v1",
+  "upstream_commit": "7779ebbf79dc7f1341e6ab939b28a3402c9a730a",
+  "database_revision": "",
+  "mechanics": []
+}

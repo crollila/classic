@@ -33,6 +33,7 @@ func (druid *Druid) newWrathSpellConfig(rank int) core.SpellConfig {
 	baseDamageHigh := WrathBaseDamage[rank][1]
 	spellCoeff := WrathSpellCoeff[rank]
 	manaCost := WrathManaCost[rank]
+	// druid.talent.improved-wrath; stacking with Moonglow follows Classic cost modifiers.
 	castTime := WrathCastTime[rank]
 	level := WrathLevel[rank]
 
@@ -50,6 +51,7 @@ func (druid *Druid) newWrathSpellConfig(rank int) core.SpellConfig {
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost:   manaCost,
+			Multiplier: 100 - int32(druid.ForeverValue("druid.talent.improved-wrath", 1, 0)),
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

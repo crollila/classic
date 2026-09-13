@@ -403,6 +403,9 @@ func (shaman *Shaman) makeFlurryAura(points int32) *core.Aura {
 
 	spellID := []int32{16257, 16277, 16278, 16279, 16280}[points-1]
 	attackSpeed := []float64{1.1, 1.15, 1.2, 1.25, 1.3}[points-1]
+	if shaman.ForeverRank("shaman.talent.flurry") == points {
+		attackSpeed = 1 + shaman.ForeverValue("shaman.talent.flurry", 0, 0)/100
+	}
 
 	aura := shaman.GetOrRegisterAura(core.Aura{
 		Label:     fmt.Sprintf("Flurry Proc (%d)", spellID),

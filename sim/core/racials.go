@@ -53,17 +53,25 @@ func applyRaceEffects(agent Agent) {
 		})
 	case proto.Race_RaceGnome:
 		character.AddStat(stats.ArcaneResistance, 10)
-		character.MultiplyStat(stats.Intellect, 1.05)
+		if character.HasForeverMechanic("racials.gnome.expansive-mind") {
+			character.MultiplyStat(stats.Mana, 1.05)
+		} else {
+			character.MultiplyStat(stats.Intellect, 1.05)
+		}
 	case proto.Race_RaceHuman:
 		character.MultiplyStat(stats.Spirit, 1.05)
-		character.SwordSpecializationAura()
+		if !character.HasForeverMechanic("racials.human.sword-specialization") {
+			character.SwordSpecializationAura()
+		}
 		character.MaceSpecializationAura()
 	case proto.Race_RaceNightElf:
 		character.AddStat(stats.NatureResistance, 10)
 		character.AddStat(stats.Dodge, 1)
 		// TODO: Shadowmeld?
 	case proto.Race_RaceOrc:
-		character.AxeSpecializationAura()
+		if !character.HasForeverMechanic("racials.orc.axe-specialization") {
+			character.AxeSpecializationAura()
+		}
 
 		if character.Class == proto.Class_ClassHunter || character.Class == proto.Class_ClassWarlock {
 			// Command Damage dealt by Hunter and Warlock pets increased by 5%
@@ -145,6 +153,7 @@ func applyRaceEffects(agent Agent) {
 	case proto.Race_RaceUndead:
 		character.AddStat(stats.ShadowResistance, 10)
 	}
+	character.applyForeverRacials()
 }
 
 // If customPercentage is 0, use the baseline Berserking calculations from health missing
@@ -158,6 +167,9 @@ func makeBerserkingCooldown(character *Character, customPercentage float64, time
 	}
 
 	calcBerserkingPct := func() float64 {
+		if character.HasForeverMechanic("racials.troll.berserking") {
+			return 0.1
+		}
 		if customPercentage != 0 {
 			return customPercentage
 		}
