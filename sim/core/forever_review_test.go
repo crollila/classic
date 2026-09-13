@@ -95,6 +95,8 @@ func init() {
 		u := a.GetCharacter()
 		u.GetOrRegisterAura(core.Aura{Label: "review-poison", Tag: "forever-debuff-poison", Duration: 20 * time.Second})
 		u.ForeverDebuffImmunity("review-immunity", core.ActionID{SpellID: 20594}, []string{"poison"}, 8*time.Second)
+		u.ForeverControlImmunityChargesAura("review-fear-ward", core.ActionID{SpellID: 6346}, []core.ForeverControlKind{core.ForeverFear}, 30*time.Second, 1)
+		u.ForeverInterruptResistanceAura("review-interrupt-resistance", core.ActionID{SpellID: 14743}, 6*time.Second, 1)
 		return a
 	}, func(p *proto.Player, s interface{}) { p.Spec = s.(*proto.Player_Mage) })
 }
@@ -216,5 +218,161 @@ func TestForeverReviewEurekaChargesAndReversal(t *testing.T) {
 	}
 	if a.IsActive() || bolt.Cost.Multiplier != cost || bolt.DamageMultiplier != before {
 		t.Fatal("Eureka leaked after third charge")
+	}
+}
+
+func reviewAdvance(t *testing.T, sim *core.Simulation, to time.Duration) {
+	t.Helper()
+	to += time.Nanosecond
+	core.StartDelayedAction(sim, core.DelayedActionOptions{DoAt: to, OnAction: func(*core.Simulation) {}})
+	for sim.CurrentTime < to {
+		if sim.Step() {
+			t.Fatal("ended early")
+		}
+	}
+}
+func reviewAction(t *testing.T, c *core.Character, id string) *core.Spell {
+	t.Helper()
+	action := c.ForeverAction(id)
+	for _, s := range c.Spellbook {
+		if s.ActionID == action {
+			return s
+		}
+	}
+	t.Fatal("missing action", id)
+	return nil
+}
+func TestForeverReviewExplicitSnareStrength(t *testing.T) {
+	sim, c := reviewSim(t)
+	a := c.ForeverSnareAura("review-slow-30", core.ActionID{SpellID: 116}, 10*time.Second, .3)
+	b := c.ForeverSnareAura("review-slow-70", core.ActionID{SpellID: 3600}, 10*time.Second, .7)
+	a.Activate(sim)
+	b.Activate(sim)
+	c.MoveTo(100, sim)
+	reviewAdvance(t, sim, time.Second)
+	if c.DistanceFromTarget < 2.099 || c.DistanceFromTarget > 2.101 {
+		t.Fatal("strongest snare not used", c.DistanceFromTarget)
+	}
+	b.Deactivate(sim)
+	reviewAdvance(t, sim, 2*time.Second)
+	if c.DistanceFromTarget < 6.999 || c.DistanceFromTarget > 7.001 {
+		t.Fatal("weaker snare not restored", c.DistanceFromTarget)
+	}
+	a.Deactivate(sim)
+	reviewAdvance(t, sim, 3*time.Second)
+	if c.DistanceFromTarget < 13.999 || c.DistanceFromTarget > 14.001 {
+		t.Fatal("snare not removed", c.DistanceFromTarget)
+	}
+}
+func TestForeverReviewBreakableControls(t *testing.T) {
+	for _, kind := range []core.ForeverControlKind{core.ForeverSleep, core.ForeverIncapacitate} {
+		sim, c := reviewSim(t)
+		a := c.ForeverControlAura("review-break", core.ActionID{SpellID: 14311}, kind, 10*time.Second)
+		a.Activate(sim)
+		if !c.ForeverControlled(kind) {
+			t.Fatal("control absent")
+		}
+		c.OnPeriodicDamageTaken(sim, c.Spellbook[0], &core.SpellResult{Target: &c.Unit, Outcome: core.OutcomeHit, Damage: 1})
+		if a.IsActive() || c.ForeverControlled(kind) {
+			t.Fatal("damage failed to break", kind)
+		}
+	}
+}
+func TestForeverReviewCannibalizeChannel(t *testing.T) {
+	sim, c := reviewSim(t, func(p *proto.Player) {
+		p.Race = proto.Race_RaceUndead
+		p.Forever.Mechanics = []string{"racials.undead.cannibalize"}
+		p.Forever.Parameters = map[string]float64{"scenario.corpse_available": 1}
+	})
+	c.RemoveHealth(sim, c.MaxHealth()*.8)
+	before := c.CurrentHealth()
+	s := reviewAction(t, c, "racials.undead.cannibalize")
+	if !s.Cast(sim, c.CurrentTarget) || !c.IsChanneling(sim) {
+		t.Fatal("Cannibalize not channeling")
+	}
+	reviewAdvance(t, sim, 2*time.Second)
+	for _, other := range c.Spellbook {
+		if other.SpellID == 133 && other.CanCast(sim, c.CurrentTarget) {
+			t.Fatal("allowed spell during channel")
+		}
+	}
+	reviewAdvance(t, sim, 10*time.Second)
+	fraction := (c.CurrentHealth() - before) / c.MaxHealth()
+	if fraction < .349999 || fraction > .350001 {
+		t.Fatal("channel healing fraction", fraction)
+	}
+	if c.IsChanneling(sim) {
+		t.Fatal("channel did not finish")
+	}
+	s.CD.Reset()
+	c.GCD.Reset()
+	if !s.Cast(sim, c.CurrentTarget) {
+		t.Fatal("recast failed")
+	}
+	before = c.CurrentHealth()
+	c.OnPeriodicDamageTaken(sim, s, &core.SpellResult{Damage: 1, Outcome: core.OutcomeHit, Target: &c.Unit})
+	if c.IsChanneling(sim) {
+		t.Fatal("damage did not interrupt")
+	}
+	reviewAdvance(t, sim, 12*time.Second)
+	if c.CurrentHealth() != before {
+		t.Fatal("healed after interruption")
+	}
+	s.CD.Reset()
+	c.GCD.Reset()
+	s.Cast(sim, c.CurrentTarget)
+	c.MoveTo(7, sim)
+	if c.IsChanneling(sim) {
+		t.Fatal("movement did not interrupt")
+	}
+}
+func TestForeverReviewForsakenAllKinds(t *testing.T) {
+	for _, kind := range []core.ForeverControlKind{core.ForeverFear, core.ForeverCharm, core.ForeverSleep} {
+		sim, c := reviewSim(t, func(p *proto.Player) {
+			p.Race = proto.Race_RaceUndead
+			p.Forever.Mechanics = []string{"racials.undead.will-of-the-forsaken"}
+		})
+		a := c.ForeverControlAura("review-forsaken", core.ActionID{SpellID: 5782}, kind, 10*time.Second)
+		a.Activate(sim)
+		s := reviewAction(t, c, "racials.undead.will-of-the-forsaken")
+		if !s.Cast(sim, c.CurrentTarget) || a.IsActive() || c.ForeverControlled(kind) {
+			t.Fatal("escape failed", kind)
+		}
+	}
+}
+func TestForeverReviewChargedImmunity(t *testing.T) {
+	sim, c := reviewSim(t)
+	ward := c.GetAura("review-fear-ward")
+	ward.Activate(sim)
+	a := c.ForeverControlAura("review-fear", core.ActionID{SpellID: 5782}, core.ForeverFear, 10*time.Second)
+	a.Activate(sim)
+	if a.IsActive() || ward.IsActive() {
+		t.Fatal("ward did not prevent and consume")
+	}
+	a.Activate(sim)
+	if !a.IsActive() {
+		t.Fatal("ward remained after charge exhausted")
+	}
+}
+func TestForeverReviewInterruptResistance(t *testing.T) {
+	sim, c := reviewSim(t)
+	c.GetAura("review-interrupt-resistance").Activate(sim)
+	var s *core.Spell
+	for _, other := range c.Spellbook {
+		if other.SpellID == 133 {
+			s = other
+		}
+	}
+	if s == nil || !s.Cast(sim, c.CurrentTarget) {
+		t.Fatal("Fireball not cast")
+	}
+	c.ForeverInterrupt(sim)
+	if c.Hardcast.Expires <= sim.CurrentTime {
+		t.Fatal("resistance did not stop interrupt")
+	}
+	c.GetAura("review-interrupt-resistance").Deactivate(sim)
+	c.ForeverInterrupt(sim)
+	if c.Hardcast.Expires > sim.CurrentTime {
+		t.Fatal("interrupt not applied")
 	}
 }
