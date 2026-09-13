@@ -45,6 +45,10 @@ func NewShaman(character *core.Character, talents string) *Shaman {
 		shaman.AddPet(shaman.foreverStoneclaw)
 	}
 
+	if shaman.Forever != nil && shaman.fr("mana-tide-totem") > 0 {
+		shaman.foreverManaTide = newForeverManaTide(shaman)
+		shaman.AddPet(shaman.foreverManaTide)
+	}
 	return shaman
 }
 
@@ -88,6 +92,7 @@ type Shaman struct {
 
 	Talents          *proto.ShamanTalents
 	foreverStoneclaw *foreverStoneclaw
+	foreverManaTide  *foreverManaTide
 
 	// Spells
 	ChainHeal            []*core.Spell

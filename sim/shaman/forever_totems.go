@@ -34,11 +34,19 @@ func (p *foreverStoneclaw) ExecuteCustomRotation(sim *core.Simulation) {
 	p.WaitUntil(sim, sim.CurrentTime+time.Second)
 }
 func (p *foreverStoneclaw) Initialize() {
-	core.MakePermanent(p.RegisterAura(core.Aura{Label: "Forever Stoneclaw Death", OnSpellHitTaken: func(_ *core.Aura, sim *core.Simulation, sp *core.Spell, r *core.SpellResult) {
+	damage := func(_ *core.Aura, sim *core.Simulation, sp *core.Spell, r *core.SpellResult) {
+		if !p.IsEnabled() {
+			return
+		}
+		if r.Damage > 0 {
+			p.RemoveHealth(sim, r.Damage)
+		}
 		if p.CurrentHealth() <= 0 {
+			p.Metrics.Died = true
 			p.Disable(sim)
 		}
-	}}))
+	}
+	core.MakePermanent(p.RegisterAura(core.Aura{Label: "Forever Stoneclaw Death", OnSpellHitTaken: damage, OnPeriodicDamageTaken: damage}))
 }
 func (s *Shaman) registerForeverTotems() {
 	if s.foreverStoneclaw != nil {
@@ -58,13 +66,21 @@ func (s *Shaman) registerForeverTotems() {
 		}})
 	}
 	if s.fr("guardian-totems") > 0 {
-		// One totem charge is shared by nearby party members. Unknown direct-AoE
-		// classification retains the engine's existing spell classification; periodic
-		// AoE spells are explicitly excluded rather than spending the shield on them.
+		// One charge covers nearby party members. Explicitly classified harmful
+		// single-target spells are consumed before damage or control is applied.
+		// The damage fallback retains provisional behavior for older encounter
+		// spells lacking targeting metadata; periodic AoE spells are excluded.
 		position := 0.0
 		aura := s.RegisterAura(core.Aura{Label: "Forever Grounding Totem", ActionID: core.ActionID{SpellID: 8177}, Duration: 45 * time.Second})
 		for _, agent := range s.Party.Players {
 			c := agent.GetCharacter()
+			c.AddForeverSpellInterceptor(func(sim *core.Simulation, sp *core.Spell) bool {
+				if !aura.IsActive() || math.Abs(c.DistanceFromTarget-position) > 20 {
+					return false
+				}
+				aura.Deactivate(sim)
+				return true
+			})
 			c.AddDynamicDamageTakenModifier(func(sim *core.Simulation, sp *core.Spell, r *core.SpellResult) {
 				if aura.IsActive() && r.Damage > 0 && sp.DefenseType == core.DefenseTypeMagic && sp.AOEDot() == nil && math.Abs(c.DistanceFromTarget-position) <= 20 {
 					r.Damage = 0

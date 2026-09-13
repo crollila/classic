@@ -1052,7 +1052,7 @@
       "sim/shaman/forever_totems.go",
       "sim/shaman/air_totems.go"
     ],
-    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "scope": "Stoneclaw health scales and depletes from real direct/periodic damage; death releases taunt. Earthbind radius scales around drop position.",
     "remaining_unknowns": [
       "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
     ]
@@ -1100,12 +1100,14 @@
       "sim/shaman/water_totems.go",
       "sim/shaman/forever_totems.go",
       "sim/shaman/air_totems.go",
-      "sim/shaman/earth_totems.go"
+      "sim/shaman/earth_totems.go",
+      "sim/core/forever_control.go",
+      "sim/core/spell.go"
     ],
-    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "scope": "Stoneskin/Windwall numerical reduction and Grounding cooldown changes; Grounding shares one20-yard party charge and suppresses explicitly classified harmful single-target damage/control casts.",
     "remaining_unknowns": [
       "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional.",
-      "Grounding Totem shares one damage-spell interception across party members within20yards; non-damaging spell redirection and direct-AoE classification remain uncertain in the current encounter spell model. The observed cooldown reduction is active."
+      "Grounding consumes explicitly classified single-target harmful spells before their damage/control/debuff effects. Older unclassified damaging encounter spells retain provisional interception (periodic AoE excluded); unclassified non-damaging spells require explicit targeting metadata before interception. Dual-purpose harmful/helpful abilities remain unclassified to avoid intercepting their healing branch."
     ]
   },
   "shaman.talent.mental-dexterity": {
@@ -1559,9 +1561,11 @@
       "sim/shaman/forever_melee.go",
       "sim/shaman/water_totems.go",
       "sim/shaman/forever_totems.go",
-      "sim/shaman/air_totems.go"
+      "sim/shaman/air_totems.go",
+      "sim/shaman/forever_mana_tide.go",
+      "sim/shaman/shaman.go"
     ],
-    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "scope": "Killable5-HP totem; four88-Mana party pulses at3-second intervals within30yards of drop position; destruction, expiry or water-totem replacement stops pulses.",
     "remaining_unknowns": [
       "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
     ]

@@ -92,7 +92,7 @@ func (p *Paladin) registerForeverDefenses() {
 			}
 			return a
 		})
-		p.RegisterSpell(core.SpellConfig{ActionID: core.ActionID{SpellID: v.id}, SpellSchool: core.SpellSchoolHoly, DefenseType: core.DefenseTypeMagic, Flags: core.SpellFlagAPL, ManaCost: core.ManaCostOptions{FlatCost: core.TernaryFloat64(v.id == 20066, 60, p.BaseMana*.03)}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, CD: core.Cooldown{Timer: p.NewTimer(), Duration: v.cd}}, ExtraCastCondition: func(sim *core.Simulation, t *core.Unit) bool {
+		p.RegisterSpell(core.SpellConfig{ForeverSingleTargetHarmful: true, ActionID: core.ActionID{SpellID: v.id}, SpellSchool: core.SpellSchoolHoly, DefenseType: core.DefenseTypeMagic, Flags: core.SpellFlagAPL, ManaCost: core.ManaCostOptions{FlatCost: core.TernaryFloat64(v.id == 20066, 60, p.BaseMana*.03)}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, CD: core.Cooldown{Timer: p.NewTimer(), Duration: v.cd}}, ExtraCastCondition: func(sim *core.Simulation, t *core.Unit) bool {
 			return v.id != 20066 || t.MobType == proto.MobType_MobTypeHumanoid
 		}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, sp *core.Spell) {
 			if sp.CalcOutcome(sim, t, sp.OutcomeMagicHit).Landed() {

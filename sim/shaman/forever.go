@@ -42,6 +42,10 @@ func (s *Shaman) applyForeverTalents() {
 		}
 	}
 	s.OnSpellRegistered(func(sp *core.Spell) {
+		switch sp.SpellCode {
+		case SpellCode_ShamanLightningBolt, SpellCode_ShamanEarthShock, SpellCode_ShamanFlameShock, SpellCode_ShamanFrostShock:
+			sp.ForeverSingleTargetHarmful = true
+		}
 		if sp.DefenseType == core.DefenseTypeMagic && !sp.ProcMask.Matches(core.ProcMaskSpellHealing) && sp.SpellSchool.Matches(core.SpellSchoolFire|core.SpellSchoolFrost|core.SpellSchoolNature) {
 			sp.CritDamageBonus += .2 * s.fr("elemental-fury")
 		}
@@ -191,7 +195,7 @@ func (s *Shaman) registerForeverSpells() {
 		}})
 	}
 	if s.fr("lava-burst") > 0 {
-		sp := s.RegisterSpell(core.SpellConfig{ActionID: s.fa("lava-burst"), SpellSchool: core.SpellSchoolFire, DefenseType: core.DefenseTypeMagic, ProcMask: core.ProcMaskSpellDamage, Flags: SpellFlagShaman | core.SpellFlagAPL,
+		sp := s.RegisterSpell(core.SpellConfig{ForeverSingleTargetHarmful: true, ActionID: s.fa("lava-burst"), SpellSchool: core.SpellSchoolFire, DefenseType: core.DefenseTypeMagic, ProcMask: core.ProcMaskSpellDamage, Flags: SpellFlagShaman | core.SpellFlagAPL,
 			ManaCost: core.ManaCostOptions{FlatCost: 165, Multiplier: 100 - 2*s.Talents.Convection}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault, CastTime: 2500*time.Millisecond - time.Duration(s.ForeverValue("shaman.talent.elemental-alacrity", 0, 0)*1000)*time.Millisecond}, CD: core.Cooldown{Timer: s.NewTimer(), Duration: 10 * time.Second}}, PushbackReduction: s.fr("eye-of-the-storm") * .23,
 			DamageMultiplier: 1 + .05*s.fr("call-of-flame"), ThreatMultiplier: 1, BonusCoefficient: 2.5 / 3.5,
 			ApplyEffects: func(sim *core.Simulation, t *core.Unit, sp *core.Spell) {
@@ -249,6 +253,7 @@ func (s *Shaman) registerForeverSpells() {
 		}})
 	}
 	if s.fr("mana-tide-totem") > 0 {
+		pet := s.foreverManaTide
 		metrics := map[*core.Character]*core.ResourceMetrics{}
 		for _, a := range s.Party.Players {
 			c := a.GetCharacter()
@@ -258,10 +263,16 @@ func (s *Shaman) registerForeverSpells() {
 		}
 		sp := s.RegisterSpell(core.SpellConfig{ActionID: s.fa("mana-tide-totem"), Flags: core.SpellFlagAPL | core.SpellFlagHelpful | SpellFlagTotem, ManaCost: core.ManaCostOptions{FlatCost: 10, Multiplier: s.totemManaMultiplier()}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, CD: core.Cooldown{Timer: s.NewTimer(), Duration: 5 * time.Minute}}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, sp *core.Spell) {
 			position := s.DistanceFromTarget
+			pet.Disable(sim)
+			pet.EnableWithTimeout(sim, pet, 12*time.Second)
+			pet.GainHealth(sim, pet.MaxHealth(), pet.NewHealthMetrics(sp.ActionID))
+			pet.DistanceFromTarget = position
+			pet.generation++
+			generation := pet.generation
 			s.ActiveTotems[WaterTotem] = sp
 			s.TotemExpirations[WaterTotem] = sim.CurrentTime + 12*time.Second
-			core.StartPeriodicAction(sim, core.PeriodicActionOptions{Period: 3 * time.Second, NumTicks: 4, OnAction: func(sim *core.Simulation) {
-				if s.ActiveTotems[WaterTotem] == sp {
+			core.StartPeriodicAction(sim, core.PeriodicActionOptions{Period: 3 * time.Second, NumTicks: 4, Priority: core.ActionPriorityRegen, OnAction: func(sim *core.Simulation) {
+				if s.ActiveTotems[WaterTotem] == sp && pet.IsEnabled() && pet.generation == generation {
 					for c, m := range metrics {
 						if math.Abs(c.DistanceFromTarget-position) <= 30 {
 							c.AddMana(sim, 88, m)
@@ -270,6 +281,7 @@ func (s *Shaman) registerForeverSpells() {
 				}
 			}})
 		}})
+		pet.spell = sp
 		s.AddMajorCooldown(core.MajorCooldown{Spell: sp, Type: core.CooldownTypeMana, ShouldActivate: func(sim *core.Simulation, c *core.Character) bool { return c.CurrentManaPercent() < .65 }})
 	}
 }

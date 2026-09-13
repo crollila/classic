@@ -38,6 +38,10 @@ func (p *Paladin) applyForeverTalents() {
 		}})
 	}
 	p.OnSpellRegistered(func(sp *core.Spell) {
+		switch sp.SpellCode {
+		case SpellCode_PaladinExorcism, SpellCode_PaladinHammerOfWrath, SpellCode_PaladinJudgementOfCommand, SpellCode_PaladinJudgementOfRighteousness, foreverJudgementOfFury:
+			sp.ForeverSingleTargetHarmful = true
+		}
 		if sp.DefaultCast.CastTime == 0 && sp.Cost != nil && sp.Cost.CostType() == core.CostTypeMana {
 			sp.Cost.Multiplier -= int32(2 * p.fr("benediction"))
 		}

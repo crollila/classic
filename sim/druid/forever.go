@@ -33,6 +33,10 @@ func (d *Druid) applyForeverTalents() {
 	d.AddStat(stats.SpellHit, 2*d.fr("nature-s-reach"))
 	d.AddStat(stats.Dodge, d.fr("natural-reaction")+2*d.fr("feral-swiftness"))
 	d.OnSpellRegistered(func(sp *core.Spell) {
+		switch sp.SpellCode {
+		case SpellCode_DruidWrath, SpellCode_DruidStarfire, SpellCode_DruidMoonfire, SpellCode_DruidInsectSwarm, SpellCode_DruidFaerieFire, SpellCode_DruidFaerieFireFeral:
+			sp.ForeverSingleTargetHarmful = true
+		}
 		if sp.SpellSchool.Matches(core.SpellSchoolArcane | core.SpellSchoolNature) {
 			sp.ThreatMultiplier *= 1 - .1*d.fr("subtlety")
 			sp.PushbackReduction += d.fr("nature-s-focus") * .14
