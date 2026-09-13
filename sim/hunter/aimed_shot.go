@@ -55,6 +55,9 @@ func (hunter *Hunter) getAimedShotConfig(rank int, timer *core.Timer) core.Spell
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			if hunter.ForeverRank("hunter.talent.sniper-shot") > 0 {
+				return hunter.DistanceFromTarget >= 8
+			}
 			return hunter.DistanceFromTarget >= core.MinRangedAttackDistance
 		},
 

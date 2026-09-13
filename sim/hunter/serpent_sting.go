@@ -68,6 +68,9 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 				spell.DealOutcome(sim, result)
 
 				if result.Landed() {
+					if hunter.Forever != nil {
+						hunter.replaceForeverSting(sim, target, spell.Dot(target).Aura)
+					}
 					spell.Dot(target).Apply(sim)
 				}
 			})

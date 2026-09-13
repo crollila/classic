@@ -190,8 +190,8 @@ func (r *Rogue) registerForeverMutilate() {
 				d = r.OHNormalizedWeaponDamage(sim, s.MeleeAttackPower(t)) * r.dwsMultiplier()
 			}
 			d = .75*d + 13
-			poisoned := r.DeadlyPoison.Dot(t).IsActive()
-			for _, a := range t.GetAurasWithTag("Poison") {
+			poisoned := r.deadlyPoisonTick.Dot(t).IsActive() || r.woundPoisonDebuffAuras.Get(t).IsActive()
+			for _, a := range t.GetAurasWithTag("forever-debuff-poison") {
 				poisoned = poisoned || a.IsActive()
 			}
 			if poisoned {
@@ -208,6 +208,11 @@ func (r *Rogue) registerForeverMutilate() {
 		landed = false
 		attacks[0].Cast(sim, t)
 		attacks[1].Cast(sim, t)
+		for _, label := range []string{"Cold Blood", "Remorseless Attacks"} {
+			if a := r.GetAura(label); a != nil {
+				a.Deactivate(sim)
+			}
+		}
 		if landed {
 			r.AddComboPoints(sim, 2, t, s.ComboPointMetrics())
 		} else {
@@ -261,16 +266,19 @@ func (r *Rogue) registerForeverUtility() {
 		control := core.ForeverStun
 		switch kind {
 		case "Gouge":
+			control = core.ForeverIncapacitate
 			id.SpellID = 11286
 			cost = 45
 			cd = 10 * time.Second
 			duration = 4*time.Second + time.Duration(.5*float64(r.ForeverRank("rogue.talent.improved-gouge"))*float64(time.Second))
 		case "Blind":
+			control = core.ForeverIncapacitate
 			id.SpellID = 2094
 			cost = 30 * (1 - .25*float64(r.ForeverRank("rogue.talent.dirty-tricks")))
 			cd = 5*time.Minute - time.Duration(45*r.ForeverRank("rogue.talent.elusiveness"))*time.Second
 			duration = 10 * time.Second
 		case "Sap":
+			control = core.ForeverIncapacitate
 			id.SpellID = 11297
 			cost = 65 * (1 - .25*float64(r.ForeverRank("rogue.talent.dirty-tricks")))
 			duration = 45 * time.Second
@@ -302,7 +310,7 @@ func (r *Rogue) registerForeverUtility() {
 		}
 		spell := r.RegisterSpell(core.SpellConfig{ActionID: id, Flags: core.SpellFlagAPL, EnergyCost: core.EnergyCostOptions{Cost: cost}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: time.Second}, IgnoreHaste: true, CD: core.Cooldown{Timer: timer, Duration: cd}}, ExtraCastCondition: func(sim *core.Simulation, t *core.Unit) bool {
 			if kind == "Sap" || kind == "Cheap Shot" {
-				return r.IsStealthed()
+				return r.IsStealthed() && (kind != "Sap" || sim.CurrentTime <= 0)
 			}
 			return kind != "Kidney Shot" || r.ComboPoints() > 0
 		}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
@@ -322,6 +330,9 @@ func (r *Rogue) registerForeverUtility() {
 			a.Activate(sim)
 			if kind == "Cheap Shot" {
 				r.AddComboPoints(sim, 2, t, s.ComboPointMetrics())
+				if sim.Proc(r.ForeverValue("rogue.talent.initiative", 0, 0)/100, "Initiative") {
+					r.AddComboPoints(sim, 1, t, s.ComboPointMetrics())
+				}
 			}
 			if kind == "Gouge" {
 				r.AddComboPoints(sim, 1, t, s.ComboPointMetrics())
@@ -380,10 +391,16 @@ func (r *Rogue) registerForeverRemorseless() {
 			}
 		}
 	}, OnSpellHitDealt: func(a *core.Aura, sim *core.Simulation, s *core.Spell, result *core.SpellResult) {
-		if eligible(s) {
+		if eligible(s) && !(s.OtherID == proto.OtherAction_OtherActionForever && s.Tag < 0) {
 			a.Deactivate(sim)
 		}
 	}})
+	kill := func(_ *core.Aura, sim *core.Simulation, s *core.Spell, result *core.SpellResult) {
+		if result.Damage > 0 && result.Target.HasHealthBar() && result.Target.CurrentHealth() <= 0 {
+			a.Activate(sim)
+		}
+	}
+	core.MakePermanent(r.RegisterAura(core.Aura{Label: "Forever Remorseless Kill Trigger", OnSpellHitDealt: kill, OnPeriodicDamageDealt: kill}))
 	r.RegisterResetEffect(func(sim *core.Simulation) {
 		if r.ForeverParameter("recent_kill_at_pull", 0) > 0 {
 			a.Activate(sim)

@@ -130,7 +130,7 @@ func (rogue *Rogue) registerColdBloodCD() {
 			}
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.Flags.Matches(SpellFlagColdBlooded) {
+			if spell.Flags.Matches(SpellFlagColdBlooded) && !(rogue.Forever != nil && spell.OtherID == proto.OtherAction_OtherActionForever && spell.Tag < 0) {
 				aura.Deactivate(sim)
 			}
 		},

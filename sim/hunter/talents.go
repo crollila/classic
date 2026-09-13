@@ -143,6 +143,11 @@ func (hunter *Hunter) registerBestialWrathCD() {
 		Duration: time.Second * 18,
 	}).AttachMultiplicativePseudoStatBuff(&hunter.pet.PseudoStats.DamageDealtMultiplier, 1.5)
 
+	if hunter.Forever != nil {
+		immunity := hunter.pet.ForeverControlImmunityAura("Bestial Wrath Control Immunity", actionID, []core.ForeverControlKind{core.ForeverStun, core.ForeverFear, core.ForeverCharm, core.ForeverSleep, core.ForeverIncapacitate, core.ForeverRoot, core.ForeverSnare}, 18*time.Second)
+		hunter.BestialWrathPetAura.ApplyOnGain(func(a *core.Aura, sim *core.Simulation) { immunity.Activate(sim) })
+		hunter.BestialWrathPetAura.ApplyOnExpire(func(a *core.Aura, sim *core.Simulation) { immunity.Deactivate(sim) })
+	}
 	bwSpell := hunter.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
 		Flags:    core.SpellFlagAPL,

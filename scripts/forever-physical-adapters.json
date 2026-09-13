@@ -1525,7 +1525,7 @@
     "files": [
       "sim/hunter/forever.go"
     ],
-    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+    "scope": "125mana,50%pet damage for18s and actual control immunity while enraged;2min cooldown."
   },
   "hunter.talent.clever-traps": {
     "confidence": "PROVISIONAL",
@@ -1535,9 +1535,15 @@
     ],
     "mode": "class",
     "files": [
-      "sim/hunter/forever.go"
+      "sim/hunter/forever.go",
+      "sim/hunter/forever_utility.go",
+      "sim/hunter/freezing_trap.go"
     ],
-    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+    "scope": "Damage modifiers on fire traps plus actual Freezing26s/Frost39s durations at rank2. Frost slow is60%; Freezing breaks on direct/periodic damage.",
+    "baseline_source_urls": [
+      "https://www.wowhead.com/classic/spell=14311/freezing-trap",
+      "https://www.wowhead.com/classic/spell=13809/frost-trap"
+    ]
   },
   "hunter.talent.surefooted": {
     "confidence": "PROVISIONAL",
@@ -1627,9 +1633,11 @@
     ],
     "mode": "class-new",
     "files": [
-      "sim/hunter/forever.go"
+      "sim/hunter/forever.go",
+      "sim/hunter/forever_utility.go",
+      "sim/hunter/freezing_trap.go"
     ],
-    "scope": "Active combat effects, castable abilities, or encounter-control behavior.",
+    "scope": "Five1s channel ticks,245health each; every tick rolls the sourced15%/rank to remove exactly one Curse/Disease/Magic/Poison. Mana reduced10%/rank.",
     "rank_overrides": [
       {
         "rank": 2,
@@ -1641,6 +1649,9 @@
         ],
         "reason": "Disciplined progression from known rank 1: scale talent magnitudes linearly, retain trigger count/duration. Pet Monkey share follows calculator 50/75/100 progression."
       }
+    ],
+    "baseline_source_urls": [
+      "https://classicdb.ch/?spell=13544"
     ]
   },
   "hunter.talent.summon-hawk": {
@@ -1678,7 +1689,10 @@
     "files": [
       "sim/hunter/forever.go"
     ],
-    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+    "scope": "Next successful pet melee attack gains100%crit,580Classic threat and3s stun.",
+    "baseline_source_urls": [
+      "https://www.wowhead.com/classic/spell=24394/intimidation"
+    ]
   },
   "hunter.talent.hawk-eye": {
     "confidence": "PROVISIONAL",
@@ -1706,28 +1720,51 @@
   },
   "hunter.talent.improved-stings": {
     "confidence": "PROVISIONAL",
-    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "reason": "Observed Serpent6%/rank, Scorpid+15s/rank, Viper-2s/rank. Scorpid uses Classic165mana/-68STR/-68AGI/20s. Viper uses Classic215mana/1108drained over8s; unknown base cooldown uses TBC15s only in BEST_GUESS.",
     "remaining_unknowns": [
-      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+      "Forever Viper base cooldown is unobserved; the TBC15s baseline is PREDICTED and the entire Viper action is unavailable in STRICT.",
+      "Scorpid derived NPC attack power/armor use a PREDICTED -136/-136 Classic warrior analogue only in BEST_GUESS; STRICT retains raw STR/AGI reductions.",
+      "NPC mana and regeneration are unspecified; a finite zero-regeneration pool requires an explicit scenario.enemy_mana value or configured target mana stat."
     ],
     "mode": "class-new",
     "files": [
-      "sim/hunter/forever.go"
+      "sim/hunter/forever.go",
+      "sim/hunter/forever_utility.go",
+      "sim/hunter/freezing_trap.go",
+      "sim/core/forever_hunter_support.go"
     ],
-    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+    "scope": "Serpent damage, Scorpid duration and sting exclusivity; BEST_GUESS additionally uses a finite enemy mana pool for Viper drain with its talent-reduced cooldown.",
+    "parameters": [
+      {
+        "key": "scenario.enemy_mana",
+        "label": "Enemy mana pool for Viper Sting (0 means unknown/disabled)",
+        "default": 0,
+        "min": 0,
+        "max": 1000000000
+      }
+    ],
+    "predicted_components": [
+      "Viper15s TBC base cooldown",
+      "Scorpid NPC derived AP/armor analogue"
+    ],
+    "baseline_source_urls": [
+      "https://www.wowhead.com/classic/spell=14277/scorpid-sting",
+      "https://www.wowhead.com/classic/spell=14280/viper-sting",
+      "https://www.wowhead.com/tbc/spell=14280/viper-sting"
+    ]
   },
   "hunter.talent.rapid-killing": {
     "confidence": "PROVISIONAL",
     "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
     "remaining_unknowns": [
       "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional.",
-      "Kill events are explicit scenario inputs; duration-mode virtual boss health never manufactures a kill."
+      "Qualifying/non-trivial enemy filtering remains provisional; encounter enemies with explicit finite health are assumed qualifying."
     ],
     "mode": "class-new",
     "files": [
       "sim/hunter/forever.go"
     ],
-    "scope": "Rapid Fire cooldown plus next-shot damage after configured qualifying kill.",
+    "scope": "Rapid Fire cooldown plus next-shot damage after configured qualifying kill. Actual finite-health enemy deaths also trigger the effect; time-based virtual boss health never does.",
     "parameters": [
       {
         "key": "recent_kill_at_pull",
@@ -1791,7 +1828,7 @@
     "files": [
       "sim/hunter/forever.go"
     ],
-    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+    "scope": "50%weapon damage,4s breakable incapacitation,15yd range,30s cooldown and autoattack cancellation."
   },
   "hunter.talent.improved-tracking": {
     "confidence": "PREDICTED",
@@ -1857,13 +1894,18 @@
     "confidence": "PROVISIONAL",
     "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
     "remaining_unknowns": [
-      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+      "Feign Death reuses the Classic magic hit table; boss aggro retargeting and combat drop/terrain remain provisional."
     ],
     "mode": "class-new",
     "files": [
-      "sim/hunter/forever.go"
+      "sim/hunter/forever.go",
+      "sim/hunter/forever_utility.go",
+      "sim/hunter/freezing_trap.go"
     ],
-    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+    "scope": "Trap and Feign Death hit+5%/rank; Feign Death performs actual per-enemy threat reset and suspends attacks while feigning.",
+    "baseline_source_urls": [
+      "https://www.wowhead.com/classic/spell=5384/feign-death"
+    ]
   },
   "hunter.talent.predator-s-edge": {
     "confidence": "PROVISIONAL",
@@ -1935,7 +1977,9 @@
     ],
     "mode": "class-new",
     "files": [
-      "sim/hunter/forever.go"
+      "sim/hunter/forever.go",
+      "sim/hunter/forever_utility.go",
+      "sim/hunter/freezing_trap.go"
     ],
     "scope": "Active combat effects, castable abilities, or encounter-control behavior."
   },
@@ -2076,7 +2120,8 @@
     ],
     "mode": "class",
     "files": [
-      "sim/rogue/forever.go"
+      "sim/rogue/forever.go",
+      "sim/rogue/vanish.go"
     ],
     "scope": "Active combat effects, castable abilities, or encounter-control behavior."
   },
@@ -2152,13 +2197,13 @@
     "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
     "remaining_unknowns": [
       "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional.",
-      "Kill events are explicit scenario inputs; duration-mode virtual boss health never manufactures a kill."
+      "Qualifying/non-trivial enemy filtering remains provisional; encounter enemies with explicit finite health are assumed qualifying."
     ],
     "mode": "class-new",
     "files": [
       "sim/rogue/forever.go"
     ],
-    "scope": "Critical chance after configured qualifying kill.",
+    "scope": "Critical chance after configured qualifying kill. Actual finite-health enemy deaths also trigger the effect; time-based virtual boss health never does.",
     "parameters": [
       {
         "key": "recent_kill_at_pull",
@@ -2192,7 +2237,8 @@
     "confidence": "PROVISIONAL",
     "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
     "remaining_unknowns": [
-      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional.",
+      "Cold Blood and Remorseless are consumed after both weapon hits as one ability, using a provisional paired-hit interpretation."
     ],
     "mode": "class-new",
     "files": [
@@ -2552,10 +2598,10 @@
     "files": [
       "sim/warrior/forever.go"
     ],
-    "scope": "Conditional kill-enabled melee attack.",
+    "scope": "Conditional kill-enabled melee attack. Actual finite-health enemy deaths also trigger the effect; time-based virtual boss health never does.",
     "remaining_unknowns": [
       "Forever coefficient, rank, cooldown, and kill qualification.",
-      "Kill events are explicit scenario inputs; duration-mode virtual boss health never manufactures a kill."
+      "Qualifying/non-trivial enemy filtering remains provisional; encounter enemies with explicit finite health are assumed qualifying."
     ],
     "parameters": [
       {

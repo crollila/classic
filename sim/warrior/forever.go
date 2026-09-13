@@ -187,6 +187,12 @@ func (w *Warrior) registerForeverVictoryRush() {
 	}
 	id := core.ActionID{SpellID: 34428}
 	a := w.RegisterAura(core.Aura{Label: "Victorious", ActionID: id, Duration: 20 * time.Second})
+	kill := func(_ *core.Aura, sim *core.Simulation, s *core.Spell, r *core.SpellResult) {
+		if r.Damage > 0 && r.Target.HasHealthBar() && r.Target.CurrentHealth() <= 0 {
+			a.Activate(sim)
+		}
+	}
+	core.MakePermanent(w.RegisterAura(core.Aura{Label: "Forever Victory Rush Kill Trigger", OnSpellHitDealt: kill, OnPeriodicDamageDealt: kill}))
 	w.RegisterResetEffect(func(sim *core.Simulation) {
 		if w.ForeverParameter("recent_kill_at_pull", 0) > 0 {
 			a.Activate(sim)
@@ -196,7 +202,9 @@ func (w *Warrior) registerForeverVictoryRush() {
 			core.StartPeriodicAction(sim, core.PeriodicActionOptions{Period: time.Duration(interval * float64(time.Second)), OnAction: func(sim *core.Simulation) { a.Activate(sim) }})
 		}
 	})
-	w.RegisterSpell(AnyStance, core.SpellConfig{ActionID: id, Flags: core.SpellFlagAPL | SpellFlagOffensive, SpellSchool: core.SpellSchoolPhysical, DefenseType: core.DefenseTypeMelee, ProcMask: core.ProcMaskMeleeMHSpecial, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}}, ExtraCastCondition: func(sim *core.Simulation, t *core.Unit) bool { return a.IsActive() }, DamageMultiplier: 1, ThreatMultiplier: 1, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
+	w.RegisterSpell(AnyStance, core.SpellConfig{ActionID: id, Flags: core.SpellFlagAPL | SpellFlagOffensive, SpellSchool: core.SpellSchoolPhysical, DefenseType: core.DefenseTypeMelee, ProcMask: core.ProcMaskMeleeMHSpecial, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}}, ExtraCastCondition: func(sim *core.Simulation, t *core.Unit) bool {
+		return a.IsActive() && w.DistanceFromTarget <= core.MaxMeleeAttackDistance
+	}, DamageMultiplier: 1, ThreatMultiplier: 1, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
 		a.Deactivate(sim)
 		s.CalcAndDealDamage(sim, t, .45*s.MeleeAttackPower(t), s.OutcomeMeleeSpecialHitAndCrit)
 	}})

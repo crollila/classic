@@ -34,6 +34,15 @@ func (rogue *Rogue) registerVanishSpell() {
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			if rogue.Forever != nil {
+				for _, enemy := range rogue.Env.Encounter.TargetUnits {
+					threat := 0.
+					for _, s := range rogue.Spellbook {
+						threat += s.SpellMetrics[enemy.UnitIndex].TotalThreat
+					}
+					spell.SpellMetrics[enemy.UnitIndex].TotalThreat -= max(0, threat)
+				}
+			}
 			// Pause auto attacks
 			rogue.AutoAttacks.CancelAutoSwing(sim)
 			// Apply stealth

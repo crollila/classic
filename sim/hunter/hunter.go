@@ -167,6 +167,9 @@ func (hunter *Hunter) Initialize() {
 	hunter.registerExplosiveTrapSpell(traps)
 	hunter.registerImmolationTrapSpell(traps)
 	hunter.registerFreezingTrapSpell(traps)
+	if hunter.Forever != nil {
+		hunter.registerForeverFrostTrap(traps)
+	}
 
 	hunter.registerRapidFire()
 	hunter.registerForeverAbilities(arcaneShotTimer)
