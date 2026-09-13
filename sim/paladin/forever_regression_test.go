@@ -280,3 +280,56 @@ func TestForeverLightningOverloadUsesSeparateSpell(t *testing.T) {
 		t.Fatal("Overload threat modifier leaked")
 	}
 }
+
+func TestForeverHybridFactoryPlanningRotations(t *testing.T) {
+	for _, mode := range []proto.ForeverMode{proto.ForeverMode_STRICT, proto.ForeverMode_BEST_GUESS} {
+		for _, spec := range []string{"HOLY", "RESTO_SHAMAN", "RESTO_DRUID", "BEAR"} {
+			t.Run(spec+mode.String(), func(t *testing.T) {
+				p := &proto.Player{Equipment: &proto.EquipmentSpec{}, Consumes: &proto.Consumes{}, DistanceFromTarget: 0, BonusStats: &proto.UnitStats{Stats: stats.Stats{stats.Health: 10000, stats.Mana: 20000, stats.AttackPower: 1000, stats.SpellPower: 200, stats.MeleeHit: 20, stats.SpellHit: 20}.ToFloatArray()}, Forever: &proto.ForeverOptions{RulesetId: foreverdata.RulesetID, Mode: mode, ExperimentalEstimatedRanks: true}}
+				ids := []int32{}
+				switch spec {
+				case "HOLY":
+					p.Class = proto.Class_ClassPaladin
+					p.Race = proto.Race_RaceHuman
+					p.Spec = &proto.Player_HolyPaladin{HolyPaladin: &proto.HolyPaladin{Options: &proto.PaladinOptions{}}}
+					ids = []int32{25292, 19943}
+				case "RESTO_SHAMAN":
+					p.Class = proto.Class_ClassShaman
+					p.Race = proto.Race_RaceTroll
+					p.Spec = &proto.Player_RestorationShaman{RestorationShaman: &proto.RestorationShaman{Options: &proto.RestorationShaman_Options{}}}
+					ids = []int32{25357, 10468}
+				case "RESTO_DRUID":
+					p.Class = proto.Class_ClassDruid
+					p.Race = proto.Race_RaceNightElf
+					p.Spec = &proto.Player_RestorationDruid{RestorationDruid: &proto.RestorationDruid{Options: &proto.RestorationDruid_Options{}}}
+					ids = []int32{25297}
+				case "BEAR":
+					p.Class = proto.Class_ClassDruid
+					p.Race = proto.Race_RaceNightElf
+					p.Spec = &proto.Player_FeralTankDruid{FeralTankDruid: &proto.FeralTankDruid{Options: &proto.FeralTankDruid_Options{}}}
+					ids = []int32{5229, 9908, 9881}
+				}
+				p.Rotation = &proto.APLRotation{Type: proto.APLRotation_TypeAPL}
+				for _, id := range ids {
+					target := &proto.UnitReference{Type: proto.UnitReference_Self}
+					if spec == "BEAR" {
+						target = nil
+					}
+					p.Rotation.PriorityList = append(p.Rotation.PriorityList, &proto.APLListItem{Action: &proto.APLAction{Action: &proto.APLAction_CastSpell{CastSpell: &proto.APLActionCastSpell{SpellId: &proto.ActionID{RawId: &proto.ActionID_SpellId{SpellId: id}}, Target: target}}}})
+				}
+				result := core.RunSim(&proto.RaidSimRequest{Raid: &proto.Raid{Parties: []*proto.Party{{Players: []*proto.Player{p}}}, Tanks: []*proto.UnitReference{{Type: proto.UnitReference_Player, Index: 0}}}, Encounter: &proto.Encounter{Duration: 30, Targets: []*proto.Target{{Level: 63, MinBaseDamage: 400, SwingSpeed: 2, TankIndex: 0, Stats: stats.Stats{stats.Health: 1000000}.ToFloatArray()}}}, SimOptions: &proto.SimOptions{Iterations: 2, RandomSeed: 5, IsTest: true}}, nil, simsignals.Signals{})
+				if result.Error != nil {
+					t.Fatal(result.Error)
+				}
+				output := result.RaidMetrics.Hps.Avg
+				if spec == "BEAR" {
+					output = result.RaidMetrics.Dps.Avg
+				}
+				if output <= 0 || math.IsNaN(output) || math.IsInf(output, 0) {
+					t.Fatal("default rotation produced no finite output", output)
+				}
+				t.Logf("%s %s output=%.2f", spec, mode.String(), output)
+			})
+		}
+	}
+}

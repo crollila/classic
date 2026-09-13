@@ -76,11 +76,11 @@ func (p *Paladin) applyForeverTalents() {
 		}}))
 	}
 	if p.fr("shield-specialization") > 0 {
-		p.PseudoStats.BlockValueMultiplier += .1 * p.fr("shield-specialization")
+		p.PseudoStats.BlockValueMultiplier += p.ForeverValue("paladin.talent.shield-specialization", 0, 0) / 100
 		metrics := p.NewManaMetrics(p.fa("shield-specialization"))
 		icd := core.Cooldown{Timer: p.NewTimer(), Duration: 3 * time.Second}
 		core.MakePermanent(p.RegisterAura(core.Aura{Label: "Forever Shield Specialization", OnSpellHitTaken: func(_ *core.Aura, sim *core.Simulation, sp *core.Spell, r *core.SpellResult) {
-			if r.DidBlock() && icd.IsReady(sim) && sim.Proc(p.fr("shield-specialization")/3, "Forever Shield Specialization") {
+			if r.DidBlock() && icd.IsReady(sim) && sim.Proc(p.ForeverValue("paladin.talent.shield-specialization", 1, 0)/100, "Forever Shield Specialization") {
 				icd.Use(sim)
 				p.AddMana(sim, .06*p.MaxMana(), metrics)
 			}
@@ -234,7 +234,7 @@ func (p *Paladin) registerForeverSpells() {
 				}
 			}
 			old(sim, t, sp)
-			if sim.Proc(p.fr("sanctified-judgement")/3, "Forever Sanctified Judgement") {
+			if sim.Proc(p.ForeverValue("paladin.talent.sanctified-judgement", 0, 0)/100, "Forever Sanctified Judgement") {
 				p.AddMana(sim, .2*cost, metrics)
 			}
 		}

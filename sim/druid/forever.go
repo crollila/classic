@@ -115,7 +115,7 @@ func (d *Druid) applyForeverTalents() {
 	}
 	if d.fr("rend-and-tear") > 0 {
 		d.ForeverDamageMultiplier(func(sp *core.Spell, at *core.AttackTable) float64 {
-			if sp.ProcMask.Matches(core.ProcMaskMeleeMHSpecial) && (d.AssumeBleedActive || at.Defender.GetExclusiveEffectCategory(core.BleedEffectCategory).AnyActive()) {
+			if sp.ProcMask.Matches(core.ProcMaskMeleeMHSpecial) && (d.AssumeBleedActive || at.Defender.ForeverHasDebuff("bleed")) {
 				return 1 + .02*d.fr("rend-and-tear")
 			}
 			return 1
@@ -151,7 +151,26 @@ func (d *Druid) applyForeverTalents() {
 	}
 	if d.fr("nature-s-grace") > 0 {
 		speed := 1 + d.fr("nature-s-grace")*.1
-		a := d.RegisterAura(core.Aura{Label: "Forever Nature's Grace", ActionID: d.fa("nature-s-grace"), Duration: 3 * time.Second, OnGain: func(_ *core.Aura, sim *core.Simulation) { d.MultiplyCastSpeed(speed) }, OnExpire: func(_ *core.Aura, sim *core.Simulation) { d.MultiplyCastSpeed(1 / speed) }})
+		var spells []*core.Spell
+		d.OnSpellRegistered(func(sp *core.Spell) {
+			if !sp.ProcMask.Matches(core.ProcMaskMeleeOrRanged) && sp.DefaultCast.GCD > 0 {
+				spells = append(spells, sp)
+			}
+		})
+		deltas := map[*core.Spell]time.Duration{}
+		a := d.RegisterAura(core.Aura{Label: "Forever Nature's Grace", ActionID: d.fa("nature-s-grace"), Duration: 3 * time.Second, OnGain: func(_ *core.Aura, sim *core.Simulation) {
+			d.MultiplyCastSpeed(speed)
+			for _, sp := range spells {
+				delta := time.Duration(float64(sp.DefaultCast.GCD) * .01)
+				deltas[sp] = delta
+				sp.DefaultCast.GCD -= delta
+			}
+		}, OnExpire: func(_ *core.Aura, sim *core.Simulation) {
+			d.MultiplyCastSpeed(1 / speed)
+			for _, sp := range spells {
+				sp.DefaultCast.GCD += deltas[sp]
+			}
+		}})
 		proc := func(_ *core.Aura, sim *core.Simulation, sp *core.Spell, r *core.SpellResult) {
 			if r.DidCrit() && (sp.DefenseType == core.DefenseTypeMagic || sp.ProcMask.Matches(core.ProcMaskSpellHealing)) {
 				a.Activate(sim)

@@ -73,7 +73,11 @@ func (shaman *Shaman) newHealingStreamTotemSpellConfig(rank int) core.SpellConfi
 		NumberOfTicks: int32(duration / healInterval),
 		TickLength:    healInterval,
 		OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-			healSpell.Cast(sim, target)
+			if shaman.Forever == nil || shaman.ActiveTotems[WaterTotem] == dot.Spell {
+				healSpell.Cast(sim, target)
+			} else {
+				dot.Deactivate(sim)
+			}
 		},
 	}
 

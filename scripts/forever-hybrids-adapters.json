@@ -206,7 +206,9 @@
     "remaining_unknowns": [
       "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
     ],
-    "auto_priority": 23
+    "auto_priority": 23,
+    "healing": true,
+    "hybrid_healing": true
   },
   "paladin.talent.consecrated-ground": {
     "mode": "class-new",
@@ -249,7 +251,9 @@
     "remaining_unknowns": [
       "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
     ],
-    "auto_priority": 22
+    "auto_priority": 22,
+    "healing": true,
+    "hybrid_healing": true
   },
   "paladin.talent.toughness": {
     "mode": "classic",
@@ -359,6 +363,30 @@
     "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
     "remaining_unknowns": [
       "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ],
+    "rank_overrides": [
+      {
+        "rank": 2,
+        "effect": "Increases shield block value by 20%; blocks have a 66% chance to restore 6% maximum Mana, at most once every 3 seconds.",
+        "values": [
+          20,
+          66,
+          6,
+          3
+        ],
+        "reason": "Linear block-value progression from observed 10% rank1; source estimate retains a fixed10%. Mana proc follows source estimate."
+      },
+      {
+        "rank": 3,
+        "effect": "Increases shield block value by 30%; blocks have a 100% chance to restore 6% maximum Mana, at most once every 3 seconds.",
+        "values": [
+          30,
+          100,
+          6,
+          3
+        ],
+        "reason": "Linear block-value progression; 33/66/100% final guaranteed proc follows analogous Blizzard three-rank proc progression, explicitly predicted."
+      }
     ]
   },
   "paladin.talent.sacred-duty": {
@@ -1585,7 +1613,9 @@
     "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
     "remaining_unknowns": [
       "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
-    ]
+    ],
+    "healing": true,
+    "auto_priority": 16
   },
   "druid.talent.improved-wrath": {
     "mode": "class",
@@ -2584,7 +2614,9 @@
     "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
     "remaining_unknowns": [
       "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
-    ]
+    ],
+    "healing": true,
+    "auto_priority": 16
   },
   "paladin.baseline.holy-strike": {
     "mode": "ability",
