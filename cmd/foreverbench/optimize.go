@@ -25,7 +25,23 @@ package main
 //     and add 1 point anywhere legal, until no swap gains above noise;
 //  4. unspent points are filled only with talents that gain DPS (> 0) at the
 //     highest iteration level; talents whose effect is not simulated (Forever
-//     mode non-sim/blocked, or no effective rank in the mode) are never candidates.
+//     mode non-sim/blocked, or no effective rank in the mode) are never candidates;
+//  5. pair moves (interaction phase, -pair-moves): steps 2-4 value every talent
+//     point by its own marginal gain, so talents that only pay off together are
+//     invisible to them. After swaps and fill converge, the 2 least costly
+//     removable points are removed (the 3 cheapest legal removal pairs; none when
+//     2 points are unspent) and a PAIR of points is added: two available talents,
+//     +2 ranks of one talent, or a talent plus the talent it unlocks. Pair
+//     candidates are capped (-pair-moves, default 48 per round) and drawn
+//     round-robin from four classes so useless x useless pairs cannot crowd out
+//     the rest: unlock pairs, noise x active (one single-point gain within 2 SE
+//     of zero), noise x noise, active x active; same tree and close rows first.
+//     The best pair is accepted under the same noise rules, then swaps and fill
+//     run again (at most 4 rounds). Measured interactions are reported:
+//     synergy_dps = f(a+b) - f(a) - f(b) + f(base) on the removal base, for the
+//     accepted pairs and for pairs whose synergy is beyond 3 SE at the screening
+//     level (re-measured at the second level). The reported SE treats the four
+//     sims as independent, which is conservative under common random numbers.
 //
 // Noise: every comparison uses common random numbers (fixed seed). Candidates
 // are screened at iterations N, the close ones (within 2 standard errors of the
@@ -51,6 +67,7 @@ import (
 	"github.com/wowsims/classic/sim/core/foreverdata"
 	"github.com/wowsims/classic/sim/core/proto"
 	"github.com/wowsims/classic/sim/game"
+	googleProto "google.golang.org/protobuf/proto"
 )
 
 //go:embed presets/classic_talent_trees.json
@@ -421,12 +438,20 @@ type optimizer struct {
 	levels   []int32
 	parallel int
 	deadline time.Time
+	consumes *proto.Consumes // optimize-setup: replaces the normalized consumables
+	pairCap  int             // pair candidates per round of the pair phase (0 = off)
+	// evalFn replaces the simulation (tests inject a synthetic objective).
+	evalFn func(s []int32, iterations int32) (evalResult, int64)
 
 	mu        sync.Mutex
 	cache     map[string]evalResult
 	sims      int64
 	values    map[int]float64
 	budgetHit bool
+
+	interactions []TalentInteraction
+	interSeen    map[string]bool
+	pairsTried   int
 }
 
 func (o *optimizer) overBudget() bool {
@@ -437,20 +462,39 @@ func (o *optimizer) overBudget() bool {
 }
 
 func (o *optimizer) evalOne(s []int32, iterations int32) (res evalResult, sims int64) {
-	req, err := o.b.classicRequest(o.e, o.race, o.enc, iterations)
+	if o.evalFn != nil {
+		return o.evalFn(s, iterations)
+	}
+	if o.game == "classic" {
+		return o.b.evalBuild(o.game, o.e, o.race, o.consumes, o.enc, iterations, o.m.encode(s), TalentPolicy{})
+	}
+	return o.b.evalBuild(o.game, o.e, o.race, o.consumes, o.enc, iterations, "", TalentPolicy{Name: "override", Override: o.m.toMap(s)})
+}
+
+// evalBuild sims one player setup: the entry's gear and APL, the race, the
+// normalized consumables unless consumes is set, and the talents (Classic
+// talent string, or the Forever talent policy) with the Forever auto-rotation
+// policy of the bench.
+func (b *bench) evalBuild(gameName string, e PresetEntry, race proto.Race, consumes *proto.Consumes, enc EncounterSpec, iterations int32,
+	classicTalents string, policy TalentPolicy) (res evalResult, sims int64) {
+	req, err := b.classicRequest(e, race, enc, iterations)
 	if err != nil {
 		return evalResult{Err: err.Error()}, 0
 	}
+	player := req.Raid.Parties[0].Players[0]
+	if consumes != nil {
+		player.Consumes = googleProto.Clone(consumes).(*proto.Consumes)
+	}
 	var r RunResult
-	if o.game == "classic" {
-		req.Raid.Parties[0].Players[0].TalentsString = o.m.encode(s)
+	if gameName == "classic" {
+		player.TalentsString = classicTalents
 		r, sims = runGame(game.Classic, req), 1
 	} else {
-		freq, _, err := toForever(o.b.d, req, o.b.mode, TalentPolicy{Name: "override", Override: o.m.toMap(s)})
+		freq, _, err := toForever(b.d, req, b.mode, policy)
 		if err != nil {
 			return evalResult{Err: err.Error()}, 0
 		}
-		freq, rep, cur, err := o.b.autoRotationN(freq, iterations)
+		freq, rep, cur, err := b.autoRotationN(freq, iterations)
 		if err != nil {
 			return evalResult{Err: err.Error()}, 1
 		}
@@ -814,24 +858,26 @@ func (o *optimizer) fill(s []int32) ([]int32, []OptStep) {
 	return s, steps
 }
 
+// removals lists the legal -1 rank moves that keep the spec identity.
+func (o *optimizer) removals(s []int32) []optMove {
+	out := []optMove{}
+	for i, n := range o.m.Nodes {
+		if s[i] == 0 {
+			continue
+		}
+		c := cloneState(s)
+		c[i]--
+		if o.m.legal(c) == nil && o.cons.satisfied(o.m, c) {
+			out = append(out, optMove{c, "-" + n.Name, 1, i})
+		}
+	}
+	return out
+}
+
 func (o *optimizer) swaps(s []int32) ([]int32, []OptStep) {
 	steps := []OptStep{}
-	required := map[int]bool{}
-	for _, i := range o.cons.require {
-		required[i] = true
-	}
 	for round := 0; round < 60 && !o.overBudget(); round++ {
-		removals := []optMove{}
-		for i, n := range o.m.Nodes {
-			if s[i] == 0 || (required[i] && s[i] == 1) {
-				continue
-			}
-			c := cloneState(s)
-			c[i]--
-			if o.m.legal(c) == nil && o.cons.satisfied(o.m, c) {
-				removals = append(removals, optMove{c, "-" + n.Name, 1, i})
-			}
-		}
+		removals := o.removals(s)
 		moves := []optMove{}
 		seen := map[string]bool{o.m.key(s): true}
 		if len(removals) > 0 {
@@ -886,6 +932,302 @@ func (o *optimizer) swaps(s []int32) ([]int32, []OptStep) {
 	return s, steps
 }
 
+// ---------------------------------------------------------------- pair moves
+
+// TalentInteraction is a measured 2x2 factorial on a removal base r:
+// synergy = f(r+a+b) - f(r+a) - f(r+b) + f(r). Positive synergy means the two
+// points are worth more together than their single-point gains add up to.
+type TalentInteraction struct {
+	A          string   `json:"a"`
+	B          string   `json:"b"`
+	Removed    []string `json:"removed,omitempty"`
+	GainA      *float64 `json:"gain_a_dps,omitempty"`
+	GainB      *float64 `json:"gain_b_dps,omitempty"`
+	GainAB     float64  `json:"gain_ab_dps"`
+	Synergy    *float64 `json:"synergy_dps,omitempty"`
+	SynergySE  *float64 `json:"synergy_stderr,omitempty"`
+	Iterations int32    `json:"iterations"`
+	Accepted   bool     `json:"accepted"`
+	Note       string   `json:"note,omitempty"`
+}
+
+type pairProbe struct {
+	base        []int32 // removal base r
+	removed     []string
+	a, b        int
+	sa, sb, sab []int32 // sb is nil when b is only legal after a
+	class       int     // 0 unlock, 1 noise x active, 2 noise x noise, 3 active x active
+	sameTree    bool
+	rowDist     int32
+	gainSum     float64
+}
+
+const (
+	pairRounds       = 4
+	pairRemovalBases = 3
+	pairStrongReport = 5
+)
+
+// removalBases returns the states the pair is added to: the build itself when
+// two points are unspent, else the least costly removals of the missing points.
+func (o *optimizer) removalBases(s []int32) []pairProbe {
+	need := max(0, 2-int(talentBudget-o.m.total(s)))
+	if need == 0 {
+		return []pairProbe{{base: s}}
+	}
+	cheapest := func(moves []optMove, n int) []optMove {
+		states := [][]int32{}
+		for _, mv := range moves {
+			states = append(states, mv.state)
+		}
+		res := o.evaluate(states, o.levels[0])
+		idx := []int{}
+		for i := range moves {
+			if res[i].Err == "" {
+				idx = append(idx, i)
+			}
+		}
+		sort.SliceStable(idx, func(a, b int) bool { return res[idx[a]].DPS > res[idx[b]].DPS })
+		out := []optMove{}
+		for _, i := range idx[:min(n, len(idx))] {
+			out = append(out, moves[i])
+		}
+		return out
+	}
+	first := cheapest(o.removals(s), 4)
+	bases := []pairProbe{}
+	if need == 1 {
+		for _, r := range first[:min(pairRemovalBases, len(first))] {
+			bases = append(bases, pairProbe{base: r.state, removed: []string{o.m.Nodes[r.node].Name}})
+		}
+		return bases
+	}
+	// Second removal among the same cheap nodes (including the same talent twice).
+	double := []optMove{}
+	names := map[string][]string{}
+	for _, r := range first {
+		for _, r2 := range first {
+			c := cloneState(r.state)
+			if c[r2.node] == 0 {
+				continue
+			}
+			c[r2.node]--
+			key := o.m.key(c)
+			if names[key] != nil || o.m.legal(c) != nil || !o.cons.satisfied(o.m, c) {
+				continue
+			}
+			names[key] = []string{o.m.Nodes[r.node].Name, o.m.Nodes[r2.node].Name}
+			double = append(double, optMove{c, "", 2, -1})
+		}
+	}
+	for _, r := range cheapest(double, pairRemovalBases) {
+		bases = append(bases, pairProbe{base: r.state, removed: names[o.m.key(r.state)]})
+	}
+	return bases
+}
+
+// pairProbes builds the capped pair candidates of one round.
+func (o *optimizer) pairProbes(s []int32) []pairProbe {
+	bases := o.removalBases(s)
+	if len(bases) == 0 {
+		return nil
+	}
+	seen := map[string]bool{o.m.key(s): true}
+	out := []pairProbe{}
+	for _, base := range bases {
+		r := base.base
+		removed := map[int]bool{}
+		for i := range o.m.Nodes {
+			removed[i] = r[i] < s[i]
+		}
+		usable := func(st []int32, i int) bool {
+			n := o.m.Nodes[i]
+			return n.Excluded == "" && !o.cons.forbid[i] && !removed[i] && st[i] < n.Max && o.m.available(st, i)
+		}
+		singles := []int{}
+		states := [][]int32{r}
+		for i := range o.m.Nodes {
+			if usable(r, i) {
+				c := cloneState(r)
+				c[i]++
+				singles = append(singles, i)
+				states = append(states, c)
+			}
+		}
+		res := o.evaluate(states, o.levels[0])
+		if res[0].Err != "" {
+			continue
+		}
+		gain, noise, single := map[int]float64{}, map[int]bool{}, map[int][]int32{}
+		for k, i := range singles {
+			if x := res[k+1]; x.Err == "" {
+				gain[i] = x.DPS - res[0].DPS
+				noise[i] = math.Abs(gain[i]) <= 2*math.Sqrt(x.StdErr*x.StdErr+res[0].StdErr*res[0].StdErr)
+				single[i] = states[k+1]
+			}
+		}
+		buckets := make([][]pairProbe, 4)
+		add := func(p pairProbe) {
+			key := o.m.key(p.sab)
+			if seen[key] || o.m.total(p.sab) > talentBudget || o.m.legal(p.sab) != nil || !o.cons.satisfied(o.m, p.sab) {
+				return
+			}
+			seen[key] = true
+			na, nb := o.m.Nodes[p.a], o.m.Nodes[p.b]
+			p.base, p.removed = r, base.removed
+			p.sameTree, p.rowDist, p.gainSum = na.Tree == nb.Tree, max(na.Row-nb.Row, nb.Row-na.Row), gain[p.a]+gain[p.b]
+			buckets[p.class] = append(buckets[p.class], p)
+		}
+		for _, a := range singles {
+			if single[a] == nil {
+				continue
+			}
+			for b := range o.m.Nodes {
+				if !usable(single[a], b) {
+					continue
+				}
+				sab := cloneState(single[a])
+				sab[b]++
+				switch {
+				case single[b] == nil:
+					add(pairProbe{a: a, b: b, sa: single[a], sab: sab, class: 0})
+				case b < a:
+					// (b, a) is generated from b.
+				case noise[a] != noise[b]:
+					add(pairProbe{a: a, b: b, sa: single[a], sb: single[b], sab: sab, class: 1})
+				case noise[a]:
+					add(pairProbe{a: a, b: b, sa: single[a], sb: single[b], sab: sab, class: 2})
+				default:
+					add(pairProbe{a: a, b: b, sa: single[a], sb: single[b], sab: sab, class: 3})
+				}
+			}
+		}
+		for _, list := range buckets {
+			sort.SliceStable(list, func(i, j int) bool {
+				x, y := list[i], list[j]
+				if x.sameTree != y.sameTree {
+					return x.sameTree
+				}
+				if x.rowDist != y.rowDist {
+					return x.rowDist < y.rowDist
+				}
+				return x.gainSum > y.gainSum
+			})
+		}
+		limit := max(1, o.pairCap/len(bases))
+		for k, n := 0, 0; n < limit; k++ {
+			empty := true
+			for c := range buckets {
+				if k < len(buckets[c]) && n < limit {
+					out = append(out, buckets[c][k])
+					empty = false
+					n++
+				}
+			}
+			if empty {
+				break
+			}
+		}
+	}
+	return out
+}
+
+// interaction measures the 2x2 factorial of a probe at the iteration count.
+func (o *optimizer) interaction(p pairProbe, iterations int32, accepted bool) (TalentInteraction, bool) {
+	states := [][]int32{p.base, p.sab, p.sa}
+	if p.sb != nil {
+		states = append(states, p.sb)
+	}
+	res := o.evaluate(states, iterations)
+	for _, r := range res {
+		if r.Err != "" {
+			return TalentInteraction{}, false
+		}
+	}
+	ti := TalentInteraction{A: o.m.Nodes[p.a].Name, B: o.m.Nodes[p.b].Name, Removed: p.removed, Iterations: iterations, Accepted: accepted,
+		GainAB: round2(res[1].DPS - res[0].DPS)}
+	ga := round2(res[2].DPS - res[0].DPS)
+	ti.GainA = &ga
+	if p.sb == nil {
+		ti.Note = "b is only legal after a: no single-point gain for b, synergy undefined"
+		return ti, true
+	}
+	gb := round2(res[3].DPS - res[0].DPS)
+	syn := round2(res[1].DPS - res[2].DPS - res[3].DPS + res[0].DPS)
+	se := 0.0
+	for _, r := range res {
+		se += r.StdErr * r.StdErr
+	}
+	se = round2(math.Sqrt(se))
+	ti.GainB, ti.Synergy, ti.SynergySE = &gb, &syn, &se
+	return ti, true
+}
+
+func (o *optimizer) recordInteraction(p pairProbe, iterations int32, accepted bool, minSigma float64) {
+	key := fmt.Sprintf("%s|%d|%d", o.m.key(p.base), p.a, p.b)
+	if o.interSeen[key] && !accepted {
+		return
+	}
+	ti, ok := o.interaction(p, iterations, accepted)
+	if !ok || (!accepted && (ti.Synergy == nil || math.Abs(*ti.Synergy) <= minSigma**ti.SynergySE)) {
+		return
+	}
+	if o.interSeen == nil {
+		o.interSeen = map[string]bool{}
+	}
+	o.interSeen[key] = true
+	o.interactions = append(o.interactions, ti)
+}
+
+// pairs is the interaction phase (step 5 of the header comment).
+func (o *optimizer) pairs(s []int32) ([]int32, []OptStep) {
+	steps := []OptStep{}
+	for round := 0; round < pairRounds && o.pairCap > 0 && !o.overBudget(); round++ {
+		probes := o.pairProbes(s)
+		moves := []optMove{}
+		byKey := map[string]pairProbe{}
+		for _, p := range probes {
+			desc := fmt.Sprintf("+%s +%s", o.m.Nodes[p.a].Name, o.m.Nodes[p.b].Name)
+			if len(p.removed) > 0 {
+				desc = "-" + strings.Join(p.removed, " -") + " " + desc
+			}
+			moves = append(moves, optMove{p.sab, desc, 1, -1})
+			byKey[o.m.key(p.sab)] = p
+		}
+		o.pairsTried += len(moves)
+		d, ok := o.selectBest(s, moves, selectNormal)
+		// Strong interactions among the screened pairs, re-measured one level up.
+		type strong struct {
+			p     pairProbe
+			sigma float64
+		}
+		list := []strong{}
+		for _, p := range probes {
+			if ti, ok := o.interaction(p, o.levels[0], false); ok && ti.Synergy != nil && *ti.SynergySE > 0 && math.Abs(*ti.Synergy) > 3**ti.SynergySE {
+				list = append(list, strong{p, math.Abs(*ti.Synergy) / *ti.SynergySE})
+			}
+		}
+		sort.SliceStable(list, func(i, j int) bool { return list[i].sigma > list[j].sigma })
+		for _, x := range list[:min(pairStrongReport, len(list))] {
+			if !o.overBudget() {
+				o.recordInteraction(x.p, o.levels[min(1, len(o.levels)-1)], false, 2)
+			}
+		}
+		if !ok {
+			break
+		}
+		o.recordInteraction(byKey[o.m.key(d.move.state)], d.iterations, true, 0)
+		steps = append(steps, o.step("pairs", d))
+		s = d.move.state
+		var p []OptStep
+		s, p = o.swaps(s)
+		steps = append(steps, p...)
+		s, p = o.fill(s)
+		steps = append(steps, p...)
+	}
+	return s, steps
+}
+
 // ---------------------------------------------------------------- driver
 
 type OptStart struct {
@@ -929,8 +1271,13 @@ type OptimizeResult struct {
 	Sims              int64            `json:"sims"`
 	WallSeconds       float64          `json:"wall_seconds"`
 	BudgetExhausted   bool             `json:"budget_exhausted"`
-	Error             string           `json:"error,omitempty"`
+	// Interactions: measured talent pair synergies from the pair phase, sorted by |synergy|.
+	Interactions   []TalentInteraction `json:"interactions"`
+	PairCandidates int                 `json:"pair_candidates_evaluated"`
+	Error          string              `json:"error,omitempty"`
 }
+
+const defaultPairCap = 48
 
 type optimizeOptions struct {
 	game     string
@@ -939,6 +1286,18 @@ type optimizeOptions struct {
 	base     int32
 	budget   time.Duration
 	parallel int
+	pairCap  int
+	setup    *setupOverride
+}
+
+// setupOverride runs the talent search inside a setup chosen by optimize-setup
+// instead of the normalized preset: gear and APL (entry), race, consumables,
+// and the current talents as an extra start.
+type setupOverride struct {
+	entry    PresetEntry
+	race     proto.Race
+	consumes *proto.Consumes
+	start    []int32
 }
 
 func (b *bench) optimize(specID string, opts optimizeOptions) (OptimizeResult, error) {
@@ -948,6 +1307,9 @@ func (b *bench) optimize(specID string, opts optimizeOptions) (OptimizeResult, e
 		return OptimizeResult{}, err
 	}
 	e = e.withGearFill(b.norm.GearFill)
+	if opts.setup != nil {
+		e = opts.setup.entry
+	}
 	if e.Status != "ok" {
 		return OptimizeResult{}, fmt.Errorf("%s has no simmable gear for %s: %s", specID, opts.phase, e.Reason)
 	}
@@ -962,17 +1324,25 @@ func (b *bench) optimize(specID string, opts optimizeOptions) (OptimizeResult, e
 	if err != nil {
 		return OptimizeResult{}, err
 	}
-	race := b.chooseRace(e, true, game.Version(opts.game), opts.enc)
+	var race *RaceChoice
+	if opts.setup != nil {
+		race = &RaceChoice{Policy: "optimize-setup", Race: raceName(opts.setup.race), Reason: "race chosen by optimize-setup", race: opts.setup.race}
+	} else {
+		race = b.chooseRace(e, true, game.Version(opts.game), opts.enc)
+	}
 	o := &optimizer{b: b, game: opts.game, e: e, race: race.race, enc: opts.enc, m: m, cons: cons,
-		levels: []int32{opts.base, opts.base * 5, opts.base * 15}, parallel: max(1, opts.parallel),
+		levels: []int32{opts.base, opts.base * 5, opts.base * 15}, parallel: max(1, opts.parallel), pairCap: opts.pairCap,
 		cache: map[string]evalResult{}, values: map[int]float64{}}
+	if opts.setup != nil {
+		o.consumes = opts.setup.consumes
+	}
 	if opts.budget > 0 {
 		o.deadline = start.Add(opts.budget)
 	}
 	top := o.levels[len(o.levels)-1]
 	res := OptimizeResult{Spec: specID, Game: opts.game, Phase: opts.phase.String(), Race: race.Race, GearStatus: e.GearStatus, GearLabel: e.GearLabel,
 		APL: e.APLPreset, Targets: opts.enc.Targets, DurationS: opts.enc.Duration, Seed: b.norm.Seed, Iterations: o.levels, Constraints: cons,
-		NormalizationHash: normalizationHash(b.norm), Starts: []OptStart{}}
+		NormalizationHash: normalizationHash(b.norm), Starts: []OptStart{}, Interactions: []TalentInteraction{}}
 	for _, n := range m.Nodes {
 		if n.Excluded != "" {
 			res.NotSimulated = append(res.NotSimulated, n.Name+" ("+n.Excluded+")")
@@ -1010,6 +1380,9 @@ func (b *bench) optimize(specID string, opts optimizeOptions) (OptimizeResult, e
 			res.Baseline = &BuildBaseline{Kind: "ui", Talents: e.TalentsString, Error: note}
 		}
 	}
+	if opts.setup != nil && opts.setup.start != nil && m.legal(opts.setup.start) == nil {
+		starts = append(starts, startState{name: "optimize-setup current build", state: opts.setup.start})
+	}
 	greedyState, greedyPath := o.greedy()
 	starts = append(starts, startState{name: "greedy from empty", state: greedyState, path: greedyPath})
 
@@ -1024,6 +1397,8 @@ func (b *bench) optimize(specID string, opts optimizeOptions) (OptimizeResult, e
 			refined, p = o.swaps(st.state)
 			st.path = append(st.path, p...)
 			refined, p = o.fill(refined)
+			st.path = append(st.path, p...)
+			refined, p = o.pairs(refined)
 			st.path = append(st.path, p...)
 		}
 		finals = append(finals, refined)
@@ -1059,6 +1434,15 @@ func (b *bench) optimize(specID string, opts optimizeOptions) (OptimizeResult, e
 	}
 	res.Sims, res.BudgetExhausted = o.sims, o.budgetHit
 	res.WallSeconds = math.Round(time.Since(start).Seconds()*10) / 10
+	res.PairCandidates = o.pairsTried
+	res.Interactions = append(res.Interactions, o.interactions...)
+	sort.SliceStable(res.Interactions, func(i, j int) bool {
+		x, y := res.Interactions[i], res.Interactions[j]
+		if (x.Synergy == nil) != (y.Synergy == nil) {
+			return y.Synergy == nil
+		}
+		return x.Synergy != nil && math.Abs(*x.Synergy) > math.Abs(*y.Synergy)
+	})
 	if best < 0 {
 		res.Error = "no start produced a legal build satisfying the constraints"
 		return res, nil
@@ -1093,10 +1477,11 @@ func (r OptimizeResult) build(b *bench, date string) TalentBuild {
 
 const optimizerSeed = 7
 
-func optimizerFlags(name string, stderr io.Writer) (*flag.FlagSet, *commonFlags, *float64) {
+func optimizerFlags(name string, stderr io.Writer) (*flag.FlagSet, *commonFlags, *float64, *int) {
 	fs, c := newFlagSet(name, stderr)
 	budget := fs.Float64("budget-seconds", 900, "wall-clock budget per spec/game search (0 = none); a search cut short is reported as budget_exhausted and is no longer deterministic")
-	return fs, c, budget
+	pairs := fs.Int("pair-moves", defaultPairCap, "talent pair candidates per round of the pair phase (2-for-2 swaps / joint adds that find talents which only pay off together; 0 = off)")
+	return fs, c, budget, pairs
 }
 
 // applyOptimizerDefaults: -iterations is the screening level (default 200,
@@ -1115,7 +1500,7 @@ func applyOptimizerDefaults(c *commonFlags, parallelDefault int) {
 }
 
 func cmdOptimizeTalents(args []string, stderr io.Writer) (interface{}, error) {
-	fs, c, budget := optimizerFlags("optimize-talents", stderr)
+	fs, c, budget, pairMoves := optimizerFlags("optimize-talents", stderr)
 	specID := fs.String("spec", "", "spec id from `list`")
 	gameName := fs.String("game", "forever", "forever or classic")
 	outFile := fs.String("out", "", `write the build as a builds file ({"builds":[...]}, usable with -forever-builds / -classic-builds)`)
@@ -1134,7 +1519,7 @@ func cmdOptimizeTalents(args []string, stderr io.Writer) (interface{}, error) {
 		return nil, err
 	}
 	res, err := b.optimize(*specID, optimizeOptions{game: *gameName, phase: c.phaseValue, base: int32(c.iterations),
-		enc: EncounterSpec{Name: "custom", Weight: 1, Targets: c.targets, Duration: c.duration}, budget: time.Duration(*budget * float64(time.Second)), parallel: c.parallel})
+		enc: EncounterSpec{Name: "custom", Weight: 1, Targets: c.targets, Duration: c.duration}, budget: time.Duration(*budget * float64(time.Second)), parallel: c.parallel, pairCap: *pairMoves})
 	if err != nil {
 		return nil, err
 	}
@@ -1152,6 +1537,7 @@ func cmdOptimizeTalents(args []string, stderr io.Writer) (interface{}, error) {
 		"notes": []string{
 			"Evaluations use the rank normalization with seed " + fmt.Sprint(b.norm.Seed) + " (common random numbers); the ranking seed differs so the build is not tuned to the ranking's random stream.",
 			"iterations: candidates are screened at the first level; close candidates are re-simmed at the higher levels before a move is accepted.",
+			"interactions: talent pairs measured by the pair phase (path phase \"pairs\"); synergy_dps = f(a+b) - f(a) - f(b) + f(base) on the build with the listed points removed. Positive synergy with gains near zero for a and b alone means the talents only pay off together.",
 			"Forever builds pass foreverdata.Validate; Classic builds follow the UI talent tree rules (row gates of 5 points, prerequisites at max rank, 51 points).",
 		},
 	}, nil
@@ -1177,7 +1563,7 @@ type optimizeAllEntry struct {
 
 func cmdOptimizeAll(args []string, stderr io.Writer) (interface{}, error) {
 	start := time.Now()
-	fs, c, budget := optimizerFlags("optimize-all", stderr)
+	fs, c, budget, pairMoves := optimizerFlags("optimize-all", stderr)
 	games := fs.String("game", "forever,classic", "comma-separated: forever, classic")
 	classicScope := fs.String("classic", "missing", "Classic specs to optimize: missing (no UI talent preset; written to classic_builds.json) or all (UI-preset specs are optimized for comparison but not written)")
 	outDir := fs.String("out-dir", "", "directory for forever_builds.json / classic_builds.json (default <root>/cmd/foreverbench/presets)")
@@ -1232,7 +1618,7 @@ func cmdOptimizeAll(args []string, stderr io.Writer) (interface{}, error) {
 			jobs = append(jobs, func() {
 				fmt.Fprintf(stderr, "optimize %s %s ...\n", gameName, e.Spec)
 				r, err := b.optimize(e.Spec, optimizeOptions{game: gameName, phase: c.phaseValue, base: int32(c.iterations), enc: enc,
-					budget: time.Duration(*budget * float64(time.Second)), parallel: inner})
+					budget: time.Duration(*budget * float64(time.Second)), parallel: inner, pairCap: *pairMoves})
 				o := optimizeAllEntry{Spec: e.Spec, Game: gameName, result: r}
 				if err != nil {
 					o.Error = err.Error()
