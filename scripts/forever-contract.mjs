@@ -9,6 +9,8 @@ export function validateRelease(data) {
   }
   if (data.mechanicsUpdatedAt !== null && !Number.isFinite(Date.parse(data.mechanicsUpdatedAt))) throw new Error('Invalid mechanics update date');
   if (data.engineMode === 'forever-ruleset' && (!data.foreverBuild || !data.rulesetId || !data.mechanicsUpdatedAt)) throw new Error('A Forever ruleset requires a build, ruleset ID, and mechanics update date');
+  if (data.liveDataUrl !== undefined && (typeof data.liveDataUrl !== 'string' || (data.liveDataUrl && !/^https?:\/\/\S+\/$/.test(data.liveDataUrl)))) throw new Error('Invalid liveDataUrl');
+  if (data.embeddedOverridesSha256 !== undefined && data.embeddedOverridesSha256 !== null && !/^[a-f0-9]{64}$/.test(data.embeddedOverridesSha256)) throw new Error('Invalid embeddedOverridesSha256');
   if (!Array.isArray(data.mechanics)) throw new Error('Mechanics must be an array');
   const ids = new Set();
   for (const mechanic of data.mechanics) {

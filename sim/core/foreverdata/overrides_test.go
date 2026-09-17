@@ -5,6 +5,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"sync"
 	"testing"
 
 	"github.com/wowsims/classic/sim/core/proto"
@@ -193,4 +194,62 @@ func TestDiagnosticsDeduplicateAndSplit(t *testing.T) {
 	if len(r.Applied) != 1 || len(r.Rejected) != 1 || !d.Seen(ScopeSpell, "1", "cost", "", "") {
 		t.Fatal(r)
 	}
+}
+
+func TestSetActiveOverrides(t *testing.T) {
+	t.Cleanup(SetOverridesForTesting(ActiveOverrides()))
+	embedded := OverridesInfo()
+	valid := loadFixture(t, "overrides_valid.json")
+
+	summary, err := SetActiveOverrides(valid)
+	if err != nil {
+		t.Fatal(err)
+	}
+	active := OverridesInfo()
+	if summary.SourceHash != "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08" || active.SourceHash != summary.SourceHash ||
+		active.Counts != summary.Counts || summary.Counts.Spells != 3 || summary.Rejected.Parameters != 1 {
+		t.Fatalf("valid document was not swapped in: %+v (embedded %+v)", active, embedded)
+	}
+	if r, _ := Lookup("warrior.talent.anticipation"); r.Ranks[0].Values[0] != 5 {
+		t.Fatal("Lookup does not read the swapped document")
+	}
+
+	// Any validation error leaves the previous document active.
+	for _, raw := range [][]byte{loadFixture(t, "overrides_invalid.json"), []byte("not json"), nil,
+		[]byte(strings.Replace(string(valid), `"forever-overrides-1"`, `"forever-overrides-2"`, 1))} {
+		if _, err := SetActiveOverrides(raw); err == nil {
+			t.Fatal("invalid document accepted")
+		}
+		if OverridesInfo().SourceHash != summary.SourceHash {
+			t.Fatal("invalid document replaced the active one")
+		}
+	}
+}
+
+func TestSetActiveOverridesConcurrent(t *testing.T) {
+	t.Cleanup(SetOverridesForTesting(ActiveOverrides()))
+	valid := loadFixture(t, "overrides_valid.json")
+	empty := []byte(`{"version":"forever-overrides-1","generated_at":"2026-01-01T00:00:00Z","source_hash":"","spells":{},"items":{},"talents":{},"parameters":{}}`)
+	var wg sync.WaitGroup
+	for i := 0; i < 8; i++ {
+		wg.Add(1)
+		go func(i int) {
+			defer wg.Done()
+			for j := 0; j < 20; j++ {
+				raw := valid
+				if (i+j)%2 == 0 {
+					raw = empty
+				}
+				if _, err := SetActiveOverrides(raw); err != nil {
+					t.Error(err)
+				}
+				// Readers always see one complete document.
+				if s := OverridesInfo(); s.Counts.Spells != 0 && s.Counts.Spells != 3 {
+					t.Errorf("torn document: %+v", s.Counts)
+				}
+				Lookup("warrior.talent.anticipation")
+			}
+		}(i)
+	}
+	wg.Wait()
 }

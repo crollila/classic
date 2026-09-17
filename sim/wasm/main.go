@@ -4,6 +4,8 @@
 package main
 
 import (
+	"encoding/json"
+	"fmt"
 	"log"
 	"runtime/debug"
 	"strings"
@@ -11,6 +13,7 @@ import (
 
 	"github.com/wowsims/classic/sim"
 	"github.com/wowsims/classic/sim/core"
+	"github.com/wowsims/classic/sim/core/foreverdata"
 	proto "github.com/wowsims/classic/sim/core/proto"
 	"github.com/wowsims/classic/sim/core/simsignals"
 	protojson "google.golang.org/protobuf/encoding/protojson"
@@ -38,6 +41,8 @@ func main() {
 	js.Global().Set("statWeightsAsync", js.FuncOf(statWeightsAsync))
 	js.Global().Set("bulkSimAsync", js.FuncOf(bulkSimAsync))
 	js.Global().Set("abortById", js.FuncOf(abortById))
+	js.Global().Set("setForeverOverrides", js.FuncOf(setForeverOverrides))
+	js.Global().Set("foreverOverridesInfo", js.FuncOf(foreverOverridesInfo))
 	js.Global().Call("wasmready")
 	<-c
 }
@@ -357,6 +362,48 @@ func abortById(this js.Value, args []js.Value) interface{} {
 	js.CopyBytesToJS(outArray, outbytes)
 
 	return outArray
+}
+
+type foreverOverridesResponse struct {
+	Ok      bool                          `json:"ok"`
+	Error   string                        `json:"error,omitempty"`
+	Summary *foreverdata.OverridesSummary `json:"summary,omitempty"`
+}
+
+func foreverOverridesJson(response foreverOverridesResponse) interface{} {
+	output, err := json.Marshal(response)
+	if err != nil {
+		return js.ValueOf(`{"ok":false,"error":"failed to marshal response"}`)
+	}
+	return js.ValueOf(string(output))
+}
+
+// setForeverOverrides(jsonString) validates a forever-overrides-1 document and makes it the
+// active one. Returns a JSON string {ok, error?, summary}; on error the previous document
+// stays active and summary describes it.
+func setForeverOverrides(this js.Value, args []js.Value) (response interface{}) {
+	defer func() {
+		if err := recover(); err != nil {
+			active := foreverdata.OverridesInfo()
+			response = foreverOverridesJson(foreverOverridesResponse{Error: fmt.Sprint(err), Summary: &active})
+		}
+	}()
+	if len(args) < 1 || args[0].Type() != js.TypeString {
+		active := foreverdata.OverridesInfo()
+		return foreverOverridesJson(foreverOverridesResponse{Error: "setForeverOverrides expects a JSON string", Summary: &active})
+	}
+	summary, err := foreverdata.SetActiveOverrides(getArgsJson(args[0]))
+	if err != nil {
+		active := foreverdata.OverridesInfo()
+		return foreverOverridesJson(foreverOverridesResponse{Error: err.Error(), Summary: &active})
+	}
+	return foreverOverridesJson(foreverOverridesResponse{Ok: true, Summary: &summary})
+}
+
+// foreverOverridesInfo() returns the active document summary as {ok:true, summary}.
+func foreverOverridesInfo(this js.Value, args []js.Value) interface{} {
+	active := foreverdata.OverridesInfo()
+	return foreverOverridesJson(foreverOverridesResponse{Ok: true, Summary: &active})
 }
 
 // Assumes args[0] is a Uint8Array

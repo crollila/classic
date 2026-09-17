@@ -195,12 +195,12 @@
     "ui/forever/discovery.ts": "4435e670d0fe6c1cc194a487f72112c2ccc81cb892e3186b16da618062a8be26",
     "ui/forever/landing.html": "89c54eaee4a16fbfdfb31e388fb24dd3a0fdb54690dad417a7f4db5a4827858c",
     "ui/forever/landing.ts": "6d3e308a6a7b3f4594d33ed6e12caf8db5a31708f13e02b7946bbcceeed821ad",
-    "ui/forever/metadata.ts": "e897e583bdb8e99d0a475e36af2deaad85de539ea37907563c9237693e791f1b",
+    "ui/forever/metadata.ts": "f77847a013433c870e2e6b6a65c1d2b7c9c20496784dfd3823454f9f7c926e3d",
     "ui/forever/rotation.ts": "dbe80b3fbfe7e87cf28a0e219ae89fd06410ca6434375469e14f6d9efb579df0",
     "ui/forever/shell.ts": "a60ab26b4f5098225934b15657992dc6eb16c6a6346992fe34a5f57944e3603f",
     "ui/forever/talents_picker.ts": "921a1005eaadf39f4d9610c8d760c0fc017f1e9b5a0e6b7f77b2ed3e705b069f",
-    "ui/forever/theme.css": "7ba4d438b490a3b2374bfb2503b876456bea303fd95e495af99d44105b7a82af",
+    "ui/forever/theme.css": "a32aac31fd5a3ca02e1dc7118ce58e12706fceeb2c2ad0698569bc12b0ec404f",
     "ui/index.ts": "65f57f45c20aaac7e21e9fb43f2cee76d39179899b4efb09d8cc9e7dfdce02b1",
-    "ui/worker/sim_worker.ts": "61338a414785af1166b96749d434849be556bead414b40527503bbc7dbe61646"
+    "ui/worker/sim_worker.ts": "7366f6b64112b788e33be6c91820fe2ee4774b62c41a015b7ce8b851bd7cd033"
   }
 }

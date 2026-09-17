@@ -21,6 +21,8 @@ declare global {
 	const raidSimResultCombination: SimRequestSync;
 	const raidSimRequestSplit: SimRequestSync;
 	const abortById: SimRequestSync;
+	const setForeverOverrides: ((json: string) => string) | undefined;
+	const foreverOverridesInfo: (() => string) | undefined;
 }
 
 // Wasm binary calls this function when its done loading.
@@ -41,7 +43,7 @@ globalThis.wasmready = function () {
 		raidSimRequestSplit: raidSimRequestSplit,
 		raidSimResultCombination: raidSimResultCombination,
 		abortById: abortById,
-	}).ready(true);
+	}, typeof setForeverOverrides === 'function' ? setForeverOverrides : undefined).ready(true);
 };
 
 const go = new Go();

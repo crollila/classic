@@ -11,10 +11,23 @@ export class WorkerInterface {
 	private _workerId = '';
 	private readonly handlers: Handlers;
 
-	constructor(handlers: Handlers) {
+	/** @param setForeverOverrides wasm export of Forever builds; returns a JSON string {ok, error?, summary}. */
+	constructor(handlers: Handlers, setForeverOverrides?: (json: string) => string) {
 		this.handlers = handlers;
 
 		addEventListener('message', async ({ data }: MessageEvent<WorkerReceiveMessage>) => {
+			if (data.msg === 'setForeverOverrides') {
+				let result: string;
+				try {
+					if (!setForeverOverrides) throw new Error('this engine cannot load live Forever data');
+					result = setForeverOverrides(data.text);
+				} catch (error) {
+					result = JSON.stringify({ ok: false, error: error instanceof Error ? error.message : String(error) });
+				}
+				this.postMessage({ msg: 'foreverOverrides', id: data.id, result });
+				return;
+			}
+
 			const { id, msg, inputData } = data;
 
 			if (msg === 'setID') {
