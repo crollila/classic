@@ -36,6 +36,9 @@ enum Race {
 	RaceTauren = 6;
 	RaceTroll = 7;
 	RaceUndead = 8;
+	// Simulator enum identifiers, not client race IDs. Base stats are predicted.
+	RaceSkyborneWindshaper = 9;
+	RaceSkyborneHighOrder = 10;
 }
 
 enum Faction {
@@ -931,6 +934,7 @@ enum OtherAction {
 	OtherActionExplosives = 16; // Used by APL to generically refer to engineering explosives
 	OtherActionOffensiveEquip = 17; // Used by APL to generally refer to offensive on-use equipment
 	OtherActionDefensiveEquip = 18; // Used by APL to generally refer to defensive on-use equipment
+	OtherActionForever = 19; // Simulator-only action. Tag maps to a research record in foreverdata/trees.json; NOT a client spell ID.
 }
 
 message ActionID {

@@ -17,9 +17,15 @@ func (rogue *Rogue) registerHemorrhageSpell() {
 
 	var hemoAuras core.AuraArray
 	hemoAuras = rogue.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
+		if rogue.Forever != nil {
+			return target.GetOrRegisterAura(core.Aura{Label: "Forever Hemorrhage-" + rogue.Label, ActionID: actionID, Duration: 15 * time.Second})
+		}
 		return core.HemorrhageAura(target)
 	})
 
+	if rogue.Forever != nil {
+		rogue.ForeverHemorrhage = hemoAuras
+	}
 	rogue.Hemorrhage = rogue.RegisterSpell(core.SpellConfig{
 		SpellCode:   SpellCode_RogueHemorrhage,
 		ActionID:    actionID,
@@ -48,6 +54,9 @@ func (rogue *Rogue) registerHemorrhageSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
 			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower(target))
+			if rogue.Forever != nil && rogue.HasDagger(core.MainHand) {
+				baseDamage *= 1.45
+			}
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
@@ -56,7 +65,9 @@ func (rogue *Rogue) registerHemorrhageSpell() {
 				if len(hemoAuras) > 0 {
 					hemoAura := hemoAuras.Get(target)
 					hemoAura.Activate(sim)
-					hemoAura.SetStacks(sim, 30)
+					if rogue.Forever == nil {
+						hemoAura.SetStacks(sim, 30)
+					}
 				}
 			} else {
 				spell.IssueRefund(sim)

@@ -28,6 +28,9 @@ type PrepullAction struct {
 
 type Environment struct {
 	State EnvironmentState
+	// Internal allocation guard, NOT an in-game active debuff limit. A discovery
+	// raid registers every caster's spell ranks on each enemy before combat.
+	discoveryTargetAuraRegistrationLimit int
 
 	// Whether stats are currently being measured. Used to disable some validation
 	// checks which are otherwise helpful.
@@ -74,6 +77,17 @@ func (env *Environment) construct(raidProto *proto.Raid, encounterProto *proto.E
 	env.Raid = NewRaid(raidProto)
 
 	env.Raid.updatePlayersAndPets()
+	playerCount := 0
+	hasDiscovery := false
+	for _, party := range env.Raid.Parties {
+		for _, agent := range party.Players {
+			playerCount++
+			hasDiscovery = hasDiscovery || agent.GetCharacter().Forever != nil
+		}
+	}
+	if hasDiscovery {
+		env.discoveryTargetAuraRegistrationLimit = 200 * playerCount
+	}
 
 	env.AllUnits = append(env.Encounter.TargetUnits, env.Raid.AllUnits...)
 
@@ -85,6 +99,7 @@ func (env *Environment) construct(raidProto *proto.Raid, encounterProto *proto.E
 	for _, unit := range env.Raid.AllUnits {
 		unit.CurrentTarget = env.Encounter.TargetUnits[0]
 	}
+	env.initializeForeverEnemyHealth(encounterProto)
 
 	// Apply extra debuffs from raid.
 	if raidProto.Debuffs != nil && len(env.Encounter.TargetUnits) > 0 {

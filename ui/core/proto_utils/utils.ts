@@ -993,6 +993,8 @@ export const raceToFaction: Record<Race, Faction> = {
 	[Race.RaceTauren]: Faction.Horde,
 	[Race.RaceTroll]: Faction.Horde,
 	[Race.RaceUndead]: Faction.Horde,
+	[Race.RaceSkyborneWindshaper]: Faction.Horde,
+	[Race.RaceSkyborneHighOrder]: Faction.Alliance,
 };
 
 const ALLIANCE_FACTIONS = new Set([509, 730, 889]);
@@ -1027,6 +1029,7 @@ export const specToClass: Record<Spec, Class> = {
 	[Spec.SpecTankWarrior]: Class.ClassWarrior,
 };
 
+import { foreverRaces } from '../../forever/discovery';
 const druidRaces = [Race.RaceTauren, Race.RaceNightElf];
 const hunterRaces = [Race.RaceDwarf, Race.RaceNightElf, Race.RaceOrc, Race.RaceTauren, Race.RaceTroll];
 const mageRaces = [Race.RaceTroll, Race.RaceGnome, Race.RaceHuman, Race.RaceUndead];
@@ -1060,6 +1063,7 @@ export const specToEligibleRaces: Record<Spec, Array<Race>> = {
 };
 
 // Specs that can dual wield. This could be based on class, except that
+if(import.meta.env.VITE_FOREVER==='true')for(const spec of Object.keys(specToEligibleRaces).map(Number) as Spec[])specToEligibleRaces[spec]=foreverRaces(specToClass[spec]);
 // Enhancement Shaman learn dual wield from a talent.
 const dualWieldClasses: Array<Class> = [Class.ClassHunter, Class.ClassRogue, Class.ClassWarrior];
 

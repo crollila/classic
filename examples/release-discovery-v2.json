@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 2,
+  "simulatorVersion": "synthetic-contract-fixture",
+  "engineMode": "forever-discovery",
+  "foreverBuild": null,
+  "rulesetId": "forever-discovery-2026-09-13-v2",
+  "manifestSha256": "c5a8742a1f33415ab45df28f541e83bd51e7cb90c4e58b35f7e58809c9c5d11f",
+  "mechanicsUpdatedAt": "2026-09-13T07:59:08.480Z",
+  "mechanics": [],
+  "notice": "Synthetic release contract fixture; not a published simulator release."
+}

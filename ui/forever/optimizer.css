@@ -1,0 +1,6 @@
+.forever-optimizer { padding: 1rem; margin: 1rem 0; border: 1px solid #9c7a43; border-radius: .5rem; background: #171c25; color: #eee; }
+.forever-optimizer button { margin: 0 .5rem .5rem 0; }
+.forever-optimizer p { max-width: 85ch; margin: .5rem 0; }
+.forever-optimizer h3, .forever-optimizer h4 { margin: 1rem 0 .5rem; }
+.forever-optimizer li { margin: .4rem 0; }
+.forever-optimizer pre { max-height: 24rem; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; }

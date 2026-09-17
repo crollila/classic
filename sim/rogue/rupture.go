@@ -54,7 +54,13 @@ func (rogue *Rogue) registerRupture() {
 				dot.Snapshot(target, rogue.RuptureDamage(target, rogue.ComboPoints()), isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+				if rogue.Forever != nil && len(rogue.ForeverHemorrhage) > 0 && rogue.ForeverHemorrhage.Get(target).IsActive() {
+					dot.SnapshotBaseDamage *= 1.15
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+					dot.SnapshotBaseDamage /= 1.15
+				} else {
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+				}
 			},
 		},
 

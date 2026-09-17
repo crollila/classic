@@ -84,6 +84,10 @@ type Rogue struct {
 	VanishAura         *core.Aura
 
 	woundPoisonDebuffAuras core.AuraArray
+	ForeverCutthroat       *core.Aura
+	ForeverHemorrhage      core.AuraArray
+	ForeverSprint          *core.Spell
+	foreverPoisonCharges   [2]int32
 }
 
 func (rogue *Rogue) GetCharacter() *core.Character {
@@ -126,6 +130,7 @@ func (rogue *Rogue) Initialize() {
 	// Stealth
 	rogue.registerStealthAura()
 	rogue.registerVanishSpell()
+	rogue.registerForeverAbilities()
 }
 
 func (rogue *Rogue) ApplyEnergyTickMultiplier(multiplier float64) {
@@ -152,7 +157,10 @@ func NewRogue(character *core.Character, options *proto.Player, rogueOptions *pr
 	rogue.PseudoStats.CanParry = true
 	maxEnergy := 100.0
 	if rogue.Talents.Vigor {
-		maxEnergy += 10
+		maxEnergy += rogue.ForeverValue("rogue.talent.vigor", 0, 10)
+	}
+	if rogue.HasForeverMechanic("racials.gnome.expansive-mind") {
+		maxEnergy *= 1.05
 	}
 	rogue.EnableEnergyBar(maxEnergy)
 

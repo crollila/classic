@@ -1,4 +1,5 @@
 import { WorkerInterface } from './worker_interface';
+import { ungzip } from 'pako';
 
 type SimRequestAsync = (data: Uint8Array, progress: (result: Uint8Array) => void, id: string) => Uint8Array;
 type SimRequestSync = (data: Uint8Array) => Uint8Array;
@@ -46,7 +47,10 @@ globalThis.wasmready = function () {
 const go = new Go();
 let inst: WebAssembly.Instance | null = null;
 
-WebAssembly.instantiateStreaming(fetch('lib.wasm'), go.importObject).then(async result => {
+const instantiate = import.meta.env.VITE_FOREVER
+	? fetch('lib.wasm.gz').then(r=>{if(!r.ok)throw new Error(`Forever engine download failed: ${r.status}`);return r.arrayBuffer()}).then(bytes=>WebAssembly.instantiate(ungzip(new Uint8Array(bytes)),go.importObject))
+	: WebAssembly.instantiateStreaming(fetch('lib.wasm'), go.importObject);
+instantiate.then(async result => {
 	inst = result.instance;
 	// console.log("loading wasm...")
 	await go.run(inst);

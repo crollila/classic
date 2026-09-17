@@ -22,10 +22,10 @@ func applyRaceEffects(agent Agent) {
 		statDep := character.NewDynamicMultiplyStat(stats.Armor, 1.1)
 		stoneFormAura := character.NewTemporaryStatsAuraWrapped("Stoneform", actionID, stats.Stats{}, time.Second*8, func(aura *Aura) {
 			aura.ApplyOnGain(func(aura *Aura, sim *Simulation) {
-				aura.Unit.EnableDynamicStatDep(sim, statDep)
+				if !character.HasForeverMechanic("racials.dwarf.stoneform") {aura.Unit.EnableDynamicStatDep(sim, statDep)}
 			})
 			aura.ApplyOnExpire(func(aura *Aura, sim *Simulation) {
-				aura.Unit.DisableDynamicStatDep(sim, statDep)
+				if !character.HasForeverMechanic("racials.dwarf.stoneform") {aura.Unit.DisableDynamicStatDep(sim, statDep)}
 			})
 		})
 
@@ -53,17 +53,25 @@ func applyRaceEffects(agent Agent) {
 		})
 	case proto.Race_RaceGnome:
 		character.AddStat(stats.ArcaneResistance, 10)
-		character.MultiplyStat(stats.Intellect, 1.05)
+		if character.HasForeverMechanic("racials.gnome.expansive-mind") {
+			character.MultiplyStat(stats.Mana, 1.05)
+		} else {
+			character.MultiplyStat(stats.Intellect, 1.05)
+		}
 	case proto.Race_RaceHuman:
 		character.MultiplyStat(stats.Spirit, 1.05)
-		character.SwordSpecializationAura()
+		if !character.HasForeverMechanic("racials.human.sword-specialization") {
+			character.SwordSpecializationAura()
+		}
 		character.MaceSpecializationAura()
 	case proto.Race_RaceNightElf:
 		character.AddStat(stats.NatureResistance, 10)
 		character.AddStat(stats.Dodge, 1)
 		// TODO: Shadowmeld?
 	case proto.Race_RaceOrc:
-		character.AxeSpecializationAura()
+		if !character.HasForeverMechanic("racials.orc.axe-specialization") {
+			character.AxeSpecializationAura()
+		}
 
 		if character.Class == proto.Class_ClassHunter || character.Class == proto.Class_ClassWarlock {
 			// Command Damage dealt by Hunter and Warlock pets increased by 5%
@@ -77,6 +85,7 @@ func applyRaceEffects(agent Agent) {
 		// Blood Fury
 		actionID := ActionID{SpellID: 20572}
 		var bloodFuryAP float64
+		var bloodFurySP float64
 		bloodFuryAura := character.RegisterAura(Aura{
 			Label:    "Blood Fury",
 			ActionID: actionID,
@@ -84,11 +93,13 @@ func applyRaceEffects(agent Agent) {
 			// Tooltip is misleading; ap bonus is base AP plus AP from current strength, does not include +attackpower on items/buffs
 			OnGain: func(aura *Aura, sim *Simulation) {
 				bloodFuryAP = (character.GetBaseStats()[stats.AttackPower] + (character.GetStat(stats.Strength) * APPerStrength[character.Class]) + (character.GetStat(stats.Agility) * APPerAgility[character.Class])) * 0.25
+				if character.HasForeverMechanic("racials.orc.blood-fury") {bloodFuryAP*=.4;bloodFurySP=character.GetStat(stats.SpellPower)*.1;character.AddStatDynamic(sim,stats.SpellPower,bloodFurySP)}
 				character.AddStatDynamic(sim, stats.AttackPower, bloodFuryAP)
 			},
 
 			OnExpire: func(aura *Aura, sim *Simulation) {
 				character.AddStatDynamic(sim, stats.AttackPower, -bloodFuryAP)
+				if bloodFurySP!=0 {character.AddStatDynamic(sim,stats.SpellPower,-bloodFurySP)}
 			},
 		})
 
@@ -145,6 +156,7 @@ func applyRaceEffects(agent Agent) {
 	case proto.Race_RaceUndead:
 		character.AddStat(stats.ShadowResistance, 10)
 	}
+	character.applyForeverRacials()
 }
 
 // If customPercentage is 0, use the baseline Berserking calculations from health missing
@@ -158,6 +170,9 @@ func makeBerserkingCooldown(character *Character, customPercentage float64, time
 	}
 
 	calcBerserkingPct := func() float64 {
+		if character.HasForeverMechanic("racials.troll.berserking") {
+			return 0.1
+		}
 		if customPercentage != 0 {
 			return customPercentage
 		}
@@ -249,6 +264,7 @@ func makeBerserkingCooldown(character *Character, customPercentage float64, time
 }
 
 func (character *Character) GetFaction() proto.Faction {
+	if character.Forever != nil {if character.Race==proto.Race_RaceSkyborneHighOrder {return proto.Faction_Alliance}; if character.Race==proto.Race_RaceSkyborneWindshaper {return proto.Faction_Horde}}
 	if slices.Contains([]proto.Race{proto.Race_RaceHuman, proto.Race_RaceDwarf, proto.Race_RaceGnome, proto.Race_RaceNightElf}, character.Race) {
 		return proto.Faction_Alliance
 	} else if slices.Contains([]proto.Race{proto.Race_RaceOrc, proto.Race_RaceTroll, proto.Race_RaceTauren, proto.Race_RaceUndead}, character.Race) {

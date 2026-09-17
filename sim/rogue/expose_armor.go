@@ -41,7 +41,7 @@ func (rogue *Rogue) registerExposeArmorSpell() {
 		MetricSplits: 6,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   25,
+			Cost:   25 - 5*float64(rogue.ForeverRank("rogue.talent.improved-expose-armor")),
 			Refund: 0,
 		},
 		Cast: core.CastConfig{
@@ -76,7 +76,11 @@ func (rogue *Rogue) registerExposeArmorSpell() {
 			if result.Landed() {
 				eaAura.ExclusiveEffects[0].Priority = arpen
 				eaAura.Activate(sim)
+				spent := rogue.ComboPoints()
 				rogue.SpendComboPoints(sim, spell)
+				if spent == 5 && rogue.ForeverRank("rogue.talent.improved-expose-armor") > 0 {
+					rogue.AddComboPoints(sim, 1, target, spell.ComboPointMetrics())
+				}
 			} else {
 				spell.IssueRefund(sim)
 			}

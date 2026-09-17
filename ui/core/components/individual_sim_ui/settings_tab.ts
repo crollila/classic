@@ -110,7 +110,11 @@ export class SettingsTab extends SimTab {
 		);
 
 		const races = specToEligibleRaces[this.simUI.player.spec];
-		new EnumPicker(contentBlock.bodyElement, this.simUI.player, {
+		if (import.meta.env.VITE_FOREVER === 'true') {
+			const raceNote = document.createElement('p');
+			raceNote.textContent = 'Choose your Forever race and uncertainty mode on the Talents tab.';
+			contentBlock.bodyElement.append(raceNote);
+		} else new EnumPicker(contentBlock.bodyElement, this.simUI.player, {
 			id: 'player-race',
 			label: 'Race',
 			values: races.map(race => {

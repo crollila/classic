@@ -10,6 +10,7 @@ import (
 )
 
 func (shaman *Shaman) ApplyTalents() {
+	shaman.applyForeverTalents()
 	// Elemental Talents
 	shaman.applyConcussion()
 	shaman.applyElementalFocus()
@@ -87,6 +88,9 @@ func (shaman *Shaman) applyConcussion() {
 
 	additiveMultiplier := 0.01 * float64(shaman.Talents.Concussion)
 	affectedSpellCodes := []int32{SpellCode_ShamanLightningBolt, SpellCode_ShamanChainLightning, SpellCode_ShamanEarthShock, SpellCode_ShamanFlameShock, SpellCode_ShamanFrostShock}
+	if shaman.Forever != nil {
+		affectedSpellCodes = []int32{SpellCode_ShamanLightningBolt, SpellCode_ShamanChainLightning, SpellCode_ShamanEarthShock}
+	}
 
 	shaman.OnSpellRegistered(func(spell *core.Spell) {
 		if slices.Contains(affectedSpellCodes, spell.SpellCode) {
@@ -403,6 +407,9 @@ func (shaman *Shaman) makeFlurryAura(points int32) *core.Aura {
 
 	spellID := []int32{16257, 16277, 16278, 16279, 16280}[points-1]
 	attackSpeed := []float64{1.1, 1.15, 1.2, 1.25, 1.3}[points-1]
+	if shaman.ForeverRank("shaman.talent.flurry") == points {
+		attackSpeed = 1 + shaman.ForeverValue("shaman.talent.flurry", 0, 0)/100
+	}
 
 	aura := shaman.GetOrRegisterAura(core.Aura{
 		Label:     fmt.Sprintf("Flurry Proc (%d)", spellID),

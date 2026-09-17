@@ -94,6 +94,9 @@ export abstract class SimUI extends Component {
 		this.simMain = document.createElement('main');
 		this.simMain.classList.add('sim-main', 'tab-content');
 		this.simContentContainer.appendChild(this.simMain);
+		if (import.meta.env.VITE_FOREVER === 'true' && !this.isWithinRaidSim) {
+			void import('../forever/shell').then(({ mountForever }) => mountForever(this, config.spec));
+		}
 
 		this.rootElem.classList.add(this.cssClass);
 
@@ -175,9 +178,11 @@ export abstract class SimUI extends Component {
 		this.resultsViewer = new ResultsViewer(resultsViewerElem);
 
 		const socialsContainer = this.rootElem.querySelector('.sim-sidebar-socials') as HTMLElement;
-		socialsContainer.appendChild(SocialLinks.buildDiscordLink());
-		socialsContainer.appendChild(SocialLinks.buildGitHubLink());
-		socialsContainer.appendChild(SocialLinks.buildPatreonLink());
+		if (import.meta.env.VITE_FOREVER !== 'true') {
+			socialsContainer.appendChild(SocialLinks.buildDiscordLink());
+			socialsContainer.appendChild(SocialLinks.buildGitHubLink());
+			socialsContainer.appendChild(SocialLinks.buildPatreonLink());
+		}
 
 		this.simTabContentsContainer = this.rootElem.querySelector('.sim-main.tab-content') as HTMLElement;
 
@@ -285,6 +290,25 @@ export abstract class SimUI extends Component {
 	}
 
 	async handleCrash(error: any): Promise<void> {
+		if (import.meta.env.VITE_FOREVER === 'true') {
+			// Keep the build editable after validation failures and do not offer
+			// upstream Classic crash reports for this independent ruleset.
+			this.rootElem.querySelector('.forever-run-error')?.remove();
+			const panel = document.createElement('div');
+			panel.className = 'forever-run-error alert alert-danger';
+			panel.setAttribute('role', 'alert');
+			const details = document.createElement('details');
+			const summary = document.createElement('summary');
+			summary.textContent = 'Simulation could not run. Review the error and your build settings.';
+			const text = document.createElement('pre');
+			text.textContent = error instanceof SimError ? error.errorStr : String(error);
+			details.append(summary, text);
+			const dismiss = document.createElement('button');
+			dismiss.type = 'button'; dismiss.textContent = 'Dismiss error'; dismiss.addEventListener('click', () => panel.remove());
+			panel.append(details, dismiss);
+			this.rootElem.prepend(panel);
+			return;
+		}
 		if (!(error instanceof SimError)) {
 			alert(error);
 			return;

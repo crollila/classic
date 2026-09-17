@@ -27,6 +27,19 @@ func (rogue *Rogue) registerPreparationCD() {
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			// Spells affected by Preparation are: Cold Blood, Shadowstep, Vanish (Overkill/Master of Subtlety), Evasion, Sprint
 			var affectedSpells = []*core.Spell{rogue.ColdBlood, rogue.Shadowstep, rogue.Vanish}
+			if rogue.Forever != nil {
+				affectedSpells = nil
+				for _, s := range rogue.Spellbook {
+					allowed := false
+					switch s.SpellID {
+					case 14177, 1856, 5277, 11305, 13877, 13750, 14183, 14278, 14251, 11286, 2094, 1769, 8643, 1787:
+						allowed = true
+					}
+					if allowed && s != spell && s.CD.Timer != nil {
+						affectedSpells = append(affectedSpells, s)
+					}
+				}
+			}
 			// Reset Cooldown on affected spells
 			for _, affectedSpell := range affectedSpells {
 				if affectedSpell != nil {

@@ -19,6 +19,7 @@ func (warrior *Warrior) ApplyTalents() {
 	warrior.AddStat(stats.Defense, 2*float64(warrior.Talents.Anticipation))
 	warrior.AddStat(stats.Parry, 1*float64(warrior.Talents.Deflection))
 
+	warrior.applyForeverTalents()
 	warrior.applyAngerManagement()
 	warrior.applyDeepWounds()
 	warrior.applyOneHandedWeaponSpecialization()
@@ -166,6 +167,11 @@ func (warrior *Warrior) applyUnbridledWrath() {
 	}
 
 	procChance := 0.08 * float64(warrior.Talents.UnbridledWrath)
+	procMask := core.ProcMaskMeleeWhiteHit
+	if warrior.ForeverRank("warrior.talent.unbridled-wrath") > 0 {
+		procChance = warrior.ForeverValue("warrior.talent.unbridled-wrath", 0, 0) / 100
+		procMask = core.ProcMaskMelee
+	}
 
 	rageMetrics := warrior.NewRageMetrics(core.ActionID{SpellID: 12964})
 
@@ -179,9 +185,18 @@ func (warrior *Warrior) applyUnbridledWrath() {
 			if !result.Landed() {
 				return
 			}
+			// Forever requires weapon damage, not merely a landed melee outcome
+			// such as Sunder Armor. Keep the Classic white-hit filter unchanged.
+			if warrior.Forever != nil && result.Damage <= 0 {
+				return
+			}
 
-			if spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) && sim.RandomFloat("Unbrided Wrath") < procChance {
-				warrior.AddRage(sim, 1, rageMetrics)
+			if spell.ProcMask.Matches(procMask) && sim.RandomFloat("Unbrided Wrath") < procChance {
+				rage := 1.0
+				if warrior.ForeverRank("warrior.talent.unbridled-wrath") > 0 && warrior.MainHand().HandType == proto.HandType_HandTypeTwoHand {
+					rage = 2
+				}
+				warrior.AddRage(sim, rage, rageMetrics)
 			}
 		},
 	})
@@ -193,6 +208,15 @@ func (warrior *Warrior) applyDualWieldSpecialization() {
 	}
 
 	multiplier := 1 + 0.05*float64(warrior.Talents.DualWieldSpecialization)
+	if warrior.ForeverRank("warrior.talent.dual-wield-specialization") > 0 {
+		multiplier = 1 + warrior.ForeverValue("warrior.talent.dual-wield-specialization", 0, 0)/100
+		warrior.MultiplyOffHandRageGeneration(1 + warrior.ForeverValue("warrior.talent.dual-wield-specialization", 1, 0)/100)
+		warrior.OnSpellRegistered(func(s *core.Spell) {
+			if s.ProcMask.Matches(core.ProcMaskMeleeOH) {
+				s.BonusHitRating += warrior.ForeverValue("warrior.talent.dual-wield-specialization", 2, 0)
+			}
+		})
+	}
 	warrior.OnSpellRegistered(func(spell *core.Spell) {
 		if spell.ProcMask.Matches(core.ProcMaskMeleeOH) && spell.BonusCoefficient > 0 {
 			spell.DamageMultiplier *= multiplier
@@ -202,6 +226,23 @@ func (warrior *Warrior) applyDualWieldSpecialization() {
 
 func (warrior *Warrior) applyEnrage() {
 	if warrior.Talents.Enrage == 0 {
+		return
+	}
+	if warrior.ForeverRank("warrior.talent.enrage") > 0 {
+		multiplier := 1 + warrior.ForeverValue("warrior.talent.enrage", 1, 0)/100
+		warrior.EnrageAura = warrior.RegisterAura(core.Aura{Label: "Enrage", ActionID: core.ActionID{SpellID: 13048}, Duration: 12 * time.Second})
+		warrior.EnrageAura.NewExclusiveEffect("Enrage", true, core.ExclusiveEffect{Priority: (multiplier - 1) * 100,
+			OnGain: func(e *core.ExclusiveEffect, s *core.Simulation) {
+				warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= multiplier
+			},
+			OnExpire: func(e *core.ExclusiveEffect, s *core.Simulation) {
+				warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= multiplier
+			}})
+		core.MakePermanent(warrior.RegisterAura(core.Aura{Label: "Forever Enrage Trigger", OnSpellHitTaken: func(a *core.Aura, sim *core.Simulation, s *core.Spell, r *core.SpellResult) {
+			if r.Damage > 0 && sim.Proc(0.3, "Forever Enrage") {
+				warrior.EnrageAura.Activate(sim)
+			}
+		}}))
 		return
 	}
 
@@ -333,6 +374,9 @@ func (warrior *Warrior) makeFlurryAura(points int32) *core.Aura {
 
 	spellID := []int32{12319, 12971, 12972, 12973, 12974}[points-1]
 	attackSpeed := []float64{1.1, 1.15, 1.2, 1.25, 1.3}[points-1]
+	if warrior.ForeverRank("warrior.talent.flurry") == points {
+		attackSpeed = 1 + warrior.ForeverValue("warrior.talent.flurry", 0, 0)/100
+	}
 
 	aura := warrior.GetOrRegisterAura(core.Aura{
 		Label:     fmt.Sprintf("Flurry Proc (%d)", spellID),
@@ -378,9 +422,10 @@ func (warrior *Warrior) applyShieldSpecialization() {
 		return
 	}
 
-	warrior.AddStat(stats.Block, core.BlockRatingPerBlockChance*1*float64(warrior.Talents.ShieldSpecialization))
+	warrior.AddStat(stats.Block, core.BlockRatingPerBlockChance*warrior.ForeverValue("warrior.talent.shield-specialization", 0, float64(warrior.Talents.ShieldSpecialization)))
 
 	procChance := 0.2 * float64(warrior.Talents.ShieldSpecialization)
+	procChance = warrior.ForeverValue("warrior.talent.shield-specialization", 1, procChance*100) / 100
 	rageMetrics := warrior.NewRageMetrics(core.ActionID{SpellID: 12727})
 
 	warrior.RegisterAura(core.Aura{
@@ -392,7 +437,7 @@ func (warrior *Warrior) applyShieldSpecialization() {
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.DidBlock() {
 				if sim.Proc(procChance, "Shield Specialization") {
-					warrior.AddRage(sim, 1.0, rageMetrics)
+					warrior.AddRage(sim, warrior.ForeverValue("warrior.talent.shield-specialization", 2, 1), rageMetrics)
 				}
 			}
 		},
@@ -406,17 +451,29 @@ func (warrior *Warrior) registerDeathWishCD() {
 
 	actionID := core.ActionID{SpellID: 12328}
 
+	var fearImmunity *core.Aura
+	if warrior.Forever != nil {
+		fearImmunity = warrior.ForeverControlImmunityAura("Forever Death Wish Fear Immunity", actionID, []core.ForeverControlKind{core.ForeverFear}, 30*time.Second)
+	}
 	deathWishAura := warrior.RegisterAura(core.Aura{
 		Label:    "Death Wish",
 		ActionID: actionID,
 		Duration: time.Second * 30,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.2
-			warrior.PseudoStats.ArmorMultiplier *= 0.8
+			if warrior.ForeverRank("warrior.talent.death-wish") > 0 {
+				warrior.PseudoStats.DamageTakenMultiplier *= 1.05
+			} else {
+				warrior.PseudoStats.ArmorMultiplier *= 0.8
+			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 1.2
-			warrior.PseudoStats.ArmorMultiplier /= 0.8
+			if warrior.ForeverRank("warrior.talent.death-wish") > 0 {
+				warrior.PseudoStats.DamageTakenMultiplier /= 1.05
+			} else {
+				warrior.PseudoStats.ArmorMultiplier /= 0.8
+			}
 		},
 	})
 	core.RegisterPercentDamageModifierEffect(deathWishAura, 1.2)
@@ -440,6 +497,9 @@ func (warrior *Warrior) registerDeathWishCD() {
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			deathWishAura.Activate(sim)
+			if fearImmunity != nil {
+				fearImmunity.Activate(sim)
+			}
 		},
 	})
 
@@ -469,6 +529,11 @@ func (warrior *Warrior) registerLastStandCD() {
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			warrior.AddStatsDynamic(sim, stats.Stats{stats.Health: -bonusHealth})
+			if warrior.Forever != nil {
+				// Temporary health is lost on expiration, but its expiration cannot
+				// kill the warrior. Preserve the equivalent Classic 1-HP floor.
+				warrior.RemoveHealth(sim, min(bonusHealth, max(0, warrior.CurrentHealth()-1)))
+			}
 		},
 	})
 
@@ -478,7 +543,7 @@ func (warrior *Warrior) registerLastStandCD() {
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    warrior.NewTimer(),
-				Duration: time.Minute * 10,
+				Duration: core.TernaryDuration(warrior.ForeverRank("warrior.talent.last-stand") > 0, 3*time.Minute, 10*time.Minute),
 			},
 		},
 

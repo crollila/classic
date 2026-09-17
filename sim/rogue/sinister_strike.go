@@ -31,7 +31,7 @@ func (rogue *Rogue) registerSinisterStrikeSpell() {
 		Flags:       rogue.builderFlags(),
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   []float64{45, 42, 40}[rogue.Talents.ImprovedSinisterStrike],
+			Cost:   45 - rogue.ForeverValue("rogue.talent.improved-sinister-strike", 0, 45-[]float64{45, 42, 40}[rogue.Talents.ImprovedSinisterStrike]),
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{

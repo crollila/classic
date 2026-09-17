@@ -196,6 +196,7 @@ func (warrior *Warrior) Initialize() {
 
 	warrior.registerBloodrageCD()
 	warrior.RegisterRecklessnessCD()
+	warrior.registerForeverAbilities()
 }
 
 func (warrior *Warrior) Reset(sim *core.Simulation) {

@@ -1,0 +1,1284 @@
+{
+  "core.level-cap": {
+    "mode": "baseline",
+    "confidence": "CONFIRMED",
+    "reason": "Level 60 class construction; no level scaling.",
+    "scope": "Level 60 class construction; no level scaling.",
+    "files": [
+      "sim/core/foreverdata/data.go",
+      "sim/core/character.go",
+      "ui/forever/talents_picker.ts"
+    ]
+  },
+  "core.raid-sizes": {
+    "mode": "baseline",
+    "confidence": "CONFIRMED",
+    "reason": "10/20/40-player raid construction and target aura capacity.",
+    "scope": "10/20/40-player raid construction and target aura capacity.",
+    "files": [
+      "sim/core/foreverdata/data.go",
+      "sim/core/character.go",
+      "ui/forever/talents_picker.ts"
+    ]
+  },
+  "core.talent-point-budget": {
+    "mode": "baseline",
+    "confidence": "CONFIRMED",
+    "reason": "All 27 Forever topologies, 51 points, max ranks and prerequisites validated; removed Classic nodes rejected.",
+    "scope": "All 27 Forever topologies, 51 points, max ranks and prerequisites validated; removed Classic nodes rejected.",
+    "files": [
+      "sim/core/foreverdata/data.go",
+      "sim/core/character.go",
+      "ui/forever/talents_picker.ts"
+    ]
+  },
+  "core.classic-compatibility": {
+    "mode": "baseline",
+    "confidence": "CONFIRMED",
+    "reason": "Per-request v2 mode, semantic IDs, isolated class adapters and browser build persistence.",
+    "scope": "Per-request v2 mode, semantic IDs, isolated class adapters and browser build persistence.",
+    "files": [
+      "sim/core/foreverdata/data.go",
+      "sim/core/character.go",
+      "ui/forever/talents_picker.ts"
+    ]
+  },
+  "core.unresolved.weapon-skill": {
+    "mode": "baseline",
+    "confidence": "PROVISIONAL",
+    "reason": "No global replacement is evidenced: retain the executable Classic weapon skill rules, with separately implemented Forever overrides. This is a fallback, not confirmation of Forever interactions.",
+    "scope": "No global replacement is evidenced: retain the executable Classic weapon skill rules, with separately implemented Forever overrides. This is a fallback, not confirmation of Forever interactions.",
+    "files": [
+      "sim/core/"
+    ]
+  },
+  "core.unresolved.armor-resistance": {
+    "mode": "baseline",
+    "confidence": "PROVISIONAL",
+    "reason": "No global replacement is evidenced: retain the executable Classic armor resistance rules, with separately implemented Forever overrides. This is a fallback, not confirmation of Forever interactions.",
+    "scope": "No global replacement is evidenced: retain the executable Classic armor resistance rules, with separately implemented Forever overrides. This is a fallback, not confirmation of Forever interactions.",
+    "files": [
+      "sim/core/"
+    ]
+  },
+  "core.unresolved.batching": {
+    "mode": "baseline",
+    "confidence": "PROVISIONAL",
+    "reason": "No global replacement is evidenced: retain the executable Classic batching rules, with separately implemented Forever overrides. This is a fallback, not confirmation of Forever interactions.",
+    "scope": "No global replacement is evidenced: retain the executable Classic batching rules, with separately implemented Forever overrides. This is a fallback, not confirmation of Forever interactions.",
+    "files": [
+      "sim/core/"
+    ]
+  },
+  "core.unresolved.resource-system": {
+    "mode": "baseline",
+    "confidence": "PROVISIONAL",
+    "reason": "No global replacement is evidenced: retain the executable Classic resource system rules, with separately implemented Forever overrides. This is a fallback, not confirmation of Forever interactions.",
+    "scope": "No global replacement is evidenced: retain the executable Classic resource system rules, with separately implemented Forever overrides. This is a fallback, not confirmation of Forever interactions.",
+    "files": [
+      "sim/core/"
+    ]
+  },
+  "core.unresolved.debuff-limits": {
+    "mode": "baseline",
+    "confidence": "PROVISIONAL",
+    "reason": "No global replacement is evidenced: retain the executable Classic debuff limits rules, with separately implemented Forever overrides. This is a fallback, not confirmation of Forever interactions.",
+    "scope": "No global replacement is evidenced: retain the executable Classic debuff limits rules, with separately implemented Forever overrides. This is a fallback, not confirmation of Forever interactions.",
+    "files": [
+      "sim/core/"
+    ]
+  },
+  "core.unresolved.generic-dot-crits": {
+    "mode": "baseline",
+    "confidence": "PROVISIONAL",
+    "reason": "No global replacement is evidenced: retain the executable Classic generic dot crits rules, with separately implemented Forever overrides. This is a fallback, not confirmation of Forever interactions.",
+    "scope": "No global replacement is evidenced: retain the executable Classic generic dot crits rules, with separately implemented Forever overrides. This is a fallback, not confirmation of Forever interactions.",
+    "files": [
+      "sim/core/"
+    ]
+  },
+  "core.unresolved.threat": {
+    "mode": "baseline",
+    "confidence": "PROVISIONAL",
+    "reason": "No global replacement is evidenced: retain the executable Classic threat rules, with separately implemented Forever overrides. This is a fallback, not confirmation of Forever interactions.",
+    "scope": "No global replacement is evidenced: retain the executable Classic threat rules, with separately implemented Forever overrides. This is a fallback, not confirmation of Forever interactions.",
+    "files": [
+      "sim/core/"
+    ]
+  },
+  "core.unresolved.snapshot-haste": {
+    "mode": "baseline",
+    "confidence": "PROVISIONAL",
+    "reason": "No global replacement is evidenced: retain the executable Classic snapshot haste rules, with separately implemented Forever overrides. This is a fallback, not confirmation of Forever interactions.",
+    "scope": "No global replacement is evidenced: retain the executable Classic snapshot haste rules, with separately implemented Forever overrides. This is a fallback, not confirmation of Forever interactions.",
+    "files": [
+      "sim/core/"
+    ]
+  },
+  "core.skyborne-base-stats": {
+    "mode": "baseline",
+    "confidence": "PREDICTED",
+    "reason": "Use the Classic class table plus Night Elf racial offsets for both Skyborne factions. Replace this isolated prediction when a client racial table exists.",
+    "scope": "Use the Classic class table plus Night Elf racial offsets for both Skyborne factions. Replace this isolated prediction when a client racial table exists.",
+    "files": [
+      "sim/core/character.go"
+    ]
+  },
+  "racials.orc.classes": {
+    "mode": "baseline",
+    "confidence": "PROVISIONAL",
+    "reason": "All documented race/class combinations are selectable in the browser and validated by the engine. Existing race offsets and Classic class base stats are retained.",
+    "scope": "All documented race/class combinations are selectable in the browser and validated by the engine. Existing race offsets and Classic class base stats are retained.",
+    "files": [
+      "sim/core/foreverdata/data.go",
+      "ui/forever/discovery.ts"
+    ]
+  },
+  "racials.undead.classes": {
+    "mode": "baseline",
+    "confidence": "PROVISIONAL",
+    "reason": "All documented race/class combinations are selectable in the browser and validated by the engine. Existing race offsets and Classic class base stats are retained.",
+    "scope": "All documented race/class combinations are selectable in the browser and validated by the engine. Existing race offsets and Classic class base stats are retained.",
+    "files": [
+      "sim/core/foreverdata/data.go",
+      "ui/forever/discovery.ts"
+    ]
+  },
+  "racials.tauren.classes": {
+    "mode": "baseline",
+    "confidence": "PROVISIONAL",
+    "reason": "All documented race/class combinations are selectable in the browser and validated by the engine. Existing race offsets and Classic class base stats are retained.",
+    "scope": "All documented race/class combinations are selectable in the browser and validated by the engine. Existing race offsets and Classic class base stats are retained.",
+    "files": [
+      "sim/core/foreverdata/data.go",
+      "ui/forever/discovery.ts"
+    ]
+  },
+  "racials.troll.classes": {
+    "mode": "baseline",
+    "confidence": "PROVISIONAL",
+    "reason": "All documented race/class combinations are selectable in the browser and validated by the engine. Existing race offsets and Classic class base stats are retained.",
+    "scope": "All documented race/class combinations are selectable in the browser and validated by the engine. Existing race offsets and Classic class base stats are retained.",
+    "files": [
+      "sim/core/foreverdata/data.go",
+      "ui/forever/discovery.ts"
+    ]
+  },
+  "racials.skyborne-windshaper.classes": {
+    "mode": "baseline",
+    "confidence": "PREDICTED",
+    "reason": "All documented race/class combinations are selectable in the browser and validated by the engine. Base stats use the disclosed Night Elf-offset prediction.",
+    "scope": "All documented race/class combinations are selectable in the browser and validated by the engine. Base stats use the disclosed Night Elf-offset prediction.",
+    "files": [
+      "sim/core/foreverdata/data.go",
+      "ui/forever/discovery.ts"
+    ]
+  },
+  "racials.human.classes": {
+    "mode": "baseline",
+    "confidence": "PROVISIONAL",
+    "reason": "All documented race/class combinations are selectable in the browser and validated by the engine. Existing race offsets and Classic class base stats are retained.",
+    "scope": "All documented race/class combinations are selectable in the browser and validated by the engine. Existing race offsets and Classic class base stats are retained.",
+    "files": [
+      "sim/core/foreverdata/data.go",
+      "ui/forever/discovery.ts"
+    ]
+  },
+  "racials.dwarf.classes": {
+    "mode": "baseline",
+    "confidence": "PROVISIONAL",
+    "reason": "All documented race/class combinations are selectable in the browser and validated by the engine. Existing race offsets and Classic class base stats are retained.",
+    "scope": "All documented race/class combinations are selectable in the browser and validated by the engine. Existing race offsets and Classic class base stats are retained.",
+    "files": [
+      "sim/core/foreverdata/data.go",
+      "ui/forever/discovery.ts"
+    ]
+  },
+  "racials.night-elf.classes": {
+    "mode": "baseline",
+    "confidence": "PROVISIONAL",
+    "reason": "All documented race/class combinations are selectable in the browser and validated by the engine. Existing race offsets and Classic class base stats are retained.",
+    "scope": "All documented race/class combinations are selectable in the browser and validated by the engine. Existing race offsets and Classic class base stats are retained.",
+    "files": [
+      "sim/core/foreverdata/data.go",
+      "ui/forever/discovery.ts"
+    ]
+  },
+  "racials.gnome.classes": {
+    "mode": "baseline",
+    "confidence": "PROVISIONAL",
+    "reason": "All documented race/class combinations are selectable in the browser and validated by the engine. Existing race offsets and Classic class base stats are retained.",
+    "scope": "All documented race/class combinations are selectable in the browser and validated by the engine. Existing race offsets and Classic class base stats are retained.",
+    "files": [
+      "sim/core/foreverdata/data.go",
+      "ui/forever/discovery.ts"
+    ]
+  },
+  "racials.skyborne-high-order.classes": {
+    "mode": "baseline",
+    "confidence": "PREDICTED",
+    "reason": "All documented race/class combinations are selectable in the browser and validated by the engine. Base stats use the disclosed Night Elf-offset prediction.",
+    "scope": "All documented race/class combinations are selectable in the browser and validated by the engine. Base stats use the disclosed Night Elf-offset prediction.",
+    "files": [
+      "sim/core/foreverdata/data.go",
+      "ui/forever/discovery.ts"
+    ]
+  },
+  "racials.orc.blood-fury": {
+    "mode": "racial",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical racial effect executes with the nearest Classic stacking, tick, weapon and cooldown conventions.",
+    "scope": "Observed numerical racial effect executes with the nearest Classic stacking, tick, weapon and cooldown conventions.",
+    "files": [
+      "sim/core/racials.go",
+      "sim/core/forever_racials.go",
+      "sim/core/forever_racials_expanded.go"
+    ]
+  },
+  "racials.orc.axe-specialization": {
+    "mode": "racial",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical racial effect executes with the nearest Classic stacking, tick, weapon and cooldown conventions.",
+    "scope": "Observed numerical racial effect executes with the nearest Classic stacking, tick, weapon and cooldown conventions.",
+    "files": [
+      "sim/core/racials.go",
+      "sim/core/forever_racials.go",
+      "sim/core/forever_racials_expanded.go"
+    ]
+  },
+  "racials.orc.hardiness": {
+    "mode": "racial",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical racial effect executes with the nearest Classic stacking, tick, weapon and cooldown conventions.",
+    "scope": "Observed numerical racial effect executes with the nearest Classic stacking, tick, weapon and cooldown conventions.",
+    "files": [
+      "sim/core/racials.go",
+      "sim/core/forever_racials.go",
+      "sim/core/forever_racials_expanded.go"
+    ]
+  },
+  "racials.tauren.war-stomp": {
+    "mode": "racial",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical racial effect executes with the nearest Classic stacking, tick, weapon and cooldown conventions.",
+    "scope": "Observed numerical racial effect executes with the nearest Classic stacking, tick, weapon and cooldown conventions.",
+    "files": [
+      "sim/core/racials.go",
+      "sim/core/forever_racials.go",
+      "sim/core/forever_racials_expanded.go"
+    ]
+  },
+  "racials.tauren.endurance": {
+    "mode": "racial",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical racial effect executes with the nearest Classic stacking, tick, weapon and cooldown conventions.",
+    "scope": "Observed numerical racial effect executes with the nearest Classic stacking, tick, weapon and cooldown conventions.",
+    "files": [
+      "sim/core/racials.go",
+      "sim/core/forever_racials.go",
+      "sim/core/forever_racials_expanded.go"
+    ]
+  },
+  "racials.troll.berserking": {
+    "mode": "racial",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical racial effect executes with the nearest Classic stacking, tick, weapon and cooldown conventions.",
+    "scope": "Observed numerical racial effect executes with the nearest Classic stacking, tick, weapon and cooldown conventions.",
+    "files": [
+      "sim/core/racials.go",
+      "sim/core/forever_racials.go",
+      "sim/core/forever_racials_expanded.go"
+    ]
+  },
+  "racials.troll.beast-slaying": {
+    "mode": "racial",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical racial effect executes with the nearest Classic stacking, tick, weapon and cooldown conventions.",
+    "scope": "Observed numerical racial effect executes with the nearest Classic stacking, tick, weapon and cooldown conventions.",
+    "files": [
+      "sim/core/racials.go",
+      "sim/core/forever_racials.go",
+      "sim/core/forever_racials_expanded.go"
+    ]
+  },
+  "racials.human.sword-specialization": {
+    "mode": "racial",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical racial effect executes with the nearest Classic stacking, tick, weapon and cooldown conventions.",
+    "scope": "Observed numerical racial effect executes with the nearest Classic stacking, tick, weapon and cooldown conventions.",
+    "files": [
+      "sim/core/racials.go",
+      "sim/core/forever_racials.go",
+      "sim/core/forever_racials_expanded.go"
+    ]
+  },
+  "racials.human.the-human-spirit": {
+    "mode": "racial",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical racial effect executes with the nearest Classic stacking, tick, weapon and cooldown conventions.",
+    "scope": "Observed numerical racial effect executes with the nearest Classic stacking, tick, weapon and cooldown conventions.",
+    "files": [
+      "sim/core/racials.go",
+      "sim/core/forever_racials.go",
+      "sim/core/forever_racials_expanded.go"
+    ]
+  },
+  "racials.dwarf.mace-specialization": {
+    "mode": "racial",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical racial effect executes with the nearest Classic stacking, tick, weapon and cooldown conventions.",
+    "scope": "Observed numerical racial effect executes with the nearest Classic stacking, tick, weapon and cooldown conventions.",
+    "files": [
+      "sim/core/racials.go",
+      "sim/core/forever_racials.go",
+      "sim/core/forever_racials_expanded.go"
+    ]
+  },
+  "racials.dwarf.big-game-hunter": {
+    "mode": "racial",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical racial effect executes with the nearest Classic stacking, tick, weapon and cooldown conventions.",
+    "scope": "Observed numerical racial effect executes with the nearest Classic stacking, tick, weapon and cooldown conventions.",
+    "files": [
+      "sim/core/racials.go",
+      "sim/core/forever_racials.go",
+      "sim/core/forever_racials_expanded.go"
+    ]
+  },
+  "racials.night-elf.quickness": {
+    "mode": "racial",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical racial effect executes with the nearest Classic stacking, tick, weapon and cooldown conventions.",
+    "scope": "Observed numerical racial effect executes with the nearest Classic stacking, tick, weapon and cooldown conventions.",
+    "files": [
+      "sim/core/racials.go",
+      "sim/core/forever_racials.go",
+      "sim/core/forever_racials_expanded.go"
+    ]
+  },
+  "racials.gnome.expansive-mind": {
+    "mode": "racial",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical racial effect executes with the nearest Classic stacking, tick, weapon and cooldown conventions.",
+    "scope": "Observed numerical racial effect executes with the nearest Classic stacking, tick, weapon and cooldown conventions.",
+    "files": [
+      "sim/core/racials.go",
+      "sim/core/forever_racials.go",
+      "sim/core/forever_racials_expanded.go"
+    ]
+  },
+  "racials.skyborne-windshaper.wind-blessed": {
+    "mode": "racial",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical racial effect executes with the nearest Classic stacking, tick, weapon and cooldown conventions.",
+    "scope": "Observed numerical racial effect executes with the nearest Classic stacking, tick, weapon and cooldown conventions.",
+    "files": [
+      "sim/core/racials.go",
+      "sim/core/forever_racials.go",
+      "sim/core/forever_racials_expanded.go"
+    ]
+  },
+  "racials.skyborne-windshaper.elemental-insight": {
+    "mode": "racial",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical racial effect executes with the nearest Classic stacking, tick, weapon and cooldown conventions.",
+    "scope": "Observed numerical racial effect executes with the nearest Classic stacking, tick, weapon and cooldown conventions.",
+    "files": [
+      "sim/core/racials.go",
+      "sim/core/forever_racials.go",
+      "sim/core/forever_racials_expanded.go"
+    ]
+  },
+  "racials.skyborne-high-order.wind-blessed": {
+    "mode": "racial",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical racial effect executes with the nearest Classic stacking, tick, weapon and cooldown conventions.",
+    "scope": "Observed numerical racial effect executes with the nearest Classic stacking, tick, weapon and cooldown conventions.",
+    "files": [
+      "sim/core/racials.go",
+      "sim/core/forever_racials.go",
+      "sim/core/forever_racials_expanded.go"
+    ]
+  },
+  "racials.skyborne-high-order.elemental-insight": {
+    "mode": "racial",
+    "confidence": "PROVISIONAL",
+    "reason": "Observed numerical racial effect executes with the nearest Classic stacking, tick, weapon and cooldown conventions.",
+    "scope": "Observed numerical racial effect executes with the nearest Classic stacking, tick, weapon and cooldown conventions.",
+    "files": [
+      "sim/core/racials.go",
+      "sim/core/forever_racials.go",
+      "sim/core/forever_racials_expanded.go"
+    ]
+  },
+  "racials.orc.shatter-curse": {
+    "mode": "racial",
+    "confidence": "PREDICTED",
+    "reason": "Curse/Bane cleanse and immunity for known 8 seconds. Predict 10% magic damage reduction and 3-minute cooldown from analogous defensive racials.",
+    "scope": "Curse/Bane cleanse and immunity for known 8 seconds. Predict 10% magic damage reduction and 3-minute cooldown from analogous defensive racials.",
+    "files": [
+      "sim/core/forever_racials_expanded.go",
+      "sim/core/forever_control.go",
+      "sim/core/forever_dispel.go"
+    ]
+  },
+  "racials.undead.will-of-the-forsaken": {
+    "mode": "racial",
+    "confidence": "PREDICTED",
+    "reason": "Remove fear immediately; Classic 2-minute cooldown. No post-cast immunity beyond the instantaneous removal. Charm/sleep share the control engine when encountered.",
+    "scope": "Remove fear immediately; Classic 2-minute cooldown. No post-cast immunity beyond the instantaneous removal. Charm/sleep share the control engine when encountered.",
+    "files": [
+      "sim/core/forever_racials_expanded.go",
+      "sim/core/forever_control.go",
+      "sim/core/forever_dispel.go"
+    ]
+  },
+  "racials.undead.cannibalize": {
+    "mode": "racial",
+    "confidence": "PREDICTED",
+    "reason": "Known 35% Health/Mana restored over Classic 10 seconds, with predicted 3-minute cooldown. Requires the explicit corpse-available encounter option; damage interrupts recovery.",
+    "scope": "Known 35% Health/Mana restored over Classic 10 seconds, with predicted 3-minute cooldown. Requires the explicit corpse-available encounter option; damage interrupts recovery.",
+    "files": [
+      "sim/core/forever_racials_expanded.go",
+      "sim/core/forever_control.go",
+      "sim/core/forever_dispel.go"
+    ],
+    "parameters": [
+      {
+        "key": "scenario.corpse_available",
+        "label": "Usable corpse available (0/1)",
+        "default": 0,
+        "min": 0,
+        "max": 1,
+        "confidence": "PREDICTED",
+        "reason": "Explicit encounter scenario; no corpse is invented by the simulation."
+      }
+    ]
+  },
+  "racials.undead.touch-of-the-grave": {
+    "mode": "racial",
+    "confidence": "PREDICTED",
+    "reason": "Predict 5% attack/spell-hit proc, 10-second internal cooldown, drain 5% of maximum health as Shadow damage and heal actual damage. These are explicit exploratory values, not observed facts.",
+    "scope": "Predict 5% attack/spell-hit proc, 10-second internal cooldown, drain 5% of maximum health as Shadow damage and heal actual damage. These are explicit exploratory values, not observed facts.",
+    "files": [
+      "sim/core/forever_racials_expanded.go",
+      "sim/core/forever_control.go",
+      "sim/core/forever_dispel.go"
+    ]
+  },
+  "racials.tauren.plainsrunning": {
+    "mode": "racial",
+    "confidence": "PREDICTED",
+    "reason": "Predict +5% run speed per continuous moving second, capped at +30% after 6 seconds; stop resets the ramp. Travel time responds to the ramp.",
+    "scope": "Predict +5% run speed per continuous moving second, capped at +30% after 6 seconds; stop resets the ramp. Travel time responds to the ramp.",
+    "files": [
+      "sim/core/forever_racials_expanded.go",
+      "sim/core/forever_control.go",
+      "sim/core/forever_dispel.go"
+    ]
+  },
+  "racials.troll.rapid-regeneration": {
+    "mode": "racial",
+    "confidence": "PREDICTED",
+    "reason": "Known 50% maximum-health recovery; predict a 10-second duration and 3-minute cooldown.",
+    "scope": "Known 50% maximum-health recovery; predict a 10-second duration and 3-minute cooldown.",
+    "files": [
+      "sim/core/forever_racials_expanded.go",
+      "sim/core/forever_control.go",
+      "sim/core/forever_dispel.go"
+    ]
+  },
+  "racials.troll.regeneration": {
+    "mode": "racial",
+    "confidence": "PREDICTED",
+    "reason": "Known 10% combat health regeneration; use an explicit spirit/4 + 6 per 2-second baseline prediction until racial health-regen formulas are logged.",
+    "scope": "Known 10% combat health regeneration; use an explicit spirit/4 + 6 per 2-second baseline prediction until racial health-regen formulas are logged.",
+    "files": [
+      "sim/core/forever_racials_expanded.go",
+      "sim/core/forever_control.go",
+      "sim/core/forever_dispel.go"
+    ]
+  },
+  "racials.human.will-to-survive": {
+    "mode": "racial",
+    "confidence": "PREDICTED",
+    "reason": "Remove stuns; predict 2-minute cooldown using the analogous racial ability. No sustained immunity.",
+    "scope": "Remove stuns; predict 2-minute cooldown using the analogous racial ability. No sustained immunity.",
+    "files": [
+      "sim/core/forever_racials_expanded.go",
+      "sim/core/forever_control.go",
+      "sim/core/forever_dispel.go"
+    ]
+  },
+  "racials.dwarf.stoneform": {
+    "mode": "racial",
+    "confidence": "PREDICTED",
+    "reason": "Known 8-second bleed/poison/disease cleanse and immunity. Predict 10% physical reduction, keep Classic 3-minute cooldown, replace the Classic armor increase.",
+    "scope": "Known 8-second bleed/poison/disease cleanse and immunity. Predict 10% physical reduction, keep Classic 3-minute cooldown, replace the Classic armor increase.",
+    "files": [
+      "sim/core/forever_racials_expanded.go",
+      "sim/core/forever_control.go",
+      "sim/core/forever_dispel.go"
+    ]
+  },
+  "racials.night-elf.elune-s-light": {
+    "mode": "racial",
+    "confidence": "PREDICTED",
+    "reason": "Known +10% melee/spell crit for 15 seconds; predict 3-minute cooldown using analogous offensive racials.",
+    "scope": "Known +10% melee/spell crit for 15 seconds; predict 3-minute cooldown using analogous offensive racials.",
+    "files": [
+      "sim/core/forever_racials_expanded.go",
+      "sim/core/forever_control.go",
+      "sim/core/forever_dispel.go"
+    ]
+  },
+  "racials.gnome.escape-artist": {
+    "mode": "racial",
+    "confidence": "PREDICTED",
+    "reason": "Root/snare cleanse and immunity; predict 5 seconds of immunity and retain the Classic 1-minute cooldown.",
+    "scope": "Root/snare cleanse and immunity; predict 5 seconds of immunity and retain the Classic 1-minute cooldown.",
+    "files": [
+      "sim/core/forever_racials_expanded.go",
+      "sim/core/forever_control.go",
+      "sim/core/forever_dispel.go"
+    ]
+  },
+  "racials.gnome.eureka": {
+    "mode": "racial",
+    "confidence": "PREDICTED",
+    "reason": "Known next 3 eligible abilities gain +10% damage/healing. Predict 20% cost reduction, a 30-second charge window and 3-minute cooldown.",
+    "scope": "Known next 3 eligible abilities gain +10% damage/healing. Predict 20% cost reduction, a 30-second charge window and 3-minute cooldown.",
+    "files": [
+      "sim/core/forever_racials_expanded.go",
+      "sim/core/forever_control.go",
+      "sim/core/forever_dispel.go"
+    ]
+  },
+  "racials.skyborne-windshaper.skysight": {
+    "mode": "racial",
+    "confidence": "PREDICTED",
+    "reason": "Known +10% run speed; model a preapplied persistent Elemental Blessing until its duration is observed.",
+    "scope": "Known +10% run speed; model a preapplied persistent Elemental Blessing until its duration is observed.",
+    "files": [
+      "sim/core/forever_racials_expanded.go",
+      "sim/core/forever_control.go",
+      "sim/core/forever_dispel.go"
+    ]
+  },
+  "racials.skyborne-high-order.read-ley-line": {
+    "mode": "racial",
+    "confidence": "PREDICTED",
+    "reason": "Known +100% Health/Mana regeneration; predict 15-second duration and 3-minute cooldown. Duplicate actual mana regen ticks, with a disclosed spirit-based health-regen baseline.",
+    "scope": "Known +100% Health/Mana regeneration; predict 15-second duration and 3-minute cooldown. Duplicate actual mana regen ticks, with a disclosed spirit-based health-regen baseline.",
+    "files": [
+      "sim/core/forever_racials_expanded.go",
+      "sim/core/forever_control.go",
+      "sim/core/forever_dispel.go"
+    ]
+  },
+  "core.demo-context": {
+    "mode": "non-sim",
+    "confidence": "UNKNOWN",
+    "reason": "Evidence context about level-38 screenshots; not a combat modifier.",
+    "scope": "Evidence context about level-38 screenshots; not a combat modifier.",
+    "files": []
+  },
+  "legacy.well-rested": {
+    "mode": "non-sim",
+    "confidence": "UNKNOWN",
+    "reason": "Rested experience has no effect at the level-60 raid cap.",
+    "scope": "Rested experience has no effect at the level-60 raid cap.",
+    "files": []
+  },
+  "legacy.high-alert": {
+    "mode": "non-sim",
+    "confidence": "UNKNOWN",
+    "reason": "Ambient stealth detection is outside the raid target model.",
+    "scope": "Ambient stealth detection is outside the raid target model.",
+    "files": []
+  },
+  "legacy.thrill-of-adventure": {
+    "mode": "non-sim",
+    "confidence": "UNKNOWN",
+    "reason": "Tooltip explicitly disables the recovery inside dungeons and raids.",
+    "scope": "Tooltip explicitly disables the recovery inside dungeons and raids.",
+    "files": []
+  },
+  "legacy.the-quick-and-the-dead": {
+    "mode": "non-sim",
+    "confidence": "UNKNOWN",
+    "reason": "Movement while dead and resource discounts end upon entering combat.",
+    "scope": "Movement while dead and resource discounts end upon entering combat.",
+    "files": []
+  },
+  "legacy.reinforce": {
+    "mode": "non-sim",
+    "confidence": "UNKNOWN",
+    "reason": "Durability loss after death does not change the equipped starting raid gear.",
+    "scope": "Durability loss after death does not change the equipped starting raid gear.",
+    "files": []
+  },
+  "legacy.diplomat": {
+    "mode": "non-sim",
+    "confidence": "UNKNOWN",
+    "reason": "Reputation rewards are outside combat.",
+    "scope": "Reputation rewards are outside combat.",
+    "files": []
+  },
+  "legacy.for-great-honor": {
+    "mode": "non-sim",
+    "confidence": "UNKNOWN",
+    "reason": "Honor rewards are outside raid combat.",
+    "scope": "Honor rewards are outside raid combat.",
+    "files": []
+  },
+  "legacy.frequent-flier": {
+    "mode": "non-sim",
+    "confidence": "UNKNOWN",
+    "reason": "Flight-path cost and speed are travel economy.",
+    "scope": "Flight-path cost and speed are travel economy.",
+    "files": []
+  },
+  "legacy.source-discrepancy": {
+    "mode": "non-sim",
+    "confidence": "UNKNOWN",
+    "reason": "Evidence-source discrepancy, not a separate mechanic to execute.",
+    "scope": "Evidence-source discrepancy, not a separate mechanic to execute.",
+    "files": []
+  },
+  "racials.undead.underwater-breathing": {
+    "mode": "non-sim",
+    "confidence": "UNKNOWN",
+    "reason": "Underwater breath duration is outside the configured raid encounters.",
+    "scope": "Underwater breath duration is outside the configured raid encounters.",
+    "files": []
+  },
+  "racials.tauren.cultivation": {
+    "mode": "non-sim",
+    "confidence": "UNKNOWN",
+    "reason": "Herb gathering yield is outside combat.",
+    "scope": "Herb gathering yield is outside combat.",
+    "files": []
+  },
+  "racials.human.perception": {
+    "mode": "non-sim",
+    "confidence": "UNKNOWN",
+    "reason": "Ambient stealth detection is outside the raid target model.",
+    "scope": "Ambient stealth detection is outside the raid target model.",
+    "files": []
+  },
+  "racials.dwarf.find-treasure": {
+    "mode": "non-sim",
+    "confidence": "UNKNOWN",
+    "reason": "Treasure tracking does not modify raid combat.",
+    "scope": "Treasure tracking does not modify raid combat.",
+    "files": []
+  },
+  "racials.night-elf.shadowmeld": {
+    "mode": "non-sim",
+    "confidence": "UNKNOWN",
+    "reason": "Stationary world stealth has no asserted combat threat-drop effect in the evidence; ambient detection is outside the raid target model.",
+    "scope": "Stationary world stealth has no asserted combat threat-drop effect in the evidence; ambient detection is outside the raid target model.",
+    "files": []
+  },
+  "racials.night-elf.wisp-spirit": {
+    "mode": "non-sim",
+    "confidence": "UNKNOWN",
+    "reason": "Movement after death does not affect an alive raid character.",
+    "scope": "Movement after death does not affect an alive raid character.",
+    "files": []
+  },
+  "racials.skyborne-windshaper.walk-on-air": {
+    "mode": "non-sim",
+    "confidence": "UNKNOWN",
+    "reason": "Gliding/fall travel is outside the raid encounter geometry.",
+    "scope": "Gliding/fall travel is outside the raid encounter geometry.",
+    "files": []
+  },
+  "racials.skyborne-high-order.walk-on-air": {
+    "mode": "non-sim",
+    "confidence": "UNKNOWN",
+    "reason": "Gliding/fall travel is outside the raid encounter geometry.",
+    "scope": "Gliding/fall travel is outside the raid encounter geometry.",
+    "files": []
+  },
+  "legacy.field-medicine": {
+    "mode": "non-sim",
+    "confidence": "UNKNOWN",
+    "reason": "Tooltip explicitly disables the recently-bandaged reduction in dungeons and raids.",
+    "scope": "Tooltip explicitly disables the recently-bandaged reduction in dungeons and raids.",
+    "files": []
+  },
+  "consumes.first-aid-healing-potion-recipes": {
+    "mode": "non-sim",
+    "confidence": "UNKNOWN",
+    "reason": "Crafting access changes; existing named healing potions keep their executable Classic effects.",
+    "scope": "Crafting access changes; existing named healing potions keep their executable Classic effects.",
+    "files": []
+  },
+  "legacy.working-overtime": {
+    "mode": "non-sim",
+    "confidence": "UNKNOWN",
+    "reason": "Skill-up probability is a crafting/progression reward.",
+    "scope": "Skill-up probability is a crafting/progression reward.",
+    "files": []
+  },
+  "legacy.performance-bonus": {
+    "mode": "non-sim",
+    "confidence": "UNKNOWN",
+    "reason": "Merchant Favor on crate turn-in is outside combat.",
+    "scope": "Merchant Favor on crate turn-in is outside combat.",
+    "files": []
+  },
+  "legacy.luremaster": {
+    "mode": "non-sim",
+    "confidence": "UNKNOWN",
+    "reason": "Extra fishing yield is outside combat.",
+    "scope": "Extra fishing yield is outside combat.",
+    "files": []
+  },
+  "legacy.master-chef": {
+    "mode": "non-sim",
+    "confidence": "UNKNOWN",
+    "reason": "Extra cooking yield changes crafting quantity, not consumed food strength.",
+    "scope": "Extra cooking yield changes crafting quantity, not consumed food strength.",
+    "files": []
+  },
+  "legacy.dedicated-study": {
+    "mode": "non-sim",
+    "confidence": "UNKNOWN",
+    "reason": "Skill gains and Elemental Essence rewards do not modify combat stats.",
+    "scope": "Skill gains and Elemental Essence rewards do not modify combat stats.",
+    "files": []
+  },
+  "legacy.bountiful-harvest": {
+    "mode": "non-sim",
+    "confidence": "UNKNOWN",
+    "reason": "Gathering materials is outside combat.",
+    "scope": "Gathering materials is outside combat.",
+    "files": []
+  },
+  "legacy.reagent-economy": {
+    "mode": "non-sim",
+    "confidence": "UNKNOWN",
+    "reason": "Vendor reagent and campsite crafting costs affect inventory economy; the raid model starts with required reagents.",
+    "scope": "Vendor reagent and campsite crafting costs affect inventory economy; the raid model starts with required reagents.",
+    "files": []
+  },
+  "profession.blacksmithing.repair-all": {
+    "mode": "non-sim",
+    "confidence": "UNKNOWN",
+    "reason": "Repair convenience does not change fully repaired raid equipment.",
+    "scope": "Repair convenience does not change fully repaired raid equipment.",
+    "files": []
+  },
+  "profession.enchanting.shard-transmutes": {
+    "mode": "non-sim",
+    "confidence": "UNKNOWN",
+    "reason": "Crafting material conversion has no direct combat effect.",
+    "scope": "Crafting material conversion has no direct combat effect.",
+    "files": []
+  },
+  "profession.engineering.powerful-profession": {
+    "mode": "non-sim",
+    "confidence": "UNKNOWN",
+    "reason": "A qualitative recommendation, not an executable bonus.",
+    "scope": "A qualitative recommendation, not an executable bonus.",
+    "files": []
+  },
+  "profession.engineering.goblin-or-gnome": {
+    "mode": "non-sim",
+    "confidence": "UNKNOWN",
+    "reason": "Existing specialization recipe access is preparation, without a new quantified combat recipe.",
+    "scope": "Existing specialization recipe access is preparation, without a new quantified combat recipe.",
+    "files": []
+  },
+  "profession.herbalism.lotus-affinity": {
+    "mode": "non-sim",
+    "confidence": "UNKNOWN",
+    "reason": "Rare herb discovery probability is outside combat.",
+    "scope": "Rare herb discovery probability is outside combat.",
+    "files": []
+  },
+  "profession.herbalism.brutal-pickings": {
+    "mode": "non-sim",
+    "confidence": "UNKNOWN",
+    "reason": "Gathering yield is outside combat.",
+    "scope": "Gathering yield is outside combat.",
+    "files": []
+  },
+  "profession.leatherworking.must-go-faster": {
+    "mode": "non-sim",
+    "confidence": "UNKNOWN",
+    "reason": "Mounted travel speed is outside raid combat.",
+    "scope": "Mounted travel speed is outside raid combat.",
+    "files": []
+  },
+  "profession.mining.a-lode-of-ore": {
+    "mode": "non-sim",
+    "confidence": "UNKNOWN",
+    "reason": "Ore yield is outside combat.",
+    "scope": "Ore yield is outside combat.",
+    "files": []
+  },
+  "profession.mining.malicious-mining": {
+    "mode": "non-sim",
+    "confidence": "UNKNOWN",
+    "reason": "Gathering rewards lack a specified usable combat item.",
+    "scope": "Gathering rewards lack a specified usable combat item.",
+    "files": []
+  },
+  "profession.skinning.rare-hides": {
+    "mode": "non-sim",
+    "confidence": "UNKNOWN",
+    "reason": "Skinning yield is outside combat.",
+    "scope": "Skinning yield is outside combat.",
+    "files": []
+  },
+  "profession.skinning.a-classic-starter-profession": {
+    "mode": "non-sim",
+    "confidence": "UNKNOWN",
+    "reason": "A preparation recommendation, not an executable effect.",
+    "scope": "A preparation recommendation, not an executable effect.",
+    "files": []
+  },
+  "profession.tailoring.cloth-scavenging": {
+    "mode": "non-sim",
+    "confidence": "UNKNOWN",
+    "reason": "Cloth loot yield is outside combat.",
+    "scope": "Cloth loot yield is outside combat.",
+    "files": []
+  },
+  "legacy.talented": {
+    "mode": "baseline",
+    "confidence": "PROVISIONAL",
+    "reason": "Earlier leveling unlock retains the same executable 51-point cap at level 60.",
+    "scope": "Earlier leveling unlock retains the same executable 51-point cap at level 60.",
+    "files": [
+      "sim/core/foreverdata/data.go"
+    ]
+  },
+  "racials.legacy-omissions": {
+    "mode": "baseline",
+    "confidence": "PROVISIONAL",
+    "reason": "Unproven omissions retain the existing Classic resistances/legacy effects; explicitly replaced weapon racials disable their old skill effects.",
+    "scope": "Unproven omissions retain the existing Classic resistances/legacy effects; explicitly replaced weapon racials disable their old skill effects.",
+    "files": [
+      "sim/core/racials.go"
+    ]
+  },
+  "racials.gnome.engineering-specialization": {
+    "mode": "blocked",
+    "confidence": "UNKNOWN",
+    "reason": "No affected device, baseline malfunction event, or reduction magnitude is identified. Applying an arbitrary combat bonus would not represent the stated reliability mechanic.",
+    "scope": "No affected device, baseline malfunction event, or reduction magnitude is identified. Applying an arbitrary combat bonus would not represent the stated reliability mechanic.",
+    "files": []
+  },
+  "items.new-catalogue": {
+    "mode": "blocked",
+    "confidence": "UNKNOWN",
+    "reason": "No identifiable new item with a stat line, proc or authenticated item ID is available in the manifest; a catalogue announcement cannot determine a playable item.",
+    "scope": "No identifiable new item with a stat line, proc or authenticated item ID is available in the manifest; a catalogue announcement cannot determine a playable item.",
+    "files": []
+  },
+  "items.tier-sets": {
+    "mode": "blocked",
+    "confidence": "UNKNOWN",
+    "reason": "No individual set name/identity, piece threshold, or bonus text is available. There is no effect to extrapolate from.",
+    "scope": "No individual set name/identity, piece threshold, or bonus text is available. There is no effect to extrapolate from.",
+    "files": []
+  },
+  "items.legendary": {
+    "mode": "blocked",
+    "confidence": "UNKNOWN",
+    "reason": "The reward identity, stats and effect are explicitly unrevealed; no numerical or behavioral anchor exists.",
+    "scope": "The reward identity, stats and effect are explicitly unrevealed; no numerical or behavioral anchor exists.",
+    "files": []
+  },
+  "items.enchants": {
+    "mode": "blocked",
+    "confidence": "UNKNOWN",
+    "reason": "Specific profession predictions are implemented separately; no distinct authenticated Forever enchant catalogue or effect IDs exist to equip as real enchants.",
+    "scope": "Specific profession predictions are implemented separately; no distinct authenticated Forever enchant catalogue or effect IDs exist to equip as real enchants.",
+    "files": []
+  },
+  "items.feral-gear": {
+    "mode": "blocked",
+    "confidence": "UNKNOWN",
+    "reason": "No changed Pummeler/Wolfshead effect or feral-AP rule is evidenced. Current items remain usable, but inventing a specific replacement is unsupported.",
+    "scope": "No changed Pummeler/Wolfshead effect or feral-AP rule is evidenced. Current items remain usable, but inventing a specific replacement is unsupported.",
+    "files": []
+  },
+  "profession.alchemy.philosopher-s-stone": {
+    "mode": "blocked",
+    "confidence": "UNKNOWN",
+    "reason": "No upgrade levels, stat line or combat effect is given for the claimed new trinket; there is no specific upgrade curve to extrapolate.",
+    "scope": "No upgrade levels, stat line or combat effect is given for the claimed new trinket; there is no specific upgrade curve to extrapolate.",
+    "files": []
+  },
+  "profession.alchemy.new-recipes": {
+    "mode": "blocked",
+    "confidence": "UNKNOWN",
+    "reason": "No new recipe output identity or numerical consume effect is provided.",
+    "scope": "No new recipe output identity or numerical consume effect is provided.",
+    "files": []
+  },
+  "profession.blacksmithing.new-recipes": {
+    "mode": "blocked",
+    "confidence": "UNKNOWN",
+    "reason": "No specific new crafted item stats or effects are provided.",
+    "scope": "No specific new crafted item stats or effects are provided.",
+    "files": []
+  },
+  "profession.enchanting.stave-crafting-and-more": {
+    "mode": "blocked",
+    "confidence": "UNKNOWN",
+    "reason": "No named staff/stat line or crafting-only combat effect is provided.",
+    "scope": "No named staff/stat line or crafting-only combat effect is provided.",
+    "files": []
+  },
+  "profession.engineering.but-wait-there-s-more": {
+    "mode": "blocked",
+    "confidence": "UNKNOWN",
+    "reason": "No particular gadget, bomb or trinket and no effect specification are provided.",
+    "scope": "No particular gadget, bomb or trinket and no effect specification are provided.",
+    "files": []
+  },
+  "profession.leatherworking.dragons-and-elements": {
+    "mode": "blocked",
+    "confidence": "UNKNOWN",
+    "reason": "No named new set, piece stats or set bonus is provided.",
+    "scope": "No named new set, piece stats or set bonus is provided.",
+    "files": []
+  },
+  "profession.tailoring.new-and-reworked-recipes": {
+    "mode": "blocked",
+    "confidence": "UNKNOWN",
+    "reason": "No particular new cloth item or changed stat line is provided.",
+    "scope": "No particular new cloth item or changed stat line is provided.",
+    "files": []
+  },
+  "consumes.unchanged-baseline": {
+    "mode": "baseline",
+    "confidence": "PROVISIONAL",
+    "reason": "Existing Classic consumes execute unchanged when selected. Availability remains a planning assumption.",
+    "scope": "Existing Classic consumes execute unchanged when selected. Availability remains a planning assumption.",
+    "files": [
+      "sim/core/consumes.go"
+    ]
+  },
+  "consumes.woolen-tourniquet": {
+    "mode": "consume",
+    "confidence": "PROVISIONAL",
+    "reason": "Remove active bleed effects. BEST_GUESS predicts a 1-minute cooldown using Classic anti-venom conventions; STRICT permits one use per encounter.",
+    "scope": "Remove active bleed effects. BEST_GUESS predicts a 1-minute cooldown using Classic anti-venom conventions; STRICT permits one use per encounter.",
+    "files": [
+      "sim/core/forever_professions.go",
+      "sim/core/forever_dispel.go"
+    ],
+    "predicted_components": [
+      "Repeat-use cooldown of 60 seconds; disabled in STRICT."
+    ]
+  },
+  "consumes.simple-poultice": {
+    "mode": "consume",
+    "confidence": "PROVISIONAL",
+    "reason": "Remove active disease effects. BEST_GUESS predicts a 1-minute cooldown using Classic anti-venom conventions; STRICT permits one use per encounter.",
+    "scope": "Remove active disease effects. BEST_GUESS predicts a 1-minute cooldown using Classic anti-venom conventions; STRICT permits one use per encounter.",
+    "files": [
+      "sim/core/forever_professions.go",
+      "sim/core/forever_dispel.go"
+    ],
+    "predicted_components": [
+      "Repeat-use cooldown of 60 seconds; disabled in STRICT."
+    ]
+  },
+  "consumes.anti-venom": {
+    "mode": "consume",
+    "confidence": "PROVISIONAL",
+    "reason": "Remove active poison effects. BEST_GUESS predicts a 1-minute cooldown using Classic anti-venom conventions; STRICT permits one use per encounter.",
+    "scope": "Remove active poison effects. BEST_GUESS predicts a 1-minute cooldown using Classic anti-venom conventions; STRICT permits one use per encounter.",
+    "files": [
+      "sim/core/forever_professions.go",
+      "sim/core/forever_dispel.go"
+    ],
+    "predicted_components": [
+      "Repeat-use cooldown of 60 seconds; disabled in STRICT."
+    ]
+  },
+  "buffs.camping": {
+    "mode": "buff",
+    "confidence": "PREDICTED",
+    "reason": "Prepull campsite feature action requires stationary preparation. Model 5-second setup, shared 1-hour feature timer, and First Aid Kit; unspecified camp contributions remain unavailable.",
+    "scope": "Prepull campsite feature action requires stationary preparation. Model 5-second setup, shared 1-hour feature timer, and First Aid Kit; unspecified camp contributions remain unavailable.",
+    "files": [
+      "sim/core/forever.go"
+    ]
+  },
+  "buffs.first-aid-kit": {
+    "mode": "buff",
+    "confidence": "PROVISIONAL",
+    "reason": "Actual +34 Stamina, exclusive with Fortitude. Preapplied campsite scenario; configurable time remaining, default30 minutes is a prediction.",
+    "scope": "Actual +34 Stamina, exclusive with Fortitude. Preapplied campsite scenario; configurable time remaining, default30 minutes is a prediction. STRICT keeps a preapplied snapshot unless a remaining lifetime is explicitly supplied as an encounter input.",
+    "files": [
+      "sim/core/forever.go",
+      "sim/core/forever_professions.go"
+    ],
+    "parameters": [
+      {
+        "key": "scenario.campsite_seconds_remaining",
+        "label": "Campsite buff seconds remaining at pull",
+        "default": 1800,
+        "min": 1,
+        "max": 14400,
+        "confidence": "PREDICTED",
+        "reason": "Explicit remaining-lifetime scenario. Unspecified BEST_GUESS lifetime predicts 30 minutes; STRICT uses the Classic preapplied-buff snapshot."
+      }
+    ],
+    "predicted_components": [
+      "Default 30-minute remaining lifetime in BEST_GUESS. STRICT retains the Classic preapplied-buff snapshot unless a remaining lifetime is explicitly supplied."
+    ]
+  },
+  "buffs.world-buffs": {
+    "mode": "baseline",
+    "confidence": "PREDICTED",
+    "reason": "BEST_GUESS executes selected Classic world buffs as availability assumptions. STRICT suppresses unconfirmed world buffs without mutating the saved selection.",
+    "scope": "BEST_GUESS executes selected Classic world buffs as availability assumptions. STRICT suppresses unconfirmed world buffs without mutating the saved selection.",
+    "files": [
+      "sim/core/forever_professions.go",
+      "sim/core/buffs.go"
+    ]
+  },
+  "buffs.party-scope": {
+    "mode": "baseline",
+    "confidence": "PROVISIONAL",
+    "reason": "Class implementations apply their recorded personal/party buff scopes; this is an aggregate reference to those executing mechanics.",
+    "scope": "Class implementations apply their recorded personal/party buff scopes; this is an aggregate reference to those executing mechanics.",
+    "files": [
+      "sim/hunter/",
+      "sim/druid/",
+      "sim/paladin/",
+      "sim/shaman/"
+    ]
+  },
+  "legacy.permanence": {
+    "mode": "buff",
+    "confidence": "PROVISIONAL",
+    "reason": "Known rank1 +50% class-stat/campsite duration; higher ranks extrapolate linearly only in BEST_GUESS.",
+    "scope": "Known rank1 +50% class-stat/campsite duration; higher ranks extrapolate linearly only in BEST_GUESS.",
+    "files": [
+      "sim/core/forever.go",
+      "sim/core/forever_professions.go"
+    ],
+    "parameters": [
+      {
+        "key": "scenario.class_buff_seconds_remaining",
+        "label": "Class stat-buff seconds remaining at pull",
+        "default": 1800,
+        "min": 1,
+        "max": 14400,
+        "confidence": "PROVISIONAL",
+        "reason": "Classic 30-minute buff scenario; editable remaining lifetime."
+      }
+    ],
+    "predicted_components": [
+      "Ranks above observed rank 1 extrapolate linearly in BEST_GUESS only."
+    ]
+  },
+  "legacy.field-guide": {
+    "mode": "buff",
+    "confidence": "PROVISIONAL",
+    "reason": "Known rank1 campsite cooldown -8%; higher ranks extrapolate linearly only in BEST_GUESS. Actual feature cooldown duration changes.",
+    "scope": "Known rank1 campsite cooldown -8%; higher ranks extrapolate linearly only in BEST_GUESS. Actual feature cooldown duration changes.",
+    "files": [
+      "sim/core/forever.go"
+    ],
+    "predicted_components": [
+      "Ranks above observed rank 1 extrapolate linearly in BEST_GUESS only."
+    ]
+  },
+  "legacy.gourmand": {
+    "mode": "buff",
+    "confidence": "PROVISIONAL",
+    "reason": "Known rank1 food duration +33%; higher ranks extrapolate linearly only in BEST_GUESS. Actual food stats expire according to the configured time at pull.",
+    "scope": "Known rank1 food duration +33%; higher ranks extrapolate linearly only in BEST_GUESS. Actual food stats expire according to the configured time at pull.",
+    "files": [
+      "sim/core/forever_professions.go",
+      "sim/core/consumes.go"
+    ],
+    "parameters": [
+      {
+        "key": "scenario.food_seconds_remaining",
+        "label": "Food seconds remaining at pull",
+        "default": 900,
+        "min": 1,
+        "max": 14400,
+        "confidence": "PROVISIONAL",
+        "reason": "15-minute Classic food scenario; explicitly editable."
+      }
+    ],
+    "predicted_components": [
+      "Ranks above observed rank 1 extrapolate linearly in BEST_GUESS only."
+    ]
+  },
+  "profession.alchemy.mixology": {
+    "mode": "profession",
+    "confidence": "PREDICTED",
+    "reason": "Predict +25% stats using analogous profession consume bonuses; actual flask/elixir stats change. Predict doubled duration using the expansion Mixology analogue; both stat expiration and magnitude execute.",
+    "scope": "Predict +25% stats using analogous profession consume bonuses; actual flask/elixir stats change. Predict doubled duration using the expansion Mixology analogue; both stat expiration and magnitude execute.",
+    "files": [
+      "sim/core/forever_professions.go",
+      "sim/core/consumes.go"
+    ],
+    "parameters": [
+      {
+        "key": "profession.alchemy.effect_bonus",
+        "label": "Elixir/flask effect bonus",
+        "default": 0.25,
+        "min": 0,
+        "max": 1,
+        "confidence": "PREDICTED",
+        "reason": "Predict +25% stats using analogous profession consume bonuses; actual flask/elixir stats change."
+      },
+      {
+        "key": "scenario.flask_seconds_remaining",
+        "label": "flask seconds remaining at pull",
+        "default": 7200,
+        "min": 1,
+        "max": 14400,
+        "confidence": "PROVISIONAL",
+        "reason": "Classic duration fallback; selected Mixology predicts doubled lifetime in BEST_GUESS."
+      },
+      {
+        "key": "scenario.elixir_seconds_remaining",
+        "label": "elixir seconds remaining at pull",
+        "default": 3600,
+        "min": 1,
+        "max": 14400,
+        "confidence": "PROVISIONAL",
+        "reason": "Classic duration fallback; selected Mixology predicts doubled lifetime in BEST_GUESS."
+      }
+    ]
+  },
+  "profession.blacksmithing.belt-buckles": {
+    "mode": "profession",
+    "confidence": "PREDICTED",
+    "reason": "Predict a +8 primary-stat socket using early expansion gem magnitude; requires equipped belt and Blacksmithing.",
+    "scope": "Predict a +8 primary-stat socket using early expansion gem magnitude; requires equipped belt and Blacksmithing.",
+    "files": [
+      "sim/core/forever_professions.go",
+      "sim/core/consumes.go"
+    ],
+    "parameters": [
+      {
+        "key": "profession.blacksmithing.socket_stat",
+        "label": "Belt socket primary stat",
+        "default": 8,
+        "min": 0,
+        "max": 40,
+        "confidence": "PREDICTED",
+        "reason": "Predict a +8 primary-stat socket using early expansion gem magnitude; requires equipped belt and Blacksmithing."
+      }
+    ]
+  },
+  "profession.enchanting.ring-enchants": {
+    "mode": "profession",
+    "confidence": "PREDICTED",
+    "reason": "Predict +12 spell power per equipped ring from analogous ring enchants; profession required.",
+    "scope": "Predict +12 spell power per equipped ring from analogous ring enchants; profession required.",
+    "files": [
+      "sim/core/forever_professions.go",
+      "sim/core/consumes.go"
+    ],
+    "parameters": [
+      {
+        "key": "profession.enchanting.spell_power_per_ring",
+        "label": "Spell power per enchanted ring",
+        "default": 12,
+        "min": 0,
+        "max": 100,
+        "confidence": "PREDICTED",
+        "reason": "Predict +12 spell power per equipped ring from analogous ring enchants; profession required."
+      }
+    ]
+  },
+  "profession.herbalism.natural-talent": {
+    "mode": "profession",
+    "confidence": "PREDICTED",
+    "reason": "Predict +10 to five magic resistances using Classic racial resistance magnitude.",
+    "scope": "Predict +10 to five magic resistances using Classic racial resistance magnitude.",
+    "files": [
+      "sim/core/forever_professions.go",
+      "sim/core/consumes.go"
+    ],
+    "parameters": [
+      {
+        "key": "profession.herbalism.resistance",
+        "label": "Herbalism resistance to each school",
+        "default": 10,
+        "min": 0,
+        "max": 100,
+        "confidence": "PREDICTED",
+        "reason": "Predict +10 to five magic resistances using Classic racial resistance magnitude."
+      }
+    ]
+  },
+  "profession.tailoring.embroider-your-work": {
+    "mode": "profession",
+    "confidence": "PREDICTED",
+    "reason": "Predict passive +15 spell power on an equipped cloak using a Classic enchant-scale bonus; profession required.",
+    "scope": "Predict passive +15 spell power on an equipped cloak using a Classic enchant-scale bonus; profession required.",
+    "files": [
+      "sim/core/forever_professions.go",
+      "sim/core/consumes.go"
+    ],
+    "parameters": [
+      {
+        "key": "profession.tailoring.embroidery_spell_power",
+        "label": "Cloak embroidery spell power",
+        "default": 15,
+        "min": 0,
+        "max": 100,
+        "confidence": "PREDICTED",
+        "reason": "Predict passive +15 spell power on an equipped cloak using a Classic enchant-scale bonus; profession required."
+      }
+    ]
+  },
+  "profession.leatherworking.armor-kits": {
+    "mode": "profession",
+    "confidence": "PREDICTED",
+    "reason": "Use Classic +40 armor kit magnitude on equipped leather/mail chest, legs, gloves and boots; future Forever slot/value overrides remain easy to replace.",
+    "scope": "Use Classic +40 armor kit magnitude on equipped leather/mail chest, legs, gloves and boots; future Forever slot/value overrides remain easy to replace.",
+    "files": [
+      "sim/core/forever_professions.go"
+    ]
+  },
+  "profession.mining.made-of-metal": {
+    "mode": "profession",
+    "confidence": "PREDICTED",
+    "reason": "Execute the community claim of +5% total health only with Mining selected; the claim itself is unverified.",
+    "scope": "Execute the community claim of +5% total health only with Mining selected; the claim itself is unverified.",
+    "files": [
+      "sim/core/forever_professions.go"
+    ]
+  },
+  "profession.skinning.beasts-of-the-wild": {
+    "mode": "profession",
+    "confidence": "PREDICTED",
+    "reason": "Execute the community claim of +5% Beast/Dragonkin damage only with Skinning selected; the claim itself is unverified.",
+    "scope": "Execute the community claim of +5% Beast/Dragonkin damage only with Skinning selected; the claim itself is unverified.",
+    "files": [
+      "sim/core/forever_professions.go"
+    ]
+  },
+  "professions.slot-count": {
+    "mode": "baseline",
+    "confidence": "CONFIRMED",
+    "reason": "The engine and browser retain two primary profession selections; no unsupported third slot is added.",
+    "scope": "The engine and browser retain two primary profession selections; no unsupported third slot is added.",
+    "files": [
+      "sim/core/character.go",
+      "ui/core/player.ts"
+    ]
+  }
+}

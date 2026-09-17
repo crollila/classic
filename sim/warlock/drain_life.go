@@ -71,8 +71,8 @@ func (warlock *Warlock) getDrainLifeBaseConfig(rank int) core.SpellConfig {
 				// dot.SnapshotAttackerMultiplier *= dot.Spell.TargetDamageMultiplier(dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType], true)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				result := dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
-				health := result.Damage
+				result := dot.CalcAndDealPeriodicSnapshotDamage(sim, target, warlock.foreverDotOutcome(dot))
+				health := result.Damage * (1 - warlock.ForeverValue("warlock.talent.soul-siphon", 1, 0)/100)
 				healingSpell.CalcAndDealHealing(sim, healingSpell.Unit, health, healingSpell.OutcomeHealing)
 			},
 		},

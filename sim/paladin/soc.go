@@ -23,6 +23,9 @@ import (
 //   Judgement of Command when it successfully is cast.
 
 func (paladin *Paladin) registerSealOfCommand() {
+	if paladin.Forever != nil && paladin.fr("seal-of-command") == 0 {
+		return
+	}
 	type judge struct {
 		spellID   int32
 		minDamage float64
@@ -79,6 +82,12 @@ func (paladin *Paladin) registerSealOfCommand() {
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				baseDamage := sim.Roll(minDamage, maxDamage) * 0.5 // unless stunned
+				if paladin.Forever != nil {
+					baseDamage = sim.Roll(68, 73)
+					if target.ForeverControlled(core.ForeverStun) || target.ForeverControlled(core.ForeverIncapacitate) {
+						baseDamage = sim.Roll(137, 146)
+					}
+				}
 
 				// Seal of Command requires this spell to act as its intermediary dummy,
 				// rolling on the spell hit table. If it succeeds, the actual Judgement of Command rolls on the
@@ -146,7 +155,7 @@ func (paladin *Paladin) registerSealOfCommand() {
 			Rank:          i + 1,
 
 			ManaCost: core.ManaCostOptions{
-				FlatCost:   rank.manaCost - paladin.getLibramSealCostReduction(),
+				FlatCost:   core.TernaryFloat64(paladin.Forever != nil, 65, rank.manaCost) - paladin.getLibramSealCostReduction(),
 				Multiplier: paladin.benediction(),
 			},
 			Cast: core.CastConfig{

@@ -7,6 +7,10 @@ import (
 )
 
 func (shaman *Shaman) registerStormstrikeSpell() {
+	if shaman.Forever != nil {
+		shaman.registerForeverStormstrike()
+		return
+	}
 	if !shaman.Talents.Stormstrike {
 		return
 	}

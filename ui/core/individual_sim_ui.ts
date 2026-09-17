@@ -251,8 +251,9 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			// first callback invoked from waitForInit().
 			this.sim.waitForInit().then(() => {
 				this.loadSettings();
+				if(import.meta.env.VITE_FOREVER)this.rootElem.setAttribute('data-forever-initialized','true');
 
-				if (isHealingSpec(this.player.spec)) {
+				if (isHealingSpec(this.player.spec) && !import.meta.env.VITE_FOREVER) {
 					alert(Tooltips.HEALING_SIM_DISCLAIMER);
 				}
 			});

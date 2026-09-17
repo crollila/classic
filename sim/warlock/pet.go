@@ -24,7 +24,8 @@ type WarlockPet struct {
 
 	LifeTapManaMetrics *core.ResourceMetrics
 
-	manaPooling bool
+	manaPooling                bool
+	foreverSummonHealthMetrics *core.ResourceMetrics
 }
 
 type PetConfig struct {
@@ -67,6 +68,9 @@ func (warlock *Warlock) changeActivePet(sim *core.Simulation, newPet *WarlockPet
 
 	if newPet != nil {
 		newPet.Enable(sim, newPet)
+		if warlock.Forever != nil && newPet.HasHealthBar() {
+			newPet.GainHealth(sim, newPet.MaxHealth()-newPet.CurrentHealth(), newPet.foreverSummonHealthMetrics)
+		}
 	}
 }
 
@@ -87,6 +91,9 @@ func (warlock *Warlock) makePet(cfg PetConfig, enabledOnStart bool) *WarlockPet 
 	}
 
 	wp.EnableManaBarWithModifier(cfg.PowerModifier)
+	if warlock.Forever != nil {
+		wp.foreverSummonHealthMetrics = wp.NewHealthMetrics(core.ActionID{SpellID: map[string]int32{"Imp": 688, "Felhunter": 691, "Succubus": 712, "Voidwalker": 697}[cfg.Name]})
+	}
 
 	if cfg.Name == "Imp" {
 		// Imp gets 1mp/5 non casting regen per spirit

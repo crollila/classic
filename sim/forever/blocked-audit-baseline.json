@@ -1,0 +1,3509 @@
+{
+  "records": [
+    {
+      "id": "core.level-cap",
+      "status": "IMPLEMENTED",
+      "scope": "Existing level-60 cap retained and tested for discovery characters."
+    },
+    {
+      "id": "core.raid-sizes",
+      "status": "IMPLEMENTED",
+      "scope": "The announced raid sizes are supported by the discovery request path. Discovery target aura registration capacity scales with raid size; regression covers 10, 20 and 40 players. This is an internal allocation guard, not the in-game debuff limit."
+    },
+    {
+      "id": "core.talent-point-budget",
+      "status": "IMPLEMENTED",
+      "scope": "51-point budget, lower-row investment and prerequisites validated before simulation."
+    },
+    {
+      "id": "core.unresolved.weapon-skill",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "core.unresolved.armor-resistance",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "core.unresolved.batching",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "core.unresolved.resource-system",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "core.unresolved.debuff-limits",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "core.unresolved.generic-dot-crits",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "core.unresolved.threat",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "core.unresolved.snapshot-haste",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "core.demo-context",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "core.classic-compatibility",
+      "status": "IMPLEMENTED",
+      "scope": "Versioned per-request talent mapping, explicit ID provenance and Classic/discovery isolation implemented."
+    },
+    {
+      "id": "core.skyborne-base-stats",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "legacy.well-rested",
+      "status": "BLOCKED",
+      "scope": "Known source details retained. No reviewed adapter for this perk or profession rule in the current raid model; this is unfinished modeling, not missing source evidence."
+    },
+    {
+      "id": "legacy.talented",
+      "status": "BLOCKED",
+      "scope": "Known source details retained. No reviewed adapter for this perk or profession rule in the current raid model; this is unfinished modeling, not missing source evidence."
+    },
+    {
+      "id": "legacy.high-alert",
+      "status": "BLOCKED",
+      "scope": "Known source details retained. No reviewed adapter for this perk or profession rule in the current raid model; this is unfinished modeling, not missing source evidence."
+    },
+    {
+      "id": "legacy.thrill-of-adventure",
+      "status": "BLOCKED",
+      "scope": "Known source details retained. No reviewed adapter for this perk or profession rule in the current raid model; this is unfinished modeling, not missing source evidence."
+    },
+    {
+      "id": "legacy.the-quick-and-the-dead",
+      "status": "BLOCKED",
+      "scope": "Known source details retained. No reviewed adapter for this perk or profession rule in the current raid model; this is unfinished modeling, not missing source evidence."
+    },
+    {
+      "id": "legacy.reinforce",
+      "status": "BLOCKED",
+      "scope": "Known source details retained. No reviewed adapter for this perk or profession rule in the current raid model; this is unfinished modeling, not missing source evidence."
+    },
+    {
+      "id": "legacy.diplomat",
+      "status": "BLOCKED",
+      "scope": "Known source details retained. No reviewed adapter for this perk or profession rule in the current raid model; this is unfinished modeling, not missing source evidence."
+    },
+    {
+      "id": "legacy.for-great-honor",
+      "status": "BLOCKED",
+      "scope": "Known source details retained. No reviewed adapter for this perk or profession rule in the current raid model; this is unfinished modeling, not missing source evidence."
+    },
+    {
+      "id": "legacy.frequent-flier",
+      "status": "BLOCKED",
+      "scope": "Known source details retained. No reviewed adapter for this perk or profession rule in the current raid model; this is unfinished modeling, not missing source evidence."
+    },
+    {
+      "id": "legacy.source-discrepancy",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "racials.orc.classes",
+      "status": "PROVISIONAL",
+      "scope": "Race/class combination validated from manifest. Existing Classic base-stat construction retained provisionally."
+    },
+    {
+      "id": "racials.orc.blood-fury",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "racials.orc.shatter-curse",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "racials.orc.axe-specialization",
+      "status": "PROVISIONAL",
+      "scope": "Explicit opt-in racial or preapplied buff adapter. Omitted racials retain Classic behavior; omissions are not presumed removals."
+    },
+    {
+      "id": "racials.orc.hardiness",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "racials.undead.classes",
+      "status": "PROVISIONAL",
+      "scope": "Race/class combination validated from manifest. Existing Classic base-stat construction retained provisionally."
+    },
+    {
+      "id": "racials.undead.will-of-the-forsaken",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "racials.undead.cannibalize",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "racials.undead.underwater-breathing",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "racials.undead.touch-of-the-grave",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "racials.tauren.classes",
+      "status": "PROVISIONAL",
+      "scope": "Race/class combination validated from manifest. Existing Classic base-stat construction retained provisionally."
+    },
+    {
+      "id": "racials.tauren.war-stomp",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "racials.tauren.cultivation",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "racials.tauren.plainsrunning",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "racials.tauren.endurance",
+      "status": "PROVISIONAL",
+      "scope": "Explicit opt-in racial or preapplied buff adapter. Omitted racials retain Classic behavior; omissions are not presumed removals."
+    },
+    {
+      "id": "racials.troll.classes",
+      "status": "PROVISIONAL",
+      "scope": "Race/class combination validated from manifest. Existing Classic base-stat construction retained provisionally."
+    },
+    {
+      "id": "racials.troll.berserking",
+      "status": "PROVISIONAL",
+      "scope": "Explicit opt-in racial or preapplied buff adapter. Omitted racials retain Classic behavior; omissions are not presumed removals. All existing tagged variants use 10%; Classic costs, cooldown and class-dependent haste formula retained provisionally."
+    },
+    {
+      "id": "racials.troll.rapid-regeneration",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "racials.troll.beast-slaying",
+      "status": "PROVISIONAL",
+      "scope": "Explicit opt-in racial or preapplied buff adapter. Omitted racials retain Classic behavior; omissions are not presumed removals."
+    },
+    {
+      "id": "racials.troll.regeneration",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "racials.skyborne-windshaper.classes",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "racials.skyborne-windshaper.walk-on-air",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "racials.skyborne-windshaper.skysight",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "racials.skyborne-windshaper.wind-blessed",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "racials.skyborne-windshaper.elemental-insight",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "racials.human.classes",
+      "status": "PROVISIONAL",
+      "scope": "Race/class combination validated from manifest. Existing Classic base-stat construction retained provisionally."
+    },
+    {
+      "id": "racials.human.will-to-survive",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "racials.human.perception",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "racials.human.sword-specialization",
+      "status": "PROVISIONAL",
+      "scope": "Explicit opt-in racial or preapplied buff adapter. Omitted racials retain Classic behavior; omissions are not presumed removals."
+    },
+    {
+      "id": "racials.human.the-human-spirit",
+      "status": "PROVISIONAL",
+      "scope": "Explicit opt-in racial or preapplied buff adapter. Omitted racials retain Classic behavior; omissions are not presumed removals."
+    },
+    {
+      "id": "racials.dwarf.classes",
+      "status": "PROVISIONAL",
+      "scope": "Race/class combination validated from manifest. Existing Classic base-stat construction retained provisionally."
+    },
+    {
+      "id": "racials.dwarf.stoneform",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "racials.dwarf.find-treasure",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "racials.dwarf.mace-specialization",
+      "status": "PROVISIONAL",
+      "scope": "Explicit opt-in racial or preapplied buff adapter. Omitted racials retain Classic behavior; omissions are not presumed removals."
+    },
+    {
+      "id": "racials.dwarf.big-game-hunter",
+      "status": "PROVISIONAL",
+      "scope": "Explicit opt-in racial or preapplied buff adapter. Omitted racials retain Classic behavior; omissions are not presumed removals. 5% Beast damage; retains Classic Beast Slaying crit interaction provisionally."
+    },
+    {
+      "id": "racials.night-elf.classes",
+      "status": "PROVISIONAL",
+      "scope": "Race/class combination validated from manifest. Existing Classic base-stat construction retained provisionally."
+    },
+    {
+      "id": "racials.night-elf.elune-s-light",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "racials.night-elf.shadowmeld",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "racials.night-elf.quickness",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "racials.night-elf.wisp-spirit",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "racials.gnome.classes",
+      "status": "PROVISIONAL",
+      "scope": "Race/class combination validated from manifest. Existing Classic base-stat construction retained provisionally."
+    },
+    {
+      "id": "racials.gnome.escape-artist",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "racials.gnome.eureka",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "racials.gnome.expansive-mind",
+      "status": "PROVISIONAL",
+      "scope": "Explicit opt-in racial or preapplied buff adapter. Omitted racials retain Classic behavior; omissions are not presumed removals. Replaces Intellect with 5% maximum Mana/Rage/Energy; multiplicative capacity stacking is provisional."
+    },
+    {
+      "id": "racials.gnome.engineering-specialization",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "racials.skyborne-high-order.classes",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "racials.skyborne-high-order.walk-on-air",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "racials.skyborne-high-order.read-ley-line",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "racials.skyborne-high-order.wind-blessed",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "racials.skyborne-high-order.elemental-insight",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "racials.legacy-omissions",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warrior.talent.improved-heroic-strike",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "warrior.talent.deflection",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "warrior.talent.improved-rend",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "warrior.talent.improved-charge",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warrior.talent.improved-tactical-mastery",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warrior.talent.improved-overpower",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "warrior.talent.anger-management",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warrior.talent.deep-wounds",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "warrior.talent.spearing-strike",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warrior.talent.two-handed-weapon-specialization",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "warrior.talent.impale",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "warrior.talent.bloodthrill",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warrior.talent.sweeping-strikes",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "warrior.talent.weaponmaster",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warrior.talent.improved-slam",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warrior.talent.improved-hamstring",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warrior.talent.mortal-strike",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warrior.talent.booming-voice",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warrior.talent.cruelty",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "warrior.talent.iron-will",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warrior.talent.unbridled-wrath",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "warrior.talent.improved-cleave",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "warrior.talent.piercing-howl",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warrior.talent.blood-craze",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warrior.talent.boundless-rage",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "warrior.talent.dual-wield-specialization",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "warrior.talent.raging-blows",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warrior.talent.enrage",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional. 30% on direct damaging hits taken, 12 seconds, no hit charges; periodic-hit eligibility remains provisional."
+    },
+    {
+      "id": "warrior.talent.improved-execute",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "warrior.talent.precision",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "warrior.talent.death-wish",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "warrior.talent.improved-intercept",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warrior.talent.improved-berserker-rage",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warrior.talent.flurry",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "warrior.talent.bloodthirst",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "warrior.talent.shield-specialization",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "warrior.talent.anticipation",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "warrior.talent.improved-bloodrage",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "warrior.talent.toughness",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "warrior.talent.improved-thunder-clap",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "warrior.talent.last-stand",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "warrior.talent.master-of-defense",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "warrior.talent.improved-revenge",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "warrior.talent.defiance",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warrior.talent.improved-sunder-armor",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "warrior.talent.improved-disarm",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warrior.talent.vanguard",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warrior.talent.improved-shield-wall",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warrior.talent.concussion-blow",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warrior.talent.improved-shield-bash",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warrior.talent.vitality",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "warrior.talent.focused-rage",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warrior.talent.bastion",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "warrior.talent.shield-slam",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warrior.removed.axe-specialization",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "warrior.removed.mace-specialization",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "warrior.removed.sword-specialization",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "warrior.removed.polearm-specialization",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "warrior.removed.improved-demoralizing-shout",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "warrior.removed.improved-battle-shout",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "warrior.removed.improved-shield-block",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "warrior.removed.improved-taunt",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "warrior.removed.one-handed-weapon-specialization",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "warrior.baseline.victory-rush",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "paladin.talent.improved-holy-strike",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "paladin.talent.divine-strength",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "paladin.talent.divine-intellect",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "paladin.talent.healing-light",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "paladin.talent.spiritual-focus",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "paladin.talent.improved-seals",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "paladin.talent.unyielding-faith",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "paladin.talent.voice-of-truth",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "paladin.talent.reverence",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "paladin.talent.purifying-power",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "paladin.talent.infusion-of-light",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "paladin.talent.illumination",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "paladin.talent.divine-favor",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "paladin.talent.divine-precision",
+      "status": "BLOCKED",
+      "scope": "Adapter code exists, but required lower-row points or prerequisite talents need unfinished adapters. Not counted complete."
+    },
+    {
+      "id": "paladin.talent.holy-shock",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "paladin.talent.consecrated-ground",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "paladin.talent.holy-power",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "paladin.talent.light-s-vigil",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "paladin.talent.toughness",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "paladin.talent.redoubt",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "paladin.talent.precision",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "paladin.talent.guardian-s-favor",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "paladin.talent.anticipation",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "paladin.talent.improved-seal-of-fury",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "paladin.talent.improved-righteous-fury",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "paladin.talent.shield-specialization",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "paladin.talent.sacred-duty",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "paladin.talent.swift-judgement",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "paladin.talent.one-handed-weapon-specialization",
+      "status": "BLOCKED",
+      "scope": "Adapter code exists, but required lower-row points or prerequisite talents need unfinished adapters. Not counted complete."
+    },
+    {
+      "id": "paladin.talent.improved-hammer-of-justice",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "paladin.talent.templar-s-bulwark",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "paladin.talent.reckoning",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "paladin.talent.iron-creed",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "paladin.talent.holy-shield",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "paladin.talent.deflection",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "paladin.talent.benediction",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "paladin.talent.improved-judgement",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "paladin.talent.holy-conduit",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "paladin.talent.conviction",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "paladin.talent.vindication",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "paladin.talent.sanctified-judgement",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "paladin.talent.seal-of-command",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "paladin.talent.pursuit-of-justice",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "paladin.talent.eye-for-an-eye",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "paladin.talent.sacred-arbiter",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "paladin.talent.crusade",
+      "status": "BLOCKED",
+      "scope": "Adapter code exists, but required lower-row points or prerequisite talents need unfinished adapters. Not counted complete."
+    },
+    {
+      "id": "paladin.talent.two-handed-weapon-specialization",
+      "status": "BLOCKED",
+      "scope": "Adapter code exists, but required lower-row points or prerequisite talents need unfinished adapters. Not counted complete."
+    },
+    {
+      "id": "paladin.talent.vengeance",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "paladin.talent.repentance",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "paladin.talent.champion-of-the-light",
+      "status": "BLOCKED",
+      "scope": "Adapter code exists, but required lower-row points or prerequisite talents need unfinished adapters. Not counted complete."
+    },
+    {
+      "id": "paladin.talent.instrument-of-law",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "paladin.talent.twist-of-light",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "paladin.removed.consecration",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "paladin.removed.improved-lay-on-hands",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "paladin.removed.improved-blessing-of-wisdom",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "paladin.removed.lasting-judgement",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "paladin.removed.improved-devotion-aura",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "paladin.removed.blessing-of-kings",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "paladin.removed.improved-concentration-aura",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "paladin.removed.blessing-of-sanctuary",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "paladin.removed.improved-blessing-of-might",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "paladin.removed.improved-seal-of-the-crusader",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "paladin.removed.improved-retribution-aura",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "paladin.removed.sanctity-aura",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "paladin.baseline.holy-strike",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "paladin.baseline.seal-of-fury",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "hunter.talent.deadly-aspects",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "hunter.talent.endurance-training",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "hunter.talent.focused-fire",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "hunter.talent.improved-aspect-of-the-monkey",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "hunter.talent.pathfinding",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "hunter.talent.improved-revive-pet",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "hunter.talent.bestial-swiftness",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "hunter.talent.unleashed-fury",
+      "status": "BLOCKED",
+      "scope": "Adapter code exists, but required lower-row points or prerequisite talents need unfinished adapters. Not counted complete."
+    },
+    {
+      "id": "hunter.talent.improved-mend-pet",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "hunter.talent.ferocity",
+      "status": "BLOCKED",
+      "scope": "Adapter code exists, but required lower-row points or prerequisite talents need unfinished adapters. Not counted complete."
+    },
+    {
+      "id": "hunter.talent.summon-hawk",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "hunter.talent.spirit-bond",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "hunter.talent.intimidation",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "hunter.talent.bestial-discipline",
+      "status": "BLOCKED",
+      "scope": "Adapter code exists, but required lower-row points or prerequisite talents need unfinished adapters. Not counted complete."
+    },
+    {
+      "id": "hunter.talent.frenzy",
+      "status": "BLOCKED",
+      "scope": "Adapter code exists, but required lower-row points or prerequisite talents need unfinished adapters. Not counted complete."
+    },
+    {
+      "id": "hunter.talent.bestial-wrath",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "hunter.talent.hawk-eye",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "hunter.talent.improved-concussive-shot",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "hunter.talent.lethal-attacks",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "hunter.talent.improved-stings",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "hunter.talent.efficiency",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "hunter.talent.careful-aim",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "hunter.talent.rapid-killing",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "hunter.talent.improved-arcane-shot",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "hunter.talent.lone-wolf",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "hunter.talent.trueshot-aura",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "hunter.talent.mortal-shots",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "hunter.talent.rapid-recuperation",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "hunter.talent.barrage",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "hunter.talent.scatter-shot",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "hunter.talent.ranged-weapon-specialization",
+      "status": "BLOCKED",
+      "scope": "Adapter code exists, but required lower-row points or prerequisite talents need unfinished adapters. Not counted complete."
+    },
+    {
+      "id": "hunter.talent.sniper-shot",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "hunter.talent.improved-tracking",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "hunter.talent.deflection",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "hunter.talent.entrapment",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "hunter.talent.savage-strikes",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "hunter.talent.survivalist",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "hunter.talent.improved-wing-clip",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "hunter.talent.clever-traps",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "hunter.talent.surefooted",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "hunter.talent.deterrence",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "hunter.talent.survival-tactics",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "hunter.talent.predator-s-edge",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "hunter.talent.counterattack",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "hunter.talent.resourcefulness",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "hunter.talent.expose-prey",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "hunter.talent.survivalist-s-discipline",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "hunter.talent.strider-kick",
+      "status": "BLOCKED",
+      "scope": "Adapter code exists, but required lower-row points or prerequisite talents need unfinished adapters. Not counted complete. Observed 61 mana, 8-second cooldown and 100% main-hand weapon damage; Classic melee outcome and threat retained."
+    },
+    {
+      "id": "hunter.talent.lightning-reflexes",
+      "status": "BLOCKED",
+      "scope": "Adapter code exists, but required lower-row points or prerequisite talents need unfinished adapters. Not counted complete."
+    },
+    {
+      "id": "hunter.talent.lacerating-strikes",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "hunter.removed.improved-eyes-of-the-beast",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "hunter.removed.thick-hide",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "hunter.removed.improved-hunter-s-mark",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "hunter.removed.improved-scorpid-sting",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "hunter.removed.monster-slaying",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "hunter.removed.humanoid-slaying",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "hunter.removed.trap-mastery",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "hunter.removed.improved-feign-death",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "hunter.removed.killer-instinct",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "hunter.removed.wyvern-sting",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "hunter.pet-baseline",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "rogue.talent.improved-gouge",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "rogue.talent.remorseless-attacks",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "rogue.talent.malice",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "rogue.talent.ruthlessness",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "rogue.talent.murder",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "rogue.talent.improved-slice-and-dice",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "rogue.talent.relentless-strikes",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "rogue.talent.improved-expose-armor",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "rogue.talent.lethality",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "rogue.talent.vile-poisons",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "rogue.talent.cold-blood",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "rogue.talent.improved-poisons",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "rogue.talent.vigor",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "rogue.talent.mutilate",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "rogue.talent.improved-kidney-shot",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "rogue.talent.seal-fate",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "rogue.talent.venom",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "rogue.talent.improved-eviscerate",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "rogue.talent.improved-sinister-strike",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "rogue.talent.lightning-reflexes",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "rogue.talent.puncturing-wounds",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "rogue.talent.deflection",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "rogue.talent.precision",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "rogue.talent.endurance",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "rogue.talent.riposte",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "rogue.talent.improved-sprint",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "rogue.talent.improved-kick",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "rogue.talent.restless-blades",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "rogue.talent.dual-wield-specialization",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "rogue.talent.blade-flurry",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "rogue.talent.hack-and-slash",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "rogue.talent.weapon-expertise",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "rogue.talent.aggression",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "rogue.talent.adrenaline-rush",
+      "status": "BLOCKED",
+      "scope": "Adapter code exists, but required lower-row points or prerequisite talents need unfinished adapters. Not counted complete."
+    },
+    {
+      "id": "rogue.talent.camouflage",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "rogue.talent.master-of-deception",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "rogue.talent.opportunity",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "rogue.talent.setup",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "rogue.talent.elusiveness",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "rogue.talent.dirty-tricks",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "rogue.talent.improved-ambush",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "rogue.talent.initiative",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "rogue.talent.ghostly-strike",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "rogue.talent.improved-distract",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "rogue.talent.heightened-senses",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "rogue.talent.premeditation",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "rogue.talent.serrated-blades",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "rogue.talent.dirty-deeds",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "rogue.talent.preparation",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "rogue.talent.hemorrhage",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "rogue.talent.quietus",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "rogue.talent.cutthroat",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "rogue.talent.thousand-cuts",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "rogue.removed.dagger-specialization",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "rogue.removed.mace-specialization",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "rogue.removed.sword-specialization",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "rogue.removed.fist-weapon-specialization",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "rogue.removed.sleight-of-hand",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "rogue.removed.improved-sap",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "rogue.removed.deadliness",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "priest.talent.power-in-light",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.talent.wand-specialization",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.talent.twin-disciplines",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.talent.silent-resolve",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.talent.holy-precision",
+      "status": "BLOCKED",
+      "scope": "Adapter code exists, but required lower-row points or prerequisite talents need unfinished adapters. Not counted complete."
+    },
+    {
+      "id": "priest.talent.improved-power-word-shield",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.talent.martyrdom",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.talent.mental-agility",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.talent.inner-focus",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.talent.meditation",
+      "status": "BLOCKED",
+      "scope": "Adapter code exists, but required lower-row points or prerequisite talents need unfinished adapters. Not counted complete."
+    },
+    {
+      "id": "priest.talent.improved-inner-fire",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.talent.mental-strength",
+      "status": "BLOCKED",
+      "scope": "Adapter code exists, but required lower-row points or prerequisite talents need unfinished adapters. Not counted complete."
+    },
+    {
+      "id": "priest.talent.soul-warding",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.talent.improved-mana-burn",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.talent.penance",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.talent.renewed-hope",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.talent.divine-aegis",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.talent.power-infusion",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.talent.twilight-focus",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.talent.improved-renew",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.talent.holy-specialization",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "priest.talent.spell-warding",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "priest.talent.divine-fury",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "priest.talent.holy-nova",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.talent.blessed-recovery",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.talent.inspiration",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.talent.holy-reach",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.talent.improved-healing",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.talent.searing-light",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.talent.binding-heal",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.talent.litany-of-light",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.talent.spirit-of-redemption",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.talent.spiritual-guidance",
+      "status": "BLOCKED",
+      "scope": "Adapter code exists, but required lower-row points or prerequisite talents need unfinished adapters. Not counted complete."
+    },
+    {
+      "id": "priest.talent.spiritual-healing",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.talent.prayer-of-mending",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.talent.shadow-focus",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "priest.talent.blackout",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.talent.spirit-tap",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.talent.shadow-affinity",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "priest.talent.improved-shadow-word-pain",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "priest.talent.shadow-reach",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.talent.improved-mind-blast",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "priest.talent.improved-psychic-scream",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.talent.mind-flay",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.talent.improved-mind-flay",
+      "status": "BLOCKED",
+      "scope": "Adapter code exists, but required lower-row points or prerequisite talents need unfinished adapters. Not counted complete."
+    },
+    {
+      "id": "priest.talent.improved-fade",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.talent.vampiric-embrace",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.talent.shadow-weaving",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.talent.silence",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.talent.devouring-contagion",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.talent.early-demise",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.talent.darkness",
+      "status": "BLOCKED",
+      "scope": "Adapter code exists, but required lower-row points or prerequisite talents need unfinished adapters. Not counted complete."
+    },
+    {
+      "id": "priest.talent.shadowform",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.removed.unbreakable-will",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "priest.removed.improved-power-word-fortitude",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "priest.removed.divine-spirit",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "priest.removed.force-of-will",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "priest.removed.improved-prayer-of-healing",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "priest.removed.lightwell",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "priest.removed.improved-vampiric-embrace",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "priest.baseline.fear-ward",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.racial.dark-sacrifice",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.racial.touch-of-weakness",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "priest.racial.starshards",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.racial.elunes-grace",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.racial.dwarf.chastise",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.racial.dwarf.desperate-prayer",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "priest.racial.gnome.confounding-flash",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "priest.racial.gnome.contingency-plan",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "priest.racial.human.divine-grace",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.racial.troll-unknown",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "priest.baseline.shadow-word-death",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "priest.baseline.devouring-plague",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "shaman.talent.convection",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "shaman.talent.concussion",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "shaman.talent.elemental-warding",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "shaman.talent.reverberation",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "shaman.talent.call-of-flame",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "shaman.talent.elemental-devastation",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "shaman.talent.elemental-focus",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "shaman.talent.elemental-fury",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "shaman.talent.improved-fire-nova",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "shaman.talent.eye-of-the-storm",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "shaman.talent.call-of-thunder",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "shaman.talent.elemental-reach",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "shaman.talent.lightning-overload",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "shaman.talent.earthbound",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "shaman.talent.elemental-alacrity",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "shaman.talent.lava-burst",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "shaman.talent.earth-s-grasp",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "shaman.talent.thundering-strikes",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "shaman.talent.ancestral-knowledge",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "shaman.talent.guardian-totems",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "shaman.talent.mental-dexterity",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "shaman.talent.improved-ghost-wolf",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "shaman.talent.improved-lightning-shield",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "shaman.talent.elemental-weapons",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "shaman.talent.shamanistic-focus",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "shaman.talent.anticipation",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "shaman.talent.toughness",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "shaman.talent.flurry",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "shaman.talent.stormstrike",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "shaman.talent.spirit-weapons",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "shaman.talent.mental-quickness",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "shaman.talent.improved-stormstrike",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "shaman.talent.maelstrom-weapon",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "shaman.talent.rage-of-the-farseer",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional. Self-only 30% melee/cast speed, 25 seconds, 3-minute cooldown. No ranged or party haste."
+    },
+    {
+      "id": "shaman.talent.improved-healing-wave",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "shaman.talent.tidal-mastery",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "shaman.talent.mindfulness",
+      "status": "BLOCKED",
+      "scope": "Adapter code exists, but required lower-row points or prerequisite talents need unfinished adapters. Not counted complete."
+    },
+    {
+      "id": "shaman.talent.natural-grace",
+      "status": "BLOCKED",
+      "scope": "Adapter code exists, but required lower-row points or prerequisite talents need unfinished adapters. Not counted complete."
+    },
+    {
+      "id": "shaman.talent.tidal-focus",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "shaman.talent.improved-reincarnation",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "shaman.talent.ancestral-healing",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "shaman.talent.healing-focus",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "shaman.talent.water-shield",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "shaman.talent.totemic-focus",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "shaman.talent.restorative-totems",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "shaman.talent.mana-tide-totem",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "shaman.talent.healing-way",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "shaman.talent.nature-s-swiftness",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "shaman.talent.purification",
+      "status": "BLOCKED",
+      "scope": "Adapter code exists, but required lower-row points or prerequisite talents need unfinished adapters. Not counted complete."
+    },
+    {
+      "id": "shaman.talent.riptide",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "shaman.removed.elemental-mastery",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "shaman.removed.shield-specialization",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "shaman.removed.enhancing-totems",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "shaman.removed.two-handed-axes-and-maces",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "shaman.removed.improved-weapon-totems",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "shaman.removed.weapon-mastery",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "shaman.removed.nature-s-guidance",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "shaman.removed.totemic-mastery",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "shaman.baseline.fire-nova",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "mage.talent.wand-specialization",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "mage.talent.arcane-focus",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "mage.talent.improved-channeling",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "mage.talent.arcane-subtlety",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "mage.talent.magic-absorption",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "mage.talent.arcane-concentration",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "mage.talent.arcane-resilience",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "mage.talent.arcane-geometry",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "mage.talent.arcane-impact",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "mage.talent.arcane-blast",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "mage.talent.arcane-shielding",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "mage.talent.improved-counterspell",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "mage.talent.arcane-meditation",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "mage.talent.missile-barrage",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "mage.talent.presence-of-mind",
+      "status": "BLOCKED",
+      "scope": "Adapter code exists, but required lower-row points or prerequisite talents need unfinished adapters. Not counted complete."
+    },
+    {
+      "id": "mage.talent.arcane-mind",
+      "status": "BLOCKED",
+      "scope": "Adapter code exists, but required lower-row points or prerequisite talents need unfinished adapters. Not counted complete."
+    },
+    {
+      "id": "mage.talent.arcane-instability",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "mage.talent.arcane-power",
+      "status": "BLOCKED",
+      "scope": "Adapter code exists, but required lower-row points or prerequisite talents need unfinished adapters. Not counted complete."
+    },
+    {
+      "id": "mage.talent.wake-of-fire",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "mage.talent.incineration",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "mage.talent.improved-fireball",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "mage.talent.ignite",
+      "status": "BLOCKED",
+      "scope": "Adapter code exists, but required lower-row points or prerequisite talents need unfinished adapters. Not counted complete."
+    },
+    {
+      "id": "mage.talent.flame-throwing",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "mage.talent.impact",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "mage.talent.burning-soul",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "mage.talent.improved-flamestrike",
+      "status": "BLOCKED",
+      "scope": "Adapter code exists, but required lower-row points or prerequisite talents need unfinished adapters. Not counted complete."
+    },
+    {
+      "id": "mage.talent.pyroblast",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "mage.talent.improved-scorch",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "mage.talent.improved-fire-ward",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "mage.talent.hot-streak",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "mage.talent.master-of-elements",
+      "status": "BLOCKED",
+      "scope": "Adapter code exists, but required lower-row points or prerequisite talents need unfinished adapters. Not counted complete."
+    },
+    {
+      "id": "mage.talent.critical-mass",
+      "status": "BLOCKED",
+      "scope": "Adapter code exists, but required lower-row points or prerequisite talents need unfinished adapters. Not counted complete."
+    },
+    {
+      "id": "mage.talent.blast-wave",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "mage.talent.fire-power",
+      "status": "BLOCKED",
+      "scope": "Adapter code exists, but required lower-row points or prerequisite talents need unfinished adapters. Not counted complete."
+    },
+    {
+      "id": "mage.talent.combustion",
+      "status": "BLOCKED",
+      "scope": "Adapter code exists, but required lower-row points or prerequisite talents need unfinished adapters. Not counted complete."
+    },
+    {
+      "id": "mage.talent.frost-warding",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "mage.talent.improved-frostbolt",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "mage.talent.elemental-precision",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "mage.talent.ice-shards",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "mage.talent.permafrost",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "mage.talent.improved-frost-nova",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "mage.talent.frostbite",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "mage.talent.piercing-ice",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "mage.talent.frost-channeling",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "mage.talent.ice-lance",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "mage.talent.improved-blizzard",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "mage.talent.arctic-reach",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "mage.talent.ice-block",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "mage.talent.shatter",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "mage.talent.improved-cone-of-cold",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "mage.talent.cold-snap",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "mage.talent.fingers-of-frost",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "mage.talent.winter-s-chill",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "mage.talent.ice-barrier",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "mage.removed.magic-attunement",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "mage.baseline.frostfire-bolt",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warlock.talent.improved-life-tap",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "warlock.talent.suppression",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "warlock.talent.improved-corruption",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warlock.talent.malediction",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warlock.talent.soul-harvesting",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warlock.talent.improved-drains",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warlock.talent.improved-bane-of-agony",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warlock.talent.fel-concentration",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warlock.talent.amplify-curse",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warlock.talent.pandemic",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warlock.talent.malevolence",
+      "status": "BLOCKED",
+      "scope": "Adapter code exists, but required lower-row points or prerequisite talents need unfinished adapters. Not counted complete."
+    },
+    {
+      "id": "warlock.talent.nightfall",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warlock.talent.curse-of-exhaustion",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warlock.talent.siphon-life",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warlock.talent.soul-siphon",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warlock.talent.shadow-mastery",
+      "status": "BLOCKED",
+      "scope": "Adapter code exists, but required lower-row points or prerequisite talents need unfinished adapters. Not counted complete."
+    },
+    {
+      "id": "warlock.talent.drain-hope",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warlock.talent.improved-health-funnel",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warlock.talent.improved-imp",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warlock.talent.demonic-embrace",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "warlock.talent.unholy-power",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "warlock.talent.demonic-aegis",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warlock.talent.improved-voidwalker",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warlock.talent.fel-vitality",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "warlock.talent.demonic-energies",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warlock.talent.improved-sayaad",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warlock.talent.demonic-sacrifice",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional. Observed 2-hour duration and pet/effect mapping; original cancellation and periodic tick scheduling retained. Incubus not selectable in baseline pet catalogue."
+    },
+    {
+      "id": "warlock.talent.master-summoner",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "warlock.talent.decimation",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warlock.talent.fel-domination",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "warlock.talent.demonic-brand",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warlock.talent.improved-felhunter",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warlock.talent.soul-link",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warlock.talent.demonic-knowledge",
+      "status": "BLOCKED",
+      "scope": "Adapter code exists, but required lower-row points or prerequisite talents need unfinished adapters. Not counted complete."
+    },
+    {
+      "id": "warlock.talent.master-demonologist",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warlock.talent.demonic-pact",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warlock.talent.destructive-reach",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warlock.talent.improved-shadow-bolt",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warlock.talent.bane",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warlock.talent.molten-skin",
+      "status": "BLOCKED",
+      "scope": "Adapter code exists, but required lower-row points or prerequisite talents need unfinished adapters. Not counted complete."
+    },
+    {
+      "id": "warlock.talent.cataclysm",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warlock.talent.aftermath",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warlock.talent.ruin",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warlock.talent.shadowburn",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warlock.talent.intensity",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warlock.talent.agonizing-flames",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warlock.talent.conflagrate",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warlock.talent.pyroclasm",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warlock.talent.bane-of-havoc",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warlock.talent.fire-and-brimstone",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warlock.talent.shadow-and-flame",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warlock.talent.incinerate",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warlock.removed.improved-curse-of-weakness",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "warlock.removed.improved-drain-soul",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "warlock.removed.improved-drain-life",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "warlock.removed.grim-reach",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "warlock.removed.improved-drain-mana",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "warlock.removed.improved-curse-of-exhaustion",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "warlock.removed.dark-pact",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "warlock.removed.improved-healthstone",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "warlock.removed.fel-intellect",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "warlock.removed.improved-subjugate-demon",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "warlock.removed.improved-firestone",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "warlock.removed.improved-spellstone",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "warlock.removed.improved-firebolt",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "warlock.removed.improved-lash-of-pain",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "warlock.removed.devastation",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "warlock.removed.improved-immolate",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "warlock.removed.emberstorm",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "warlock.baseline.bane-of-agony",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warlock.baseline.bane-of-doom",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "warlock.baseline.incubus",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "druid.talent.improved-wrath",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "druid.talent.genesis",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "druid.talent.moonglow",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "druid.talent.improved-moonfire",
+      "status": "PROVISIONAL",
+      "scope": "Reviewed Classic effect reached through the Forever tree. Existing engine limitations remain."
+    },
+    {
+      "id": "druid.talent.nature-s-majesty",
+      "status": "PROVISIONAL",
+      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
+    },
+    {
+      "id": "druid.talent.nature-s-reach",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "druid.talent.improved-entangling-roots",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "druid.talent.nature-s-splendor",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "druid.talent.balance-of-nature",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "druid.talent.vengeance",
+      "status": "BLOCKED",
+      "scope": "Adapter code exists, but required lower-row points or prerequisite talents need unfinished adapters. Not counted complete."
+    },
+    {
+      "id": "druid.talent.insect-swarm",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "druid.talent.improved-starfire",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "druid.talent.overgrowth",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "druid.talent.nature-s-grace",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "druid.talent.eclipse",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "druid.talent.moonfury",
+      "status": "BLOCKED",
+      "scope": "Adapter code exists, but required lower-row points or prerequisite talents need unfinished adapters. Not counted complete."
+    },
+    {
+      "id": "druid.talent.moonkin-form",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "druid.talent.ferocity",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "druid.talent.heart-of-the-wild",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "druid.talent.feral-swiftness",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "druid.talent.feral-instinct",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "druid.talent.brutal-impact",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "druid.talent.thick-hide",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "druid.talent.savage-fury",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "druid.talent.feral-charge",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "druid.talent.sharpened-claws",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "druid.talent.shredding-attacks",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "druid.talent.mangle",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "druid.talent.predatory-strikes",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "druid.talent.primal-fury",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "druid.talent.predatory-instincts",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "druid.talent.leader-of-the-pack",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "druid.talent.king-of-the-jungle",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "druid.talent.natural-reaction",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "druid.talent.rend-and-tear",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "druid.talent.berserk",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "druid.talent.nature-s-focus",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "druid.talent.furor",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "druid.talent.naturalist",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "druid.talent.subtlety",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "druid.talent.natural-shapeshifter",
+      "status": "BLOCKED",
+      "scope": "Adapter code exists, but required lower-row points or prerequisite talents need unfinished adapters. Not counted complete."
+    },
+    {
+      "id": "druid.talent.reflection",
+      "status": "BLOCKED",
+      "scope": "Adapter code exists, but required lower-row points or prerequisite talents need unfinished adapters. Not counted complete."
+    },
+    {
+      "id": "druid.talent.gift-of-nature",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "druid.talent.gift-of-the-earthmother",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "druid.talent.tranquil-spirit",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "druid.talent.improved-rejuvenation",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "druid.talent.swiftmend",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "druid.talent.nature-s-swiftness",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "druid.talent.living-spirit",
+      "status": "BLOCKED",
+      "scope": "Adapter code exists, but required lower-row points or prerequisite talents need unfinished adapters. Not counted complete."
+    },
+    {
+      "id": "druid.talent.improved-tranquility",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "druid.talent.improved-regrowth",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "druid.talent.wild-growth",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "druid.removed.nature-s-grasp",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "druid.removed.improved-nature-s-grasp",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "druid.removed.natural-weapons",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "druid.removed.improved-thorns",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "druid.removed.omen-of-clarity",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "druid.removed.feral-aggression",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "druid.removed.blood-frenzy",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "druid.removed.faerie-fire-feral",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "druid.removed.improved-mark-of-the-wild",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "druid.removed.improved-enrage",
+      "status": "PROVISIONAL",
+      "scope": "Absent from Forever selection; old typed field stays zero. Does not claim the underlying ability was removed from the game."
+    },
+    {
+      "id": "items.new-catalogue",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "items.tier-sets",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "items.legendary",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "items.enchants",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "items.feral-gear",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "legacy.field-medicine",
+      "status": "BLOCKED",
+      "scope": "Known source details retained. No reviewed adapter for this perk or profession rule in the current raid model; this is unfinished modeling, not missing source evidence."
+    },
+    {
+      "id": "legacy.gourmand",
+      "status": "BLOCKED",
+      "scope": "Known source details retained. No reviewed adapter for this perk or profession rule in the current raid model; this is unfinished modeling, not missing source evidence."
+    },
+    {
+      "id": "consumes.first-aid-healing-potion-recipes",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "consumes.woolen-tourniquet",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "consumes.simple-poultice",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "consumes.anti-venom",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "consumes.unchanged-baseline",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "buffs.camping",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "buffs.first-aid-kit",
+      "status": "PROVISIONAL",
+      "scope": "Explicit opt-in racial or preapplied buff adapter. Omitted racials retain Classic behavior; omissions are not presumed removals. Preapplied +34 Stamina scenario, excluded by Fortitude. Camping, duration and shared cooldown are not simulated."
+    },
+    {
+      "id": "buffs.world-buffs",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "buffs.party-scope",
+      "status": "BLOCKED",
+      "scope": "No reviewed executable adapter in this batch."
+    },
+    {
+      "id": "legacy.permanence",
+      "status": "BLOCKED",
+      "scope": "Known source details retained. No reviewed adapter for this perk or profession rule in the current raid model; this is unfinished modeling, not missing source evidence."
+    },
+    {
+      "id": "legacy.field-guide",
+      "status": "BLOCKED",
+      "scope": "Known source details retained. No reviewed adapter for this perk or profession rule in the current raid model; this is unfinished modeling, not missing source evidence."
+    },
+    {
+      "id": "legacy.working-overtime",
+      "status": "BLOCKED",
+      "scope": "Known source details retained. No reviewed adapter for this perk or profession rule in the current raid model; this is unfinished modeling, not missing source evidence."
+    },
+    {
+      "id": "legacy.performance-bonus",
+      "status": "BLOCKED",
+      "scope": "Known source details retained. No reviewed adapter for this perk or profession rule in the current raid model; this is unfinished modeling, not missing source evidence."
+    },
+    {
+      "id": "legacy.luremaster",
+      "status": "BLOCKED",
+      "scope": "Known source details retained. No reviewed adapter for this perk or profession rule in the current raid model; this is unfinished modeling, not missing source evidence."
+    },
+    {
+      "id": "legacy.master-chef",
+      "status": "BLOCKED",
+      "scope": "Known source details retained. No reviewed adapter for this perk or profession rule in the current raid model; this is unfinished modeling, not missing source evidence."
+    },
+    {
+      "id": "legacy.dedicated-study",
+      "status": "BLOCKED",
+      "scope": "Known source details retained. No reviewed adapter for this perk or profession rule in the current raid model; this is unfinished modeling, not missing source evidence."
+    },
+    {
+      "id": "legacy.bountiful-harvest",
+      "status": "BLOCKED",
+      "scope": "Known source details retained. No reviewed adapter for this perk or profession rule in the current raid model; this is unfinished modeling, not missing source evidence."
+    },
+    {
+      "id": "legacy.reagent-economy",
+      "status": "BLOCKED",
+      "scope": "Known source details retained. No reviewed adapter for this perk or profession rule in the current raid model; this is unfinished modeling, not missing source evidence."
+    },
+    {
+      "id": "profession.alchemy.mixology",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "profession.alchemy.philosopher-s-stone",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "profession.alchemy.new-recipes",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "profession.blacksmithing.repair-all",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "profession.blacksmithing.belt-buckles",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "profession.blacksmithing.new-recipes",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "profession.enchanting.ring-enchants",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "profession.enchanting.shard-transmutes",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "profession.enchanting.stave-crafting-and-more",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "profession.engineering.powerful-profession",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "profession.engineering.but-wait-there-s-more",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "profession.engineering.goblin-or-gnome",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "profession.herbalism.natural-talent",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "profession.herbalism.lotus-affinity",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "profession.herbalism.brutal-pickings",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "profession.leatherworking.armor-kits",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "profession.leatherworking.must-go-faster",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "profession.leatherworking.dragons-and-elements",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "profession.mining.made-of-metal",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "profession.mining.a-lode-of-ore",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "profession.mining.malicious-mining",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "profession.skinning.beasts-of-the-wild",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "profession.skinning.rare-hides",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "profession.skinning.a-classic-starter-profession",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "profession.tailoring.embroider-your-work",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "profession.tailoring.cloth-scavenging",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "profession.tailoring.new-and-reworked-recipes",
+      "status": "UNKNOWN",
+      "scope": "Insufficient supported numerical/behavioral evidence for an executable change; no new effect assumed."
+    },
+    {
+      "id": "professions.slot-count",
+      "status": "BLOCKED",
+      "scope": "Known source details retained. No reviewed adapter for this perk or profession rule in the current raid model; this is unfinished modeling, not missing source evidence."
+    }
+  ]
+}

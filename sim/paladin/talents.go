@@ -9,6 +9,7 @@ import (
 )
 
 func (paladin *Paladin) ApplyTalents() {
+	paladin.applyForeverTalents()
 	paladin.AddStat(stats.MeleeHit, float64(paladin.Talents.Precision)*core.MeleeHitRatingPerHitChance)
 	// TODO: paladin.AddStat(stats.RangedHit, float64(paladin.Talents.Precision)*core.MeleeHitRatingPerHitChance)
 
@@ -49,6 +50,9 @@ func (paladin *Paladin) improvedSoR() float64 {
 }
 
 func (paladin *Paladin) benediction() int32 {
+	if paladin.Forever != nil {
+		return 100
+	}
 	return []int32{100, 97, 94, 91, 88, 85}[paladin.Talents.Benediction]
 }
 

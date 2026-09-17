@@ -1,0 +1,2668 @@
+{
+  "warrior.talent.improved-heroic-strike": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "classic",
+    "files": [
+      "sim/warrior/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "warrior.talent.deflection": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "classic",
+    "files": [
+      "sim/warrior/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "warrior.talent.improved-rend": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class",
+    "files": [
+      "sim/warrior/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "warrior.talent.improved-overpower": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "classic",
+    "files": [
+      "sim/warrior/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "warrior.talent.deep-wounds": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "classic",
+    "files": [
+      "sim/warrior/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "warrior.talent.two-handed-weapon-specialization": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "classic",
+    "files": [
+      "sim/warrior/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "warrior.talent.impale": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "classic",
+    "files": [
+      "sim/warrior/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "warrior.talent.sweeping-strikes": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "classic",
+    "files": [
+      "sim/warrior/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "warrior.talent.cruelty": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "classic",
+    "files": [
+      "sim/warrior/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "warrior.talent.unbridled-wrath": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class",
+    "files": [
+      "sim/warrior/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "warrior.talent.improved-cleave": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class",
+    "files": [
+      "sim/warrior/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "warrior.talent.boundless-rage": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "replace",
+    "files": [
+      "sim/warrior/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "warrior.talent.dual-wield-specialization": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class",
+    "files": [
+      "sim/warrior/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "warrior.talent.enrage": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class",
+    "files": [
+      "sim/warrior/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "warrior.talent.improved-execute": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class",
+    "files": [
+      "sim/warrior/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "warrior.talent.precision": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "replace",
+    "files": [
+      "sim/warrior/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "warrior.talent.death-wish": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class",
+    "files": [
+      "sim/warrior/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "warrior.talent.flurry": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class",
+    "files": [
+      "sim/warrior/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "warrior.talent.bloodthirst": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class",
+    "files": [
+      "sim/warrior/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "warrior.talent.shield-specialization": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class",
+    "files": [
+      "sim/warrior/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "warrior.talent.anticipation": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "replace",
+    "files": [
+      "sim/warrior/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "warrior.talent.improved-bloodrage": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class",
+    "files": [
+      "sim/warrior/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "warrior.talent.toughness": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "classic",
+    "files": [
+      "sim/warrior/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "warrior.talent.improved-thunder-clap": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class",
+    "files": [
+      "sim/warrior/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "warrior.talent.last-stand": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional.",
+      "Expiration removes temporary current health with the Classic analogue 1-HP survival floor."
+    ],
+    "mode": "class",
+    "files": [
+      "sim/warrior/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "warrior.talent.master-of-defense": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "replace",
+    "files": [
+      "sim/warrior/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "warrior.talent.improved-revenge": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class",
+    "files": [
+      "sim/warrior/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "warrior.talent.improved-sunder-armor": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "classic",
+    "files": [
+      "sim/warrior/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "warrior.talent.vitality": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "replace",
+    "files": [
+      "sim/warrior/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "warrior.talent.bastion": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "replace",
+    "files": [
+      "sim/warrior/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "warrior.removed.axe-specialization": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "removed",
+    "files": [
+      "sim/core/foreverdata/data.go"
+    ],
+    "scope": "Removed selection is excluded and corresponding Classic field remains zero."
+  },
+  "warrior.removed.mace-specialization": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "removed",
+    "files": [
+      "sim/core/foreverdata/data.go"
+    ],
+    "scope": "Removed selection is excluded and corresponding Classic field remains zero."
+  },
+  "warrior.removed.sword-specialization": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "removed",
+    "files": [
+      "sim/core/foreverdata/data.go"
+    ],
+    "scope": "Removed selection is excluded and corresponding Classic field remains zero."
+  },
+  "warrior.removed.polearm-specialization": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "removed",
+    "files": [
+      "sim/core/foreverdata/data.go"
+    ],
+    "scope": "Removed selection is excluded and corresponding Classic field remains zero."
+  },
+  "warrior.removed.improved-demoralizing-shout": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "removed",
+    "files": [
+      "sim/core/foreverdata/data.go"
+    ],
+    "scope": "Removed selection is excluded and corresponding Classic field remains zero."
+  },
+  "warrior.removed.improved-battle-shout": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "removed",
+    "files": [
+      "sim/core/foreverdata/data.go"
+    ],
+    "scope": "Removed selection is excluded and corresponding Classic field remains zero."
+  },
+  "warrior.removed.improved-shield-block": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "removed",
+    "files": [
+      "sim/core/foreverdata/data.go"
+    ],
+    "scope": "Removed selection is excluded and corresponding Classic field remains zero."
+  },
+  "warrior.removed.improved-taunt": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "removed",
+    "files": [
+      "sim/core/foreverdata/data.go"
+    ],
+    "scope": "Removed selection is excluded and corresponding Classic field remains zero."
+  },
+  "warrior.removed.one-handed-weapon-specialization": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "removed",
+    "files": [
+      "sim/core/foreverdata/data.go"
+    ],
+    "scope": "Removed selection is excluded and corresponding Classic field remains zero."
+  },
+  "hunter.talent.endurance-training": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "replace",
+    "files": [
+      "sim/hunter/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "hunter.talent.focused-fire": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "replace",
+    "files": [
+      "sim/hunter/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "hunter.talent.unleashed-fury": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "replace",
+    "files": [
+      "sim/hunter/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "hunter.talent.ferocity": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "replace",
+    "files": [
+      "sim/hunter/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "hunter.talent.bestial-discipline": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "replace",
+    "files": [
+      "sim/hunter/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "hunter.talent.frenzy": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "classic",
+    "files": [
+      "sim/hunter/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "hunter.talent.lethal-attacks": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "replace",
+    "files": [
+      "sim/hunter/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "hunter.talent.efficiency": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class",
+    "files": [
+      "sim/hunter/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "hunter.talent.careful-aim": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "replace",
+    "files": [
+      "sim/hunter/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "hunter.talent.lone-wolf": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "replace",
+    "files": [
+      "sim/hunter/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "hunter.talent.ranged-weapon-specialization": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "classic",
+    "files": [
+      "sim/hunter/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "hunter.talent.deflection": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "replace",
+    "files": [
+      "sim/hunter/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "hunter.talent.survivalist": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "classic",
+    "files": [
+      "sim/hunter/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "hunter.talent.strider-kick": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "replace",
+    "files": [
+      "sim/hunter/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge.",
+    "auto_priority": 8
+  },
+  "hunter.talent.lightning-reflexes": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "replace",
+    "files": [
+      "sim/hunter/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "hunter.removed.improved-eyes-of-the-beast": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "removed",
+    "files": [
+      "sim/core/foreverdata/data.go"
+    ],
+    "scope": "Removed selection is excluded and corresponding Classic field remains zero."
+  },
+  "hunter.removed.thick-hide": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "removed",
+    "files": [
+      "sim/core/foreverdata/data.go"
+    ],
+    "scope": "Removed selection is excluded and corresponding Classic field remains zero."
+  },
+  "hunter.removed.improved-hunter-s-mark": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "removed",
+    "files": [
+      "sim/core/foreverdata/data.go"
+    ],
+    "scope": "Removed selection is excluded and corresponding Classic field remains zero."
+  },
+  "hunter.removed.improved-scorpid-sting": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "removed",
+    "files": [
+      "sim/core/foreverdata/data.go"
+    ],
+    "scope": "Removed selection is excluded and corresponding Classic field remains zero."
+  },
+  "hunter.removed.monster-slaying": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "removed",
+    "files": [
+      "sim/core/foreverdata/data.go"
+    ],
+    "scope": "Removed selection is excluded and corresponding Classic field remains zero."
+  },
+  "hunter.removed.humanoid-slaying": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "removed",
+    "files": [
+      "sim/core/foreverdata/data.go"
+    ],
+    "scope": "Removed selection is excluded and corresponding Classic field remains zero."
+  },
+  "hunter.removed.trap-mastery": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "removed",
+    "files": [
+      "sim/core/foreverdata/data.go"
+    ],
+    "scope": "Removed selection is excluded and corresponding Classic field remains zero."
+  },
+  "hunter.removed.improved-feign-death": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "removed",
+    "files": [
+      "sim/core/foreverdata/data.go"
+    ],
+    "scope": "Removed selection is excluded and corresponding Classic field remains zero."
+  },
+  "hunter.removed.killer-instinct": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "removed",
+    "files": [
+      "sim/core/foreverdata/data.go"
+    ],
+    "scope": "Removed selection is excluded and corresponding Classic field remains zero."
+  },
+  "hunter.removed.wyvern-sting": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "removed",
+    "files": [
+      "sim/core/foreverdata/data.go"
+    ],
+    "scope": "Removed selection is excluded and corresponding Classic field remains zero."
+  },
+  "rogue.talent.malice": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "replace",
+    "files": [
+      "sim/rogue/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "rogue.talent.ruthlessness": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "classic",
+    "files": [
+      "sim/rogue/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "rogue.talent.murder": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class",
+    "files": [
+      "sim/rogue/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "rogue.talent.improved-slice-and-dice": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "classic",
+    "files": [
+      "sim/rogue/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "rogue.talent.relentless-strikes": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "classic",
+    "files": [
+      "sim/rogue/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "rogue.talent.lethality": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "classic",
+    "files": [
+      "sim/rogue/",
+      "sim/core/forever.go",
+      "sim/rogue/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "rogue.talent.vile-poisons": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "classic",
+    "files": [
+      "sim/rogue/",
+      "sim/core/forever.go",
+      "sim/rogue/forever.go",
+      "sim/core/forever_dispel.go"
+    ],
+    "scope": "4%/rank poison damage plus8%/rank resistance to ordinary dispels for actual poison debuffs; immunity cleansing bypasses resistance."
+  },
+  "rogue.talent.vigor": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class",
+    "files": [
+      "sim/rogue/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "rogue.talent.seal-fate": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "classic",
+    "files": [
+      "sim/rogue/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "rogue.talent.improved-eviscerate": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class",
+    "files": [
+      "sim/rogue/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "rogue.talent.improved-sinister-strike": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class",
+    "files": [
+      "sim/rogue/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "rogue.talent.lightning-reflexes": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "classic",
+    "files": [
+      "sim/rogue/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "rogue.talent.deflection": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "replace",
+    "files": [
+      "sim/rogue/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "rogue.talent.precision": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "replace",
+    "files": [
+      "sim/rogue/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "rogue.talent.dual-wield-specialization": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class",
+    "files": [
+      "sim/rogue/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "rogue.talent.blade-flurry": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "classic",
+    "files": [
+      "sim/rogue/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "rogue.talent.adrenaline-rush": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "classic",
+    "files": [
+      "sim/rogue/",
+      "sim/core/forever.go"
+    ],
+    "scope": "Existing Forever adapter or audited Classic bridge."
+  },
+  "rogue.removed.dagger-specialization": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "removed",
+    "files": [
+      "sim/core/foreverdata/data.go"
+    ],
+    "scope": "Removed selection is excluded and corresponding Classic field remains zero."
+  },
+  "rogue.removed.mace-specialization": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "removed",
+    "files": [
+      "sim/core/foreverdata/data.go"
+    ],
+    "scope": "Removed selection is excluded and corresponding Classic field remains zero."
+  },
+  "rogue.removed.sword-specialization": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "removed",
+    "files": [
+      "sim/core/foreverdata/data.go"
+    ],
+    "scope": "Removed selection is excluded and corresponding Classic field remains zero."
+  },
+  "rogue.removed.fist-weapon-specialization": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "removed",
+    "files": [
+      "sim/core/foreverdata/data.go"
+    ],
+    "scope": "Removed selection is excluded and corresponding Classic field remains zero."
+  },
+  "rogue.removed.sleight-of-hand": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "removed",
+    "files": [
+      "sim/core/foreverdata/data.go"
+    ],
+    "scope": "Removed selection is excluded and corresponding Classic field remains zero."
+  },
+  "rogue.removed.improved-sap": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "removed",
+    "files": [
+      "sim/core/foreverdata/data.go"
+    ],
+    "scope": "Removed selection is excluded and corresponding Classic field remains zero."
+  },
+  "rogue.removed.deadliness": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "removed",
+    "files": [
+      "sim/core/foreverdata/data.go"
+    ],
+    "scope": "Removed selection is excluded and corresponding Classic field remains zero."
+  },
+  "warrior.talent.improved-tactical-mastery": {
+    "confidence": "PROVISIONAL",
+    "reason": "Observed additional3rage/rank is active in both modes. Unknown baseline Tactical Mastery predicts10rage from TBC only in BEST_GUESS; STRICT baseline remains0.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class",
+    "files": [
+      "sim/warrior/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior.",
+    "predicted_components": [
+      "10rage baseline Tactical Mastery retention"
+    ]
+  },
+  "warrior.talent.improved-slam": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class",
+    "files": [
+      "sim/warrior/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "warrior.talent.defiance": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class",
+    "files": [
+      "sim/warrior/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "warrior.talent.improved-shield-wall": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class",
+    "files": [
+      "sim/warrior/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "warrior.talent.mortal-strike": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class",
+    "files": [
+      "sim/warrior/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "warrior.talent.shield-slam": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional.",
+      "Offensive dispel identifies beneficial magic by the explicit forever-buff-magic tag; unclassified custom encounter auras are not guessed as removable buffs."
+    ],
+    "mode": "class",
+    "files": [
+      "sim/warrior/forever.go"
+    ],
+    "scope": "421\u2013439 plus BlockValue damage, Classic threat fallback,50%chance to dispel one explicitly tagged beneficial magic effect."
+  },
+  "warrior.talent.improved-berserker-rage": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class",
+    "files": [
+      "sim/warrior/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior.",
+    "rank_overrides": [
+      {
+        "rank": 2,
+        "effect": "Berserker Rage instantly generates 10 Rage and has a 100% chance to remove movement impairing effects.",
+        "values": [
+          10,
+          100
+        ],
+        "reason": "Disciplined progression from known rank 1: scale talent magnitudes linearly, retain trigger count/duration. Pet Monkey share follows calculator 50/75/100 progression."
+      }
+    ]
+  },
+  "warrior.talent.anger-management": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Forever baseline out-of-combat decay rate and initial grace period; scenario inputs make these explicit rather than assumed."
+    ],
+    "mode": "class",
+    "files": [
+      "sim/warrior/forever.go"
+    ],
+    "scope": "Generates 1 Rage each 3 combat seconds; reduces explicitly configured precombat rage loss by 30%.",
+    "parameters": [
+      {
+        "key": "scenario.precombat_rage_wait_seconds",
+        "label": "Precombat rage decay wait (seconds; 0 disables)",
+        "default": 0,
+        "min": 0,
+        "max": 3600
+      },
+      {
+        "key": "scenario.precombat_rage_loss_per_second",
+        "label": "Base precombat rage loss per second (explicit scenario)",
+        "default": 0,
+        "min": 0,
+        "max": 100
+      }
+    ]
+  },
+  "warrior.talent.improved-charge": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/warrior/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "warrior.talent.spearing-strike": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/warrior/forever.go"
+    ],
+    "scope": "40%weapon damage plus80%against Giant/Dragonkin or a mounted target; successful hit clears the explicit mounted scenario state.",
+    "auto_priority": 7,
+    "parameters": [
+      {
+        "key": "scenario.target_mounted",
+        "label": "Target begins mounted (Spearing Strike dismounts on hit)",
+        "default": 0,
+        "min": 0,
+        "max": 1
+      }
+    ]
+  },
+  "warrior.talent.bloodthrill": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/warrior/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "warrior.talent.weaponmaster": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/warrior/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior.",
+    "rank_overrides": [
+      {
+        "rank": 2,
+        "effect": "Gives melee weapon attacks a benefit. Axe/Polearm: +2% critical strike chance. Mace/Staff: ignore 6% target armor. Sword: successful melee attacks have 2% chance to trigger an extra attack.",
+        "values": [
+          2,
+          6,
+          2
+        ],
+        "reason": "Disciplined progression from known rank 1: scale talent magnitudes linearly, retain trigger count/duration. Pet Monkey share follows calculator 50/75/100 progression."
+      },
+      {
+        "rank": 3,
+        "effect": "Gives melee weapon attacks a benefit. Axe/Polearm: +3% critical strike chance. Mace/Staff: ignore 9% target armor. Sword: successful melee attacks have 3% chance to trigger an extra attack.",
+        "values": [
+          3,
+          9,
+          3
+        ],
+        "reason": "Disciplined progression from known rank 1: scale talent magnitudes linearly, retain trigger count/duration. Pet Monkey share follows calculator 50/75/100 progression."
+      },
+      {
+        "rank": 4,
+        "effect": "Gives melee weapon attacks a benefit. Axe/Polearm: +4% critical strike chance. Mace/Staff: ignore 12% target armor. Sword: successful melee attacks have 4% chance to trigger an extra attack.",
+        "values": [
+          4,
+          12,
+          4
+        ],
+        "reason": "Disciplined progression from known rank 1: scale talent magnitudes linearly, retain trigger count/duration. Pet Monkey share follows calculator 50/75/100 progression."
+      },
+      {
+        "rank": 5,
+        "effect": "Gives melee weapon attacks a benefit. Axe/Polearm: +5% critical strike chance. Mace/Staff: ignore 15% target armor. Sword: successful melee attacks have 5% chance to trigger an extra attack.",
+        "values": [
+          5,
+          15,
+          5
+        ],
+        "reason": "Disciplined progression from known rank 1: scale talent magnitudes linearly, retain trigger count/duration. Pet Monkey share follows calculator 50/75/100 progression."
+      }
+    ]
+  },
+  "warrior.talent.iron-will": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/warrior/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "warrior.talent.piercing-howl": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/warrior/forever.go"
+    ],
+    "scope": "50%slow for6s to all enemies within the Classic10yd radius using closest1D encounter coordinates.",
+    "game_spell_ids": [
+      12323
+    ]
+  },
+  "warrior.talent.blood-craze": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/warrior/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "warrior.talent.raging-blows": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/warrior/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "warrior.talent.improved-intercept": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/warrior/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "warrior.talent.improved-hamstring": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/warrior/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "warrior.talent.improved-disarm": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/warrior/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "warrior.talent.vanguard": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/warrior/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "warrior.talent.concussion-blow": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/warrior/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior.",
+    "game_spell_ids": [
+      12809
+    ]
+  },
+  "warrior.talent.improved-shield-bash": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/warrior/forever.go"
+    ],
+    "scope": "Shield Bash interrupts for Classic six-second school lockout; talent adds50%/rank chance of a separate three-second silence."
+  },
+  "warrior.talent.focused-rage": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/warrior/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "warrior.talent.booming-voice": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/warrior/forever.go"
+    ],
+    "scope": "Shout radius uses the configured player/target distance; effect no longer extends duration."
+  },
+  "hunter.talent.deadly-aspects": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class",
+    "files": [
+      "sim/hunter/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "hunter.talent.improved-arcane-shot": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class",
+    "files": [
+      "sim/hunter/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "hunter.talent.sniper-shot": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class",
+    "files": [
+      "sim/hunter/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior.",
+    "auto_priority": 7
+  },
+  "hunter.talent.mortal-shots": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class",
+    "files": [
+      "sim/hunter/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "hunter.talent.bestial-wrath": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class",
+    "files": [
+      "sim/hunter/forever.go"
+    ],
+    "scope": "125mana,50%pet damage for18s and actual control immunity while enraged;2min cooldown."
+  },
+  "hunter.talent.clever-traps": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class",
+    "files": [
+      "sim/hunter/forever.go",
+      "sim/hunter/forever_utility.go",
+      "sim/hunter/freezing_trap.go"
+    ],
+    "scope": "Damage modifiers on fire traps plus actual Freezing26s/Frost39s durations at rank2. Frost slow is60%; Freezing breaks on direct/periodic damage.",
+    "baseline_source_urls": [
+      "https://www.wowhead.com/classic/spell=14311/freezing-trap",
+      "https://www.wowhead.com/classic/spell=13809/frost-trap"
+    ]
+  },
+  "hunter.talent.surefooted": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class",
+    "files": [
+      "sim/hunter/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "hunter.talent.improved-aspect-of-the-monkey": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/hunter/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior.",
+    "rank_overrides": [
+      {
+        "rank": 2,
+        "effect": "Increases Aspect of the Monkey Dodge by 4%. Pet gains 75% of this aspect's effect.",
+        "values": [
+          4,
+          75
+        ],
+        "reason": "Disciplined progression from known rank 1: scale talent magnitudes linearly, retain trigger count/duration. Pet Monkey share follows calculator 50/75/100 progression."
+      },
+      {
+        "rank": 3,
+        "effect": "Increases Aspect of the Monkey Dodge by 6%. Pet gains 100% of this aspect's effect.",
+        "values": [
+          6,
+          100
+        ],
+        "reason": "Disciplined progression from known rank 1: scale talent magnitudes linearly, retain trigger count/duration. Pet Monkey share follows calculator 50/75/100 progression."
+      }
+    ]
+  },
+  "hunter.talent.pathfinding": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Classic mana costs and 30-yard Pack radius retained. The 250-ms range refresh, 50% damage-triggered four-second daze and one-dimensional party separation are provisional analogues."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/hunter/forever.go",
+      "sim/hunter/forever_utility.go"
+    ],
+    "scope": "Cheetah self and Pack party/pets gain sourced speed bonus; Pack dynamically checks Classic 30-yard radius and actual movement consumes the modifier."
+  },
+  "hunter.talent.improved-revive-pet": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/hunter/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "hunter.talent.bestial-swiftness": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Movement uses the sourced30% bonus. Explicit starting-distance scenario supplies travel distance; generic pet pursuit geometry and terrain remain outside the one-dimensional encounter model."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/hunter/forever.go",
+      "sim/hunter/pet.go"
+    ],
+    "scope": "Pet movement is 30% faster. Explicit starting-distance scenario makes the pet travel before attacking; speed changes time to first attack.",
+    "parameters": [
+      {
+        "key": "scenario.pet_starting_distance",
+        "label": "Pet distance from enemy on summon (yards; 0 = melee)",
+        "default": 0,
+        "min": 0,
+        "max": 1000
+      }
+    ]
+  },
+  "hunter.talent.improved-mend-pet": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/hunter/forever.go",
+      "sim/hunter/forever_utility.go",
+      "sim/hunter/freezing_trap.go"
+    ],
+    "scope": "Five1s channel ticks,245health each; every tick rolls the sourced15%/rank to remove exactly one Curse/Disease/Magic/Poison. Mana reduced10%/rank.",
+    "rank_overrides": [
+      {
+        "rank": 2,
+        "effect": "Mend Pet has a 30% chance to cleanse 1 Curse, Disease, Magic or Poison on each heal, and its Mana cost is reduced 20%.",
+        "values": [
+          30,
+          1,
+          20
+        ],
+        "reason": "Disciplined progression from known rank 1: scale talent magnitudes linearly, retain trigger count/duration. Pet Monkey share follows calculator 50/75/100 progression."
+      }
+    ],
+    "baseline_source_urls": [
+      "https://classicdb.ch/?spell=13544"
+    ]
+  },
+  "hunter.talent.summon-hawk": {
+    "confidence": "PREDICTED",
+    "reason": "53 initial damage, 18 seconds, 2-hawk limit, 6-second Arcane Shot shared cooldown are sourced; repeated attacks use 53 every 2 seconds based on Classic pet swing speed, owner hit/crit inheritance predicted.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/hunter/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior.",
+    "auto_priority": 6
+  },
+  "hunter.talent.spirit-bond": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/hunter/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "hunter.talent.intimidation": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/hunter/forever.go"
+    ],
+    "scope": "Next successful pet melee attack gains100%crit,580Classic threat and3s stun.",
+    "baseline_source_urls": [
+      "https://www.wowhead.com/classic/spell=24394/intimidation"
+    ]
+  },
+  "hunter.talent.hawk-eye": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/hunter/forever.go"
+    ],
+    "scope": "Adds 2 yards/rank to shots, stings and scheduled ranged-auto maximum range; movement into range resumes autoattacks."
+  },
+  "hunter.talent.improved-concussive-shot": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/hunter/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "hunter.talent.improved-stings": {
+    "confidence": "PROVISIONAL",
+    "reason": "Observed Serpent6%/rank, Scorpid+15s/rank, Viper-2s/rank. Scorpid uses Classic165mana/-68STR/-68AGI/20s. Viper uses Classic215mana/1108drained over8s; unknown base cooldown uses TBC15s only in BEST_GUESS.",
+    "remaining_unknowns": [
+      "Forever Viper base cooldown is unobserved; the TBC15s baseline is PREDICTED and the entire Viper action is unavailable in STRICT.",
+      "Scorpid derived NPC attack power/armor use a PREDICTED -136/-136 Classic warrior analogue only in BEST_GUESS; STRICT retains raw STR/AGI reductions.",
+      "NPC mana and regeneration are unspecified; a finite zero-regeneration pool requires an explicit scenario.enemy_mana value or configured target mana stat."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/hunter/forever.go",
+      "sim/hunter/forever_utility.go",
+      "sim/hunter/freezing_trap.go",
+      "sim/core/forever_hunter_support.go"
+    ],
+    "scope": "Serpent damage, Scorpid duration and sting exclusivity; BEST_GUESS additionally uses a finite enemy mana pool for Viper drain with its talent-reduced cooldown.",
+    "parameters": [
+      {
+        "key": "scenario.enemy_mana",
+        "label": "Enemy mana pool for Viper Sting (0 means unknown/disabled)",
+        "default": 0,
+        "min": 0,
+        "max": 1000000000
+      }
+    ],
+    "predicted_components": [
+      "Viper15s TBC base cooldown",
+      "Scorpid NPC derived AP/armor analogue"
+    ],
+    "baseline_source_urls": [
+      "https://www.wowhead.com/classic/spell=14277/scorpid-sting",
+      "https://www.wowhead.com/classic/spell=14280/viper-sting",
+      "https://www.wowhead.com/tbc/spell=14280/viper-sting"
+    ]
+  },
+  "hunter.talent.rapid-killing": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional.",
+      "Qualifying/non-trivial enemy filtering remains provisional; encounter enemies with explicit finite health are assumed qualifying."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/hunter/forever.go"
+    ],
+    "scope": "Rapid Fire cooldown plus next-shot damage after configured qualifying kill. Actual finite-health enemy deaths also trigger the effect; time-based virtual boss health never does.",
+    "parameters": [
+      {
+        "key": "recent_kill_at_pull",
+        "label": "Qualifying kill just before pull",
+        "default": 0,
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "kill_interval_seconds",
+        "label": "Seconds between qualifying add kills (0 disables)",
+        "default": 0,
+        "min": 0,
+        "max": 3600
+      }
+    ]
+  },
+  "hunter.talent.trueshot-aura": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/hunter/forever.go"
+    ],
+    "scope": "Actual30RAP party buff within45yd, shared non-stacking aura across Hunters,30min duration,180mana."
+  },
+  "hunter.talent.rapid-recuperation": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/hunter/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "hunter.talent.barrage": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/hunter/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "hunter.talent.scatter-shot": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/hunter/forever.go"
+    ],
+    "scope": "50%weapon damage,4s breakable incapacitation,15yd range,30s cooldown and autoattack cancellation."
+  },
+  "hunter.talent.improved-tracking": {
+    "confidence": "PREDICTED",
+    "reason": "Assumes player tracks the target creature type before combat; only trackable types benefit.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/hunter/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "hunter.talent.entrapment": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/hunter/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "hunter.talent.savage-strikes": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/hunter/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "hunter.talent.improved-wing-clip": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/hunter/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "hunter.talent.deterrence": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/hunter/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "hunter.talent.survival-tactics": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Feign Death reuses the Classic magic hit table; boss aggro retargeting and combat drop/terrain remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/hunter/forever.go",
+      "sim/hunter/forever_utility.go",
+      "sim/hunter/freezing_trap.go"
+    ],
+    "scope": "Trap and Feign Death hit+5%/rank; Feign Death performs actual per-enemy threat reset and suspends attacks while feigning.",
+    "baseline_source_urls": [
+      "https://www.wowhead.com/classic/spell=5384/feign-death"
+    ]
+  },
+  "hunter.talent.predator-s-edge": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/hunter/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "hunter.talent.counterattack": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/hunter/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior.",
+    "auto_priority": 5
+  },
+  "hunter.talent.resourcefulness": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/hunter/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior.",
+    "rank_overrides": [
+      {
+        "rank": 2,
+        "effect": "Reduces trap and melee Mana costs 60%. Critical strikes have 60% chance to allow 50% mana regeneration while casting for 30 seconds.",
+        "values": [
+          60,
+          60,
+          50,
+          30
+        ],
+        "reason": "Disciplined progression from known rank 1: scale talent magnitudes linearly, retain trigger count/duration. Pet Monkey share follows calculator 50/75/100 progression."
+      }
+    ]
+  },
+  "hunter.talent.expose-prey": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/hunter/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "hunter.talent.survivalist-s-discipline": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/hunter/forever.go",
+      "sim/hunter/forever_utility.go",
+      "sim/hunter/freezing_trap.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "hunter.talent.lacerating-strikes": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/hunter/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "rogue.talent.cold-blood": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "classic",
+    "files": [
+      "sim/rogue/forever.go"
+    ],
+    "scope": "Guaranteed crit only for named Sinister Strike, Backstab, Ambush, Eviscerate, and both Mutilate weapon strikes; unlisted builders do not consume it.",
+    "game_spell_ids": [
+      14177
+    ]
+  },
+  "rogue.talent.improved-poisons": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class",
+    "files": [
+      "sim/rogue/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior.",
+    "rank_overrides": [
+      {
+        "rank": 2,
+        "effect": "Increases Poison application chance 4%; Poison applications have 20% chance not to consume a charge.",
+        "values": [
+          4,
+          20
+        ],
+        "reason": "Disciplined progression from known rank 1: scale talent magnitudes linearly, retain trigger count/duration. Pet Monkey share follows calculator 50/75/100 progression."
+      },
+      {
+        "rank": 3,
+        "effect": "Increases Poison application chance 6%; Poison applications have 30% chance not to consume a charge.",
+        "values": [
+          6,
+          30
+        ],
+        "reason": "Disciplined progression from known rank 1: scale talent magnitudes linearly, retain trigger count/duration. Pet Monkey share follows calculator 50/75/100 progression."
+      },
+      {
+        "rank": 4,
+        "effect": "Increases Poison application chance 8%; Poison applications have 40% chance not to consume a charge.",
+        "values": [
+          8,
+          40
+        ],
+        "reason": "Disciplined progression from known rank 1: scale talent magnitudes linearly, retain trigger count/duration. Pet Monkey share follows calculator 50/75/100 progression."
+      },
+      {
+        "rank": 5,
+        "effect": "Increases Poison application chance 10%; Poison applications have 50% chance not to consume a charge.",
+        "values": [
+          10,
+          50
+        ],
+        "reason": "Disciplined progression from known rank 1: scale talent magnitudes linearly, retain trigger count/duration. Pet Monkey share follows calculator 50/75/100 progression."
+      }
+    ]
+  },
+  "rogue.talent.improved-ambush": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "classic",
+    "files": [
+      "sim/rogue/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "rogue.talent.preparation": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class",
+    "files": [
+      "sim/rogue/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior.",
+    "game_spell_ids": [
+      14185
+    ]
+  },
+  "rogue.talent.ghostly-strike": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class",
+    "files": [
+      "sim/rogue/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior.",
+    "auto_priority": 7
+  },
+  "rogue.talent.dirty-deeds": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class",
+    "files": [
+      "sim/rogue/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "rogue.talent.elusiveness": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class",
+    "files": [
+      "sim/rogue/forever.go",
+      "sim/rogue/vanish.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "rogue.talent.premeditation": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class",
+    "files": [
+      "sim/rogue/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior.",
+    "game_spell_ids": [
+      14183
+    ]
+  },
+  "rogue.talent.hemorrhage": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class",
+    "files": [
+      "sim/rogue/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior.",
+    "auto_priority": 9
+  },
+  "rogue.talent.riposte": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class",
+    "files": [
+      "sim/rogue/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior.",
+    "game_spell_ids": [
+      14251
+    ]
+  },
+  "rogue.talent.initiative": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class",
+    "files": [
+      "sim/rogue/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "rogue.talent.improved-gouge": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/rogue/forever.go"
+    ],
+    "scope": "Gouge rank5 uses cached Classic75damage, physical hit/crit and Lethality, then applies4s+.5s/rank breakable incapacitate, awardsCP and stops autoattacks."
+  },
+  "rogue.talent.remorseless-attacks": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional.",
+      "Qualifying/non-trivial enemy filtering remains provisional; encounter enemies with explicit finite health are assumed qualifying."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/rogue/forever.go"
+    ],
+    "scope": "Critical chance after configured qualifying kill. Actual finite-health enemy deaths also trigger the effect; time-based virtual boss health never does.",
+    "parameters": [
+      {
+        "key": "recent_kill_at_pull",
+        "label": "Qualifying kill just before pull",
+        "default": 0,
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "kill_interval_seconds",
+        "label": "Seconds between qualifying add kills (0 disables)",
+        "default": 0,
+        "min": 0,
+        "max": 3600
+      }
+    ]
+  },
+  "rogue.talent.improved-expose-armor": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/rogue/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "rogue.talent.mutilate": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional.",
+      "Cold Blood and Remorseless are consumed after both weapon hits as one ability, using a provisional paired-hit interpretation."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/rogue/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior.",
+    "auto_priority": 8
+  },
+  "rogue.talent.improved-kidney-shot": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/rogue/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "rogue.talent.venom": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/rogue/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "rogue.talent.puncturing-wounds": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/rogue/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior.",
+    "rank_overrides": [
+      {
+        "rank": 2,
+        "effect": "Increases Backstab critical chance 20% and Mutilate critical chance 10%. Backstab has 30% chance to add an additional Combo Point.",
+        "values": [
+          20,
+          10,
+          30
+        ],
+        "reason": "Disciplined progression from known rank 1: scale talent magnitudes linearly, retain trigger count/duration. Pet Monkey share follows calculator 50/75/100 progression."
+      },
+      {
+        "rank": 3,
+        "effect": "Increases Backstab critical chance 30% and Mutilate critical chance 15%. Backstab has 45% chance to add an additional Combo Point.",
+        "values": [
+          30,
+          15,
+          45
+        ],
+        "reason": "Disciplined progression from known rank 1: scale talent magnitudes linearly, retain trigger count/duration. Pet Monkey share follows calculator 50/75/100 progression."
+      }
+    ]
+  },
+  "rogue.talent.endurance": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/rogue/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "rogue.talent.improved-sprint": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/rogue/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "rogue.talent.improved-kick": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/rogue/forever.go"
+    ],
+    "scope": "Kick uses Classic80damage and five-second interrupted-school lockout; talent adds50%/rank chance of a separate two-second silence."
+  },
+  "rogue.talent.restless-blades": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/rogue/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "rogue.talent.hack-and-slash": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/rogue/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior.",
+    "rank_overrides": [
+      {
+        "rank": 2,
+        "effect": "Axe/Sword: successful melee attacks have 2% chance to trigger an extra attack. Dagger/Fist: +2% critical chance. Mace: ignore 6% target armor.",
+        "values": [
+          2,
+          2,
+          6
+        ],
+        "reason": "Disciplined progression from known rank 1: scale talent magnitudes linearly, retain trigger count/duration. Pet Monkey share follows calculator 50/75/100 progression."
+      },
+      {
+        "rank": 3,
+        "effect": "Axe/Sword: successful melee attacks have 3% chance to trigger an extra attack. Dagger/Fist: +3% critical chance. Mace: ignore 9% target armor.",
+        "values": [
+          3,
+          3,
+          9
+        ],
+        "reason": "Disciplined progression from known rank 1: scale talent magnitudes linearly, retain trigger count/duration. Pet Monkey share follows calculator 50/75/100 progression."
+      },
+      {
+        "rank": 4,
+        "effect": "Axe/Sword: successful melee attacks have 4% chance to trigger an extra attack. Dagger/Fist: +4% critical chance. Mace: ignore 12% target armor.",
+        "values": [
+          4,
+          4,
+          12
+        ],
+        "reason": "Disciplined progression from known rank 1: scale talent magnitudes linearly, retain trigger count/duration. Pet Monkey share follows calculator 50/75/100 progression."
+      },
+      {
+        "rank": 5,
+        "effect": "Axe/Sword: successful melee attacks have 5% chance to trigger an extra attack. Dagger/Fist: +5% critical chance. Mace: ignore 15% target armor.",
+        "values": [
+          5,
+          5,
+          15
+        ],
+        "reason": "Disciplined progression from known rank 1: scale talent magnitudes linearly, retain trigger count/duration. Pet Monkey share follows calculator 50/75/100 progression."
+      }
+    ]
+  },
+  "rogue.talent.weapon-expertise": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/rogue/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "rogue.talent.aggression": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/rogue/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "rogue.talent.camouflage": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/rogue/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "rogue.talent.opportunity": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/rogue/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "rogue.talent.setup": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Classic engine combines failed magic hit checks and binary full resistance as OutcomeMiss; both use the provisional resist trigger. Landed zero-damage utility and absorbs are excluded."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/rogue/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "rogue.talent.dirty-tricks": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/rogue/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "rogue.talent.heightened-senses": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional.",
+      "The stealth-detection level subclause is outside the raid encounter model; the numerical ranged/magic hit avoidance is active. No claim of stealth detection simulation."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/rogue/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "rogue.talent.serrated-blades": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/rogue/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior.",
+    "rank_overrides": [
+      {
+        "rank": 2,
+        "effect": "Attacks ignore 6% target Armor and Rupture deals 20% more damage.",
+        "values": [
+          6,
+          20
+        ],
+        "reason": "Disciplined progression from known rank 1: scale talent magnitudes linearly, retain trigger count/duration. Pet Monkey share follows calculator 50/75/100 progression."
+      },
+      {
+        "rank": 3,
+        "effect": "Attacks ignore 9% target Armor and Rupture deals 30% more damage.",
+        "values": [
+          9,
+          30
+        ],
+        "reason": "Disciplined progression from known rank 1: scale talent magnitudes linearly, retain trigger count/duration. Pet Monkey share follows calculator 50/75/100 progression."
+      }
+    ]
+  },
+  "rogue.talent.quietus": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/rogue/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "rogue.talent.cutthroat": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/rogue/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "rogue.talent.thousand-cuts": {
+    "confidence": "PROVISIONAL",
+    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "class-new",
+    "files": [
+      "sim/rogue/forever.go"
+    ],
+    "scope": "Active combat effects, castable abilities, or encounter-control behavior."
+  },
+  "rogue.talent.master-of-deception": {
+    "mode": "non_sim_relevant",
+    "confidence": "PROVISIONAL",
+    "reason": "Stealth detection level/radius affects world navigation before combat; deterministic combat scenarios do not simulate NPC perception or pathfinding.",
+    "files": [],
+    "scope": "World stealth detection; no combat damage/resource effect.",
+    "remaining_unknowns": [
+      "Detection formula and distracted NPC movement are undocumented."
+    ]
+  },
+  "rogue.talent.improved-distract": {
+    "mode": "non_sim_relevant",
+    "confidence": "PROVISIONAL",
+    "reason": "Stealth detection level/radius affects world navigation before combat; deterministic combat scenarios do not simulate NPC perception or pathfinding.",
+    "files": [],
+    "scope": "World stealth detection; no combat damage/resource effect.",
+    "remaining_unknowns": [
+      "Detection formula and distracted NPC movement are undocumented."
+    ]
+  },
+  "hunter.pet-baseline": {
+    "confidence": "PROVISIONAL",
+    "reason": "Informational research record reports no known replacement pet scaling table; not itself a changed mechanic.",
+    "remaining_unknowns": [
+      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
+    ],
+    "mode": "non_sim_relevant",
+    "files": [
+      "sim/hunter/pet.go"
+    ],
+    "scope": "Preserves Classic pet family/base scaling because no replacement scaling table is documented."
+  },
+  "warrior.baseline.victory-rush": {
+    "mode": "class-new",
+    "confidence": "PREDICTED",
+    "reason": "Community observation lacks tooltip; predicts TBC Victory Rush: free 45% AP attack after qualifying kill, usable for 20 seconds. Kill scenario is explicitly configured.",
+    "files": [
+      "sim/warrior/forever.go"
+    ],
+    "scope": "Conditional kill-enabled melee attack. Actual finite-health enemy deaths also trigger the effect; time-based virtual boss health never does.",
+    "remaining_unknowns": [
+      "Forever coefficient, rank, cooldown, and kill qualification.",
+      "Qualifying/non-trivial enemy filtering remains provisional; encounter enemies with explicit finite health are assumed qualifying."
+    ],
+    "parameters": [
+      {
+        "key": "recent_kill_at_pull",
+        "label": "Qualifying kill just before pull",
+        "default": 0,
+        "min": 0,
+        "max": 1
+      },
+      {
+        "key": "kill_interval_seconds",
+        "label": "Seconds between qualifying add kills (0 disables)",
+        "default": 0,
+        "min": 0,
+        "max": 3600
+      }
+    ]
+  }
+}

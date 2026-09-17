@@ -9,6 +9,7 @@ import (
 )
 
 func (rogue *Rogue) ApplyTalents() {
+	rogue.applyForeverTalents()
 	rogue.applyRuthlessness()
 	rogue.applyMurder()
 	rogue.applyRelentlessStrikes()
@@ -40,6 +41,9 @@ func (rogue *Rogue) ApplyTalents() {
 
 // dwsMultiplier returns the offhand damage multiplier
 func (rogue *Rogue) dwsMultiplier() float64 {
+	if rogue.ForeverRank("rogue.talent.dual-wield-specialization") > 0 {
+		return 1 + rogue.ForeverValue("rogue.talent.dual-wield-specialization", 0, 0)/100
+	}
 	return 1 + 0.1*float64(rogue.Talents.DualWieldSpecialization)
 }
 
@@ -66,6 +70,14 @@ func (rogue *Rogue) applyMurder() {
 	// post finalize, since attack tables need to be setup
 	rogue.Env.RegisterPostFinalizeEffect(func() {
 		for _, t := range rogue.Env.Encounter.Targets {
+			if rogue.ForeverRank("rogue.talent.murder") > 0 {
+				if t.MobType == proto.MobType_MobTypeHumanoid || t.MobType == proto.MobType_MobTypeGiant {
+					for _, at := range rogue.AttackTables[t.UnitIndex] {
+						at.DamageDealtMultiplier *= 1 + rogue.ForeverValue("rogue.talent.murder", 0, 0)/100
+					}
+				}
+				continue
+			}
 			switch t.MobType {
 			case proto.MobType_MobTypeHumanoid, proto.MobType_MobTypeGiant, proto.MobType_MobTypeBeast, proto.MobType_MobTypeDragonkin:
 				multiplier := []float64{1, 1.01, 1.02}[rogue.Talents.Murder]
@@ -98,6 +110,17 @@ func (rogue *Rogue) registerColdBloodCD() {
 	}
 
 	actionID := core.ActionID{SpellID: 14177}
+	eligible := func(spell *core.Spell) bool {
+		if rogue.Forever == nil {
+			return spell.Flags.Matches(SpellFlagColdBlooded)
+		}
+		switch spell.SpellCode {
+		case SpellCode_RogueSinisterStrike, SpellCode_RogueBackstab, SpellCode_RogueAmbush, SpellCode_RogueEviscerate:
+			return true
+		}
+		mutilate := rogue.ForeverAction("rogue.talent.mutilate")
+		return spell.OtherID == mutilate.OtherID && (spell.Tag == -mutilate.Tag*10 || spell.Tag == -mutilate.Tag*10-1)
+	}
 
 	coldBloodAura := rogue.RegisterAura(core.Aura{
 		Label:    "Cold Blood",
@@ -105,20 +128,20 @@ func (rogue *Rogue) registerColdBloodCD() {
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range rogue.Spellbook {
-				if spell.Flags.Matches(SpellFlagColdBlooded) {
+				if eligible(spell) {
 					spell.BonusCritRating += 100 * core.CritRatingPerCritChance
 				}
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range rogue.Spellbook {
-				if spell.Flags.Matches(SpellFlagColdBlooded) {
+				if eligible(spell) {
 					spell.BonusCritRating -= 100 * core.CritRatingPerCritChance
 				}
 			}
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.Flags.Matches(SpellFlagColdBlooded) {
+			if eligible(spell) && !(rogue.Forever != nil && spell.OtherID == proto.OtherAction_OtherActionForever && spell.Tag < 0) {
 				aura.Deactivate(sim)
 			}
 		},
@@ -188,7 +211,7 @@ func (rogue *Rogue) applyInitiative() {
 		return
 	}
 
-	procChance := 0.25 * float64(rogue.Talents.Initiative)
+	procChance := rogue.ForeverValue("rogue.talent.initiative", 0, 25*float64(rogue.Talents.Initiative)) / 100
 	cpMetrics := rogue.NewComboPointMetrics(core.ActionID{SpellID: 13980})
 
 	rogue.RegisterAura(core.Aura{
@@ -391,9 +414,9 @@ func (rogue *Rogue) registerAdrenalineRushCD() {
 	})
 
 	rogue.AdrenalineRush = rogue.RegisterSpell(core.SpellConfig{
-		SpellCode:   SpellCode_RogueAdrenalineRush,
-		ActionID: 	 AdrenalineRushActionID,
-		Cast: 		 core.CastConfig{
+		SpellCode: SpellCode_RogueAdrenalineRush,
+		ActionID:  AdrenalineRushActionID,
+		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: time.Second,
 			},

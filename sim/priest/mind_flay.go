@@ -47,6 +47,9 @@ func (priest *Priest) newMindFlaySpellConfig(rank int, tickIdx int32) core.Spell
 
 	spellId := MindFlaySpellId[rank]
 	baseDamage := MindFlayBaseDamage[rank] / float64(ticks)
+	if priest.Forever != nil && rank == 1 {
+		baseDamage = 104 / float64(ticks)
+	}
 	manaCost := MindFlayManaCost[rank]
 	level := MindFlayLevel[rank]
 

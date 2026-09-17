@@ -53,8 +53,14 @@ func (warrior *Warrior) registerShieldSlamSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			damage := sim.Roll(damageLow, damageHigh) + warrior.BlockValue()*2 + apCoef*spell.MeleeAttackPower(target)
+			if warrior.ForeverRank("warrior.talent.shield-slam") > 0 {
+				damage = sim.Roll(421, 439) + warrior.BlockValue()
+			}
 			result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMeleeSpecialHitAndCrit)
 
+			if warrior.Forever != nil && result.Landed() && sim.Proc(.5, "Forever Shield Slam Dispel") {
+				target.ForeverDispelOne(sim, "magic-buff")
+			}
 			if !result.Landed() {
 				spell.IssueRefund(sim)
 			}

@@ -1,0 +1,2698 @@
+{
+  "paladin.talent.improved-holy-strike": {
+    "mode": "class-new",
+    "confidence": "PREDICTED",
+    "reason": "Cooldown reduction is observed; underlying Holy Strike baseline parameters are predicted.",
+    "files": [
+      "sim/paladin/forever.go",
+      "sim/paladin/talents.go",
+      "sim/paladin/forever_defenses.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.divine-strength": {
+    "mode": "classic",
+    "confidence": "PROVISIONAL",
+    "reason": "Retains equivalent Classic numerical mechanics under Forever semantic talent selection.",
+    "files": [
+      "sim/paladin/forever.go",
+      "sim/paladin/talents.go",
+      "sim/paladin/forever_defenses.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.divine-intellect": {
+    "mode": "classic",
+    "confidence": "PROVISIONAL",
+    "reason": "Retains equivalent Classic numerical mechanics under Forever semantic talent selection.",
+    "files": [
+      "sim/paladin/forever.go",
+      "sim/paladin/talents.go",
+      "sim/paladin/forever_defenses.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.healing-light": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/paladin/forever.go",
+      "sim/paladin/talents.go",
+      "sim/paladin/forever_defenses.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.spiritual-focus": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/paladin/forever.go",
+      "sim/paladin/talents.go",
+      "sim/paladin/forever_defenses.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.improved-seals": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/paladin/forever.go",
+      "sim/paladin/talents.go",
+      "sim/paladin/forever_defenses.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.unyielding-faith": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/paladin/forever.go",
+      "sim/paladin/talents.go",
+      "sim/paladin/forever_defenses.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.voice-of-truth": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/paladin/forever.go",
+      "sim/paladin/talents.go",
+      "sim/paladin/forever_defenses.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.reverence": {
+    "mode": "replace",
+    "confidence": "PROVISIONAL",
+    "reason": "Uses the already reviewed Forever core adapter.",
+    "files": [
+      "sim/core/forever.go",
+      "sim/paladin/talents.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.purifying-power": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/paladin/forever.go",
+      "sim/paladin/talents.go",
+      "sim/paladin/forever_defenses.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.infusion-of-light": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/paladin/forever.go",
+      "sim/paladin/talents.go",
+      "sim/paladin/forever_defenses.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.illumination": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/paladin/forever.go",
+      "sim/paladin/talents.go",
+      "sim/paladin/forever_defenses.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.divine-favor": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/paladin/forever.go",
+      "sim/paladin/talents.go",
+      "sim/paladin/forever_defenses.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.divine-precision": {
+    "mode": "replace",
+    "confidence": "PROVISIONAL",
+    "reason": "Uses the already reviewed Forever core adapter.",
+    "files": [
+      "sim/core/forever.go",
+      "sim/paladin/talents.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.holy-shock": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/paladin/forever.go",
+      "sim/paladin/talents.go",
+      "sim/paladin/forever_defenses.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ],
+    "auto_priority": 23,
+    "healing": true,
+    "hybrid_healing": true
+  },
+  "paladin.talent.consecrated-ground": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/paladin/forever.go",
+      "sim/paladin/talents.go",
+      "sim/paladin/forever_defenses.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.holy-power": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/paladin/forever.go",
+      "sim/paladin/talents.go",
+      "sim/paladin/forever_defenses.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.light-s-vigil": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/paladin/forever.go",
+      "sim/paladin/talents.go",
+      "sim/paladin/forever_defenses.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional.",
+      "Vigil secondary healing/damage uses its own action and730Mana baseline for Illumination. Party-critical refund eligibility retains per-heal Classic callbacks provisionally."
+    ],
+    "auto_priority": 22,
+    "healing": true,
+    "hybrid_healing": true
+  },
+  "paladin.talent.toughness": {
+    "mode": "classic",
+    "confidence": "PROVISIONAL",
+    "reason": "Retains equivalent Classic numerical mechanics under Forever semantic talent selection.",
+    "files": [
+      "sim/paladin/forever.go",
+      "sim/paladin/talents.go",
+      "sim/paladin/forever_defenses.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.redoubt": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/paladin/forever.go",
+      "sim/paladin/talents.go",
+      "sim/paladin/forever_defenses.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.precision": {
+    "mode": "replace",
+    "confidence": "PROVISIONAL",
+    "reason": "Uses the already reviewed Forever core adapter.",
+    "files": [
+      "sim/core/forever.go",
+      "sim/paladin/talents.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.guardian-s-favor": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/paladin/forever.go",
+      "sim/paladin/talents.go",
+      "sim/paladin/forever_defenses.go",
+      "sim/paladin/forbearance.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.anticipation": {
+    "mode": "replace",
+    "confidence": "PROVISIONAL",
+    "reason": "Uses the already reviewed Forever core adapter.",
+    "files": [
+      "sim/core/forever.go",
+      "sim/paladin/talents.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.improved-seal-of-fury": {
+    "mode": "class-new",
+    "confidence": "PREDICTED",
+    "reason": "38 Mana and attacker-level scaling observed; baseline Seal of Fury shield size/proc predicted.",
+    "files": [
+      "sim/paladin/forever.go",
+      "sim/paladin/talents.go",
+      "sim/paladin/forever_defenses.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.improved-righteous-fury": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/paladin/forever.go",
+      "sim/paladin/talents.go",
+      "sim/paladin/forever_defenses.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.shield-specialization": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/paladin/forever.go",
+      "sim/paladin/talents.go",
+      "sim/paladin/forever_defenses.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ],
+    "rank_overrides": [
+      {
+        "rank": 2,
+        "effect": "Increases shield block value by 20%; blocks have a 66% chance to restore 6% maximum Mana, at most once every 3 seconds.",
+        "values": [
+          20,
+          66,
+          6,
+          3
+        ],
+        "reason": "Linear block-value progression from observed 10% rank1; source estimate retains a fixed10%. Mana proc follows source estimate."
+      },
+      {
+        "rank": 3,
+        "effect": "Increases shield block value by 30%; blocks have a 100% chance to restore 6% maximum Mana, at most once every 3 seconds.",
+        "values": [
+          30,
+          100,
+          6,
+          3
+        ],
+        "reason": "Linear block-value progression; 33/66/100% final guaranteed proc follows analogous Blizzard three-rank proc progression, explicitly predicted."
+      }
+    ]
+  },
+  "paladin.talent.sacred-duty": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/paladin/forever.go",
+      "sim/paladin/talents.go",
+      "sim/paladin/forever_defenses.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.swift-judgement": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/paladin/forever.go",
+      "sim/paladin/talents.go",
+      "sim/paladin/forever_defenses.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ],
+    "auto_priority": 35
+  },
+  "paladin.talent.one-handed-weapon-specialization": {
+    "mode": "replace",
+    "confidence": "PROVISIONAL",
+    "reason": "Uses the already reviewed Forever core adapter.",
+    "files": [
+      "sim/core/forever.go",
+      "sim/paladin/talents.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.improved-hammer-of-justice": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/paladin/forever.go",
+      "sim/paladin/talents.go",
+      "sim/paladin/forever_defenses.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.templar-s-bulwark": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/paladin/forever.go",
+      "sim/paladin/talents.go",
+      "sim/paladin/forever_defenses.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.reckoning": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/paladin/forever.go",
+      "sim/paladin/talents.go",
+      "sim/paladin/forever_defenses.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.iron-creed": {
+    "mode": "class-new",
+    "confidence": "PREDICTED",
+    "reason": "Observed threat and mitigation; underlying Holy Strike parameters predicted.",
+    "files": [
+      "sim/paladin/forever.go",
+      "sim/paladin/talents.go",
+      "sim/paladin/forever_defenses.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.holy-shield": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/paladin/forever.go",
+      "sim/paladin/talents.go",
+      "sim/paladin/forever_defenses.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.deflection": {
+    "mode": "classic",
+    "confidence": "PROVISIONAL",
+    "reason": "Retains equivalent Classic numerical mechanics under Forever semantic talent selection.",
+    "files": [
+      "sim/paladin/forever.go",
+      "sim/paladin/talents.go",
+      "sim/paladin/forever_defenses.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.benediction": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/paladin/forever.go",
+      "sim/paladin/talents.go",
+      "sim/paladin/forever_defenses.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.improved-judgement": {
+    "mode": "classic",
+    "confidence": "PROVISIONAL",
+    "reason": "Retains equivalent Classic numerical mechanics under Forever semantic talent selection.",
+    "files": [
+      "sim/paladin/forever.go",
+      "sim/paladin/talents.go",
+      "sim/paladin/forever_defenses.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.holy-conduit": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/paladin/forever.go",
+      "sim/paladin/talents.go",
+      "sim/paladin/forever_defenses.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.conviction": {
+    "mode": "classic",
+    "confidence": "PROVISIONAL",
+    "reason": "Retains equivalent Classic numerical mechanics under Forever semantic talent selection.",
+    "files": [
+      "sim/paladin/forever.go",
+      "sim/paladin/talents.go",
+      "sim/paladin/forever_defenses.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.vindication": {
+    "mode": "class-new",
+    "confidence": "PREDICTED",
+    "reason": "AP reduction and self AP bonus observed; every landed melee triggers as in existing WoWSims provisional Vindication.",
+    "files": [
+      "sim/paladin/forever.go",
+      "sim/paladin/talents.go",
+      "sim/paladin/forever_defenses.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.sanctified-judgement": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/paladin/forever.go",
+      "sim/paladin/talents.go",
+      "sim/paladin/forever_defenses.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.seal-of-command": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/paladin/forever.go",
+      "sim/paladin/talents.go",
+      "sim/paladin/forever_defenses.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.pursuit-of-justice": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/paladin/forever.go",
+      "sim/paladin/talents.go",
+      "sim/paladin/forever_defenses.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional.",
+      "Unmounted combat movement bonus is active; mounted travel is outside the raid encounter model."
+    ]
+  },
+  "paladin.talent.eye-for-an-eye": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/paladin/forever.go",
+      "sim/paladin/talents.go",
+      "sim/paladin/forever_defenses.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.sacred-arbiter": {
+    "mode": "class-new",
+    "confidence": "PREDICTED",
+    "reason": "Observed damage multiplier and Judgement refresh; underlying Holy Strike parameters predicted.",
+    "files": [
+      "sim/paladin/forever.go",
+      "sim/paladin/talents.go",
+      "sim/paladin/forever_defenses.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.crusade": {
+    "mode": "replace",
+    "confidence": "PROVISIONAL",
+    "reason": "Uses the already reviewed Forever core adapter.",
+    "files": [
+      "sim/core/forever.go",
+      "sim/paladin/talents.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.two-handed-weapon-specialization": {
+    "mode": "replace",
+    "confidence": "PROVISIONAL",
+    "reason": "Uses the already reviewed Forever core adapter.",
+    "files": [
+      "sim/core/forever.go",
+      "sim/paladin/talents.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.vengeance": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/paladin/forever.go",
+      "sim/paladin/talents.go",
+      "sim/paladin/forever_defenses.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.repentance": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/paladin/forever.go",
+      "sim/paladin/talents.go",
+      "sim/paladin/forever_defenses.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.champion-of-the-light": {
+    "mode": "replace",
+    "confidence": "PROVISIONAL",
+    "reason": "Uses the already reviewed Forever core adapter.",
+    "files": [
+      "sim/core/forever.go",
+      "sim/paladin/talents.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.instrument-of-law": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/paladin/forever.go",
+      "sim/paladin/talents.go",
+      "sim/paladin/forever_defenses.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "paladin.talent.twist-of-light": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/paladin/forever.go",
+      "sim/paladin/talents.go",
+      "sim/paladin/forever_defenses.go",
+      "sim/paladin/forever_seal_justice.go",
+      "sim/paladin/paladin.go"
+    ],
+    "scope": "Next melee attack echoes the replaced Command/Righteousness/Fury/Justice seal with Classic proc rules. Justice baseline uses an exposed PREDICTED proc rate in BEST_GUESS only.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional.",
+      "Classic seal proc chances are retained for the next melee attack echo. Seal of Justice is BEST_GUESS-only with predicted 2 PPM; Judgement of Justice prevents fleeing, but current encounter AI has no fleeing behavior."
+    ],
+    "parameters": [
+      {
+        "key": "seal_of_justice_ppm",
+        "label": "Seal of Justice procs per minute",
+        "default": 2,
+        "min": 0,
+        "max": 60,
+        "confidence": "PREDICTED",
+        "reason": "Explicit Classic-like proc-rate prediction; direct seal tooltip specifies chance but no rate. BEST_GUESS only."
+      }
+    ]
+  },
+  "shaman.talent.convection": {
+    "mode": "classic",
+    "confidence": "PROVISIONAL",
+    "reason": "Retains equivalent Classic numerical mechanics under Forever semantic talent selection.",
+    "files": [
+      "sim/shaman/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_melee.go",
+      "sim/shaman/water_totems.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "shaman.talent.concussion": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/shaman/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_melee.go",
+      "sim/shaman/water_totems.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "shaman.talent.elemental-warding": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/shaman/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_melee.go",
+      "sim/shaman/water_totems.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "shaman.talent.reverberation": {
+    "mode": "classic",
+    "confidence": "PROVISIONAL",
+    "reason": "Retains equivalent Classic numerical mechanics under Forever semantic talent selection.",
+    "files": [
+      "sim/shaman/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_melee.go",
+      "sim/shaman/water_totems.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "shaman.talent.call-of-flame": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/shaman/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_melee.go",
+      "sim/shaman/water_totems.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "shaman.talent.elemental-devastation": {
+    "mode": "classic",
+    "confidence": "PROVISIONAL",
+    "reason": "Retains equivalent Classic numerical mechanics under Forever semantic talent selection.",
+    "files": [
+      "sim/shaman/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_melee.go",
+      "sim/shaman/water_totems.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "shaman.talent.elemental-focus": {
+    "mode": "classic",
+    "confidence": "PROVISIONAL",
+    "reason": "Retains equivalent Classic numerical mechanics under Forever semantic talent selection.",
+    "files": [
+      "sim/shaman/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_melee.go",
+      "sim/shaman/water_totems.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "shaman.talent.elemental-fury": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/shaman/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_melee.go",
+      "sim/shaman/water_totems.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "shaman.talent.improved-fire-nova": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/shaman/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_melee.go",
+      "sim/shaman/water_totems.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "shaman.talent.eye-of-the-storm": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/shaman/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_melee.go",
+      "sim/shaman/water_totems.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "shaman.talent.call-of-thunder": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/shaman/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_melee.go",
+      "sim/shaman/water_totems.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "shaman.talent.elemental-reach": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/shaman/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_melee.go",
+      "sim/shaman/water_totems.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "shaman.talent.lightning-overload": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/shaman/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_melee.go",
+      "sim/shaman/water_totems.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Classic spell ranks, coefficient and travel time retained; Chain Lightning rolls once on its primary encounter target; additional target selection and proc suppression require logs."
+    ]
+  },
+  "shaman.talent.earthbound": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/shaman/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_melee.go",
+      "sim/shaman/water_totems.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "shaman.talent.elemental-alacrity": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/shaman/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_melee.go",
+      "sim/shaman/water_totems.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "shaman.talent.lava-burst": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/shaman/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_melee.go",
+      "sim/shaman/water_totems.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ],
+    "auto_priority": 25
+  },
+  "shaman.talent.earth-s-grasp": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/shaman/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_melee.go",
+      "sim/shaman/water_totems.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go"
+    ],
+    "scope": "Stoneclaw health scales and depletes from real direct/periodic damage; death releases taunt. Earthbind radius scales around drop position.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "shaman.talent.thundering-strikes": {
+    "mode": "replace",
+    "confidence": "PROVISIONAL",
+    "reason": "Uses the already reviewed Forever core adapter.",
+    "files": [
+      "sim/core/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go",
+      "sim/shaman/water_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "shaman.talent.ancestral-knowledge": {
+    "mode": "replace",
+    "confidence": "PROVISIONAL",
+    "reason": "Uses the already reviewed Forever core adapter.",
+    "files": [
+      "sim/core/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go",
+      "sim/shaman/water_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "shaman.talent.guardian-totems": {
+    "mode": "classic",
+    "confidence": "PROVISIONAL",
+    "reason": "Retains equivalent Classic numerical mechanics under Forever semantic talent selection.",
+    "files": [
+      "sim/shaman/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_melee.go",
+      "sim/shaman/water_totems.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go",
+      "sim/shaman/earth_totems.go",
+      "sim/core/forever_control.go",
+      "sim/core/spell.go"
+    ],
+    "scope": "Stoneskin/Windwall numerical reduction and Grounding cooldown changes; Grounding shares one20-yard party charge and suppresses explicitly classified harmful single-target damage/control casts.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional.",
+      "Grounding consumes explicitly classified single-target harmful spells before their damage/control/debuff effects. Older unclassified damaging encounter spells retain provisional interception (periodic AoE excluded); unclassified non-damaging spells require explicit targeting metadata before interception. Dual-purpose harmful/helpful abilities remain unclassified to avoid intercepting their healing branch."
+    ]
+  },
+  "shaman.talent.mental-dexterity": {
+    "mode": "replace",
+    "confidence": "PROVISIONAL",
+    "reason": "Uses the already reviewed Forever core adapter.",
+    "files": [
+      "sim/core/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go",
+      "sim/shaman/water_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "shaman.talent.improved-ghost-wolf": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/shaman/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_melee.go",
+      "sim/shaman/water_totems.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "shaman.talent.improved-lightning-shield": {
+    "mode": "classic",
+    "confidence": "PROVISIONAL",
+    "reason": "Retains equivalent Classic numerical mechanics under Forever semantic talent selection.",
+    "files": [
+      "sim/shaman/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_melee.go",
+      "sim/shaman/water_totems.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "shaman.talent.elemental-weapons": {
+    "mode": "classic",
+    "confidence": "PROVISIONAL",
+    "reason": "Retains equivalent Classic numerical mechanics under Forever semantic talent selection.",
+    "files": [
+      "sim/shaman/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_melee.go",
+      "sim/shaman/water_totems.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "shaman.talent.shamanistic-focus": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/shaman/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_melee.go",
+      "sim/shaman/water_totems.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "shaman.talent.anticipation": {
+    "mode": "replace",
+    "confidence": "PROVISIONAL",
+    "reason": "Uses the already reviewed Forever core adapter.",
+    "files": [
+      "sim/core/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go",
+      "sim/shaman/water_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "shaman.talent.toughness": {
+    "mode": "replace",
+    "confidence": "PROVISIONAL",
+    "reason": "Uses the already reviewed Forever core adapter.",
+    "files": [
+      "sim/core/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go",
+      "sim/shaman/water_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "shaman.talent.flurry": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/shaman/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_melee.go",
+      "sim/shaman/water_totems.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "shaman.talent.stormstrike": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/shaman/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_melee.go",
+      "sim/shaman/water_totems.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ],
+    "auto_priority": 24
+  },
+  "shaman.talent.spirit-weapons": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/shaman/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_melee.go",
+      "sim/shaman/water_totems.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "shaman.talent.mental-quickness": {
+    "mode": "replace",
+    "confidence": "PROVISIONAL",
+    "reason": "Uses the already reviewed Forever core adapter.",
+    "files": [
+      "sim/core/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go",
+      "sim/shaman/water_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "shaman.talent.improved-stormstrike": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/shaman/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_melee.go",
+      "sim/shaman/water_totems.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "shaman.talent.maelstrom-weapon": {
+    "mode": "class-new",
+    "confidence": "PREDICTED",
+    "reason": "Observed 4% per talent rank, stack limit5 and30sec duration; proc chance predicted20% per landed melee attack.",
+    "files": [
+      "sim/shaman/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_melee.go",
+      "sim/shaman/water_totems.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ],
+    "parameters": [
+      {
+        "key": "maelstrom_proc_chance",
+        "label": "Maelstrom melee proc chance",
+        "default": 0.2,
+        "min": 0,
+        "max": 1,
+        "confidence": "PREDICTED",
+        "reason": "Per-hit chance absent from public tooltip; default 20% scenario."
+      }
+    ]
+  },
+  "shaman.talent.rage-of-the-farseer": {
+    "mode": "replace",
+    "confidence": "PROVISIONAL",
+    "reason": "Uses the already reviewed Forever core adapter.",
+    "files": [
+      "sim/core/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go",
+      "sim/shaman/water_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "shaman.talent.improved-healing-wave": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/shaman/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_melee.go",
+      "sim/shaman/water_totems.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "shaman.talent.tidal-mastery": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/shaman/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_melee.go",
+      "sim/shaman/water_totems.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "shaman.talent.mindfulness": {
+    "mode": "replace",
+    "confidence": "PROVISIONAL",
+    "reason": "Uses the already reviewed Forever core adapter.",
+    "files": [
+      "sim/core/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go",
+      "sim/shaman/water_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "shaman.talent.natural-grace": {
+    "mode": "replace",
+    "confidence": "PROVISIONAL",
+    "reason": "Uses the already reviewed Forever core adapter.",
+    "files": [
+      "sim/core/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go",
+      "sim/shaman/water_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "shaman.talent.tidal-focus": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/shaman/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_melee.go",
+      "sim/shaman/water_totems.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "shaman.talent.improved-reincarnation": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/shaman/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_melee.go",
+      "sim/shaman/water_totems.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Classic Reincarnation20%health/Mana and60-minute cooldown retained, modified by observed additional10%perrank restoration and10-minute-perrank cooldown reduction. Simulator records the death and permits explicit APL resurrection; Ankh inventory is not consumed."
+    ]
+  },
+  "shaman.talent.ancestral-healing": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/shaman/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_melee.go",
+      "sim/shaman/water_totems.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "shaman.talent.healing-focus": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/shaman/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_melee.go",
+      "sim/shaman/water_totems.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "shaman.talent.water-shield": {
+    "mode": "class-new",
+    "confidence": "PREDICTED",
+    "reason": "Observed 2% maximum Mana, three charges, ten minutes and15sec cooldown; few-seconds ICD predicted3.5sec from Classic Lightning Shield analogy.",
+    "files": [
+      "sim/shaman/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_melee.go",
+      "sim/shaman/water_totems.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ],
+    "parameters": [
+      {
+        "key": "water_shield_icd_seconds",
+        "label": "Water Shield internal cooldown (seconds)",
+        "default": 3.5,
+        "min": 0,
+        "max": 30,
+        "confidence": "PREDICTED",
+        "reason": "Undocumented internal cooldown; 3.5-second analogous shield scenario."
+      }
+    ]
+  },
+  "shaman.talent.totemic-focus": {
+    "mode": "classic",
+    "confidence": "PROVISIONAL",
+    "reason": "Retains equivalent Classic numerical mechanics under Forever semantic talent selection.",
+    "files": [
+      "sim/shaman/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_melee.go",
+      "sim/shaman/water_totems.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "shaman.talent.restorative-totems": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/shaman/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_melee.go",
+      "sim/shaman/water_totems.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "shaman.talent.mana-tide-totem": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/shaman/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_melee.go",
+      "sim/shaman/water_totems.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go",
+      "sim/shaman/forever_mana_tide.go",
+      "sim/shaman/shaman.go"
+    ],
+    "scope": "Killable5-HP totem; four88-Mana party pulses at3-second intervals within30yards of drop position; destruction, expiry or water-totem replacement stops pulses.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "shaman.talent.healing-way": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/shaman/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_melee.go",
+      "sim/shaman/water_totems.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "shaman.talent.nature-s-swiftness": {
+    "mode": "classic",
+    "confidence": "PROVISIONAL",
+    "reason": "Retains equivalent Classic numerical mechanics under Forever semantic talent selection.",
+    "files": [
+      "sim/shaman/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_melee.go",
+      "sim/shaman/water_totems.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "shaman.talent.purification": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/shaman/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_melee.go",
+      "sim/shaman/water_totems.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "shaman.talent.riptide": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/shaman/forever.go",
+      "sim/shaman/talents.go",
+      "sim/shaman/forever_melee.go",
+      "sim/shaman/water_totems.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ],
+    "healing": true,
+    "auto_priority": 16
+  },
+  "druid.talent.improved-wrath": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "druid.talent.genesis": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional.",
+      "Periodic multiplier includes self/area channels (Tranquility and Hurricane), with Classic snapshot stacking retained."
+    ]
+  },
+  "druid.talent.moonglow": {
+    "mode": "replace",
+    "confidence": "PROVISIONAL",
+    "reason": "Uses the already reviewed Forever core adapter.",
+    "files": [
+      "sim/core/forever.go",
+      "sim/druid/talents.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "druid.talent.improved-moonfire": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "druid.talent.nature-s-majesty": {
+    "mode": "replace",
+    "confidence": "PROVISIONAL",
+    "reason": "Uses the already reviewed Forever core adapter.",
+    "files": [
+      "sim/core/forever.go",
+      "sim/druid/talents.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "druid.talent.nature-s-reach": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "druid.talent.improved-entangling-roots": {
+    "mode": "class-new",
+    "confidence": "PREDICTED",
+    "reason": "Observed25% damage/rank and25% extra tolerance. Base Roots270damage/27sec follows Classic; break chance predicted20% per direct hit /1.25 with talent.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ],
+    "parameters": [
+      {
+        "key": "roots_break_chance",
+        "label": "Roots base break chance per direct hit",
+        "default": 0.2,
+        "min": 0,
+        "max": 1,
+        "confidence": "PREDICTED",
+        "reason": "Classic-like break chance scenario; observed talent tolerance divides it by 1.25."
+      }
+    ]
+  },
+  "druid.talent.nature-s-splendor": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "druid.talent.balance-of-nature": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "druid.talent.vengeance": {
+    "mode": "classic",
+    "confidence": "PROVISIONAL",
+    "reason": "Retains equivalent Classic numerical mechanics under Forever semantic talent selection.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "druid.talent.insect-swarm": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "druid.talent.improved-starfire": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "druid.talent.overgrowth": {
+    "mode": "class-new",
+    "confidence": "PREDICTED",
+    "reason": "Observed target capacity; Roots damage-break model uses explicit prediction.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ],
+    "parameters": [
+      {
+        "key": "roots_break_chance",
+        "label": "Roots base break chance per direct hit",
+        "default": 0.2,
+        "min": 0,
+        "max": 1,
+        "confidence": "PREDICTED",
+        "reason": "Classic-like break chance scenario; observed talent tolerance divides it by 1.25."
+      }
+    ]
+  },
+  "druid.talent.nature-s-grace": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "druid.talent.eclipse": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "druid.talent.moonfury": {
+    "mode": "replace",
+    "confidence": "PROVISIONAL",
+    "reason": "Uses the already reviewed Forever core adapter.",
+    "files": [
+      "sim/core/forever.go",
+      "sim/druid/talents.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "druid.talent.moonkin-form": {
+    "mode": "class",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional.",
+      "Party aura/radius checks use the engine one-dimensional DistanceFromTarget positions as a provisional spatial projection."
+    ]
+  },
+  "druid.talent.ferocity": {
+    "mode": "classic",
+    "confidence": "PROVISIONAL",
+    "reason": "Retains equivalent Classic numerical mechanics under Forever semantic talent selection.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "druid.talent.heart-of-the-wild": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "druid.talent.feral-swiftness": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional.",
+      "Only the movement-speed clause is restricted to Cat in the source; Dodge applies in every form provisionally."
+    ]
+  },
+  "druid.talent.feral-instinct": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go",
+      "sim/druid/forever_prowl.go"
+    ],
+    "scope": "Swipe damage modifier and Prowl/Pounce combat opener eligibility are active; stealth-detection geometry is outside raid encounter scope.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional.",
+      "Prowl opener eligibility is simulated; stealth-detection geometry is outside the current raid encounter model, consistent with Rogue stealth detection."
+    ]
+  },
+  "druid.talent.brutal-impact": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go",
+      "sim/druid/forever_prowl.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional.",
+      "Prowl/Pounce use cached Classic level-60 IDs, 50 Energy, 150 bleed over18seconds, behind-target and prepull stealth requirements."
+    ]
+  },
+  "druid.talent.thick-hide": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional.",
+      "Armor uses the exact selected numerical coefficient (observed0.67); predicted higher ranks retain source-rounded coefficients, rather than silently treating two-thirds as exact."
+    ]
+  },
+  "druid.talent.savage-fury": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "druid.talent.feral-charge": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go",
+      "sim/core/forever_control.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional.",
+      "Bear charge locks the actually interrupted school for4seconds; Cat charge sets behind-target position."
+    ]
+  },
+  "druid.talent.sharpened-claws": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "druid.talent.shredding-attacks": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional.",
+      "Lacerate baseline is BEST_GUESS-only PREDICTED: TBC tooltip analog https://www.wowhead.com/tbc/spell=33745/lacerate supplies 15 Rage,31 direct bleed and155 bleed over15 seconds,5 stacks. No AP coefficient or bonus threat is assumed until documented. Internal negative tag identifies the predicted ability; actual TBC ID is not asserted for Forever."
+    ]
+  },
+  "druid.talent.mangle": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ],
+    "auto_priority": 23
+  },
+  "druid.talent.predatory-strikes": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ],
+    "rank_overrides": [
+      {
+        "rank": 2,
+        "effect": "Increases your melee Attack Power by 100% of your level.",
+        "values": [
+          100
+        ],
+        "reason": "Linear50% per rank from observed rank1; correct primary calculator duplicate rank3 value."
+      },
+      {
+        "rank": 3,
+        "effect": "Increases your melee Attack Power by 150% of your level.",
+        "values": [
+          150
+        ],
+        "reason": "Linear50% per rank from observed rank1; correct primary calculator duplicate rank3 value."
+      }
+    ]
+  },
+  "druid.talent.primal-fury": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "druid.talent.predatory-instincts": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "druid.talent.leader-of-the-pack": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional.",
+      "Party aura/radius checks use the engine one-dimensional DistanceFromTarget positions as a provisional spatial projection."
+    ]
+  },
+  "druid.talent.king-of-the-jungle": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "druid.talent.natural-reaction": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional.",
+      "Dodge-triggered Rage is not form-restricted in the source; it can accrue in any form, while Classic Bear shifting still resets Rage."
+    ],
+    "rank_overrides": [
+      {
+        "rank": 2,
+        "effect": "Increases your dodge chance by 2%, and gives you a 40% chance to gain 5 Rage each time you dodge.",
+        "values": [
+          2,
+          40,
+          5
+        ],
+        "reason": "Linear rank progression corroborated by secondary calculator; source calculator incorrectly leaves dodge1% at all ranks."
+      },
+      {
+        "rank": 3,
+        "effect": "Increases your dodge chance by 3%, and gives you a 60% chance to gain 5 Rage each time you dodge.",
+        "values": [
+          3,
+          60,
+          5
+        ],
+        "reason": "Linear rank progression corroborated by secondary calculator; source calculator incorrectly leaves dodge1% at all ranks."
+      },
+      {
+        "rank": 4,
+        "effect": "Increases your dodge chance by 4%, and gives you a 80% chance to gain 5 Rage each time you dodge.",
+        "values": [
+          4,
+          80,
+          5
+        ],
+        "reason": "Linear rank progression corroborated by secondary calculator; source calculator incorrectly leaves dodge1% at all ranks."
+      },
+      {
+        "rank": 5,
+        "effect": "Increases your dodge chance by 5%, and gives you a 100% chance to gain 5 Rage each time you dodge.",
+        "values": [
+          5,
+          100,
+          5
+        ],
+        "reason": "Linear rank progression corroborated by secondary calculator; source calculator incorrectly leaves dodge1% at all ranks."
+      }
+    ]
+  },
+  "druid.talent.rend-and-tear": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "druid.talent.berserk": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ],
+    "auto_priority": 5
+  },
+  "druid.talent.nature-s-focus": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "druid.talent.furor": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ],
+    "rank_overrides": [
+      {
+        "rank": 2,
+        "effect": "Gives you a 40% chance to gain 10 Rage when shifting to Bear. When shifting to Cat, regain 40% of your last Cat Energy plus 2 Energy per second outside Cat/Bear, up to 40 Energy.",
+        "values": [
+          40,
+          10,
+          40,
+          2,
+          40
+        ],
+        "reason": "Linear progression from observed rank1 Cat retention/cap and Bear chance; fixed2Energy/sec retained."
+      },
+      {
+        "rank": 3,
+        "effect": "Gives you a 60% chance to gain 10 Rage when shifting to Bear. When shifting to Cat, regain 60% of your last Cat Energy plus 2 Energy per second outside Cat/Bear, up to 60 Energy.",
+        "values": [
+          60,
+          10,
+          60,
+          2,
+          60
+        ],
+        "reason": "Linear progression from observed rank1 Cat retention/cap and Bear chance; fixed2Energy/sec retained."
+      },
+      {
+        "rank": 4,
+        "effect": "Gives you a 80% chance to gain 10 Rage when shifting to Bear. When shifting to Cat, regain 80% of your last Cat Energy plus 2 Energy per second outside Cat/Bear, up to 80 Energy.",
+        "values": [
+          80,
+          10,
+          80,
+          2,
+          80
+        ],
+        "reason": "Linear progression from observed rank1 Cat retention/cap and Bear chance; fixed2Energy/sec retained."
+      },
+      {
+        "rank": 5,
+        "effect": "Gives you a 100% chance to gain 10 Rage when shifting to Bear. When shifting to Cat, regain 100% of your last Cat Energy plus 2 Energy per second outside Cat/Bear, up to 100 Energy.",
+        "values": [
+          100,
+          10,
+          100,
+          2,
+          100
+        ],
+        "reason": "Linear progression from observed rank1 Cat retention/cap and Bear chance; fixed2Energy/sec retained."
+      }
+    ]
+  },
+  "druid.talent.naturalist": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "druid.talent.subtlety": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "druid.talent.natural-shapeshifter": {
+    "mode": "classic",
+    "confidence": "PROVISIONAL",
+    "reason": "Retains equivalent Classic numerical mechanics under Forever semantic talent selection.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "druid.talent.reflection": {
+    "mode": "replace",
+    "confidence": "PROVISIONAL",
+    "reason": "Uses the already reviewed Forever core adapter.",
+    "files": [
+      "sim/core/forever.go",
+      "sim/druid/talents.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "druid.talent.gift-of-nature": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "druid.talent.gift-of-the-earthmother": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "druid.talent.tranquil-spirit": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "druid.talent.improved-rejuvenation": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "druid.talent.swiftmend": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "druid.talent.nature-s-swiftness": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "druid.talent.living-spirit": {
+    "mode": "replace",
+    "confidence": "PROVISIONAL",
+    "reason": "Uses the already reviewed Forever core adapter.",
+    "files": [
+      "sim/core/forever.go",
+      "sim/druid/talents.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "druid.talent.improved-tranquility": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "druid.talent.improved-regrowth": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional."
+    ]
+  },
+  "druid.talent.wild-growth": {
+    "mode": "class-new",
+    "confidence": "PROVISIONAL",
+    "reason": "Class-owned implementation applies documented numerical effects, with Classic coefficients and event/stacking conventions unless explicitly overridden.",
+    "files": [
+      "sim/druid/forever.go",
+      "sim/druid/talents.go",
+      "sim/druid/forever_bear.go",
+      "sim/druid/forever_healing.go",
+      "sim/druid/forever_utility.go",
+      "sim/druid/forms.go"
+    ],
+    "scope": "Combat effect and talent-tree rank/position/prerequisite selection.",
+    "remaining_unknowns": [
+      "Exact undocumented stacking, coefficients, proc eligibility and client spell-rank scaling retain the closest Classic behavior and are provisional.",
+      "Party aura/radius checks use the engine one-dimensional DistanceFromTarget positions as a provisional spatial projection."
+    ],
+    "healing": true,
+    "auto_priority": 16
+  },
+  "paladin.baseline.holy-strike": {
+    "mode": "ability",
+    "confidence": "PREDICTED",
+    "reason": "Named by multiple direct talent tooltips. Predict 100% Holy mainhand weapon damage, 6 sec cooldown and 6% base mana using Classic melee-special conventions.",
+    "files": [
+      "sim/paladin/forever.go"
+    ],
+    "scope": "APL-selectable baseline spell actively changes damage or absorption.",
+    "remaining_unknowns": [
+      "The named ability is evidenced but its full tooltip/client ranks are unavailable; replace predicted defaults when direct evidence arrives."
+    ],
+    "auto_priority": 25
+  },
+  "paladin.baseline.seal-of-fury": {
+    "mode": "ability",
+    "confidence": "PREDICTED",
+    "reason": "Named and shield-depletion Mana return documented. Predict 60 absorption refreshed on landed melee, 60 Mana seal, 30 sec duration and 60 Holy Judgement; uses real absorption.",
+    "files": [
+      "sim/paladin/forever_defenses.go"
+    ],
+    "scope": "APL-selectable baseline spell actively changes damage or absorption.",
+    "remaining_unknowns": [
+      "The named ability is evidenced but its full tooltip/client ranks are unavailable; replace predicted defaults when direct evidence arrives."
+    ]
+  },
+  "shaman.baseline.fire-nova": {
+    "mode": "ability",
+    "confidence": "PREDICTED",
+    "reason": "Named as direct spell replacing Fire Nova Totem. Predict rank-5 Classic Fire Nova 413-459 Fire damage, 520 Mana, 15 sec cooldown, .214 coefficient.",
+    "files": [
+      "sim/shaman/forever.go",
+      "sim/shaman/forever_totems.go",
+      "sim/shaman/air_totems.go",
+      "sim/shaman/water_totems.go"
+    ],
+    "scope": "APL-selectable baseline spell actively changes damage or absorption.",
+    "remaining_unknowns": [
+      "The named ability is evidenced but its full tooltip/client ranks are unavailable; replace predicted defaults when direct evidence arrives."
+    ],
+    "auto_priority": 30
+  }
+}

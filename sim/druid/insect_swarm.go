@@ -16,6 +16,9 @@ var InsectSwarmLevel = [InsectSwarmRanks + 1]int{0, 20, 30, 40, 50, 60}
 
 func (druid *Druid) registerInsectSwarmSpell() {
 	druid.InsectSwarm = make([]*DruidSpell, InsectSwarmRanks+1)
+	if druid.Forever != nil && druid.fr("insect-swarm") == 0 {
+		return
+	}
 
 	druid.InsectSwarmAuras = druid.NewEnemyAuraArray(core.InsectSwarmAura)
 
@@ -28,6 +31,10 @@ func (druid *Druid) registerInsectSwarmSpell() {
 			spellID := InsectSwarmSpellId[rank]
 			baseDamage := InsectSwarmBaseDamage[rank] / float64(numTicks)
 			manaCost := InsectSwarmManaCost[rank]
+			if druid.Forever != nil {
+				baseDamage = 55.0 / float64(numTicks)
+				manaCost = 45
+			}
 			spellCoef := .158
 
 			druid.InsectSwarm[rank] = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{

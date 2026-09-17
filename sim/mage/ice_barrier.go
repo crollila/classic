@@ -14,6 +14,9 @@ var IceBarrierManaCost = [IceBarrierRanks + 1]float64{0, 305, 360, 420, 480}
 var IceBarrierLevel = [IceBarrierRanks + 1]int{0, 40, 46, 52, 58}
 
 func (mage *Mage) registerIceBarrierSpell() {
+	if mage.Forever != nil && mage.ForeverRank("mage.talent.ice-barrier") == 0 {
+		return
+	}
 	mage.IceBarrier = make([]*core.Spell, IceBarrierRanks+1)
 	mage.IceBarrierAuras = make([]*core.Aura, IceBarrierRanks+1)
 

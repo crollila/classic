@@ -42,6 +42,7 @@ func NewTankWarrior(character *core.Character, options *proto.Player) *TankWarri
 	}
 
 	war.EnableRageBar(core.RageBarOptions{
+		MaxRage:               war.ForeverMaxRage(),
 		StartingRage:          warOptions.Options.StartingRage,
 		DamageDealtMultiplier: 1,
 		DamageTakenMultiplier: 1,

@@ -12,6 +12,7 @@ func (mage *Mage) ApplyTalents() {
 	mage.applyArcaneTalents()
 	mage.applyFireTalents()
 	mage.applyFrostTalents()
+	mage.applyForeverCasterTalents()
 }
 
 func (mage *Mage) applyArcaneTalents() {
@@ -181,7 +182,12 @@ func (mage *Mage) applyArcaneConcentration() {
 			if !spell.Flags.Matches(SpellFlagMage) {
 				return
 			}
-			if spell.Cost != nil && spell.Cost.GetCurrentCost() == 0 {
+			if mage.Forever != nil {
+				// Check the base cost: Clearcasting itself makes current cost zero.
+				if !spell.ProcMask.Matches(core.ProcMaskSpellDamage) || spell.Cost == nil || spell.Cost.BaseCost <= 0 {
+					return
+				}
+			} else if spell.Cost != nil && spell.Cost.GetCurrentCost() == 0 {
 				return
 			}
 			aura.Deactivate(sim)
@@ -390,6 +396,10 @@ func (mage *Mage) registerCombustionCD() {
 	})
 
 	numCrits := 0
+	critLimit := 3
+	if mage.ForeverRank("mage.talent.combustion") > 0 {
+		critLimit = 4
+	}
 	critPerStack := 10.0 * core.SpellCritRatingPerCritChance
 
 	mage.CombustionAura = mage.RegisterAura(core.Aura{
@@ -411,7 +421,7 @@ func (mage *Mage) registerCombustionCD() {
 			}
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() || numCrits >= 3 || !spell.SpellSchool.Matches(core.SpellSchoolFire) || !spell.Flags.Matches(SpellFlagMage) {
+			if !result.Landed() || numCrits >= critLimit || !spell.SpellSchool.Matches(core.SpellSchoolFire) || !spell.Flags.Matches(SpellFlagMage) {
 				return
 			}
 
@@ -426,7 +436,7 @@ func (mage *Mage) registerCombustionCD() {
 
 			if result.DidCrit() {
 				numCrits++
-				if numCrits == 3 {
+				if numCrits == critLimit {
 					aura.Deactivate(sim)
 				}
 			}

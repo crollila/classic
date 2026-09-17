@@ -88,6 +88,7 @@ func (hunter *Hunter) ApplyTalents() {
 		hunter.MultiplyStat(stats.Agility, 1.0+agiBonus)
 	}
 
+	hunter.applyForeverTalents()
 	hunter.applyEfficiency()
 	hunter.applyTrapMastery()
 	hunter.applyCleverTraps()
@@ -142,12 +143,18 @@ func (hunter *Hunter) registerBestialWrathCD() {
 		Duration: time.Second * 18,
 	}).AttachMultiplicativePseudoStatBuff(&hunter.pet.PseudoStats.DamageDealtMultiplier, 1.5)
 
+	if hunter.Forever != nil {
+		immunity := hunter.pet.ForeverControlImmunityAura("Bestial Wrath Control Immunity", actionID, []core.ForeverControlKind{core.ForeverStun, core.ForeverFear, core.ForeverCharm, core.ForeverSleep, core.ForeverIncapacitate, core.ForeverRoot, core.ForeverSnare}, 18*time.Second)
+		hunter.BestialWrathPetAura.ApplyOnGain(func(a *core.Aura, sim *core.Simulation) { immunity.Activate(sim) })
+		hunter.BestialWrathPetAura.ApplyOnExpire(func(a *core.Aura, sim *core.Simulation) { immunity.Deactivate(sim) })
+	}
 	bwSpell := hunter.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
 		Flags:    core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.12,
+			BaseCost: core.TernaryFloat64(hunter.Forever != nil, 0, .12),
+			FlatCost: core.TernaryFloat64(hunter.Forever != nil, 125, 0),
 		},
 
 		Cast: core.CastConfig{
@@ -197,6 +204,14 @@ func (hunter *Hunter) applyCleverTraps() {
 }
 
 func (hunter *Hunter) applyEfficiency() {
+	if hunter.ForeverRank("hunter.talent.efficiency") > 0 {
+		hunter.OnSpellRegistered(func(s *core.Spell) {
+			if s.Cost != nil && (s.Flags.Matches(SpellFlagSting|SpellFlagShot) || s.ProcMask.Matches(core.ProcMaskMeleeSpecial)) {
+				s.Cost.Multiplier -= int32(hunter.ForeverValue("hunter.talent.efficiency", 0, 0))
+			}
+		})
+		return
+	}
 	hunter.OnSpellRegistered(func(spell *core.Spell) {
 		// applies to Stings, Shots, and Volley
 		if spell.Cost != nil && spell.Flags.Matches(SpellFlagSting|SpellFlagShot) || spell.SpellCode == SpellCode_HunterVolley {

@@ -117,7 +117,11 @@ func (spell *Spell) PhysicalHitChance(attackTable *AttackTable) float64 {
 		spell.BonusHitRating +
 		attackTable.Defender.PseudoStats.BonusMeleeHitRatingTaken
 	hitChance := hitRating / (MeleeHitRatingPerHitChance * 100)
-	return max(hitChance-attackTable.HitSuppression, 0)
+	chance := max(hitChance-attackTable.HitSuppression, 0)
+	if spell.ProcMask.Matches(ProcMaskRanged) {
+		chance -= attackTable.Defender.ForeverRangedMissChance
+	}
+	return chance
 }
 
 func (spell *Spell) PhysicalCritChance(attackTable *AttackTable) float64 {
@@ -211,6 +215,9 @@ func (spell *Spell) SpellChanceToMiss(attackTable *AttackTable) float64 {
 	}
 
 	// Always a 1% chance to miss in classic
+	if attackTable.Defender.ForeverMagicMissChance != 0 {
+		return min(1, max(0.01, missChance+attackTable.Defender.ForeverMagicMissChance))
+	}
 	return max(0.01, missChance)
 }
 func (spell *Spell) MagicHitCheck(sim *Simulation, attackTable *AttackTable) bool {
@@ -273,6 +280,9 @@ func (spell *Spell) calcDamageInternal(sim *Simulation, target *Unit, baseDamage
 	attackTable := spell.Unit.AttackTables[target.UnitIndex][spell.CastType]
 
 	result := spell.NewResult(target)
+	if spell.Unit.ForeverEnemyDead() || target.ForeverEnemyDead() {
+		return result
+	}
 	result.Damage = baseDamage
 	result.Damage *= attackerMultiplier
 
@@ -408,6 +418,12 @@ func (spell *Spell) CalcAndDealOutcome(sim *Simulation, target *Unit, outcomeApp
 
 // Applies the fully computed spell result to the sim.
 func (spell *Spell) dealDamageInternal(sim *Simulation, isPeriodic bool, result *SpellResult) {
+	if !spell.applyForeverEnemyHealth(sim, result) {
+		result.Damage = 0
+		result.Outcome = OutcomeEmpty
+		spell.DisposeResult(result)
+		return
+	}
 	isPartialResist := result.DidResist()
 
 	if sim.CurrentTime >= 0 {

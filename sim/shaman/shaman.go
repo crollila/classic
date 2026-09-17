@@ -40,7 +40,15 @@ func NewShaman(character *core.Character, talents string) *Shaman {
 	shaman.ApplyWindfuryImbue(shaman.getImbueProcMask(proto.WeaponImbue_WindfuryWeapon))
 
 	guardians.ConstructGuardians(&shaman.Character)
+	if shaman.Forever != nil && shaman.fr("earth-s-grasp") > 0 {
+		shaman.foreverStoneclaw = newForeverStoneclaw(shaman)
+		shaman.AddPet(shaman.foreverStoneclaw)
+	}
 
+	if shaman.Forever != nil && shaman.fr("mana-tide-totem") > 0 {
+		shaman.foreverManaTide = newForeverManaTide(shaman)
+		shaman.AddPet(shaman.foreverManaTide)
+	}
 	return shaman
 }
 
@@ -82,7 +90,9 @@ const (
 type Shaman struct {
 	core.Character
 
-	Talents *proto.ShamanTalents
+	Talents          *proto.ShamanTalents
+	foreverStoneclaw *foreverStoneclaw
+	foreverManaTide  *foreverManaTide
 
 	// Spells
 	ChainHeal            []*core.Spell
@@ -180,6 +190,7 @@ func (shaman *Shaman) Initialize() {
 	shaman.registerWindfuryTotemSpell()
 	shaman.registerGraceOfAirTotemSpell()
 	shaman.registerWindwallTotemSpell()
+	shaman.registerForeverSpells()
 }
 
 func (shaman *Shaman) Reset(_ *core.Simulation) {
