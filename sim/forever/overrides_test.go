@@ -306,3 +306,50 @@ func TestRunRaidSimWithForeverOverrideReport(t *testing.T) {
 		t.Fatalf("run report lacks spell diagnostics: %+v", report.Players[0])
 	}
 }
+
+// The web worker path: SetActiveOverrides swaps the document and the next sim uses it.
+func TestSimAfterSetActiveOverridesUsesNewValues(t *testing.T) {
+	withoutOverrides(t) // also restores the original document after the swaps below
+	_, before := simulation(t, overrideMage(t), nil)
+
+	raw, err := os.ReadFile("../core/foreverdata/testdata/overrides_valid.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	summary, err := foreverdata.SetActiveOverrides(raw)
+	if err != nil || summary.Counts.Spells != 3 {
+		t.Fatal(err, summary)
+	}
+	_, after := simulation(t, overrideMage(t), nil)
+	if before.GetSpell(core.ActionID{SpellID: 116}).BonusCoefficient != .163 || after.GetSpell(core.ActionID{SpellID: 116}).BonusCoefficient != .5 {
+		t.Fatal("sim built after the swap does not use the new document")
+	}
+	if findEvent(after.ForeverOverrideReport().Applied, "116", "effects.0.coefficient") == nil {
+		t.Fatal("swap not visible in diagnostics")
+	}
+
+	// A rejected document leaves the swapped-in one active for the next sim.
+	if _, err := foreverdata.SetActiveOverrides([]byte(`{"version":"forever-overrides-1"}`)); err == nil {
+		t.Fatal("invalid document accepted")
+	}
+	_, still := simulation(t, overrideMage(t), nil)
+	if still.GetSpell(core.ActionID{SpellID: 116}).BonusCoefficient != .5 {
+		t.Fatal("rejected document changed the active overrides")
+	}
+
+	if !core.WITH_DB {
+		return
+	}
+	data, err := os.ReadFile("../../examples/mage-discovery.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	request := &proto.RaidSimRequest{}
+	if err := protojson.Unmarshal(data, request); err != nil {
+		t.Fatal(err)
+	}
+	result, report := core.RunRaidSimWithForeverOverrideReport(request)
+	if result.Error != nil || report.Overrides.SourceHash != summary.SourceHash || findEvent(report.Players[0].Applied, "116", "effects.0.coefficient") == nil {
+		t.Fatalf("full sim after swap did not use the new document: %v %+v", result.Error, report.Overrides)
+	}
+}

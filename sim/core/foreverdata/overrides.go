@@ -430,6 +430,27 @@ func init() {
 // ActiveOverrides returns the process-wide override document.
 func ActiveOverrides() *Overrides { return activeOverrides.Load() }
 
+// SetActiveOverrides strictly parses and validates raw (exactly as the embedded
+// document is validated at init) and, only when it is valid, atomically replaces
+// the process-wide override document. On any error the current document stays
+// active. Talent and parameter overrides this engine does not know (for example
+// because the publisher runs a newer engine) are not errors: they are dropped and
+// listed in the returned summary's InitRejects, as for the embedded document.
+//
+// Nothing derived from overrides is cached per process: core snapshots the pointer
+// when a Forever character is built and applies spell/item/parameter overrides per
+// character, and Lookup reads the pointer per call. Call this before the first
+// simulation (the web worker does) or between simulations; a swap while a sim is
+// being constructed could mix talent values of two documents.
+func SetActiveOverrides(raw []byte) (OverridesSummary, error) {
+	o, err := ParseOverrides(raw)
+	if err != nil {
+		return OverridesSummary{}, err
+	}
+	activeOverrides.Store(o)
+	return o.Summary(), nil
+}
+
 // SetOverridesForTesting swaps the process-wide overrides and returns a restore func.
 // Only for tests; simulations snapshot the pointer when a Forever character is built.
 func SetOverridesForTesting(o *Overrides) (restore func()) {
