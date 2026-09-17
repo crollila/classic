@@ -42,7 +42,9 @@ type Character struct {
 	Class proto.Class
 	Spec  proto.Spec
 	// Per-character opt-in. Never a process-wide game flag.
-	Forever *proto.ForeverOptions
+	Forever            *proto.ForeverOptions
+	foreverFlaskStats  stats.Stats
+	foreverElixirStats stats.Stats
 
 	// Current gear.
 	Equipment
@@ -158,6 +160,11 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 	character.createStormstrikeConfig(player)
 
 	character.baseStats = getBaseStatsCombo(character.Race, character.Class)
+	if character.Forever != nil && (character.Race == proto.Race_RaceSkyborneWindshaper || character.Race == proto.Race_RaceSkyborneHighOrder) {
+		// PREDICTED: Night Elf racial offsets on the existing class base table until
+		// a Skyborne client stat table is available. No global Classic table mutation.
+		character.baseStats = getBaseStatsCombo(proto.Race_RaceNightElf, character.Class)
+	}
 
 	character.AddStats(character.baseStats)
 	character.addUniversalStatDependencies()
@@ -341,11 +348,13 @@ func (character *Character) applyAllEffects(agent Agent, raidBuffs *proto.RaidBu
 
 	agent.ApplyTalents()
 	character.applyForeverTalents()
+	character.applyForeverProfessions()
 	character.applyBuildPhaseAuras(CharacterBuildPhaseTalents)
 	playerStats.TalentsStats = measureStats()
 
-	applyBuffEffects(agent, agent.GetCharacter().GetFaction(), raidBuffs, partyBuffs, individualBuffs)
+	applyBuffEffects(agent, agent.GetCharacter().GetFaction(), raidBuffs, partyBuffs, character.foreverStrictBuffs(individualBuffs))
 	character.applyForeverBuffs(raidBuffs)
+	character.applyForeverClassBuffDuration(raidBuffs)
 	character.applyBuildPhaseAuras(CharacterBuildPhaseBuffs)
 	playerStats.BuffsStats = measureStats()
 
@@ -355,7 +364,7 @@ func (character *Character) applyAllEffects(agent Agent, raidBuffs *proto.RaidBu
 	character.clearBuildPhaseAuras(CharacterBuildPhaseAll)
 
 	for _, petAgent := range character.PetAgents {
-		applyPetBuffEffects(petAgent, character.GetFaction(), raidBuffs, partyBuffs, individualBuffs)
+		applyPetBuffEffects(petAgent, character.GetFaction(), raidBuffs, partyBuffs, character.foreverStrictBuffs(individualBuffs))
 	}
 
 	return playerStats

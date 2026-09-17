@@ -13,7 +13,7 @@ import (
 	googleproto "google.golang.org/protobuf/proto"
 )
 
-const RulesetID = "forever-discovery-2026-09-13-v1"
+const RulesetID = "forever-discovery-2026-09-13-v2"
 
 //go:embed trees.json
 var files embed.FS
@@ -39,10 +39,15 @@ type Record struct {
 	ClassicField          string `json:"classic_field"`
 	ClassicMaxRank        int32  `json:"classic_max_rank"`
 	Mode                  string
+	Confidence            string
 	Ranks                 []Rank
 	ActionTag             int32 `json:"action_tag"`
 }
-type Mechanic struct{ ID, Mode string }
+type Mechanic struct {
+	ID, Mode, Confidence string
+	MaxRank              int32 `json:"max_rank"`
+	ActionTag            int32 `json:"action_tag"`
+}
 type dataset struct {
 	ManifestSHA256 string                `json:"manifest_sha256"`
 	ClassicLayout  map[string][][]string `json:"classic_layout"`
@@ -81,11 +86,56 @@ func Lookup(id string) (Record, bool) {
 }
 func KnownMechanic(id string) bool {
 	for _, m := range data.Mechanics {
-		if m.ID == id {
+		if m.ID == id && m.Mode != "blocked" && m.Mode != "non-sim" {
 			return true
 		}
 	}
 	return false
+}
+func LookupMechanic(id string) (Mechanic, bool) {
+	for _, m := range data.Mechanics {
+		if m.ID == id {
+			return m, true
+		}
+	}
+	return Mechanic{}, false
+}
+func ActionTag(id string) int32 {
+	if r, ok := Lookup(id); ok {
+		return r.ActionTag
+	}
+	if m, ok := LookupMechanic(id); ok {
+		return m.ActionTag
+	}
+	return 0
+}
+func IsStrict(f *proto.ForeverOptions) bool { return f != nil && f.Mode == proto.ForeverMode_STRICT }
+
+// Keep selected ranks for topology validation; downgrade only the executed values.
+// STRICT excludes predicted adapters and ranks without a directly observed value.
+func EffectiveRank(f *proto.ForeverOptions, id string) int32 {
+	if f == nil {
+		return 0
+	}
+	r, ok := Lookup(id)
+	if !ok || r.Mode == "blocked" || r.Mode == "non-sim" {
+		return 0
+	}
+	n := f.Talents[id]
+	if !IsStrict(f) {
+		return n
+	}
+	if r.Confidence == "PREDICTED" {
+		return 0
+	}
+	for n > 0 && (r.Ranks[n-1].Estimated || r.Ranks[n-1].Confidence == "PREDICTED") {
+		n--
+	}
+	return n
+}
+func MechanicEnabled(f *proto.ForeverOptions, id string) bool {
+	m, ok := LookupMechanic(id)
+	return f != nil && ok && KnownMechanic(id) && slices.Contains(f.Mechanics, id) && (!IsStrict(f) || m.Confidence != "PREDICTED")
 }
 func ClassName(c proto.Class) string { return strings.ToUpper(strings.TrimPrefix(c.String(), "Class")) }
 func Validate(p *proto.Player) error {
@@ -95,6 +145,9 @@ func Validate(p *proto.Player) error {
 	}
 	if f.RulesetId != RulesetID {
 		return fmt.Errorf("unsupported Forever ruleset %q", f.RulesetId)
+	}
+	if f.Mode < proto.ForeverMode_FOREVER_MODE_DEFAULT || f.Mode > proto.ForeverMode_BEST_GUESS {
+		return fmt.Errorf("unknown Forever mode")
 	}
 	if p.TalentsString != "" {
 		return fmt.Errorf("Forever requires record-keyed talents; Classic talents_string must be empty")
@@ -106,21 +159,21 @@ func Validate(p *proto.Player) error {
 	switch p.GetSpec().(type) {
 	case *proto.Player_Warrior, *proto.Player_TankWarrior:
 		specClass = proto.Class_ClassWarrior
-	case *proto.Player_RetributionPaladin, *proto.Player_ProtectionPaladin:
+	case *proto.Player_RetributionPaladin, *proto.Player_ProtectionPaladin, *proto.Player_HolyPaladin:
 		specClass = proto.Class_ClassPaladin
 	case *proto.Player_Hunter:
 		specClass = proto.Class_ClassHunter
 	case *proto.Player_Rogue:
 		specClass = proto.Class_ClassRogue
-	case *proto.Player_ShadowPriest:
+	case *proto.Player_ShadowPriest, *proto.Player_HealingPriest:
 		specClass = proto.Class_ClassPriest
-	case *proto.Player_ElementalShaman, *proto.Player_EnhancementShaman, *proto.Player_WardenShaman:
+	case *proto.Player_ElementalShaman, *proto.Player_EnhancementShaman, *proto.Player_WardenShaman, *proto.Player_RestorationShaman:
 		specClass = proto.Class_ClassShaman
 	case *proto.Player_Mage:
 		specClass = proto.Class_ClassMage
 	case *proto.Player_Warlock:
 		specClass = proto.Class_ClassWarlock
-	case *proto.Player_BalanceDruid, *proto.Player_FeralDruid:
+	case *proto.Player_BalanceDruid, *proto.Player_FeralDruid, *proto.Player_FeralTankDruid, *proto.Player_RestorationDruid:
 		specClass = proto.Class_ClassDruid
 	default:
 		return fmt.Errorf("missing or unsupported Forever specialization (healing factories remain unavailable)")
@@ -141,12 +194,6 @@ func Validate(p *proto.Player) error {
 			continue
 		}
 		total += n
-		if r.Mode == "blocked" {
-			return fmt.Errorf("BLOCKED Forever mechanic %s: no reviewed combat adapter", id)
-		}
-		if r.Ranks[n-1].Estimated && !f.ExperimentalEstimatedRanks {
-			return fmt.Errorf("estimated rank %d of %s requires experimental_estimated_ranks", n, id)
-		}
 		for _, pre := range r.Prerequisites {
 			if f.Talents[pre.ID] < pre.Rank {
 				return fmt.Errorf("%s requires %s rank %d", id, pre.ID, pre.Rank)
@@ -168,8 +215,10 @@ func Validate(p *proto.Player) error {
 	}
 	seen := map[string]bool{}
 	raceNames := map[proto.Race]string{proto.Race_RaceHuman: "human", proto.Race_RaceDwarf: "dwarf", proto.Race_RaceNightElf: "night-elf", proto.Race_RaceGnome: "gnome", proto.Race_RaceOrc: "orc", proto.Race_RaceUndead: "undead", proto.Race_RaceTauren: "tauren", proto.Race_RaceTroll: "troll"}
+	raceNames[proto.Race_RaceSkyborneWindshaper] = "skyborne-windshaper"
+	raceNames[proto.Race_RaceSkyborneHighOrder] = "skyborne-high-order"
 	if !slices.Contains(data.RaceClasses[raceNames[p.Race]], ClassName(p.Class)) {
-		return fmt.Errorf("unsupported Forever race/class combination (Skyborne base stats remain unknown)")
+		return fmt.Errorf("unsupported Forever race/class combination")
 	}
 	for _, id := range f.Mechanics {
 		if !KnownMechanic(id) || seen[id] {
@@ -178,6 +227,12 @@ func Validate(p *proto.Player) error {
 		seen[id] = true
 		if strings.HasPrefix(id, "racials.") && !strings.HasPrefix(id, "racials."+raceNames[p.Race]+".") {
 			return fmt.Errorf("wrong-race Forever mechanic %s", id)
+		}
+	}
+	for id, n := range f.MechanicRanks {
+		m, ok := LookupMechanic(id)
+		if !ok || !seen[id] || n < 1 || n > m.MaxRank {
+			return fmt.Errorf("invalid mechanic rank for %s", id)
 		}
 	}
 	return nil
@@ -213,8 +268,11 @@ func Prepare(p *proto.Player) (*proto.Player, error) {
 		return nil, err
 	}
 	out := googleproto.Clone(p).(*proto.Player)
+	out.Forever.Mechanics = slices.DeleteFunc(out.Forever.Mechanics, func(id string) bool { return !MechanicEnabled(p.Forever, id) })
 	fields := map[string]int32{}
-	for id, n := range p.Forever.Talents {
+	for id := range p.Forever.Talents {
+		n := EffectiveRank(p.Forever, id)
+		out.Forever.Talents[id] = n
 		r, _ := Lookup(id)
 		if r.Mode == "classic" || r.Mode == "class" {
 			fields[r.ClassicField] = min(n, r.ClassicMaxRank)
