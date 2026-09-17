@@ -42,6 +42,8 @@ const usage = `usage: foreverbench <command> [flags]
                                         what one ability does for this character against this target (real sim, per-action metrics)
   optimize-talents -spec ID -phase P1 -game forever|classic [-iterations 200 -budget-seconds S -seed X -targets N -out FILE]
                                         deterministic talent search under the rank normalization
+  optimize-setup -spec ID -phase P1 [-game forever|classic -dimensions talents,race,gear,consumes,apl -budget-seconds S -reoptimize-talents]
+                                        joint setup search (talents x race x gear x consumables x APL) with interactions
   optimize-all -phase P1 [-game forever,classic] [-parallel 2]   optimize every DPS spec; writes presets/*_builds.json
   version                               ruleset / manifest / build info
 Sim flags: -phase P0..P6 -iterations N -duration S -targets K -target-level L -seed X
@@ -90,6 +92,8 @@ func run(args []string, stdout, stderr io.Writer) int {
 		out, err = cmdMeta(rest, stderr)
 	case "optimize-talents":
 		out, err = cmdOptimizeTalents(rest, stderr)
+	case "optimize-setup":
+		out, err = cmdOptimizeSetup(rest, stderr)
 	case "optimize-all":
 		out, err = cmdOptimizeAll(rest, stderr)
 	case "version":
