@@ -61,7 +61,10 @@ type Unit struct {
 	StartDistanceFromTarget float64
 	DistanceFromTarget      float64
 
-	MovementHandler *MovementHandler
+	MovementHandler         *MovementHandler
+	foreverControls         *foreverControlState
+	ForeverRangedMissChance float64
+	ForeverMagicMissChance  float64
 
 	// Environment in which this Unit exists. This will be nil until after the
 	// construction phase.

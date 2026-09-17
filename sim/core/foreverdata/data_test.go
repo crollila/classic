@@ -69,10 +69,11 @@ func TestValidateAndTranslate(t *testing.T) {
 		{"wrong class", func(p *proto.Player) { p.Forever.Talents["rogue.talent.malice"] = 1 }},
 		{"negative", func(p *proto.Player) { p.Forever.Talents["warrior.talent.deflection"] = -1 }},
 		{"excess rank", func(p *proto.Player) { p.Forever.Talents["warrior.talent.deflection"] = 6 }},
-		{"unknown combat", func(p *proto.Player) { p.Forever.Talents["warrior.talent.weaponmaster"] = 1 }},
+		{"unknown combat", func(p *proto.Player) { p.Forever.Talents["warrior.talent.not-a-real-talent"] = 1 }},
 		{"row gate", func(p *proto.Player) { p.Forever.Talents["warrior.talent.deflection"] = 0 }},
 		{"prerequisite", func(p *proto.Player) { p.Forever.Talents["warrior.talent.deep-wounds"] = 1 }},
-		{"estimated", func(p *proto.Player) { p.Forever.Talents["warrior.talent.improved-heroic-strike"] = 2 }},
+		{"unknown mode", func(p *proto.Player) { p.Forever.Mode = proto.ForeverMode(999) }},
+		{"unknown parameter", func(p *proto.Player) { p.Forever.Parameters = map[string]float64{"made_up_bonus": 5} }},
 		{"wrong racial", func(p *proto.Player) { p.Forever.Mechanics = []string{"racials.tauren.endurance"} }},
 		{"unknown item", func(p *proto.Player) { p.Forever.Mechanics = []string{"items.tier-sets"} }},
 	}
@@ -99,6 +100,43 @@ func TestImmutableLookup(t *testing.T) {
 	again, _ := Lookup(r.ID)
 	if again.Ranks[0].Values[0] != 1 || again.Ranks[0].Effect == "corrupt" {
 		t.Fatal("shared dataset mutated")
+	}
+}
+
+func TestStrictDowngradesPredictionWithoutChangingSelection(t *testing.T) {
+	p := player()
+	p.Forever.Talents["warrior.talent.improved-heroic-strike"] = 2
+	p.Forever.Mode = proto.ForeverMode_BEST_GUESS
+	best, err := Prepare(p)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if best.Forever.Talents["warrior.talent.improved-heroic-strike"] != 2 {
+		t.Fatal("BEST_GUESS omitted estimated rank")
+	}
+	p.Forever.Mode = proto.ForeverMode_STRICT
+	strict, err := Prepare(p)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if strict.Forever.Talents["warrior.talent.improved-heroic-strike"] != 1 || p.Forever.Talents["warrior.talent.improved-heroic-strike"] != 2 {
+		t.Fatal("STRICT did not downgrade the executed rank independently of selection")
+	}
+	p.Forever.Mechanics = []string{"racials.human.will-to-survive"}
+	strict, err = Prepare(p)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(strict.Forever.Mechanics) != 0 {
+		t.Fatal("STRICT enabled predicted cooldown")
+	}
+	p.Forever.Mode = proto.ForeverMode_BEST_GUESS
+	best, err = Prepare(p)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(best.Forever.Mechanics) != 1 {
+		t.Fatal("BEST_GUESS omitted predicted ability")
 	}
 }
 

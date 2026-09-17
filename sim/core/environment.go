@@ -99,6 +99,7 @@ func (env *Environment) construct(raidProto *proto.Raid, encounterProto *proto.E
 	for _, unit := range env.Raid.AllUnits {
 		unit.CurrentTarget = env.Encounter.TargetUnits[0]
 	}
+	env.initializeForeverEnemyHealth(encounterProto)
 
 	// Apply extra debuffs from raid.
 	if raidProto.Debuffs != nil && len(env.Encounter.TargetUnits) > 0 {

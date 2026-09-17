@@ -138,6 +138,9 @@ type Spell struct {
 	BonusHitRating     float64
 	BonusCritRating    float64
 	CastTimeMultiplier float64
+	// Forever-only additive armor-ignore fraction, applied after Classic flat penetration.
+	BonusArmorPenetration float64
+	ForeverIgnoreControl  bool
 
 	BaseDamageMultiplierAdditive     float64 // Applies an additive multiplier to spell base damage
 	DamageMultiplier                 float64 // Applies a multiplicative multiplier to full spell damage
@@ -501,6 +504,12 @@ func (spell *Spell) TimeToReady(sim *Simulation) time.Duration {
 
 // Returns whether a call to Cast() would be successful, without actually doing a cast.
 func (spell *Spell) CanCast(sim *Simulation, target *Unit) bool {
+	if spell == nil || spell.Unit.ForeverEnemyDead() || (target.ForeverEnemyDead() && spell.Unit.IsOpponent(target)) {
+		return false
+	}
+	if !spell.Unit.foreverCanCast(spell) {
+		return false
+	}
 	if spell == nil {
 		return false
 	}
@@ -563,8 +572,17 @@ func (spell *Spell) CanCast(sim *Simulation, target *Unit) bool {
 }
 
 func (spell *Spell) Cast(sim *Simulation, target *Unit) bool {
+	if spell == nil {
+		return false
+	}
+	if !spell.Unit.foreverCanCast(spell) {
+		return false
+	}
 	if target == nil {
 		target = spell.Unit.CurrentTarget
+	}
+	if spell.Unit.ForeverEnemyDead() || (target.ForeverEnemyDead() && spell.Unit.IsOpponent(target)) {
+		return false
 	}
 	return spell.castFn(sim, target)
 }

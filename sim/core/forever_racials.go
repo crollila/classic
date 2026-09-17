@@ -8,6 +8,7 @@ func (c *Character) applyForeverRacials() {
 	if c.Forever == nil {
 		return
 	}
+	c.applyExpandedForeverRacials()
 	if c.HasForeverMechanic("racials.tauren.endurance") {
 		c.foreverAllHit(1)
 	} // Classic already grants the 5% health.
