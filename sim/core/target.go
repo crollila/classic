@@ -267,6 +267,9 @@ type AttackTable struct {
 	BaseCritChance      float64
 	BaseCrushChance     float64
 
+	// Added to the miss chance of dual wielding players (applyAttackTableMiss). 0.19 in Classic.
+	DualWieldMissPenalty float64
+
 	GlanceMultiplierMin  float64
 	GlanceMultiplierMax  float64
 	MeleeCritSuppression float64
@@ -295,7 +298,8 @@ func NewAttackTable(attacker *Unit, defender *Unit, weapon *Item) *AttackTable {
 		Defender: defender,
 		Weapon:   weapon,
 
-		CritMultiplier: 1,
+		CritMultiplier:       1,
+		DualWieldMissPenalty: ClassicDualWieldMissPenalty,
 
 		DamageDealtMultiplier:  1,
 		DamageTakenMultiplier:  1,
@@ -351,6 +355,11 @@ func NewAttackTable(attacker *Unit, defender *Unit, weapon *Item) *AttackTable {
 			table.MeleeCritSuppression += 0.018
 		}
 		table.SpellCritSuppression = UnitLevelFloat64(defender.Level-attacker.Level, 0, 0, 0.003, 0.021)
+
+		if attacker.foreverAttackTable.active {
+			// Forever core.combat.* residuals on top of the Classic formulas above.
+			attacker.foreverAttackTable.apply(table)
+		}
 	} else {
 
 		levelDelta := 0.0004 * 5 * float64(defender.Level-attacker.Level)

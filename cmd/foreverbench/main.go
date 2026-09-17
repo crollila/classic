@@ -38,6 +38,8 @@ const usage = `usage: foreverbench <command> [flags]
   delta -phase P1 [-role dps]           specs sorted by Forever-vs-Classic % change, with ability changes
   meta -phase P1 [-encounters first-raid]    weighted encounter-mix score and S/A/B/C tiers
   compare -phase P1 -spec ID | -request FILE   Classic vs Forever for one spec (or a RaidSimRequest)
+  predict -spec ID -ability NAME|ID [-game forever|classic|both] [-stats k=v,..] [-buffs ..] [-debuffs ..] [-target-armor A] [-list]
+                                        what one ability does for this character against this target (real sim, per-action metrics)
   optimize-talents -spec ID -phase P1 -game forever|classic [-iterations 200 -budget-seconds S -seed X -targets N -out FILE]
                                         deterministic talent search under the rank normalization
   optimize-all -phase P1 [-game forever,classic] [-parallel 2]   optimize every DPS spec; writes presets/*_builds.json
@@ -78,6 +80,8 @@ func run(args []string, stdout, stderr io.Writer) int {
 		out, err = cmdCompare(rest, stderr)
 	case "overrides":
 		out, err = cmdOverrides(rest, stderr)
+	case "predict":
+		out, err = cmdPredict(rest, stderr)
 	case "rank":
 		out, err = cmdRank(rest, stderr)
 	case "delta":

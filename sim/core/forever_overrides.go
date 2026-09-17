@@ -62,6 +62,58 @@ func (character *Character) initForeverOverrides(player *proto.Player) {
 	if v, ok := character.foreverParameterValue(foreverdata.ParamSpellCritDamageMultiplier); ok && v != 1.5 {
 		character.Unit.foreverSpellCritBase = v
 	}
+	character.initForeverAttackTableParams()
+}
+
+// ClassicDualWieldMissPenalty is the miss chance added to dual wielding players' attacks.
+const ClassicDualWieldMissPenalty = 0.19
+
+// foreverAttackTableParams holds the core.combat.* attack table parameters of a Forever
+// character. active is false for Classic units and when every value is the Classic default.
+type foreverAttackTableParams struct {
+	active               bool
+	dualWieldMissPenalty float64
+	meleeMiss            float64
+	dodge                float64
+	parry                float64
+	glanceChance         float64
+	meleeCritSuppression float64
+	spellMiss            float64
+}
+
+func (character *Character) initForeverAttackTableParams() {
+	params := foreverAttackTableParams{dualWieldMissPenalty: ClassicDualWieldMissPenalty}
+	for _, entry := range []struct {
+		key    string
+		target *float64
+	}{
+		{foreverdata.ParamDualWieldMissPenalty, &params.dualWieldMissPenalty},
+		{foreverdata.ParamMeleeMissOffset, &params.meleeMiss},
+		{foreverdata.ParamDodgeOffset, &params.dodge},
+		{foreverdata.ParamParryOffset, &params.parry},
+		{foreverdata.ParamGlancingChanceOffset, &params.glanceChance},
+		{foreverdata.ParamMeleeCritSuppressionOffset, &params.meleeCritSuppression},
+		{foreverdata.ParamSpellMissOffset, &params.spellMiss},
+	} {
+		// Only keys registered in the catalog pass request/override validation.
+		if v, ok := character.foreverParameterValue(entry.key); ok && v != *entry.target && foreverdata.ParameterInBounds(entry.key, v) {
+			*entry.target = v
+			params.active = true
+		}
+	}
+	character.Unit.foreverAttackTable = params
+}
+
+// apply adjusts a player-vs-enemy attack table once, when it is built. Chances are
+// clamped to >= 0; the 1% spell miss floor is kept by Spell.SpellChanceToMiss.
+func (params foreverAttackTableParams) apply(table *AttackTable) {
+	table.DualWieldMissPenalty = params.dualWieldMissPenalty
+	table.BaseMissChance = max(0, table.BaseMissChance+params.meleeMiss)
+	table.BaseDodgeChance = max(0, table.BaseDodgeChance+params.dodge)
+	table.BaseParryChance = max(0, table.BaseParryChance+params.parry)
+	table.BaseGlanceChance = max(0, table.BaseGlanceChance+params.glanceChance)
+	table.MeleeCritSuppression = max(0, table.MeleeCritSuppression+params.meleeCritSuppression)
+	table.BaseSpellMissChance = max(0, table.BaseSpellMissChance+params.spellMiss)
 }
 
 // foreverParameterValue returns the request value or the override default, if either exists.

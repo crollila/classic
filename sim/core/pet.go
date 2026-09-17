@@ -84,6 +84,7 @@ func NewPet(name string, owner *Character, baseStats stats.Stats, statInheritanc
 	pet.Unit.foreverGlanceMultiplier = owner.Unit.foreverGlanceMultiplier
 	pet.Unit.foreverMeleeCritBase = owner.Unit.foreverMeleeCritBase
 	pet.Unit.foreverSpellCritBase = owner.Unit.foreverSpellCritBase
+	pet.Unit.foreverAttackTable = owner.Unit.foreverAttackTable
 
 	pet.AddStats(baseStats)
 	pet.addUniversalStatDependencies()

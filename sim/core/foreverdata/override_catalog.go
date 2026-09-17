@@ -30,7 +30,21 @@ const (
 	ParamGlancingDamageMultiplier  = "core.combat.glancing_damage_multiplier"
 	ParamMeleeCritDamageMultiplier = "core.combat.melee_crit_damage_multiplier"
 	ParamSpellCritDamageMultiplier = "core.combat.spell_crit_damage_multiplier"
+
+	// Attack table parameters (player attacking an enemy). The offsets are additive
+	// residuals on top of the Classic formula result, in chance units (0.01 = 1%).
+	ParamDualWieldMissPenalty       = "core.combat.dual_wield_miss_penalty"
+	ParamMeleeMissOffset            = "core.combat.melee_miss_offset"
+	ParamDodgeOffset                = "core.combat.dodge_offset"
+	ParamParryOffset                = "core.combat.parry_offset"
+	ParamGlancingChanceOffset       = "core.combat.glancing_chance_offset"
+	ParamMeleeCritSuppressionOffset = "core.combat.melee_crit_suppression_offset"
+	ParamSpellMissOffset            = "core.combat.spell_miss_offset"
 )
+
+// AttackTableOffsetParams lists the additive attack table residual parameters.
+var AttackTableOffsetParams = []string{ParamMeleeMissOffset, ParamDodgeOffset, ParamParryOffset,
+	ParamGlancingChanceOffset, ParamMeleeCritSuppressionOffset, ParamSpellMissOffset}
 
 // ConversionParam returns "core.conversion.<class>.<conversion>".
 // conversion is one of agility_per_melee_crit, intellect_per_spell_crit,
@@ -48,6 +62,19 @@ var coreParameters = func() []ParameterSpec {
 			Label: "Base melee/ranged critical strike damage multiplier", Default: "2.0"},
 		{Key: ParamSpellCritDamageMultiplier, Min: 1, Max: 5, Source: "core",
 			Label: "Base spell critical strike damage multiplier", Default: "1.5"},
+		{Key: ParamDualWieldMissPenalty, Min: 0, Max: 0.5, Source: "core",
+			Label: "Miss chance added to dual wielding players' melee attacks", Default: "0.19"},
+	}
+	for _, o := range []struct{ key, label string }{
+		{ParamMeleeMissOffset, "base melee/ranged miss chance"},
+		{ParamDodgeOffset, "enemy dodge chance"},
+		{ParamParryOffset, "enemy parry chance"},
+		{ParamGlancingChanceOffset, "glancing blow chance"},
+		{ParamMeleeCritSuppressionOffset, "melee crit suppression"},
+		{ParamSpellMissOffset, "base spell miss chance (the 1% floor is kept)"},
+	} {
+		out = append(out, ParameterSpec{Key: o.key, Min: -0.25, Max: 0.25, Source: "core",
+			Label: "Additive offset to the Classic " + o.label + " against enemies; result clamped to >= 0", Default: "0 (Classic formula)"})
 	}
 	for _, c := range agilityCritClasses {
 		out = append(out, ParameterSpec{Key: ConversionParam(c, "agility_per_melee_crit"), Min: 1, Max: 1000, Source: "core",

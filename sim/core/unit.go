@@ -70,6 +70,7 @@ type Unit struct {
 	foreverGlanceMultiplier float64
 	foreverMeleeCritBase    float64
 	foreverSpellCritBase    float64
+	foreverAttackTable      foreverAttackTableParams
 
 	// Environment in which this Unit exists. This will be nil until after the
 	// construction phase.
