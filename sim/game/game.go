@@ -45,6 +45,8 @@ type Provenance struct {
 	PartialRuleset bool             `json:"partial_ruleset,omitempty"`
 	TalentEvidence []TalentEvidence `json:"talent_evidence,omitempty"`
 	Modes          []string         `json:"modes,omitempty"`
+	// Overrides identifies the best-known Forever value document (knowledge sync) this run used.
+	Overrides *foreverdata.OverridesSummary `json:"overrides,omitempty"`
 }
 
 type TalentEvidence struct {
@@ -97,18 +99,28 @@ func (s Selection) provenance() (Provenance, error) {
 // RunRaidSim selects validated per-character adapters while preserving Classic
 // requests, factories and the shared item database. There is no global game flag.
 func RunRaidSim(s Selection, request *proto.RaidSimRequest) (*proto.RaidSimResult, Provenance, error) {
+	result, metadata, _, err := runRaidSim(s, request, false)
+	return result, metadata, err
+}
+
+// RunRaidSimWithOverrideReport also returns which best-known Forever overrides each player applied or rejected.
+func RunRaidSimWithOverrideReport(s Selection, request *proto.RaidSimRequest) (*proto.RaidSimResult, Provenance, *core.ForeverOverrideRunReport, error) {
+	return runRaidSim(s, request, true)
+}
+
+func runRaidSim(s Selection, request *proto.RaidSimRequest, report bool) (*proto.RaidSimResult, Provenance, *core.ForeverOverrideRunReport, error) {
 	metadata, err := s.provenance()
 	if err != nil {
-		return nil, Provenance{}, err
+		return nil, Provenance{}, nil, err
 	}
 	if request == nil || request.Raid == nil || request.Encounter == nil || request.SimOptions == nil || request.SimOptions.Iterations <= 0 {
-		return nil, Provenance{}, fmt.Errorf("raid, encounter, and positive simulation iterations are required")
+		return nil, Provenance{}, nil, fmt.Errorf("raid, encounter, and positive simulation iterations are required")
 	}
 	if s.Version == Forever {
 		for _, party := range request.Raid.Parties {
 			for _, player := range party.GetPlayers() {
 				if player.GetDatabase() != nil {
-					return nil, Provenance{}, fmt.Errorf("Forever baseline cannot load custom items into the global Classic database")
+					return nil, Provenance{}, nil, fmt.Errorf("Forever baseline cannot load custom items into the global Classic database")
 				}
 			}
 		}
@@ -120,14 +132,14 @@ func RunRaidSim(s Selection, request *proto.RaidSimRequest) (*proto.RaidSimResul
 				continue
 			}
 			if !s.Discovery && player.Forever != nil {
-				return nil, metadata, fmt.Errorf("Forever options require the discovery ruleset; cannot run as Classic/baseline")
+				return nil, metadata, nil, fmt.Errorf("Forever options require the discovery ruleset; cannot run as Classic/baseline")
 			}
 			if s.Discovery {
 				if player.Forever == nil {
-					return nil, metadata, fmt.Errorf("discovery requires explicit Forever options on every player")
+					return nil, metadata, nil, fmt.Errorf("discovery requires explicit Forever options on every player")
 				}
 				if err := foreverdata.Validate(player); err != nil {
-					return nil, metadata, err
+					return nil, metadata, nil, err
 				}
 				for id, n := range player.Forever.Talents {
 					if n > 0 {
@@ -184,9 +196,19 @@ func RunRaidSim(s Selection, request *proto.RaidSimRequest) (*proto.RaidSimResul
 		}
 		return a.RecordID < b.RecordID
 	})
-	result := core.RunRaidSim(googleProto.Clone(request).(*proto.RaidSimRequest))
-	if result.Error != nil {
-		return nil, metadata, fmt.Errorf("simulation failed: %s", result.Error.Message)
+	if s.Discovery {
+		info := foreverdata.OverridesInfo()
+		metadata.Overrides = &info
 	}
-	return result, metadata, nil
+	var result *proto.RaidSimResult
+	var overrides *core.ForeverOverrideRunReport
+	if report {
+		result, overrides = core.RunRaidSimWithForeverOverrideReport(googleProto.Clone(request).(*proto.RaidSimRequest))
+	} else {
+		result = core.RunRaidSim(googleProto.Clone(request).(*proto.RaidSimRequest))
+	}
+	if result.Error != nil {
+		return nil, metadata, overrides, fmt.Errorf("simulation failed: %s", result.Error.Message)
+	}
+	return result, metadata, overrides, nil
 }
