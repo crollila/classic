@@ -79,6 +79,12 @@ func NewPet(name string, owner *Character, baseStats stats.Stats, statInheritanc
 	}
 	pet.GCD = pet.NewTimer()
 
+	// Forever overrides follow the owner (nil for Classic owners).
+	pet.Unit.foreverOverrides = owner.Unit.foreverOverrides
+	pet.Unit.foreverGlanceMultiplier = owner.Unit.foreverGlanceMultiplier
+	pet.Unit.foreverMeleeCritBase = owner.Unit.foreverMeleeCritBase
+	pet.Unit.foreverSpellCritBase = owner.Unit.foreverSpellCritBase
+
 	pet.AddStats(baseStats)
 	pet.addUniversalStatDependencies()
 

@@ -53,18 +53,18 @@ func applyFlaskConsumes(character *Character, consumes *proto.Consumes) {
 	switch consumes.Flask {
 	case proto.Flask_FlaskOfDistilledWisdom:
 		character.AddStats(stats.Stats{
-			stats.Mana: 2000,
+			stats.Mana: character.ForeverSpellValue(17627, 0, 2000),
 		})
 	case proto.Flask_FlaskOfSupremePower:
 		character.AddStats(stats.Stats{
-			stats.SpellPower: 150,
+			stats.SpellPower: character.ForeverSpellValue(17628, 0, 150),
 		})
 	case proto.Flask_FlaskOfTheTitans:
 		character.AddStats(stats.Stats{
-			stats.Health: 1200,
+			stats.Health: character.ForeverSpellValue(17626, 0, 1200),
 		})
 	case proto.Flask_FlaskOfChromaticResistance:
-		character.AddResistances(25)
+		character.AddResistances(character.ForeverSpellValue(17629, 0, 25))
 	}
 }
 
@@ -316,49 +316,49 @@ func applyFoodConsumes(character *Character, consumes *proto.Consumes) {
 		switch consumes.Food {
 		case proto.Food_FoodHotWolfRibs:
 			character.AddStats(stats.Stats{
-				stats.Stamina: 8,
-				stats.Spirit:  8,
+				stats.Stamina: character.ForeverSpellValue(19709, 0, 8),
+				stats.Spirit:  character.ForeverSpellValue(19709, 1, 8),
 			})
 		case proto.Food_FoodSmokedSagefish:
 			character.AddStats(stats.Stats{
-				stats.MP5: 3,
+				stats.MP5: character.ForeverSpellValue(25694, 0, 3),
 			})
 		case proto.Food_FoodSagefishDelight:
 			character.AddStats(stats.Stats{
-				stats.MP5: 6,
+				stats.MP5: character.ForeverSpellValue(25941, 0, 6),
 			})
 		case proto.Food_FoodTenderWolfSteak:
 			character.AddStats(stats.Stats{
-				stats.Stamina: 12,
-				stats.Spirit:  12,
+				stats.Stamina: character.ForeverSpellValue(19710, 0, 12),
+				stats.Spirit:  character.ForeverSpellValue(19710, 1, 12),
 			})
 		case proto.Food_FoodGrilledSquid:
 			character.AddStats(stats.Stats{
-				stats.Agility: 10,
+				stats.Agility: character.ForeverSpellValue(18192, 0, 10),
 			})
 		case proto.Food_FoodSmokedDesertDumpling:
 			character.AddStats(stats.Stats{
-				stats.Strength: 20,
+				stats.Strength: character.ForeverSpellValue(24799, 0, 20),
 			})
 		case proto.Food_FoodNightfinSoup:
 			character.AddStats(stats.Stats{
-				stats.MP5: 8,
+				stats.MP5: character.ForeverSpellValue(18194, 0, 8),
 			})
 		case proto.Food_FoodRunnTumTuberSurprise:
 			character.AddStats(stats.Stats{
-				stats.Intellect: 10,
+				stats.Intellect: character.ForeverSpellValue(22730, 0, 10),
 			})
 		case proto.Food_FoodDirgesKickChimaerokChops:
 			character.AddStats(stats.Stats{
-				stats.Stamina: 25,
+				stats.Stamina: character.ForeverSpellValue(25661, 0, 25),
 			})
 		case proto.Food_FoodBlessedSunfruitJuice:
 			character.AddStats(stats.Stats{
-				stats.Spirit: 10,
+				stats.Spirit: character.ForeverSpellValue(18141, 0, 10),
 			})
 		case proto.Food_FoodBlessSunfruit:
 			character.AddStats(stats.Stats{
-				stats.Strength: 10,
+				stats.Strength: character.ForeverSpellValue(18125, 0, 10),
 			})
 		}
 	}
@@ -368,24 +368,24 @@ func applyFoodConsumes(character *Character, consumes *proto.Consumes) {
 		switch consumes.Alcohol {
 		case proto.Alcohol_AlcoholRumseyRumBlackLabel:
 			character.AddStats(stats.Stats{
-				stats.Stamina: 15,
+				stats.Stamina: character.ForeverSpellValue(25804, 0, 15),
 			})
 		case proto.Alcohol_AlcoholGordokGreenGrog:
 			character.AddStats(stats.Stats{
-				stats.Stamina: 10,
+				stats.Stamina: character.ForeverSpellValue(22789, 0, 10),
 			})
 		case proto.Alcohol_AlcoholRumseyRumDark:
 			character.AddStats(stats.Stats{
-				stats.Stamina: 10,
+				stats.Stamina: character.ForeverSpellValue(25722, 0, 10),
 			})
 		case proto.Alcohol_AlcoholRumseyRumLight:
 			character.AddStats(stats.Stats{
-				stats.Stamina: 5,
+				stats.Stamina: character.ForeverSpellValue(25037, 0, 5),
 			})
 		case proto.Alcohol_AlcoholKreegsStoutBeatdown:
 			character.AddStats(stats.Stats{
-				stats.Spirit:    25,
-				stats.Intellect: -5,
+				stats.Spirit:    character.ForeverSpellValue(22790, 0, 25),
+				stats.Intellect: character.ForeverSpellValue(22790, 1, -5),
 			})
 		}
 	}
@@ -447,22 +447,22 @@ func applyDefensiveBuffConsumes(character *Character, consumes *proto.Consumes) 
 		switch consumes.ArmorElixir {
 		case proto.ArmorElixir_ElixirOfSuperiorDefense:
 			character.addForeverElixirStats(stats.Stats{
-				stats.BonusArmor: 450,
+				stats.BonusArmor: character.ForeverSpellValue(11348, 0, 450),
 			})
 		case proto.ArmorElixir_ElixirOfGreaterDefense:
 			character.addForeverElixirStats(stats.Stats{
-				stats.BonusArmor: 250,
+				stats.BonusArmor: character.ForeverSpellValue(11349, 0, 250),
 			})
 		case proto.ArmorElixir_ElixirOfDefense:
 			character.addForeverElixirStats(stats.Stats{
-				stats.BonusArmor: 150,
+				stats.BonusArmor: character.ForeverSpellValue(3220, 0, 150),
 			})
 		case proto.ArmorElixir_ElixirOfMinorDefense:
 			character.addForeverElixirStats(stats.Stats{
-				stats.BonusArmor: 50,
+				stats.BonusArmor: character.ForeverSpellValue(673, 0, 50),
 			})
 		case proto.ArmorElixir_ScrollOfProtection:
-			character.AddStats(BuffSpellValues[ScrollOfProtection])
+			character.AddStats(ForeverBuffStats(&character.Unit, ScrollOfProtection))
 		}
 	}
 
@@ -470,11 +470,11 @@ func applyDefensiveBuffConsumes(character *Character, consumes *proto.Consumes) 
 		switch consumes.HealthElixir {
 		case proto.HealthElixir_ElixirOfFortitude:
 			character.addForeverElixirStats(stats.Stats{
-				stats.Health: 120,
+				stats.Health: character.ForeverSpellValue(3593, 0, 120),
 			})
 		case proto.HealthElixir_ElixirOfMinorFortitude:
 			character.addForeverElixirStats(stats.Stats{
-				stats.Health: 27,
+				stats.Health: character.ForeverSpellValue(2378, 0, 27),
 			})
 		}
 	}
@@ -489,12 +489,12 @@ func applyPhysicalBuffConsumes(character *Character, consumes *proto.Consumes) {
 		switch consumes.AttackPowerBuff {
 		case proto.AttackPowerBuff_JujuMight:
 			character.AddStats(stats.Stats{
-				stats.AttackPower:       40,
-				stats.RangedAttackPower: 40,
+				stats.AttackPower:       character.ForeverSpellValue(16329, 0, 40),
+				stats.RangedAttackPower: character.ForeverSpellValue(16329, 1, 40),
 			})
 		case proto.AttackPowerBuff_WinterfallFirewater:
 			character.AddStats(stats.Stats{
-				stats.AttackPower: 35,
+				stats.AttackPower: character.ForeverSpellValue(17038, 0, 35),
 			})
 		}
 	}
@@ -503,23 +503,23 @@ func applyPhysicalBuffConsumes(character *Character, consumes *proto.Consumes) {
 		switch consumes.AgilityElixir {
 		case proto.AgilityElixir_ElixirOfTheMongoose:
 			character.addForeverElixirStats(stats.Stats{
-				stats.Agility:   25,
-				stats.MeleeCrit: 2 * CritRatingPerCritChance,
+				stats.Agility:   character.ForeverSpellValue(17538, 0, 25),
+				stats.MeleeCrit: character.ForeverSpellValue(17538, 1, 2) * CritRatingPerCritChance,
 			})
 		case proto.AgilityElixir_ElixirOfGreaterAgility:
 			character.addForeverElixirStats(stats.Stats{
-				stats.Agility: 25,
+				stats.Agility: character.ForeverSpellValue(11334, 0, 25),
 			})
 		case proto.AgilityElixir_ElixirOfAgility:
 			character.addForeverElixirStats(stats.Stats{
-				stats.Agility: 15,
+				stats.Agility: character.ForeverSpellValue(11328, 0, 15),
 			})
 		case proto.AgilityElixir_ElixirOfLesserAgility:
 			character.addForeverElixirStats(stats.Stats{
-				stats.Agility: 8,
+				stats.Agility: character.ForeverSpellValue(3160, 0, 8),
 			})
 		case proto.AgilityElixir_ScrollOfAgility:
-			character.AddStats(BuffSpellValues[ScrollOfAgility])
+			character.AddStats(ForeverBuffStats(&character.Unit, ScrollOfAgility))
 		}
 	}
 
@@ -527,18 +527,18 @@ func applyPhysicalBuffConsumes(character *Character, consumes *proto.Consumes) {
 		switch consumes.StrengthBuff {
 		case proto.StrengthBuff_JujuPower:
 			character.AddStats(stats.Stats{
-				stats.Strength: 30,
+				stats.Strength: character.ForeverSpellValue(16323, 0, 30),
 			})
 		case proto.StrengthBuff_ElixirOfGiants:
 			character.addForeverElixirStats(stats.Stats{
-				stats.Strength: 25,
+				stats.Strength: character.ForeverSpellValue(11405, 0, 25),
 			})
 		case proto.StrengthBuff_ElixirOfOgresStrength:
 			character.addForeverElixirStats(stats.Stats{
-				stats.Strength: 8,
+				stats.Strength: character.ForeverSpellValue(3164, 0, 8),
 			})
 		case proto.StrengthBuff_ScrollOfStrength:
-			character.AddStats(BuffSpellValues[ScrollOfStrength])
+			character.AddStats(ForeverBuffStats(&character.Unit, ScrollOfStrength))
 		}
 	}
 }
@@ -552,11 +552,11 @@ func applySpellBuffConsumes(character *Character, consumes *proto.Consumes) {
 		switch consumes.SpellPowerBuff {
 		case proto.SpellPowerBuff_ArcaneElixir:
 			character.addForeverElixirStats(stats.Stats{
-				stats.SpellDamage: 20,
+				stats.SpellDamage: character.ForeverSpellValue(11390, 0, 20),
 			})
 		case proto.SpellPowerBuff_GreaterArcaneElixir:
 			character.addForeverElixirStats(stats.Stats{
-				stats.SpellDamage: 35,
+				stats.SpellDamage: character.ForeverSpellValue(17539, 0, 35),
 			})
 		}
 	}
@@ -565,11 +565,11 @@ func applySpellBuffConsumes(character *Character, consumes *proto.Consumes) {
 		switch consumes.FirePowerBuff {
 		case proto.FirePowerBuff_ElixirOfFirepower:
 			character.addForeverElixirStats(stats.Stats{
-				stats.FirePower: 10,
+				stats.FirePower: character.ForeverSpellValue(7844, 0, 10),
 			})
 		case proto.FirePowerBuff_ElixirOfGreaterFirepower:
 			character.addForeverElixirStats(stats.Stats{
-				stats.FirePower: 40,
+				stats.FirePower: character.ForeverSpellValue(26276, 0, 40),
 			})
 		}
 	}
@@ -578,7 +578,7 @@ func applySpellBuffConsumes(character *Character, consumes *proto.Consumes) {
 		switch consumes.ShadowPowerBuff {
 		case proto.ShadowPowerBuff_ElixirOfShadowPower:
 			character.addForeverElixirStats(stats.Stats{
-				stats.ShadowPower: 40,
+				stats.ShadowPower: character.ForeverSpellValue(11474, 0, 40),
 			})
 		}
 	}
@@ -587,7 +587,7 @@ func applySpellBuffConsumes(character *Character, consumes *proto.Consumes) {
 		switch consumes.FrostPowerBuff {
 		case proto.FrostPowerBuff_ElixirOfFrostPower:
 			character.addForeverElixirStats(stats.Stats{
-				stats.FrostPower: 15,
+				stats.FrostPower: character.ForeverSpellValue(21920, 0, 15),
 			})
 		}
 	}
@@ -596,7 +596,7 @@ func applySpellBuffConsumes(character *Character, consumes *proto.Consumes) {
 		switch consumes.ManaRegenElixir {
 		case proto.ManaRegenElixir_MagebloodPotion:
 			character.addForeverElixirStats(stats.Stats{
-				stats.MP5: 12,
+				stats.MP5: character.ForeverSpellValue(24363, 0, 12),
 			})
 		}
 	}
@@ -614,28 +614,28 @@ func applyZanzaBuffConsumes(character *Character, consumes *proto.Consumes) {
 	switch consumes.ZanzaBuff {
 	case proto.ZanzaBuff_SpiritOfZanza:
 		character.AddStats(stats.Stats{
-			stats.Stamina: 50,
-			stats.Spirit:  50,
+			stats.Stamina: character.ForeverSpellValue(24382, 1, 50),
+			stats.Spirit:  character.ForeverSpellValue(24382, 0, 50),
 		})
 	case proto.ZanzaBuff_ROIDS:
 		character.AddStats(stats.Stats{
-			stats.Strength: 25,
+			stats.Strength: character.ForeverSpellValue(10667, 0, 25),
 		})
 	case proto.ZanzaBuff_GroundScorpokAssay:
 		character.AddStats(stats.Stats{
-			stats.Agility: 25,
+			stats.Agility: character.ForeverSpellValue(10669, 0, 25),
 		})
 	case proto.ZanzaBuff_CerebralCortexCompound:
 		character.AddStats(stats.Stats{
-			stats.Intellect: 25,
+			stats.Intellect: character.ForeverSpellValue(10692, 0, 25),
 		})
 	case proto.ZanzaBuff_GizzardGum:
 		character.AddStats(stats.Stats{
-			stats.Spirit: 25,
+			stats.Spirit: character.ForeverSpellValue(10693, 0, 25),
 		})
 	case proto.ZanzaBuff_LungJuiceCocktail:
 		character.AddStats(stats.Stats{
-			stats.Stamina: 25,
+			stats.Stamina: character.ForeverSpellValue(10668, 0, 25),
 		})
 	case proto.ZanzaBuff_DarnassusGiftCollection:
 		character.AddStats(stats.Stats{
@@ -656,11 +656,11 @@ func applyHitConsumableConsumes(character *Character, consumes *proto.Consumes) 
 	switch consumes.HitConsumable {
 	case proto.HitConsumable_FireToastedBun:
 		character.AddStats(stats.Stats{
-			stats.MeleeHit: 2 * MeleeHitRatingPerHitChance,
+			stats.MeleeHit: character.ForeverSpellValue(29332, 0, 2) * MeleeHitRatingPerHitChance,
 		})
 	case proto.HitConsumable_DarkDesire:
 		character.AddStats(stats.Stats{
-			stats.MeleeHit: 2 * MeleeHitRatingPerHitChance,
+			stats.MeleeHit: character.ForeverSpellValue(27723, 0, 2) * MeleeHitRatingPerHitChance,
 		})
 	}
 }
@@ -675,22 +675,22 @@ func applyMiscConsumes(character *Character, miscConsumes *proto.MiscConsumes) {
 	}
 
 	if miscConsumes.BoglingRoot {
-		character.PseudoStats.BonusPhysicalDamage += 1
+		character.PseudoStats.BonusPhysicalDamage += character.ForeverSpellValue(5665, 0, 1)
 	}
 
 	if miscConsumes.RaptorPunch {
 		character.AddStats(stats.Stats{
-			stats.Intellect: 4,
-			stats.Stamina:   -5,
+			stats.Intellect: character.ForeverSpellValue(6114, 0, 4),
+			stats.Stamina:   character.ForeverSpellValue(6114, 1, -5),
 		})
 	}
 
 	if miscConsumes.JujuEmber {
-		character.AddStat(stats.FireResistance, 15)
+		character.AddStat(stats.FireResistance, character.ForeverSpellValue(16326, 0, 15))
 	}
 
 	if miscConsumes.JujuChill {
-		character.AddStat(stats.FrostResistance, 15)
+		character.AddStat(stats.FrostResistance, character.ForeverSpellValue(16325, 0, 15))
 	}
 
 	if miscConsumes.JujuFlurry && character.AutoAttacks.enabled {

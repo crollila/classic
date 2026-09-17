@@ -403,6 +403,10 @@ func (at *auraTracker) registerAura(unit *Unit, aura Aura) *Aura {
 		panic(fmt.Sprintf("Over %d registered auras when registering %s! There is probably an aura being registered every iteration.", limit, aura.Label))
 	}
 
+	if unit.foreverOverrides != nil {
+		unit.foreverOverrides.patchAuraDuration(unit, &aura)
+	}
+
 	newAura := &Aura{}
 	*newAura = aura
 	newAura.Unit = unit

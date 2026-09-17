@@ -150,6 +150,67 @@ var BuffSpellValues = map[BuffName]stats.Stats{
 	},
 }
 
+// Spell effects behind BuffSpellValues, consumed by Forever overrides through
+// Unit.ForeverSpellValue. Buffs without an unambiguous spell are absent.
+type foreverBuffEffect struct {
+	spellID func() int32
+	effects map[stats.Stat]int
+}
+
+var foreverBuffEffects = map[BuffName]foreverBuffEffect{
+	ArcaneIntellect:    {func() int32 { return 23028 }, map[stats.Stat]int{stats.Intellect: 0}},
+	DivineSpirit:       {func() int32 { return 27841 }, map[stats.Stat]int{stats.Spirit: 0}},
+	BlessingOfMight:    {func() int32 { return TernaryInt32(IncludeAQ, 25291, 19838) }, map[stats.Stat]int{stats.AttackPower: 0}},
+	BlessingOfWisdom:   {func() int32 { return TernaryInt32(IncludeAQ, 25290, 19854) }, map[stats.Stat]int{stats.MP5: 0}},
+	BloodPact:          {func() int32 { return 11767 }, map[stats.Stat]int{stats.Stamina: 0}},
+	DevotionAura:       {func() int32 { return 10293 }, map[stats.Stat]int{stats.BonusArmor: 0}},
+	GraceOfAir:         {func() int32 { return TernaryInt32(IncludeAQ, 25360, 10626) }, map[stats.Stat]int{stats.Agility: 0}},
+	ManaSpring:         {func() int32 { return 10494 }, map[stats.Stat]int{stats.MP5: 0}},
+	PowerWordFortitude: {func() int32 { return 10938 }, map[stats.Stat]int{stats.Stamina: 0}},
+	StrengthOfEarth:    {func() int32 { return TernaryInt32(IncludeAQ, 25362, 10441) }, map[stats.Stat]int{stats.Strength: 0}},
+	MarkOfTheWild: {func() int32 { return 21850 }, map[stats.Stat]int{
+		stats.BonusArmor: 0,
+		stats.Stamina:    1, stats.Agility: 1, stats.Strength: 1, stats.Intellect: 1, stats.Spirit: 1,
+		stats.ArcaneResistance: 2, stats.ShadowResistance: 2, stats.NatureResistance: 2, stats.FireResistance: 2, stats.FrostResistance: 2,
+	}},
+	ScrollOfAgility:    {func() int32 { return 12174 }, map[stats.Stat]int{stats.Agility: 0}},
+	ScrollOfIntellect:  {func() int32 { return 12176 }, map[stats.Stat]int{stats.Intellect: 0}},
+	ScrollOfSpirit:     {func() int32 { return 12177 }, map[stats.Stat]int{stats.Spirit: 0}},
+	ScrollOfStamina:    {func() int32 { return 12178 }, map[stats.Stat]int{stats.Stamina: 0}},
+	ScrollOfStrength:   {func() int32 { return 12179 }, map[stats.Stat]int{stats.Strength: 0}},
+	ScrollOfProtection: {func() int32 { return 12175 }, map[stats.Stat]int{stats.BonusArmor: 0}},
+}
+
+// ForeverBuffStats returns BuffSpellValues[buff], with Forever spell-value overrides
+// applied for Forever units. Classic units get the table value unchanged.
+func ForeverBuffStats(unit *Unit, buff BuffName) stats.Stats {
+	values := BuffSpellValues[buff]
+	if unit == nil || unit.foreverOverrides == nil {
+		return values
+	}
+	if effect, ok := foreverBuffEffects[buff]; ok {
+		for stat, index := range effect.effects {
+			if values[stat] != 0 {
+				values[stat] = unit.ForeverSpellValue(effect.spellID(), index, values[stat])
+			}
+		}
+	}
+	return values
+}
+
+// foreverPercentMultiplier maps a Classic "1 + N%" multiplier through ForeverSpellValue(N).
+func foreverPercentMultiplier(unit *Unit, spellID int32, effectIndex int, classicMultiplier float64) float64 {
+	if unit.foreverOverrides == nil {
+		return classicMultiplier
+	}
+	percent := math.Round((classicMultiplier-1)*100*1e9) / 1e9 // 1.10 -> 10, not 10.000000000000009
+	forever := unit.ForeverSpellValue(spellID, effectIndex, percent)
+	if forever == percent {
+		return classicMultiplier
+	}
+	return 1 + forever/100
+}
+
 type ExtraOnGain func(aura *Aura, sim *Simulation)
 type ExtraOnExpire func(aura *Aura, sim *Simulation)
 
@@ -224,13 +285,13 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 	bonusResist := float64(0)
 
 	if raidBuffs.ArcaneBrilliance {
-		character.AddStats(BuffSpellValues[ArcaneIntellect])
+		character.AddStats(ForeverBuffStats(&character.Unit, ArcaneIntellect))
 	} else if raidBuffs.ScrollOfIntellect {
-		character.AddStats(BuffSpellValues[ScrollOfIntellect])
+		character.AddStats(ForeverBuffStats(&character.Unit, ScrollOfIntellect))
 	}
 
 	if raidBuffs.GiftOfTheWild > 0 {
-		updateStats := BuffSpellValues[MarkOfTheWild]
+		updateStats := ForeverBuffStats(&character.Unit, MarkOfTheWild)
 		if raidBuffs.GiftOfTheWild == proto.TristateEffect_TristateEffectImproved {
 			updateStats = updateStats.Multiply(1.35).Floor()
 		}
@@ -273,12 +334,12 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 	}
 
 	if raidBuffs.MoonkinAura {
-		character.AddStat(stats.SpellCrit, 3*SpellCritRatingPerCritChance)
+		character.AddStat(stats.SpellCrit, character.ForeverSpellValue(24907, 0, 3)*SpellCritRatingPerCritChance)
 	}
 
 	if raidBuffs.LeaderOfThePack {
 		character.AddStats(stats.Stats{
-			stats.MeleeCrit: 3 * CritRatingPerCritChance,
+			stats.MeleeCrit: character.ForeverSpellValue(24932, 0, 3) * CritRatingPerCritChance,
 		})
 	}
 
@@ -287,17 +348,17 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 	}
 
 	if raidBuffs.PowerWordFortitude > 0 {
-		updateStats := BuffSpellValues[PowerWordFortitude]
+		updateStats := ForeverBuffStats(&character.Unit, PowerWordFortitude)
 		if raidBuffs.PowerWordFortitude == proto.TristateEffect_TristateEffectImproved {
 			updateStats = updateStats.Multiply(1.3).Floor()
 		}
 		character.AddStats(updateStats)
 	} else if raidBuffs.ScrollOfStamina {
-		character.AddStats(BuffSpellValues[ScrollOfStamina])
+		character.AddStats(ForeverBuffStats(&character.Unit, ScrollOfStamina))
 	}
 
 	if raidBuffs.BloodPact > 0 {
-		updateStats := BuffSpellValues[BloodPact]
+		updateStats := ForeverBuffStats(&character.Unit, BloodPact)
 		if raidBuffs.BloodPact == proto.TristateEffect_TristateEffectImproved {
 			updateStats = updateStats.Multiply(1.3).Floor()
 		}
@@ -315,9 +376,9 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 	}
 
 	if raidBuffs.DivineSpirit {
-		character.AddStats(BuffSpellValues[DivineSpirit])
+		character.AddStats(ForeverBuffStats(&character.Unit, DivineSpirit))
 	} else if raidBuffs.ScrollOfSpirit {
-		character.AddStats(BuffSpellValues[ScrollOfSpirit])
+		character.AddStats(ForeverBuffStats(&character.Unit, ScrollOfSpirit))
 	}
 
 	if individualBuffs.BlessingOfKings && isAlliance {
@@ -366,13 +427,13 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 	}
 
 	if individualBuffs.BlessingOfWisdom > 0 && isAlliance {
-		updateStats := BuffSpellValues[BlessingOfWisdom]
+		updateStats := ForeverBuffStats(&character.Unit, BlessingOfWisdom)
 		if individualBuffs.BlessingOfWisdom == proto.TristateEffect_TristateEffectImproved {
 			updateStats = updateStats.Multiply(1.2)
 		}
 		character.AddStats(updateStats)
 	} else if raidBuffs.ManaSpringTotem > 0 && isHorde {
-		updateStats := BuffSpellValues[ManaSpring]
+		updateStats := ForeverBuffStats(&character.Unit, ManaSpring)
 		if raidBuffs.ManaSpringTotem == proto.TristateEffect_TristateEffectImproved {
 			updateStats = updateStats.Multiply(1.25)
 		}
@@ -491,12 +552,13 @@ func SanctityAuraAura(character *Character) *Aura {
 }
 
 func BlessingOfKingsAura(character *Character) *Aura {
+	kings := foreverPercentMultiplier(&character.Unit, 20217, 0, 1.10)
 	statDeps := []*stats.StatDependency{
-		character.NewDynamicMultiplyStat(stats.Stamina, 1.10),
-		character.NewDynamicMultiplyStat(stats.Agility, 1.10),
-		character.NewDynamicMultiplyStat(stats.Strength, 1.10),
-		character.NewDynamicMultiplyStat(stats.Intellect, 1.10),
-		character.NewDynamicMultiplyStat(stats.Spirit, 1.10),
+		character.NewDynamicMultiplyStat(stats.Stamina, kings),
+		character.NewDynamicMultiplyStat(stats.Agility, kings),
+		character.NewDynamicMultiplyStat(stats.Strength, kings),
+		character.NewDynamicMultiplyStat(stats.Intellect, kings),
+		character.NewDynamicMultiplyStat(stats.Spirit, kings),
 	}
 
 	return MakePermanent(character.RegisterAura(Aura{
@@ -557,7 +619,7 @@ func ApplyInspiration(character *Character, uptime float64) {
 }
 
 func DevotionAuraAura(unit *Unit, points int32) *Aura {
-	updateStats := BuffSpellValues[DevotionAura]
+	updateStats := ForeverBuffStats(unit, DevotionAura)
 	updateStats = updateStats.Multiply(1 + .125*float64(points))
 
 	return unit.RegisterAura(Aura{
@@ -1342,7 +1404,7 @@ func StrengthOfEarthTotemAura(unit *Unit, multiplier float64) *Aura {
 	rank := TernaryInt32(IncludeAQ, 5, 4)
 	spellID := []int32{0, 8075, 8160, 8161, 10442, 25361}[rank]
 	duration := time.Minute * 2
-	updateStats := BuffSpellValues[StrengthOfEarth].Multiply(multiplier).Floor()
+	updateStats := ForeverBuffStats(unit, StrengthOfEarth).Multiply(multiplier).Floor()
 
 	aura := unit.GetOrRegisterAura(Aura{
 		Label:      "Strength of Earth Totem",
@@ -1371,7 +1433,7 @@ func GraceOfAirTotemAura(unit *Unit, multiplier float64) *Aura {
 	rank := TernaryInt32(IncludeAQ, 3, 2)
 	spellID := []int32{0, 8835, 10627, 25359}[rank]
 	duration := time.Minute * 2
-	updateStats := BuffSpellValues[GraceOfAir].Multiply(multiplier).Floor()
+	updateStats := ForeverBuffStats(unit, GraceOfAir).Multiply(multiplier).Floor()
 
 	aura := unit.GetOrRegisterAura(Aura{
 		Label:      "Grace of Air Totem",
@@ -1405,7 +1467,7 @@ var BattleShoutLevel = [BattleShoutRanks + 1]int{0, 1, 12, 22, 32, 42, 52, 60}
 func BattleShoutAura(unit *Unit, impBattleShout int32, boomingVoicePts int32, has3pcWrath bool) *Aura {
 	rank := TernaryInt32(IncludeAQ, 7, 6)
 	spellId := BattleShoutSpellId[rank]
-	baseAP := BattleShoutBaseAP[rank]
+	baseAP := unit.ForeverSpellValue(spellId, 0, BattleShoutBaseAP[rank])
 
 	return unit.GetOrRegisterAura(Aura{
 		Label:      "Battle Shout",
@@ -1426,8 +1488,8 @@ func BattleShoutAura(unit *Unit, impBattleShout int32, boomingVoicePts int32, ha
 }
 
 func TrueshotAura(unit *Unit) *Aura {
-	rangedAP := 100.0
-	meleeAP := 100.0
+	rangedAP := unit.ForeverSpellValue(20906, 0, 100.0)
+	meleeAP := unit.ForeverSpellValue(20906, 1, 100.0)
 
 	aura := MakePermanent(unit.RegisterAura(Aura{
 		Label:    "Trueshot Aura",
@@ -1448,7 +1510,7 @@ func TrueshotAura(unit *Unit) *Aura {
 func BlessingOfMightAura(unit *Unit, impBomPts int32) *Aura {
 	spellID := TernaryInt32(IncludeAQ, 25291, 19838)
 
-	bonusAP := math.Floor(BuffSpellValues[BlessingOfMight][stats.AttackPower] * (1 + 0.04*float64(impBomPts)))
+	bonusAP := math.Floor(ForeverBuffStats(unit, BlessingOfMight)[stats.AttackPower] * (1 + 0.04*float64(impBomPts)))
 
 	aura := MakePermanent(unit.GetOrRegisterAura(Aura{
 		Label:      "Blessing of Might",
@@ -1636,11 +1698,11 @@ func ApplyRallyingCryOfTheDragonslayer(unit *Unit, category string) {
 	makeExclusiveBuff(aura, BuffConfig{
 		Category: category,
 		Stats: []StatConfig{
-			{stats.SpellCrit, 10 * SpellCritRatingPerCritChance, false},
-			{stats.MeleeCrit, 5 * CritRatingPerCritChance, false},
+			{stats.SpellCrit, unit.ForeverSpellValue(22888, 0, 10) * SpellCritRatingPerCritChance, false},
+			{stats.MeleeCrit, unit.ForeverSpellValue(22888, 2, 5) * CritRatingPerCritChance, false},
 			// TODO: {stats.RangedCrit, 5*CritRatingPerCritChance, false},
-			{stats.AttackPower, 140, false},
-			{stats.RangedAttackPower, 140, false},
+			{stats.AttackPower, unit.ForeverSpellValue(22888, 1, 140), false},
+			{stats.RangedAttackPower, unit.ForeverSpellValue(22888, 3, 140), false},
 		},
 	})
 }
@@ -1658,11 +1720,11 @@ func ApplySpiritOfZandalar(unit *Unit) {
 	makeExclusiveBuff(aura, BuffConfig{
 		Category: "ZandalarBuff",
 		Stats: []StatConfig{
-			{stats.Agility, 1.15, true},
-			{stats.Intellect, 1.15, true},
-			{stats.Spirit, 1.15, true},
-			{stats.Stamina, 1.15, true},
-			{stats.Strength, 1.15, true},
+			{stats.Agility, foreverPercentMultiplier(unit, 24425, 2, 1.15), true},
+			{stats.Intellect, foreverPercentMultiplier(unit, 24425, 2, 1.15), true},
+			{stats.Spirit, foreverPercentMultiplier(unit, 24425, 2, 1.15), true},
+			{stats.Stamina, foreverPercentMultiplier(unit, 24425, 2, 1.15), true},
+			{stats.Strength, foreverPercentMultiplier(unit, 24425, 2, 1.15), true},
 		},
 	})
 }
@@ -1677,14 +1739,14 @@ func ApplySongflowerSerenade(unit *Unit) {
 	makeExclusiveBuff(aura, BuffConfig{
 		Category: "SongflowerSerenade",
 		Stats: []StatConfig{
-			{stats.Agility, 15, false},
-			{stats.Intellect, 15, false},
-			{stats.Spirit, 15, false},
-			{stats.Stamina, 15, false},
-			{stats.Strength, 15, false},
-			{stats.MeleeCrit, 5, false},
+			{stats.Agility, unit.ForeverSpellValue(15366, 1, 15), false},
+			{stats.Intellect, unit.ForeverSpellValue(15366, 1, 15), false},
+			{stats.Spirit, unit.ForeverSpellValue(15366, 1, 15), false},
+			{stats.Stamina, unit.ForeverSpellValue(15366, 1, 15), false},
+			{stats.Strength, unit.ForeverSpellValue(15366, 1, 15), false},
+			{stats.MeleeCrit, unit.ForeverSpellValue(15366, 0, 5), false},
 			// TODO: {stats.RangedCrit, 5, false},
-			{stats.SpellCrit, 5, false},
+			{stats.SpellCrit, unit.ForeverSpellValue(15366, 2, 5), false},
 		},
 	})
 }
@@ -1696,6 +1758,7 @@ func ApplyWarchiefsBuffs(unit *Unit, buffs *proto.IndividualBuffs, isAlliance bo
 }
 
 func ApplyWarchiefsBlessing(unit *Unit, category string) {
+	warchiefHaste := foreverPercentMultiplier(unit, 16609, 1, 1.15)
 	aura := MakePermanent(unit.RegisterAura(Aura{
 		Label:      "Warchief's Blessing",
 		ActionID:   ActionID{SpellID: 16609},
@@ -1705,14 +1768,14 @@ func ApplyWarchiefsBlessing(unit *Unit, category string) {
 	makeExclusiveBuff(aura, BuffConfig{
 		Category: category,
 		Stats: []StatConfig{
-			{stats.Health, 300, false},
-			{stats.MP5, 10, false},
+			{stats.Health, unit.ForeverSpellValue(16609, 0, 300), false},
+			{stats.MP5, unit.ForeverSpellValue(16609, 2, 10), false},
 		},
 		ExtraOnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.PseudoStats.MeleeSpeedMultiplier *= 1.15
+			aura.Unit.PseudoStats.MeleeSpeedMultiplier *= warchiefHaste
 		},
 		ExtraOnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.PseudoStats.MeleeSpeedMultiplier /= 1.15
+			aura.Unit.PseudoStats.MeleeSpeedMultiplier /= warchiefHaste
 		},
 	})
 }
@@ -1727,8 +1790,8 @@ func ApplyFengusFerocity(unit *Unit) {
 	makeExclusiveBuff(aura, BuffConfig{
 		Category: "FengusFerocity",
 		Stats: []StatConfig{
-			{stats.AttackPower, 200, false},
-			{stats.RangedAttackPower, 200, false},
+			{stats.AttackPower, unit.ForeverSpellValue(22817, 0, 200), false},
+			{stats.RangedAttackPower, unit.ForeverSpellValue(22817, 1, 200), false},
 		},
 	})
 }
@@ -1743,7 +1806,7 @@ func ApplyMoldarsMoxie(unit *Unit) {
 	makeExclusiveBuff(aura, BuffConfig{
 		Category: "MoldarsMoxie",
 		Stats: []StatConfig{
-			{stats.Stamina, 1.15, true},
+			{stats.Stamina, foreverPercentMultiplier(unit, 22818, 0, 1.15), true},
 		},
 	})
 }
@@ -1758,7 +1821,7 @@ func ApplySlipkiksSavvy(unit *Unit) {
 	makeExclusiveBuff(aura, BuffConfig{
 		Category: "SlipkiksSavvy",
 		Stats: []StatConfig{
-			{stats.SpellCrit, 3 * SpellCritRatingPerCritChance, false},
+			{stats.SpellCrit, unit.ForeverSpellValue(22820, 0, 3) * SpellCritRatingPerCritChance, false},
 		},
 	})
 }

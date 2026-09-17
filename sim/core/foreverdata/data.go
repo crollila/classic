@@ -6,9 +6,7 @@ import (
 	"embed"
 	"encoding/json"
 	"fmt"
-	"math"
 	"slices"
-	"strconv"
 	"strings"
 
 	"github.com/wowsims/classic/sim/core/proto"
@@ -17,7 +15,7 @@ import (
 
 const RulesetID = "forever-discovery-2026-09-13-v2"
 
-//go:embed trees.json
+//go:embed trees.json overrides.json
 var files embed.FS
 
 type Rank struct {
@@ -85,7 +83,25 @@ var data = func() dataset {
 func ManifestSHA256() string { return data.ManifestSHA256 }
 
 // Lookup returns a copy of all mutable slices, keeping embedded data immutable.
+// Rank values replaced by a validated talents override (overrides.json) are returned
+// in place of the embedded values.
 func Lookup(id string) (Record, bool) {
+	r, ok := lookupBase(id)
+	if !ok {
+		return r, false
+	}
+	if o := ActiveOverrides(); o != nil {
+		if t, has := o.Talent(id); has {
+			for i := range r.Ranks {
+				r.Ranks[i].Values = slices.Clone(t.Values[i])
+			}
+		}
+	}
+	return r, true
+}
+
+// lookupBase returns a copy of the embedded record without overrides.
+func lookupBase(id string) (Record, bool) {
 	for _, r := range data.Records {
 		if r.ID == id {
 			r.Adapter.PredictedComponents = slices.Clone(r.Adapter.PredictedComponents)
@@ -259,18 +275,8 @@ func Validate(p *proto.Player) error {
 		}
 	}
 	for key, value := range f.Parameters {
-		valid := false
-		if strings.HasPrefix(key, "scenario.enemy_health.") {
-			index, err := strconv.Atoi(strings.TrimPrefix(key, "scenario.enemy_health."))
-			valid = err == nil && index >= 0 && index < 40 && value >= 0 && value <= 1e12 && !math.IsNaN(value) && !math.IsInf(value, 0)
-		}
-		for _, parameter := range data.Parameters {
-			if parameter.Key == key && value >= parameter.Min && value <= parameter.Max && !math.IsNaN(value) && !math.IsInf(value, 0) {
-				valid = true
-				break
-			}
-		}
-		if !valid {
+		// trees.json parameters, scenario.enemy_health.<n>, and core override hooks.
+		if !ParameterInBounds(key, value) {
 			return fmt.Errorf("unknown or out-of-range Forever parameter %s", key)
 		}
 	}

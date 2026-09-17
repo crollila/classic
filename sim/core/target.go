@@ -328,6 +328,11 @@ func NewAttackTable(attacker *Unit, defender *Unit, weapon *Item) *AttackTable {
 
 		table.GlanceMultiplierMin = max(min(1.3-0.05*(targetDefense-weaponSkill), 0.91), 0.01)
 		table.GlanceMultiplierMax = max(min(1.2-0.03*(targetDefense-weaponSkill), 0.99), 0.2)
+		if attacker.foreverGlanceMultiplier > 0 {
+			// Forever core.combat.glancing_damage_multiplier replaces the skill-based range.
+			table.GlanceMultiplierMin = attacker.foreverGlanceMultiplier
+			table.GlanceMultiplierMax = attacker.foreverGlanceMultiplier
+		}
 
 		if targetDefense > baseWeaponSkill {
 			table.MeleeCritSuppression = (targetDefense - baseWeaponSkill) * 0.002

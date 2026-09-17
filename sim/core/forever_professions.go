@@ -133,20 +133,20 @@ func (c *Character) applyForeverClassBuffDuration(raid *proto.RaidBuffs) {
 	}
 	delta := stats.Stats{}
 	if raid.ArcaneBrilliance {
-		delta = delta.Add(BuffSpellValues[ArcaneIntellect])
+		delta = delta.Add(ForeverBuffStats(&c.Unit, ArcaneIntellect))
 	}
 	if raid.DivineSpirit {
-		delta = delta.Add(BuffSpellValues[DivineSpirit])
+		delta = delta.Add(ForeverBuffStats(&c.Unit, DivineSpirit))
 	}
 	if raid.PowerWordFortitude > 0 {
-		amount := BuffSpellValues[PowerWordFortitude]
+		amount := ForeverBuffStats(&c.Unit, PowerWordFortitude)
 		if raid.PowerWordFortitude == proto.TristateEffect_TristateEffectImproved {
 			amount = amount.Multiply(1.3).Floor()
 		}
 		delta = delta.Add(amount)
 	}
 	if raid.GiftOfTheWild > 0 {
-		amount := BuffSpellValues[MarkOfTheWild]
+		amount := ForeverBuffStats(&c.Unit, MarkOfTheWild)
 		if raid.GiftOfTheWild == proto.TristateEffect_TristateEffectImproved {
 			amount = amount.Multiply(1.35).Floor()
 		}

@@ -129,7 +129,7 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 		Spec:    PlayerProtoToSpec(player),
 		Forever: player.Forever,
 
-		Equipment: ProtoToEquipment(player.Equipment),
+		Equipment: classicEquipmentOrEmpty(player),
 
 		professions: [2]proto.Profession{
 			player.Profession1,
@@ -145,6 +145,11 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 	character.GCD = character.NewTimer()
 
 	character.Label = fmt.Sprintf("%s (#%d)", character.Name, character.Index+1)
+
+	if player.Forever != nil {
+		character.initForeverOverrides(player)
+		character.Equipment = character.foreverEquipment(player.Equipment)
+	}
 
 	character.PrimaryTalentTree = GetPrimaryTalentTreeIndex(player.TalentsString)
 	if player.Forever != nil {
@@ -335,6 +340,7 @@ func (character *Character) applyAllEffects(agent Agent, raidBuffs *proto.RaidBu
 		}
 	}
 
+	character.applyForeverStatConversions()
 	applyRaceEffects(agent)
 	character.applyBuildPhaseAuras(CharacterBuildPhaseBase)
 	playerStats.BaseStats = measureStats()

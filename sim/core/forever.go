@@ -24,6 +24,10 @@ func (c *Character) ForeverParameter(name string, fallback float64) float64 {
 		if value, ok := c.Forever.Parameters[name]; ok {
 			return value
 		}
+		// Best-known default from overrides.json (request values always win).
+		if value, ok := c.foreverParameterDefault(name); ok {
+			return value
+		}
 	}
 	return fallback
 }

@@ -144,6 +144,9 @@ type Spell struct {
 	// Forever-only additive armor-ignore fraction, applied after Classic flat penetration.
 	BonusArmorPenetration float64
 	ForeverIgnoreControl  bool
+	// Forever override base-damage ratios (0 = no override). See forever_overrides.go.
+	foreverImpactBaseRatio   float64
+	foreverPeriodicBaseRatio float64
 
 	BaseDamageMultiplierAdditive     float64 // Applies an additive multiplier to spell base damage
 	DamageMultiplier                 float64 // Applies a multiplicative multiplier to full spell damage
@@ -193,6 +196,11 @@ func (unit *Unit) OnSpellRegistered(handler SpellRegisteredHandler) {
 func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 	if len(unit.Spellbook) > 200 {
 		panic(fmt.Sprintf("Over 200 registered spells when registering %s! There is probably a spell being registered every iteration.", config.ActionID))
+	}
+
+	var foreverPatch *foreverSpellPatch
+	if unit.foreverOverrides != nil {
+		foreverPatch = unit.foreverOverrides.patchSpellConfig(unit, &config)
 	}
 
 	if config.BaseDamageMultiplierAdditive == 0 {
@@ -293,6 +301,10 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 
 	spell.Rank = config.Rank
 	spell.RequiredLevel = config.RequiredLevel
+	if foreverPatch != nil {
+		spell.foreverImpactBaseRatio = foreverPatch.impactBaseRatio
+		spell.foreverPeriodicBaseRatio = foreverPatch.periodicBaseRatio
+	}
 
 	spell.CdSpell = spell
 

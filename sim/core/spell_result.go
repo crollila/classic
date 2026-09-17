@@ -357,6 +357,9 @@ func (spell *Spell) CalcDamage(sim *Simulation, target *Unit, baseDamage float64
 	attackerMultiplier := spell.AttackerDamageMultiplier(spell.Unit.AttackTables[target.UnitIndex][spell.CastType], false)
 
 	baseDamage *= spell.BaseDamageMultiplierAdditive
+	if spell.foreverImpactBaseRatio != 0 {
+		baseDamage *= spell.foreverImpactBaseRatio
+	}
 
 	if spell.BonusCoefficient > 0 {
 		baseDamage += spell.BonusCoefficient * spell.GetBonusDamage(target)
@@ -366,6 +369,9 @@ func (spell *Spell) CalcDamage(sim *Simulation, target *Unit, baseDamage float64
 }
 func (spell *Spell) CalcPeriodicDamage(sim *Simulation, target *Unit, baseDamage float64, outcomeApplier OutcomeApplier) *SpellResult {
 	baseDamage *= spell.BaseDamageMultiplierAdditive
+	if spell.foreverPeriodicBaseRatio != 0 {
+		baseDamage *= spell.foreverPeriodicBaseRatio
+	}
 
 	attackerMultiplier := spell.AttackerDamageMultiplier(spell.Unit.AttackTables[target.UnitIndex][spell.CastType], true)
 	dot := spell.DotOrAOEDot(target)
@@ -385,6 +391,9 @@ func (dot *Dot) Snapshot(target *Unit, baseDamage float64, isRollover bool) {
 	// Rollovers in SoD don't seem to update anything
 	if !isRollover {
 		dot.SnapshotBaseDamage = baseDamage * dot.Spell.BaseDamageMultiplierAdditive
+		if dot.Spell.foreverPeriodicBaseRatio != 0 {
+			dot.SnapshotBaseDamage *= dot.Spell.foreverPeriodicBaseRatio
+		}
 		if dot.BonusCoefficient > 0 {
 			dot.SnapshotBaseDamage += dot.BonusCoefficient * dot.Spell.GetBonusDamage(target)
 		}
@@ -539,6 +548,9 @@ func (spell *Spell) calcHealingInternal(sim *Simulation, target *Unit, baseHeali
 	return result
 }
 func (spell *Spell) CalcHealing(sim *Simulation, target *Unit, baseHealing float64, outcomeApplier OutcomeApplier) *SpellResult {
+	if spell.foreverImpactBaseRatio != 0 {
+		baseHealing *= spell.foreverImpactBaseRatio
+	}
 	if spell.BonusCoefficient > 0 {
 		baseHealing += spell.BonusCoefficient * spell.HealingPower(target)
 	}
@@ -552,6 +564,9 @@ func (dot *Dot) SnapshotHeal(target *Unit, baseHealing float64, isRollover bool)
 	// Rollovers in SoD don't seem to update anything
 	if !isRollover {
 		dot.SnapshotBaseDamage = baseHealing
+		if dot.Spell.foreverPeriodicBaseRatio != 0 {
+			dot.SnapshotBaseDamage *= dot.Spell.foreverPeriodicBaseRatio
+		}
 		if dot.BonusCoefficient > 0 {
 			dot.SnapshotBaseDamage += dot.BonusCoefficient * dot.Spell.HealingPower(target)
 		}

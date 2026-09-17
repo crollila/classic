@@ -1,0 +1,51 @@
+{
+  "version": "forever-overrides-1",
+  "generated_at": "2026-09-16T12:00:00Z",
+  "source_hash": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+  "spells": {
+    "116": {
+      "effects": {
+        "0": {
+          "base": {"classic": 20, "forever": 40},
+          "max": {"classic": 22, "forever": 44},
+          "coefficient": {"classic": 0.163, "forever": 0.5},
+          "kind": "school_damage"
+        }
+      },
+      "cast_ms": {"classic": 1500, "forever": 1000},
+      "cost": {"classic": 25, "forever": 30, "power": "mana"},
+      "provenance": {"beliefs": ["belief:mage.frostbolt.r1"], "status": "CONFIRMED", "sources": ["client:SpellEffect"], "reason": "fixture"}
+    },
+    "205": {
+      "effects": {
+        "0": {"coefficient": {"classic": 0.5, "forever": 0.9}, "kind": "school_damage"}
+      },
+      "provenance": {"beliefs": ["belief:mage.frostbolt.r2"], "status": "PREDICTED"}
+    },
+    "17628": {
+      "effects": {"0": {"base": {"classic": 149, "forever": 199}, "kind": "apply_aura"}},
+      "provenance": {"beliefs": ["belief:flask.supreme-power"]}
+    }
+  },
+  "items": {
+    "990001": {
+      "stats": {
+        "strength": {"classic": 10, "forever": 15},
+        "agility": {"classic": 7, "forever": 9}
+      },
+      "provenance": {"beliefs": ["belief:item.990001"]}
+    },
+    "990002": {
+      "new_item": {"id": 990002, "name": "Forever Test Circlet", "type": 1, "armorType": 1, "stats": [0, 0, 0, 12, 0, 20], "quality": 4},
+      "provenance": {"beliefs": ["belief:item.990002"]}
+    }
+  },
+  "talents": {
+    "warrior.talent.anticipation": {"values": [[5], [10], [15], [20], [25]], "provenance": {"beliefs": ["belief:talent.anticipation"]}},
+    "mage.talent.arcane-focus": {"values": [[1], [2]], "provenance": {"beliefs": ["belief:bad-shape"]}}
+  },
+  "parameters": {
+    "core.combat.spell_crit_damage_multiplier": {"value": 2.0, "provenance": {"beliefs": ["belief:crit"]}},
+    "maelstrom_proc_chance": {"value": 7, "provenance": {"beliefs": ["belief:out-of-bounds"]}}
+  }
+}

@@ -111,6 +111,11 @@ func RunSim(rsr *proto.RaidSimRequest, progress chan *proto.ProgressMetrics, sig
 }
 
 func runSim(rsr *proto.RaidSimRequest, progress chan *proto.ProgressMetrics, skipPresim bool, signals simsignals.Signals) (result *proto.RaidSimResult) {
+	return runSimObserved(rsr, progress, skipPresim, signals, nil)
+}
+
+// runSimObserved is runSim with an optional callback receiving the main simulation once constructed.
+func runSimObserved(rsr *proto.RaidSimRequest, progress chan *proto.ProgressMetrics, skipPresim bool, signals simsignals.Signals, observe func(*Simulation)) (result *proto.RaidSimResult) {
 	if !rsr.SimOptions.IsTest {
 		defer func() {
 			if err := recover(); err != nil {
@@ -139,6 +144,9 @@ func runSim(rsr *proto.RaidSimRequest, progress chan *proto.ProgressMetrics, ski
 	}
 
 	sim := NewSim(rsr, signals)
+	if observe != nil {
+		observe(sim)
+	}
 
 	if !skipPresim {
 		if progress != nil {

@@ -65,6 +65,11 @@ type Unit struct {
 	foreverControls         *foreverControlState
 	ForeverRangedMissChance float64
 	ForeverMagicMissChance  float64
+	// Forever override layer (forever_overrides.go). nil/zero for Classic units.
+	foreverOverrides        *foreverOverrideState
+	foreverGlanceMultiplier float64
+	foreverMeleeCritBase    float64
+	foreverSpellCritBase    float64
 
 	// Environment in which this Unit exists. This will be nil until after the
 	// construction phase.
