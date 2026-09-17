@@ -65,6 +65,7 @@ type fvDataset struct {
 	RulesetID      string                `json:"ruleset_id"`
 	ManifestSHA256 string                `json:"manifest_sha256"`
 	ClassicLayout  map[string][][]string `json:"classic_layout"`
+	RaceClasses    map[string][]string   `json:"race_classes"`
 	Records        []fvRecord            `json:"records"`
 	Mechanics      []fvMechanic          `json:"mechanics"`
 }
@@ -256,13 +257,47 @@ type autoAddition struct {
 	Priority float64 `json:"auto_priority"`
 }
 
-// withForeverRotation mirrors ui/forever/rotation.ts for non-healer specs.
+// rotationCandidate is one APL item the Forever UI would prepend.
+type rotationCandidate struct {
+	autoAddition
+	item *proto.APLListItem
+}
+
+// withForeverRotation mirrors ui/forever/rotation.ts for non-healer specs: every
+// candidate is prepended (the web UI behaviour).
 func (d *fvDataset) withForeverRotation(base *proto.APLRotation, f *proto.ForeverOptions, c proto.Class, spells []*proto.SpellStats, targetCount int) (*proto.APLRotation, []autoAddition, error) {
+	cands, err := d.foreverRotationCandidates(f, c, spells, targetCount)
+	if err != nil {
+		return nil, nil, err
+	}
+	rot, added := applyRotationCandidates(base, cands)
+	return rot, added, nil
+}
+
+// applyRotationCandidates prepends the candidates (in priority order) to base.
+func applyRotationCandidates(base *proto.APLRotation, cands []rotationCandidate) (*proto.APLRotation, []autoAddition) {
+	added := []autoAddition{}
+	if len(cands) == 0 || base == nil {
+		return base, added
+	}
+	out := googleProto.Clone(base).(*proto.APLRotation)
+	items := []*proto.APLListItem{}
+	for _, cand := range cands {
+		items = append(items, googleProto.Clone(cand.item).(*proto.APLListItem))
+		added = append(added, cand.autoAddition)
+	}
+	out.PriorityList = append(items, out.PriorityList...)
+	return out, added
+}
+
+// foreverRotationCandidates lists, in UI priority order, the APL items the Forever
+// UI auto-rotation would prepend for this player.
+func (d *fvDataset) foreverRotationCandidates(f *proto.ForeverOptions, c proto.Class, spells []*proto.SpellStats, targetCount int) ([]rotationCandidate, error) {
 	if f == nil {
-		return base, nil, nil
+		return nil, nil
 	}
 	if v, ok := f.Parameters["rotation.forever_auto"]; ok && v == 0 {
-		return base, nil, nil
+		return nil, nil
 	}
 	available := func(id int32) bool {
 		for _, s := range spells {
@@ -296,8 +331,7 @@ func (d *fvDataset) withForeverRotation(base *proto.APLRotation, f *proto.Foreve
 	}
 	sort.SliceStable(rows, func(i, j int) bool { return *rows[i].adapter.AutoPriority < *rows[j].adapter.AutoPriority })
 
-	additions := []*proto.APLListItem{}
-	added := []autoAddition{}
+	out := []rotationCandidate{}
 	parse := func(js string) (*proto.APLListItem, error) {
 		item := &proto.APLListItem{}
 		if err := protojson.Unmarshal([]byte(js), item); err != nil {
@@ -319,17 +353,16 @@ func (d *fvDataset) withForeverRotation(base *proto.APLRotation, f *proto.Foreve
 			js := fmt.Sprintf(`{"action":{"condition":{"or":{"vals":[{"auraIsActive":{"auraId":{"otherId":19,"tag":%d}}},{"cmp":{"op":"OpGe","lhs":{"auraNumStacks":{"auraId":{"otherId":19,"tag":%d}}},"rhs":{"const":{"val":"4"}}}}]}},"channelSpell":{"spellId":{"spellId":10212}}}}`, barrage.ActionTag, blast.ActionTag)
 			item, err := parse(js)
 			if err != nil {
-				return nil, nil, err
+				return nil, err
 			}
-			additions = append(additions, item)
-			added = append(added, autoAddition{ID: "spell:10212", Name: "Arcane Missiles (Arcane Blast / Missile Barrage condition)"})
+			out = append(out, rotationCandidate{autoAddition{ID: "spell:10212", Name: "Arcane Missiles (Arcane Blast / Missile Barrage condition)"}, item})
 		}
 	}
 	for _, r := range rows {
 		var target map[string]interface{}
 		if len(r.adapter.AutoTarget) > 0 {
 			if err := json.Unmarshal(r.adapter.AutoTarget, &target); err != nil {
-				return nil, nil, err
+				return nil, err
 			}
 			if t, _ := target["type"].(string); t == "Target" {
 				if idx, _ := target["index"].(float64); int(idx) >= targetCount {
@@ -367,21 +400,15 @@ func (d *fvDataset) withForeverRotation(base *proto.APLRotation, f *proto.Foreve
 		}
 		js, err := json.Marshal(map[string]interface{}{"action": action})
 		if err != nil {
-			return nil, nil, err
+			return nil, err
 		}
 		item, err := parse(string(js))
 		if err != nil {
-			return nil, nil, err
+			return nil, err
 		}
-		additions = append(additions, item)
-		added = append(added, autoAddition{ID: r.id, Name: r.name, Tag: r.tag, Priority: *r.adapter.AutoPriority})
+		out = append(out, rotationCandidate{autoAddition{ID: r.id, Name: r.name, Tag: r.tag, Priority: *r.adapter.AutoPriority}, item})
 	}
-	if len(additions) == 0 {
-		return base, added, nil
-	}
-	out := googleProto.Clone(base).(*proto.APLRotation)
-	out.PriorityList = append(additions, out.PriorityList...)
-	return out, added, nil
+	return out, nil
 }
 
 func (d *fvDataset) actionName(tag int32) string {

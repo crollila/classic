@@ -1,0 +1,3870 @@
+{
+ "note": "Classic talent tree layout (fieldName, location, maxPoints, prereqLocation) copied from ui/core/talents/trees/<class>.json; used for Classic build legality in optimize-talents. TestClassicTreesMatchRepo checks it against the repo.",
+ "classes": {
+  "druid": [
+   {
+    "name": "Balance",
+    "talents": [
+     {
+      "fieldName": "improvedWrath",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 0
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "naturesGrasp",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 1
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "improvedNaturesGrasp",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 2
+      },
+      "maxPoints": 4,
+      "prereqLocation": {
+       "rowIdx": 0,
+       "colIdx": 1
+      }
+     },
+     {
+      "fieldName": "improvedEntanglingRoots",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 0
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "improvedMoonfire",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "naturalWeapons",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "naturalShapeshifter",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 3
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "improvedThorns",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 0
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "omenOfClarity",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 2
+      },
+      "maxPoints": 1,
+      "prereqLocation": {
+       "rowIdx": 1,
+       "colIdx": 2
+      }
+     },
+     {
+      "fieldName": "naturesReach",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 3
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "vengeance",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 1
+      },
+      "maxPoints": 5,
+      "prereqLocation": {
+       "rowIdx": 1,
+       "colIdx": 1
+      }
+     },
+     {
+      "fieldName": "improvedStarfire",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "naturesGrace",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 1
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "moonglow",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 2
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "moonfury",
+      "location": {
+       "rowIdx": 5,
+       "colIdx": 1
+      },
+      "maxPoints": 5,
+      "prereqLocation": {
+       "rowIdx": 4,
+       "colIdx": 1
+      }
+     },
+     {
+      "fieldName": "moonkinForm",
+      "location": {
+       "rowIdx": 6,
+       "colIdx": 1
+      },
+      "maxPoints": 1
+     }
+    ]
+   },
+   {
+    "name": "Feral Combat",
+    "talents": [
+     {
+      "fieldName": "ferocity",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "feralAggression",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "feralInstinct",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 0
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "brutalImpact",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 1
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "thickHide",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "felineSwiftness",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 0
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "feralCharge",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 1
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "sharpenedClaws",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 2
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "improvedShred",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 0
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "predatoryStrikes",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 1
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "bloodFrenzy",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 2
+      },
+      "maxPoints": 2,
+      "prereqLocation": {
+       "rowIdx": 2,
+       "colIdx": 2
+      }
+     },
+     {
+      "fieldName": "primalFury",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 3
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "savageFury",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 0
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "faerieFireFeral",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 2
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "heartOfTheWild",
+      "location": {
+       "rowIdx": 5,
+       "colIdx": 1
+      },
+      "maxPoints": 5,
+      "prereqLocation": {
+       "rowIdx": 3,
+       "colIdx": 1
+      }
+     },
+     {
+      "fieldName": "leaderOfThePack",
+      "location": {
+       "rowIdx": 6,
+       "colIdx": 1
+      },
+      "maxPoints": 1
+     }
+    ]
+   },
+   {
+    "name": "Restoration",
+    "talents": [
+     {
+      "fieldName": "improvedMarkOfTheWild",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "furor",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "improvedHealingTouch",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 0
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "naturesFocus",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "improvedEnrage",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 2
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "reflection",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 1
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "insectSwarm",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 2
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "subtlety",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 3
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "tranquilSpirit",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "improvedRejuvenation",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 3
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "naturesSwiftness",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 0
+      },
+      "maxPoints": 1,
+      "prereqLocation": {
+       "rowIdx": 1,
+       "colIdx": 0
+      }
+     },
+     {
+      "fieldName": "giftOfNature",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 2
+      },
+      "maxPoints": 5,
+      "prereqLocation": {
+       "rowIdx": 2,
+       "colIdx": 2
+      }
+     },
+     {
+      "fieldName": "improvedTranquility",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 3
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "improvedRegrowth",
+      "location": {
+       "rowIdx": 5,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "swiftmend",
+      "location": {
+       "rowIdx": 6,
+       "colIdx": 1
+      },
+      "maxPoints": 1,
+      "prereqLocation": {
+       "rowIdx": 3,
+       "colIdx": 1
+      }
+     }
+    ]
+   }
+  ],
+  "hunter": [
+   {
+    "name": "Beast Mastery",
+    "talents": [
+     {
+      "fieldName": "improvedAspectOfTheHawk",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "enduranceTraining",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "improvedEyesOfTheBeast",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 0
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "improvedAspectOfTheMonkey",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "thickHide",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 2
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "improvedRevivePet",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 3
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "pathfinding",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 0
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "bestialSwiftness",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 1
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "unleashedFury",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "improvedMendPet",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 1
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "ferocity",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "spiritBond",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 0
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "intimidation",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 1
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "bestialDiscipline",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 3
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "frenzy",
+      "location": {
+       "rowIdx": 5,
+       "colIdx": 2
+      },
+      "maxPoints": 5,
+      "prereqLocation": {
+       "rowIdx": 3,
+       "colIdx": 2
+      }
+     },
+     {
+      "fieldName": "bestialWrath",
+      "location": {
+       "rowIdx": 6,
+       "colIdx": 1
+      },
+      "maxPoints": 1,
+      "prereqLocation": {
+       "rowIdx": 4,
+       "colIdx": 1
+      }
+     }
+    ]
+   },
+   {
+    "name": "Marksmanship",
+    "talents": [
+     {
+      "fieldName": "improvedConcussiveShot",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "efficiency",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "improvedHuntersMark",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "lethalShots",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "aimedShot",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 0
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "improvedArcaneShot",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "hawkEye",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 3
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "improvedSerpentSting",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "mortalShots",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 2
+      },
+      "maxPoints": 5,
+      "prereqLocation": {
+       "rowIdx": 1,
+       "colIdx": 2
+      }
+     },
+     {
+      "fieldName": "scatterShot",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 0
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "barrage",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 1
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "improvedScorpidSting",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 2
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "rangedWeaponSpecialization",
+      "location": {
+       "rowIdx": 5,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "trueshotAura",
+      "location": {
+       "rowIdx": 6,
+       "colIdx": 1
+      },
+      "maxPoints": 1,
+      "prereqLocation": {
+       "rowIdx": 4,
+       "colIdx": 1
+      }
+     }
+    ]
+   },
+   {
+    "name": "Survival",
+    "talents": [
+     {
+      "fieldName": "monsterSlaying",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 0
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "humanoidSlaying",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 1
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "deflection",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "entrapment",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 0
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "savageStrikes",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 1
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "improvedWingClip",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "cleverTraps",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 0
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "survivalist",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "deterrence",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 2
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "trapMastery",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 0
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "surefooted",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 1
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "improvedFeignDeath",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 3
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "killerInstinct",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 1
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "counterattack",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 2
+      },
+      "maxPoints": 1,
+      "prereqLocation": {
+       "rowIdx": 2,
+       "colIdx": 2
+      }
+     },
+     {
+      "fieldName": "lightningReflexes",
+      "location": {
+       "rowIdx": 5,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "wyvernSting",
+      "location": {
+       "rowIdx": 6,
+       "colIdx": 1
+      },
+      "maxPoints": 1,
+      "prereqLocation": {
+       "rowIdx": 4,
+       "colIdx": 1
+      }
+     }
+    ]
+   }
+  ],
+  "mage": [
+   {
+    "name": "Arcane",
+    "talents": [
+     {
+      "fieldName": "arcaneSubtlety",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 0
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "arcaneFocus",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "improvedArcaneMissiles",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "wandSpecialization",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 0
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "magicAbsorption",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "arcaneConcentration",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "magicAttunement",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 0
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "improvedArcaneExplosion",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 1
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "arcaneResilience",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 2
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "improvedManaShield",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 0
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "improvedCounterspell",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 1
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "arcaneMeditation",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 3
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "presenceOfMind",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 1
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "arcaneMind",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 2
+      },
+      "maxPoints": 5,
+      "prereqLocation": {
+       "rowIdx": 2,
+       "colIdx": 2
+      }
+     },
+     {
+      "fieldName": "arcaneInstability",
+      "location": {
+       "rowIdx": 5,
+       "colIdx": 1
+      },
+      "maxPoints": 3,
+      "prereqLocation": {
+       "rowIdx": 4,
+       "colIdx": 1
+      }
+     },
+     {
+      "fieldName": "arcanePower",
+      "location": {
+       "rowIdx": 6,
+       "colIdx": 1
+      },
+      "maxPoints": 1,
+      "prereqLocation": {
+       "rowIdx": 5,
+       "colIdx": 1
+      }
+     }
+    ]
+   },
+   {
+    "name": "Fire",
+    "talents": [
+     {
+      "fieldName": "improvedFireball",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "impact",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "ignite",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 0
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "flameThrowing",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 1
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "improvedFireBlast",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 2
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "incinerate",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 0
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "improvedFlamestrike",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 1
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "pyroblast",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 2
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "burningSoul",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 3
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "improvedScorch",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 0
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "improvedFireWard",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 1
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "masterOfElements",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 3
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "criticalMass",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 1
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "blastWave",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 2
+      },
+      "maxPoints": 1,
+      "prereqLocation": {
+       "rowIdx": 2,
+       "colIdx": 2
+      }
+     },
+     {
+      "fieldName": "firePower",
+      "location": {
+       "rowIdx": 5,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "combustion",
+      "location": {
+       "rowIdx": 6,
+       "colIdx": 1
+      },
+      "maxPoints": 1,
+      "prereqLocation": {
+       "rowIdx": 4,
+       "colIdx": 1
+      }
+     }
+    ]
+   },
+   {
+    "name": "Frost",
+    "talents": [
+     {
+      "fieldName": "frostWarding",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 0
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "improvedFrostbolt",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "elementalPrecision",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 2
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "iceShards",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 0
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "frostbite",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 1
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "improvedFrostNova",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 2
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "permafrost",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 3
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "piercingIce",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 0
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "coldSnap",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 1
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "improvedBlizzard",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 3
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "arcticReach",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 0
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "frostChanneling",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 1
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "shatter",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 2
+      },
+      "maxPoints": 5,
+      "prereqLocation": {
+       "rowIdx": 1,
+       "colIdx": 2
+      }
+     },
+     {
+      "fieldName": "iceBlock",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 1
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "improvedConeOfCold",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 2
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "wintersChill",
+      "location": {
+       "rowIdx": 5,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "iceBarrier",
+      "location": {
+       "rowIdx": 6,
+       "colIdx": 1
+      },
+      "maxPoints": 1,
+      "prereqLocation": {
+       "rowIdx": 4,
+       "colIdx": 1
+      }
+     }
+    ]
+   }
+  ],
+  "paladin": [
+   {
+    "name": "Holy",
+    "talents": [
+     {
+      "fieldName": "divineStrength",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "divineIntellect",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "spiritualFocus",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "improvedSealOfRighteousness",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "healingLight",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 0
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "consecration",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 1
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "improvedLayOnHands",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 2
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "unyieldingFaith",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 3
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "illumination",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "improvedBlessingOfWisdom",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 2
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "divineFavor",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 1
+      },
+      "maxPoints": 1,
+      "prereqLocation": {
+       "rowIdx": 3,
+       "colIdx": 1
+      }
+     },
+     {
+      "fieldName": "lastingJudgement",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 2
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "holyPower",
+      "location": {
+       "rowIdx": 5,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "holyShock",
+      "location": {
+       "rowIdx": 6,
+       "colIdx": 1
+      },
+      "maxPoints": 1,
+      "prereqLocation": {
+       "rowIdx": 4,
+       "colIdx": 1
+      }
+     }
+    ]
+   },
+   {
+    "name": "Protection",
+    "talents": [
+     {
+      "fieldName": "improvedDevotionAura",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "redoubt",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "precision",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 0
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "guardiansFavor",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 1
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "toughness",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 3
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "blessingOfKings",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 0
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "improvedRighteousFury",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 1
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "shieldSpecialization",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 2
+      },
+      "maxPoints": 3,
+      "prereqLocation": {
+       "rowIdx": 0,
+       "colIdx": 2
+      }
+     },
+     {
+      "fieldName": "anticipation",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 3
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "improvedHammerOfJustice",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 1
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "improvedConcentrationAura",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 2
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "blessingOfSanctuary",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 1
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "reckoning",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "oneHandedWeaponSpecialization",
+      "location": {
+       "rowIdx": 5,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "holyShield",
+      "location": {
+       "rowIdx": 6,
+       "colIdx": 1
+      },
+      "maxPoints": 1,
+      "prereqLocation": {
+       "rowIdx": 4,
+       "colIdx": 1
+      }
+     }
+    ]
+   },
+   {
+    "name": "Retribution",
+    "talents": [
+     {
+      "fieldName": "improvedBlessingOfMight",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "benediction",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "improvedJudgement",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 0
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "improvedSealOfTheCrusader",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 1
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "deflection",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "vindication",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 0
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "conviction",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "sealOfCommand",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 2
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "pursuitOfJustice",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 3
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "eyeForAnEye",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 0
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "improvedRetributionAura",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 2
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "twoHandedWeaponSpecialization",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 0
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "sanctityAura",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 2
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "vengeance",
+      "location": {
+       "rowIdx": 5,
+       "colIdx": 1
+      },
+      "maxPoints": 5,
+      "prereqLocation": {
+       "rowIdx": 2,
+       "colIdx": 1
+      }
+     },
+     {
+      "fieldName": "repentance",
+      "location": {
+       "rowIdx": 6,
+       "colIdx": 1
+      },
+      "maxPoints": 1
+     }
+    ]
+   }
+  ],
+  "priest": [
+   {
+    "name": "Discipline",
+    "talents": [
+     {
+      "fieldName": "unbreakableWill",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "wandSpecialization",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "silentResolve",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 0
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "improvedPowerWordFortitude",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 1
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "improvedPowerWordShield",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 2
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "martyrdom",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 3
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "innerFocus",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 1
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "meditation",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 2
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "improvedInnerFire",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 0
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "mentalAgility",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "improvedManaBurn",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 3
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "mentalStrength",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "divineSpirit",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 2
+      },
+      "maxPoints": 1,
+      "prereqLocation": {
+       "rowIdx": 2,
+       "colIdx": 2
+      }
+     },
+     {
+      "fieldName": "forceOfWill",
+      "location": {
+       "rowIdx": 5,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "powerInfusion",
+      "location": {
+       "rowIdx": 6,
+       "colIdx": 1
+      },
+      "maxPoints": 1,
+      "prereqLocation": {
+       "rowIdx": 4,
+       "colIdx": 1
+      }
+     }
+    ]
+   },
+   {
+    "name": "Holy",
+    "talents": [
+     {
+      "fieldName": "healingFocus",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 0
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "improvedRenew",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 1
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "holySpecialization",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "spellWarding",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "divineFury",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "holyNova",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 0
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "blessedRecovery",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 1
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "inspiration",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 3
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "holyReach",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 0
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "improvedHealing",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 1
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "searingLight",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 2
+      },
+      "maxPoints": 2,
+      "prereqLocation": {
+       "rowIdx": 1,
+       "colIdx": 2
+      }
+     },
+     {
+      "fieldName": "improvedPrayerOfHealing",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 0
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "spiritOfRedemption",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 1
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "spiritualGuidance",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "spiritualHealing",
+      "location": {
+       "rowIdx": 5,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "lightwell",
+      "location": {
+       "rowIdx": 6,
+       "colIdx": 1
+      },
+      "maxPoints": 1,
+      "prereqLocation": {
+       "rowIdx": 4,
+       "colIdx": 1
+      }
+     }
+    ]
+   },
+   {
+    "name": "Shadow",
+    "talents": [
+     {
+      "fieldName": "spiritTap",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "blackout",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "shadowAffinity",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 0
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "improvedShadowWordPain",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 1
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "shadowFocus",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "improvedPsychicScream",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 0
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "improvedMindBlast",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "mindFlay",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 2
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "improvedFade",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 1
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "shadowReach",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 2
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "shadowWeaving",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 3
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "silence",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 0
+      },
+      "maxPoints": 1,
+      "prereqLocation": {
+       "rowIdx": 2,
+       "colIdx": 0
+      }
+     },
+     {
+      "fieldName": "vampiricEmbrace",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 1
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "improvedVampiricEmbrace",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 2
+      },
+      "maxPoints": 2,
+      "prereqLocation": {
+       "rowIdx": 4,
+       "colIdx": 1
+      }
+     },
+     {
+      "fieldName": "darkness",
+      "location": {
+       "rowIdx": 5,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "shadowform",
+      "location": {
+       "rowIdx": 6,
+       "colIdx": 1
+      },
+      "maxPoints": 1,
+      "prereqLocation": {
+       "rowIdx": 4,
+       "colIdx": 1
+      }
+     }
+    ]
+   }
+  ],
+  "rogue": [
+   {
+    "name": "Assassination",
+    "talents": [
+     {
+      "fieldName": "improvedEviscerate",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 0
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "remorselessAttacks",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 1
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "malice",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "ruthlessness",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 0
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "murder",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 1
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "improvedSliceAndDice",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 3
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "relentlessStrikes",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 0
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "improvedExposeArmor",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 1
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "lethality",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 2
+      },
+      "maxPoints": 5,
+      "prereqLocation": {
+       "rowIdx": 0,
+       "colIdx": 2
+      }
+     },
+     {
+      "fieldName": "vilePoisons",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "improvedPoisons",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "coldBlood",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 1
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "improvedKidneyShot",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 2
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "sealFate",
+      "location": {
+       "rowIdx": 5,
+       "colIdx": 1
+      },
+      "maxPoints": 5,
+      "prereqLocation": {
+       "rowIdx": 4,
+       "colIdx": 1
+      }
+     },
+     {
+      "fieldName": "vigor",
+      "location": {
+       "rowIdx": 6,
+       "colIdx": 1
+      },
+      "maxPoints": 1
+     }
+    ]
+   },
+   {
+    "name": "Combat",
+    "talents": [
+     {
+      "fieldName": "improvedGouge",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 0
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "improvedSinisterStrike",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 1
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "lightningReflexes",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "improvedBackstab",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 0
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "deflection",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "precision",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "endurance",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 0
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "riposte",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 1
+      },
+      "maxPoints": 1,
+      "prereqLocation": {
+       "rowIdx": 1,
+       "colIdx": 1
+      }
+     },
+     {
+      "fieldName": "improvedSprint",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 3
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "improvedKick",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 0
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "daggerSpecialization",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "dualWieldSpecialization",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 2
+      },
+      "maxPoints": 5,
+      "prereqLocation": {
+       "rowIdx": 1,
+       "colIdx": 2
+      }
+     },
+     {
+      "fieldName": "maceSpecialization",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 0
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "bladeFlurry",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 1
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "swordSpecialization",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "fistWeaponSpecialization",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 3
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "weaponExpertise",
+      "location": {
+       "rowIdx": 5,
+       "colIdx": 1
+      },
+      "maxPoints": 2,
+      "prereqLocation": {
+       "rowIdx": 4,
+       "colIdx": 1
+      }
+     },
+     {
+      "fieldName": "aggression",
+      "location": {
+       "rowIdx": 5,
+       "colIdx": 2
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "adrenalineRush",
+      "location": {
+       "rowIdx": 6,
+       "colIdx": 1
+      },
+      "maxPoints": 1
+     }
+    ]
+   },
+   {
+    "name": "Subtlety",
+    "talents": [
+     {
+      "fieldName": "masterOfDeception",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "opportunity",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "sleightOfHand",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 0
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "elusiveness",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 1
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "camouflage",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "initiative",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 0
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "ghostlyStrike",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 1
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "improvedAmbush",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 2
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "setup",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 0
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "improvedSap",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 1
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "serratedBlades",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 2
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "heightenedSenses",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 0
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "preparation",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 1
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "dirtyDeeds",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 2
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "hemorrhage",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 3
+      },
+      "maxPoints": 1,
+      "prereqLocation": {
+       "rowIdx": 3,
+       "colIdx": 2
+      }
+     },
+     {
+      "fieldName": "deadliness",
+      "location": {
+       "rowIdx": 5,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "premeditation",
+      "location": {
+       "rowIdx": 6,
+       "colIdx": 1
+      },
+      "maxPoints": 1,
+      "prereqLocation": {
+       "rowIdx": 4,
+       "colIdx": 1
+      }
+     }
+    ]
+   }
+  ],
+  "shaman": [
+   {
+    "name": "Elemental",
+    "talents": [
+     {
+      "fieldName": "convection",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "concussion",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "earthsGrasp",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 0
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "elementalWarding",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 1
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "callOfFlame",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 2
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "elementalFocus",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 0
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "reverberation",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "callOfThunder",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "improvedFireTotems",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 0
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "eyeOfTheStorm",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 1
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "elementalDevastation",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 3
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "stormReach",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 0
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "elementalFury",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 1
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "lightningMastery",
+      "location": {
+       "rowIdx": 5,
+       "colIdx": 2
+      },
+      "maxPoints": 5,
+      "prereqLocation": {
+       "rowIdx": 2,
+       "colIdx": 2
+      }
+     },
+     {
+      "fieldName": "elementalMastery",
+      "location": {
+       "rowIdx": 6,
+       "colIdx": 1
+      },
+      "maxPoints": 1,
+      "prereqLocation": {
+       "rowIdx": 4,
+       "colIdx": 1
+      }
+     }
+    ]
+   },
+   {
+    "name": "Enhancement",
+    "talents": [
+     {
+      "fieldName": "ancestralKnowledge",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "shieldSpecialization",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "guardianTotems",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 0
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "thunderingStrikes",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "improvedGhostWolf",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 2
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "improvedLightningShield",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 3
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "enhancingTotems",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 0
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "twoHandedAxesAndMaces",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 2
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "anticipation",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 3
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "flurry",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 1
+      },
+      "maxPoints": 5,
+      "prereqLocation": {
+       "rowIdx": 1,
+       "colIdx": 1
+      }
+     },
+     {
+      "fieldName": "toughness",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "improvedWeaponTotems",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 0
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "elementalWeapons",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 1
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "parry",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 2
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "weaponMastery",
+      "location": {
+       "rowIdx": 5,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "stormstrike",
+      "location": {
+       "rowIdx": 6,
+       "colIdx": 1
+      },
+      "maxPoints": 1,
+      "prereqLocation": {
+       "rowIdx": 4,
+       "colIdx": 1
+      }
+     }
+    ]
+   },
+   {
+    "name": "Restoration",
+    "talents": [
+     {
+      "fieldName": "improvedHealingWave",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "tidalFocus",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "improvedReincarnation",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 0
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "ancestralHealing",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 1
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "totemicFocus",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "naturesGuidance",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 0
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "healingFocus",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "totemicMastery",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 2
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "healingGrace",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 3
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "restorativeTotems",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "tidalMastery",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "healingWay",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 0
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "naturesSwiftness",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 2
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "purification",
+      "location": {
+       "rowIdx": 5,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "manaTideTotem",
+      "location": {
+       "rowIdx": 6,
+       "colIdx": 1
+      },
+      "maxPoints": 1,
+      "prereqLocation": {
+       "rowIdx": 3,
+       "colIdx": 1
+      }
+     }
+    ]
+   }
+  ],
+  "warlock": [
+   {
+    "name": "Affliction",
+    "talents": [
+     {
+      "fieldName": "suppression",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "improvedCorruption",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "improvedCurseOfWeakness",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 0
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "improvedDrainSoul",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 1
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "improvedLifeTap",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 2
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "improvedDrainLife",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 3
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "improvedCurseOfAgony",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 0
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "felConcentration",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "amplifyCurse",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 2
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "grimReach",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 0
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "nightfall",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 1
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "improvedDrainMana",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 3
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "siphonLife",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 1
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "curseOfExhaustion",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 2
+      },
+      "maxPoints": 1,
+      "prereqLocation": {
+       "rowIdx": 2,
+       "colIdx": 2
+      }
+     },
+     {
+      "fieldName": "improvedCurseOfExhaustion",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 3
+      },
+      "maxPoints": 4,
+      "prereqLocation": {
+       "rowIdx": 4,
+       "colIdx": 2
+      }
+     },
+     {
+      "fieldName": "shadowMastery",
+      "location": {
+       "rowIdx": 5,
+       "colIdx": 1
+      },
+      "maxPoints": 5,
+      "prereqLocation": {
+       "rowIdx": 4,
+       "colIdx": 1
+      }
+     },
+     {
+      "fieldName": "darkPact",
+      "location": {
+       "rowIdx": 6,
+       "colIdx": 1
+      },
+      "maxPoints": 1
+     }
+    ]
+   },
+   {
+    "name": "Demonology",
+    "talents": [
+     {
+      "fieldName": "improvedHealthstone",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 0
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "improvedImp",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 1
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "demonicEmbrace",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "improvedHealthFunnel",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 0
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "improvedVoidwalker",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 1
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "felIntellect",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "improvedSayaad",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 0
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "felDomination",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 1
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "felStamina",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "masterSummoner",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 1
+      },
+      "maxPoints": 2,
+      "prereqLocation": {
+       "rowIdx": 2,
+       "colIdx": 1
+      }
+     },
+     {
+      "fieldName": "unholyPower",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "improvedSubjugateDemon",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 0
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "demonicSacrifice",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 1
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "improvedFirestone",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 3
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "masterDemonologist",
+      "location": {
+       "rowIdx": 5,
+       "colIdx": 2
+      },
+      "maxPoints": 5,
+      "prereqLocation": {
+       "rowIdx": 3,
+       "colIdx": 2
+      }
+     },
+     {
+      "fieldName": "soulLink",
+      "location": {
+       "rowIdx": 6,
+       "colIdx": 1
+      },
+      "maxPoints": 1,
+      "prereqLocation": {
+       "rowIdx": 4,
+       "colIdx": 1
+      }
+     },
+     {
+      "fieldName": "improvedSpellstone",
+      "location": {
+       "rowIdx": 6,
+       "colIdx": 2
+      },
+      "maxPoints": 2
+     }
+    ]
+   },
+   {
+    "name": "Destruction",
+    "talents": [
+     {
+      "fieldName": "improvedShadowBolt",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "cataclysm",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "bane",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "aftermath",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "improvedFirebolt",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 0
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "improvedLashOfPain",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 1
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "devastation",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "shadowburn",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 3
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "intensity",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 0
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "destructiveReach",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 1
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "improvedSearingPain",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 3
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "pyroclasm",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 0
+      },
+      "maxPoints": 2,
+      "prereqLocation": {
+       "rowIdx": 3,
+       "colIdx": 0
+      }
+     },
+     {
+      "fieldName": "improvedImmolate",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "ruin",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 2
+      },
+      "maxPoints": 1,
+      "prereqLocation": {
+       "rowIdx": 2,
+       "colIdx": 2
+      }
+     },
+     {
+      "fieldName": "emberstorm",
+      "location": {
+       "rowIdx": 5,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "conflagrate",
+      "location": {
+       "rowIdx": 6,
+       "colIdx": 1
+      },
+      "maxPoints": 1,
+      "prereqLocation": {
+       "rowIdx": 4,
+       "colIdx": 1
+      }
+     }
+    ]
+   }
+  ],
+  "warrior": [
+   {
+    "name": "Arms",
+    "talents": [
+     {
+      "fieldName": "improvedHeroicStrike",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 0
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "deflection",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "improvedRend",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 2
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "improvedCharge",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 0
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "tacticalMastery",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "improvedThunderClap",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 3
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "improvedOverpower",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 0
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "angerManagement",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 1
+      },
+      "maxPoints": 1,
+      "prereqLocation": {
+       "rowIdx": 1,
+       "colIdx": 1
+      }
+     },
+     {
+      "fieldName": "deepWounds",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 2
+      },
+      "maxPoints": 3,
+      "prereqLocation": {
+       "rowIdx": 0,
+       "colIdx": 2
+      }
+     },
+     {
+      "fieldName": "twoHandedWeaponSpecialization",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "impale",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 2
+      },
+      "maxPoints": 2,
+      "prereqLocation": {
+       "rowIdx": 2,
+       "colIdx": 2
+      }
+     },
+     {
+      "fieldName": "axeSpecialization",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 0
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "sweepingStrikes",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 1
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "maceSpecialization",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "swordSpecialization",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 3
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "polearmSpecialization",
+      "location": {
+       "rowIdx": 5,
+       "colIdx": 0
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "improvedHamstring",
+      "location": {
+       "rowIdx": 5,
+       "colIdx": 2
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "mortalStrike",
+      "location": {
+       "rowIdx": 6,
+       "colIdx": 1
+      },
+      "maxPoints": 1,
+      "prereqLocation": {
+       "rowIdx": 4,
+       "colIdx": 1
+      }
+     }
+    ]
+   },
+   {
+    "name": "Fury",
+    "talents": [
+     {
+      "fieldName": "boomingVoice",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "cruelty",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "improvedDemoralizingShout",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "unbridledWrath",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "improvedCleave",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 0
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "piercingHowl",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 1
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "bloodCraze",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 2
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "improvedBattleShout",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 3
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "dualWieldSpecialization",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 0
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "improvedExecute",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 1
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "enrage",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "improvedSlam",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 0
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "deathWish",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 1
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "improvedIntercept",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 3
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "improvedBerserkerRage",
+      "location": {
+       "rowIdx": 5,
+       "colIdx": 0
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "flurry",
+      "location": {
+       "rowIdx": 5,
+       "colIdx": 2
+      },
+      "maxPoints": 5,
+      "prereqLocation": {
+       "rowIdx": 3,
+       "colIdx": 2
+      }
+     },
+     {
+      "fieldName": "bloodthirst",
+      "location": {
+       "rowIdx": 6,
+       "colIdx": 1
+      },
+      "maxPoints": 1,
+      "prereqLocation": {
+       "rowIdx": 4,
+       "colIdx": 1
+      }
+     }
+    ]
+   },
+   {
+    "name": "Protection",
+    "talents": [
+     {
+      "fieldName": "shieldSpecialization",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 1
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "anticipation",
+      "location": {
+       "rowIdx": 0,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "improvedBloodrage",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 0
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "toughness",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "ironWill",
+      "location": {
+       "rowIdx": 1,
+       "colIdx": 3
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "lastStand",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 0
+      },
+      "maxPoints": 1,
+      "prereqLocation": {
+       "rowIdx": 1,
+       "colIdx": 0
+      }
+     },
+     {
+      "fieldName": "improvedShieldBlock",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 1
+      },
+      "maxPoints": 3,
+      "prereqLocation": {
+       "rowIdx": 0,
+       "colIdx": 1
+      }
+     },
+     {
+      "fieldName": "improvedRevenge",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 2
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "defiance",
+      "location": {
+       "rowIdx": 2,
+       "colIdx": 3
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "improvedSunderArmor",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 0
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "improvedDisarm",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 1
+      },
+      "maxPoints": 3
+     },
+     {
+      "fieldName": "improvedTaunt",
+      "location": {
+       "rowIdx": 3,
+       "colIdx": 2
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "improvedShieldWall",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 0
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "concussionBlow",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 1
+      },
+      "maxPoints": 1
+     },
+     {
+      "fieldName": "improvedShieldBash",
+      "location": {
+       "rowIdx": 4,
+       "colIdx": 2
+      },
+      "maxPoints": 2
+     },
+     {
+      "fieldName": "oneHandedWeaponSpecialization",
+      "location": {
+       "rowIdx": 5,
+       "colIdx": 2
+      },
+      "maxPoints": 5
+     },
+     {
+      "fieldName": "shieldSlam",
+      "location": {
+       "rowIdx": 6,
+       "colIdx": 1
+      },
+      "maxPoints": 1,
+      "prereqLocation": {
+       "rowIdx": 4,
+       "colIdx": 1
+      }
+     }
+    ]
+   }
+  ]
+ }
+}

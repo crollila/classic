@@ -1,0 +1,1025 @@
+{
+ "note": "Forever talent builds (F1:\u003cCLASS\u003e:tree-tree-tree strings) per spec and phase. Entries with source optimize-talents are written by `foreverbench optimize-all` (deterministic search under the rank normalization; provenance: ruleset/manifest, preset snapshot, normalization hash, seed, iterations, DPS, baseline repair DPS, date). rank/delta/meta use the build for the ranked phase (else the nearest phase) and report talent_source optimized:\u003cdate\u003e; the Classic-preset repair is only the fallback. Hand-curated builds need only spec, name, talents, source (optionally phase).",
+ "builds": [
+  {
+   "spec": "warrior-fury",
+   "name": "optimized forever P1 (Arms 17 / Fury 34 / Protection 0)",
+   "talents": "F1:WARRIOR:30305013002000000-550500005151010051-0000000000000000000",
+   "source": "optimize-talents",
+   "game": "forever",
+   "phase": "P1",
+   "date": "2026-09-16",
+   "ruleset_id": "forever-discovery-2026-09-13-v2",
+   "manifest_sha256": "c5a8742a1f33415ab45df28f541e83bd51e7cb90c4e58b35f7e58809c9c5d11f",
+   "preset_snapshot_sha256": "1bc779a56268a4652bbaed9f188572a555450d5108d9da13499dc30707a67306",
+   "normalization_hash": "5e1aea18486be44e",
+   "normalization": {
+    "world_buffs": false,
+    "consumes_tier": "standard",
+    "race_policy": "fixed",
+    "target_level": 63,
+    "seed": 7,
+    "iterations": 200,
+    "forever_auto_rotation": "conservative",
+    "auto_rotation_ab_iterations": 300,
+    "forever_talent_policy": "repair",
+    "forever_mode": "BEST_GUESS",
+    "gear_fill": "none",
+    "reaction_time_ms": 150,
+    "channel_clip_delay_ms": 50
+   },
+   "targets": 1,
+   "duration_s": 180,
+   "seed": 7,
+   "iterations": [
+    200,
+    1000,
+    3000
+   ],
+   "dps": 1205.6,
+   "stderr": 1.04,
+   "ci95": [
+    1203.57,
+    1207.63
+   ],
+   "baseline": {
+    "kind": "repair",
+    "talents": "F1:WARRIOR:30305013002000000-550500005052010051-0000000000000000000",
+    "dps": 1184.65,
+    "stderr": 1.01
+   },
+   "points": 51,
+   "sims": 1014,
+   "wall_seconds": 195.4
+  },
+  {
+   "spec": "warrior-arms",
+   "name": "optimized forever P1 (Arms 36 / Fury 13 / Protection 0)",
+   "talents": "F1:WARRIOR:15325213132115001-050500030000000000-0000000000000000000",
+   "source": "optimize-talents",
+   "game": "forever",
+   "phase": "P1",
+   "date": "2026-09-16",
+   "ruleset_id": "forever-discovery-2026-09-13-v2",
+   "manifest_sha256": "c5a8742a1f33415ab45df28f541e83bd51e7cb90c4e58b35f7e58809c9c5d11f",
+   "preset_snapshot_sha256": "1bc779a56268a4652bbaed9f188572a555450d5108d9da13499dc30707a67306",
+   "normalization_hash": "5e1aea18486be44e",
+   "normalization": {
+    "world_buffs": false,
+    "consumes_tier": "standard",
+    "race_policy": "fixed",
+    "target_level": 63,
+    "seed": 7,
+    "iterations": 200,
+    "forever_auto_rotation": "conservative",
+    "auto_rotation_ab_iterations": 300,
+    "forever_talent_policy": "repair",
+    "forever_mode": "BEST_GUESS",
+    "gear_fill": "none",
+    "reaction_time_ms": 150,
+    "channel_clip_delay_ms": 50
+   },
+   "targets": 1,
+   "duration_s": 180,
+   "seed": 7,
+   "iterations": [
+    200,
+    1000,
+    3000
+   ],
+   "dps": 795.93,
+   "stderr": 1.07,
+   "ci95": [
+    793.83,
+    798.03
+   ],
+   "baseline": {
+    "kind": "repair",
+    "talents": "F1:WARRIOR:35325213032010231-050200000000000000-5000300000000000000",
+    "dps": 725.57,
+    "stderr": 0.98
+   },
+   "points": 49,
+   "sims": 2051,
+   "wall_seconds": 401
+  },
+  {
+   "spec": "rogue-combat-swords",
+   "name": "optimized forever P1 (Assassination 19 / Combat 32 / Subtlety 0)",
+   "talents": "F1:ROGUE:00530310501100000-32120320200515231-0000000000000000000",
+   "source": "optimize-talents",
+   "game": "forever",
+   "phase": "P1",
+   "date": "2026-09-16",
+   "ruleset_id": "forever-discovery-2026-09-13-v2",
+   "manifest_sha256": "c5a8742a1f33415ab45df28f541e83bd51e7cb90c4e58b35f7e58809c9c5d11f",
+   "preset_snapshot_sha256": "1bc779a56268a4652bbaed9f188572a555450d5108d9da13499dc30707a67306",
+   "normalization_hash": "5e1aea18486be44e",
+   "normalization": {
+    "world_buffs": false,
+    "consumes_tier": "standard",
+    "race_policy": "fixed",
+    "target_level": 63,
+    "seed": 7,
+    "iterations": 200,
+    "forever_auto_rotation": "conservative",
+    "auto_rotation_ab_iterations": 300,
+    "forever_talent_policy": "repair",
+    "forever_mode": "BEST_GUESS",
+    "gear_fill": "none",
+    "reaction_time_ms": 150,
+    "channel_clip_delay_ms": 50
+   },
+   "targets": 1,
+   "duration_s": 180,
+   "seed": 7,
+   "iterations": [
+    200,
+    1000,
+    3000
+   ],
+   "dps": 712.49,
+   "stderr": 0.66,
+   "ci95": [
+    711.19,
+    713.79
+   ],
+   "baseline": {
+    "kind": "repair",
+    "talents": "F1:ROGUE:00532310500000000-32520320200515200-0000000000000000000",
+    "dps": 667.37,
+    "stderr": 0.63
+   },
+   "points": 51,
+   "sims": 2157,
+   "wall_seconds": 282.5
+  },
+  {
+   "spec": "rogue-combat-daggers",
+   "name": "optimized forever P1 (Assassination 17 / Combat 32 / Subtlety 2)",
+   "talents": "F1:ROGUE:00530310500000000-30331300200515231-0020000000000000000",
+   "source": "optimize-talents",
+   "game": "forever",
+   "phase": "P1",
+   "date": "2026-09-16",
+   "ruleset_id": "forever-discovery-2026-09-13-v2",
+   "manifest_sha256": "c5a8742a1f33415ab45df28f541e83bd51e7cb90c4e58b35f7e58809c9c5d11f",
+   "preset_snapshot_sha256": "1bc779a56268a4652bbaed9f188572a555450d5108d9da13499dc30707a67306",
+   "normalization_hash": "5e1aea18486be44e",
+   "normalization": {
+    "world_buffs": false,
+    "consumes_tier": "standard",
+    "race_policy": "fixed",
+    "target_level": 63,
+    "seed": 7,
+    "iterations": 200,
+    "forever_auto_rotation": "conservative",
+    "auto_rotation_ab_iterations": 300,
+    "forever_talent_policy": "repair",
+    "forever_mode": "BEST_GUESS",
+    "gear_fill": "none",
+    "reaction_time_ms": 150,
+    "channel_clip_delay_ms": 50
+   },
+   "targets": 1,
+   "duration_s": 180,
+   "seed": 7,
+   "iterations": [
+    200,
+    1000,
+    3000
+   ],
+   "dps": 787.01,
+   "stderr": 0.66,
+   "ci95": [
+    785.72,
+    788.3
+   ],
+   "baseline": {
+    "kind": "repair",
+    "talents": "F1:ROGUE:00502310400000000-32531300200515220-0020000000000000000",
+    "dps": 734.9,
+    "stderr": 0.61
+   },
+   "points": 51,
+   "sims": 1667,
+   "wall_seconds": 253.2
+  },
+  {
+   "spec": "rogue-assassination",
+   "name": "optimized forever P1 (Assassination 38 / Combat 11 / Subtlety 2)",
+   "talents": "F1:ROGUE:10530310551520250-32030300000000000-0020000000000000000",
+   "source": "optimize-talents",
+   "game": "forever",
+   "phase": "P1",
+   "date": "2026-09-16",
+   "ruleset_id": "forever-discovery-2026-09-13-v2",
+   "manifest_sha256": "c5a8742a1f33415ab45df28f541e83bd51e7cb90c4e58b35f7e58809c9c5d11f",
+   "preset_snapshot_sha256": "1bc779a56268a4652bbaed9f188572a555450d5108d9da13499dc30707a67306",
+   "normalization_hash": "5e1aea18486be44e",
+   "normalization": {
+    "world_buffs": false,
+    "consumes_tier": "standard",
+    "race_policy": "fixed",
+    "target_level": 63,
+    "seed": 7,
+    "iterations": 200,
+    "forever_auto_rotation": "conservative",
+    "auto_rotation_ab_iterations": 300,
+    "forever_talent_policy": "repair",
+    "forever_mode": "BEST_GUESS",
+    "gear_fill": "none",
+    "reaction_time_ms": 150,
+    "channel_clip_delay_ms": 50
+   },
+   "targets": 1,
+   "duration_s": 180,
+   "seed": 7,
+   "iterations": [
+    200,
+    1000,
+    3000
+   ],
+   "dps": 708.81,
+   "stderr": 0.65,
+   "ci95": [
+    707.54,
+    710.08
+   ],
+   "baseline": {
+    "kind": "repair",
+    "talents": "F1:ROGUE:30530310531520250-32030300000000000-0020000000000000000",
+    "dps": 707.03,
+    "stderr": 0.64
+   },
+   "points": 51,
+   "sims": 984,
+   "wall_seconds": 251.5
+  },
+  {
+   "spec": "rogue-subtlety",
+   "name": "optimized forever P1 (Assassination 17 / Combat 3 / Subtlety 31)",
+   "talents": "F1:ROGUE:00530310401000000-30000000000000000-5023220300103211501",
+   "source": "optimize-talents",
+   "game": "forever",
+   "phase": "P1",
+   "date": "2026-09-16",
+   "ruleset_id": "forever-discovery-2026-09-13-v2",
+   "manifest_sha256": "c5a8742a1f33415ab45df28f541e83bd51e7cb90c4e58b35f7e58809c9c5d11f",
+   "preset_snapshot_sha256": "1bc779a56268a4652bbaed9f188572a555450d5108d9da13499dc30707a67306",
+   "normalization_hash": "5e1aea18486be44e",
+   "normalization": {
+    "world_buffs": false,
+    "consumes_tier": "standard",
+    "race_policy": "fixed",
+    "target_level": 63,
+    "seed": 7,
+    "iterations": 200,
+    "forever_auto_rotation": "conservative",
+    "auto_rotation_ab_iterations": 300,
+    "forever_talent_policy": "repair",
+    "forever_mode": "BEST_GUESS",
+    "gear_fill": "none",
+    "reaction_time_ms": 150,
+    "channel_clip_delay_ms": 50
+   },
+   "targets": 1,
+   "duration_s": 180,
+   "seed": 7,
+   "iterations": [
+    200,
+    1000,
+    3000
+   ],
+   "dps": 639.85,
+   "stderr": 0.55,
+   "ci95": [
+    638.78,
+    640.92
+   ],
+   "baseline": {
+    "kind": "repair",
+    "talents": "F1:ROGUE:00530310500000000-30000000000000000-5023220300103211501",
+    "dps": 636.84,
+    "stderr": 0.55
+   },
+   "points": 51,
+   "sims": 592,
+   "wall_seconds": 148
+  },
+  {
+   "spec": "hunter-marksmanship",
+   "name": "optimized forever P1 (Beast Mastery 16 / Marksmanship 31 / Survival 4)",
+   "talents": "F1:HUNTER:5320000500100000-2052550001503021-400000000000000000",
+   "source": "optimize-talents",
+   "game": "forever",
+   "phase": "P1",
+   "date": "2026-09-16",
+   "ruleset_id": "forever-discovery-2026-09-13-v2",
+   "manifest_sha256": "c5a8742a1f33415ab45df28f541e83bd51e7cb90c4e58b35f7e58809c9c5d11f",
+   "preset_snapshot_sha256": "1bc779a56268a4652bbaed9f188572a555450d5108d9da13499dc30707a67306",
+   "normalization_hash": "5e1aea18486be44e",
+   "normalization": {
+    "world_buffs": false,
+    "consumes_tier": "standard",
+    "race_policy": "fixed",
+    "target_level": 63,
+    "seed": 7,
+    "iterations": 200,
+    "forever_auto_rotation": "conservative",
+    "auto_rotation_ab_iterations": 300,
+    "forever_talent_policy": "repair",
+    "forever_mode": "BEST_GUESS",
+    "gear_fill": "none",
+    "reaction_time_ms": 150,
+    "channel_clip_delay_ms": 50
+   },
+   "targets": 1,
+   "duration_s": 180,
+   "seed": 7,
+   "iterations": [
+    200,
+    1000,
+    3000
+   ],
+   "dps": 709.2,
+   "stderr": 0.42,
+   "ci95": [
+    708.38,
+    710.02
+   ],
+   "baseline": {
+    "kind": "repair",
+    "talents": "F1:HUNTER:5500000505000000-3052550001503020-000000000000000000",
+    "dps": 602.58,
+    "stderr": 0.38
+   },
+   "points": 51,
+   "sims": 3171,
+   "wall_seconds": 457.4
+  },
+  {
+   "spec": "hunter-beast-mastery",
+   "name": "optimized forever P1 (Beast Mastery 33 / Marksmanship 13 / Survival 5)",
+   "talents": "F1:HUNTER:5223001505101251-0053050000000000-500000000000000000",
+   "source": "optimize-talents",
+   "game": "forever",
+   "phase": "P1",
+   "date": "2026-09-16",
+   "ruleset_id": "forever-discovery-2026-09-13-v2",
+   "manifest_sha256": "c5a8742a1f33415ab45df28f541e83bd51e7cb90c4e58b35f7e58809c9c5d11f",
+   "preset_snapshot_sha256": "1bc779a56268a4652bbaed9f188572a555450d5108d9da13499dc30707a67306",
+   "normalization_hash": "5e1aea18486be44e",
+   "normalization": {
+    "world_buffs": false,
+    "consumes_tier": "standard",
+    "race_policy": "fixed",
+    "target_level": 63,
+    "seed": 7,
+    "iterations": 200,
+    "forever_auto_rotation": "conservative",
+    "auto_rotation_ab_iterations": 300,
+    "forever_talent_policy": "repair",
+    "forever_mode": "BEST_GUESS",
+    "gear_fill": "none",
+    "reaction_time_ms": 150,
+    "channel_clip_delay_ms": 50
+   },
+   "targets": 1,
+   "duration_s": 180,
+   "seed": 7,
+   "iterations": [
+    200,
+    1000,
+    3000
+   ],
+   "dps": 755.84,
+   "stderr": 0.4,
+   "ci95": [
+    755.06,
+    756.62
+   ],
+   "baseline": {
+    "kind": "repair",
+    "talents": "F1:HUNTER:5503001505001020-0450550000500000-000000000000000000",
+    "dps": 599.05,
+    "stderr": 0.39
+   },
+   "points": 51,
+   "sims": 1873,
+   "wall_seconds": 370.1
+  },
+  {
+   "spec": "hunter-survival",
+   "name": "optimized forever P1 (Beast Mastery 20 / Marksmanship 0 / Survival 31)",
+   "talents": "F1:HUNTER:5023000504100000-0000000000000000-555253100000000050",
+   "source": "optimize-talents",
+   "game": "forever",
+   "phase": "P1",
+   "date": "2026-09-16",
+   "ruleset_id": "forever-discovery-2026-09-13-v2",
+   "manifest_sha256": "c5a8742a1f33415ab45df28f541e83bd51e7cb90c4e58b35f7e58809c9c5d11f",
+   "preset_snapshot_sha256": "1bc779a56268a4652bbaed9f188572a555450d5108d9da13499dc30707a67306",
+   "normalization_hash": "5e1aea18486be44e",
+   "normalization": {
+    "world_buffs": false,
+    "consumes_tier": "standard",
+    "race_policy": "fixed",
+    "target_level": 63,
+    "seed": 7,
+    "iterations": 200,
+    "forever_auto_rotation": "conservative",
+    "auto_rotation_ab_iterations": 300,
+    "forever_talent_policy": "repair",
+    "forever_mode": "BEST_GUESS",
+    "gear_fill": "none",
+    "reaction_time_ms": 150,
+    "channel_clip_delay_ms": 50
+   },
+   "targets": 1,
+   "duration_s": 180,
+   "seed": 7,
+   "iterations": [
+    200,
+    1000,
+    3000
+   ],
+   "dps": 669.72,
+   "stderr": 0.35,
+   "ci95": [
+    669.03,
+    670.41
+   ],
+   "baseline": {
+    "kind": "repair",
+    "talents": "F1:HUNTER:5000000000000000-3250500001000000-555233200000000050",
+    "dps": 561.61,
+    "stderr": 0.34
+   },
+   "points": 51,
+   "sims": 1575,
+   "wall_seconds": 223.9
+  },
+  {
+   "spec": "mage-frost",
+   "name": "optimized forever P1 (Arcane 0 / Fire 17 / Frost 31)",
+   "talents": "F1:MAGE:000000000000000000-23550000000020000-0555000331000300240",
+   "source": "optimize-talents",
+   "game": "forever",
+   "phase": "P1",
+   "date": "2026-09-16",
+   "ruleset_id": "forever-discovery-2026-09-13-v2",
+   "manifest_sha256": "c5a8742a1f33415ab45df28f541e83bd51e7cb90c4e58b35f7e58809c9c5d11f",
+   "preset_snapshot_sha256": "1bc779a56268a4652bbaed9f188572a555450d5108d9da13499dc30707a67306",
+   "normalization_hash": "5e1aea18486be44e",
+   "normalization": {
+    "world_buffs": false,
+    "consumes_tier": "standard",
+    "race_policy": "fixed",
+    "target_level": 63,
+    "seed": 7,
+    "iterations": 200,
+    "forever_auto_rotation": "conservative",
+    "auto_rotation_ab_iterations": 300,
+    "forever_talent_policy": "repair",
+    "forever_mode": "BEST_GUESS",
+    "gear_fill": "none",
+    "reaction_time_ms": 150,
+    "channel_clip_delay_ms": 50
+   },
+   "targets": 1,
+   "duration_s": 180,
+   "seed": 7,
+   "iterations": [
+    200,
+    1000,
+    3000
+   ],
+   "dps": 640.34,
+   "stderr": 1.3,
+   "ci95": [
+    637.8,
+    642.88
+   ],
+   "baseline": {
+    "kind": "repair",
+    "talents": "F1:MAGE:230205102000200000-00000000000000000-0535023330021301021",
+    "dps": 562,
+    "stderr": 0.79
+   },
+   "points": 48,
+   "sims": 2961,
+   "wall_seconds": 238.1
+  },
+  {
+   "spec": "mage-fire",
+   "name": "optimized forever P1 (Arcane 0 / Fire 34 / Frost 17)",
+   "talents": "F1:MAGE:000000000000000000-00552333100033051-0155000330000000000",
+   "source": "optimize-talents",
+   "game": "forever",
+   "phase": "P1",
+   "date": "2026-09-16",
+   "ruleset_id": "forever-discovery-2026-09-13-v2",
+   "manifest_sha256": "c5a8742a1f33415ab45df28f541e83bd51e7cb90c4e58b35f7e58809c9c5d11f",
+   "preset_snapshot_sha256": "1bc779a56268a4652bbaed9f188572a555450d5108d9da13499dc30707a67306",
+   "normalization_hash": "5e1aea18486be44e",
+   "normalization": {
+    "world_buffs": false,
+    "consumes_tier": "standard",
+    "race_policy": "fixed",
+    "target_level": 63,
+    "seed": 7,
+    "iterations": 200,
+    "forever_auto_rotation": "conservative",
+    "auto_rotation_ab_iterations": 300,
+    "forever_talent_policy": "repair",
+    "forever_mode": "BEST_GUESS",
+    "gear_fill": "none",
+    "reaction_time_ms": 150,
+    "channel_clip_delay_ms": 50
+   },
+   "targets": 1,
+   "duration_s": 180,
+   "seed": 7,
+   "iterations": [
+    200,
+    1000,
+    3000
+   ],
+   "dps": 713.71,
+   "stderr": 1.61,
+   "ci95": [
+    710.55,
+    716.87
+   ],
+   "baseline": {
+    "kind": "repair",
+    "talents": "F1:MAGE:230205000000000000-22552313100033051-0030000000000000000",
+    "dps": 524.65,
+    "stderr": 1.13
+   },
+   "points": 51,
+   "sims": 6122,
+   "wall_seconds": 306.5
+  },
+  {
+   "spec": "mage-arcane",
+   "name": "optimized forever P1 (Arcane 32 / Fire 0 / Frost 19)",
+   "talents": "F1:MAGE:050005223100311531-00000000000000000-0555000310000000000",
+   "source": "optimize-talents",
+   "game": "forever",
+   "phase": "P1",
+   "date": "2026-09-16",
+   "ruleset_id": "forever-discovery-2026-09-13-v2",
+   "manifest_sha256": "c5a8742a1f33415ab45df28f541e83bd51e7cb90c4e58b35f7e58809c9c5d11f",
+   "preset_snapshot_sha256": "1bc779a56268a4652bbaed9f188572a555450d5108d9da13499dc30707a67306",
+   "normalization_hash": "5e1aea18486be44e",
+   "normalization": {
+    "world_buffs": false,
+    "consumes_tier": "standard",
+    "race_policy": "fixed",
+    "target_level": 63,
+    "seed": 7,
+    "iterations": 200,
+    "forever_auto_rotation": "conservative",
+    "auto_rotation_ab_iterations": 300,
+    "forever_talent_policy": "repair",
+    "forever_mode": "BEST_GUESS",
+    "gear_fill": "none",
+    "reaction_time_ms": 150,
+    "channel_clip_delay_ms": 50
+   },
+   "targets": 1,
+   "duration_s": 180,
+   "seed": 7,
+   "iterations": [
+    200,
+    1000,
+    3000
+   ],
+   "dps": 667.9,
+   "stderr": 0.7,
+   "ci95": [
+    666.53,
+    669.27
+   ],
+   "baseline": {
+    "kind": "repair",
+    "talents": "F1:MAGE:255225221000001131-00000000000000000-0535000330000000000",
+    "dps": 561.08,
+    "stderr": 0.84
+   },
+   "points": 51,
+   "sims": 9392,
+   "wall_seconds": 348
+  },
+  {
+   "spec": "warlock-affliction",
+   "name": "optimized forever P1 (Affliction 32 / Demonology 0 / Destruction 19)",
+   "talents": "F1:WARLOCK:25440020135100050-0000000000000000000-0550005103000000",
+   "source": "optimize-talents",
+   "game": "forever",
+   "phase": "P1",
+   "date": "2026-09-16",
+   "ruleset_id": "forever-discovery-2026-09-13-v2",
+   "manifest_sha256": "c5a8742a1f33415ab45df28f541e83bd51e7cb90c4e58b35f7e58809c9c5d11f",
+   "preset_snapshot_sha256": "1bc779a56268a4652bbaed9f188572a555450d5108d9da13499dc30707a67306",
+   "normalization_hash": "5e1aea18486be44e",
+   "normalization": {
+    "world_buffs": false,
+    "consumes_tier": "standard",
+    "race_policy": "fixed",
+    "target_level": 63,
+    "seed": 7,
+    "iterations": 200,
+    "forever_auto_rotation": "conservative",
+    "auto_rotation_ab_iterations": 300,
+    "forever_talent_policy": "repair",
+    "forever_mode": "BEST_GUESS",
+    "gear_fill": "none",
+    "reaction_time_ms": 150,
+    "channel_clip_delay_ms": 50
+   },
+   "targets": 1,
+   "duration_s": 180,
+   "seed": 7,
+   "iterations": [
+    200,
+    1000,
+    3000
+   ],
+   "dps": 1028.54,
+   "stderr": 1.07,
+   "ci95": [
+    1026.44,
+    1030.64
+   ],
+   "baseline": {
+    "kind": "repair",
+    "talents": "F1:WARLOCK:25550021102211350-0000000000000000000-2550201100000000",
+    "dps": 894.69,
+    "stderr": 0.79
+   },
+   "points": 51,
+   "sims": 2578,
+   "wall_seconds": 184.4
+  },
+  {
+   "spec": "warlock-demonology",
+   "name": "optimized forever P1 (Affliction 12 / Demonology 21 / Destruction 18)",
+   "talents": "F1:WARLOCK:25400000010000000-0052033001221100100-0550005003000000",
+   "source": "optimize-talents",
+   "game": "forever",
+   "phase": "P1",
+   "date": "2026-09-16",
+   "ruleset_id": "forever-discovery-2026-09-13-v2",
+   "manifest_sha256": "c5a8742a1f33415ab45df28f541e83bd51e7cb90c4e58b35f7e58809c9c5d11f",
+   "preset_snapshot_sha256": "1bc779a56268a4652bbaed9f188572a555450d5108d9da13499dc30707a67306",
+   "normalization_hash": "5e1aea18486be44e",
+   "normalization": {
+    "world_buffs": false,
+    "consumes_tier": "standard",
+    "race_policy": "fixed",
+    "target_level": 63,
+    "seed": 7,
+    "iterations": 200,
+    "forever_auto_rotation": "conservative",
+    "auto_rotation_ab_iterations": 300,
+    "forever_talent_policy": "repair",
+    "forever_mode": "BEST_GUESS",
+    "gear_fill": "none",
+    "reaction_time_ms": 150,
+    "channel_clip_delay_ms": 50
+   },
+   "targets": 1,
+   "duration_s": 180,
+   "seed": 7,
+   "iterations": [
+    200,
+    1000,
+    3000
+   ],
+   "dps": 815.98,
+   "stderr": 0.93,
+   "ci95": [
+    814.16,
+    817.8
+   ],
+   "baseline": {
+    "kind": "repair",
+    "talents": "F1:WARLOCK:22500000000000000-0052033001221131110-2550201100000000",
+    "dps": 712.94,
+    "stderr": 0.75
+   },
+   "points": 51,
+   "sims": 2667,
+   "wall_seconds": 142.4
+  },
+  {
+   "spec": "warlock-destruction",
+   "name": "optimized forever P1 (Affliction 20 / Demonology 0 / Destruction 31)",
+   "talents": "F1:WARLOCK:25500020015000000-0000000000000000000-0551355103001011",
+   "source": "optimize-talents",
+   "game": "forever",
+   "phase": "P1",
+   "date": "2026-09-16",
+   "ruleset_id": "forever-discovery-2026-09-13-v2",
+   "manifest_sha256": "c5a8742a1f33415ab45df28f541e83bd51e7cb90c4e58b35f7e58809c9c5d11f",
+   "preset_snapshot_sha256": "1bc779a56268a4652bbaed9f188572a555450d5108d9da13499dc30707a67306",
+   "normalization_hash": "5e1aea18486be44e",
+   "normalization": {
+    "world_buffs": false,
+    "consumes_tier": "standard",
+    "race_policy": "fixed",
+    "target_level": 63,
+    "seed": 7,
+    "iterations": 200,
+    "forever_auto_rotation": "conservative",
+    "auto_rotation_ab_iterations": 300,
+    "forever_talent_policy": "repair",
+    "forever_mode": "BEST_GUESS",
+    "gear_fill": "none",
+    "reaction_time_ms": 150,
+    "channel_clip_delay_ms": 50
+   },
+   "targets": 1,
+   "duration_s": 180,
+   "seed": 7,
+   "iterations": [
+    200,
+    1000,
+    3000
+   ],
+   "dps": 973.42,
+   "stderr": 1.01,
+   "ci95": [
+    971.44,
+    975.4
+   ],
+   "baseline": {
+    "kind": "repair",
+    "talents": "F1:WARLOCK:25500023105211350-0000000000000000000-1450301101000000",
+    "dps": 901.07,
+    "stderr": 0.79
+   },
+   "points": 51,
+   "sims": 979,
+   "wall_seconds": 181.9
+  },
+  {
+   "spec": "priest-shadow",
+   "name": "optimized forever P1 (Discipline 17 / Holy 0 / Shadow Magic 34)",
+   "talents": "F1:PRIEST:025103021300000000-00000000000000000-513022401201311251",
+   "source": "optimize-talents",
+   "game": "forever",
+   "phase": "P1",
+   "date": "2026-09-16",
+   "ruleset_id": "forever-discovery-2026-09-13-v2",
+   "manifest_sha256": "c5a8742a1f33415ab45df28f541e83bd51e7cb90c4e58b35f7e58809c9c5d11f",
+   "preset_snapshot_sha256": "1bc779a56268a4652bbaed9f188572a555450d5108d9da13499dc30707a67306",
+   "normalization_hash": "5e1aea18486be44e",
+   "normalization": {
+    "world_buffs": false,
+    "consumes_tier": "standard",
+    "race_policy": "fixed",
+    "target_level": 63,
+    "seed": 7,
+    "iterations": 200,
+    "forever_auto_rotation": "conservative",
+    "auto_rotation_ab_iterations": 300,
+    "forever_talent_policy": "repair",
+    "forever_mode": "BEST_GUESS",
+    "gear_fill": "none",
+    "reaction_time_ms": 150,
+    "channel_clip_delay_ms": 50
+   },
+   "targets": 1,
+   "duration_s": 180,
+   "seed": 7,
+   "iterations": [
+    200,
+    1000,
+    3000
+   ],
+   "dps": 803.1,
+   "stderr": 0.6,
+   "ci95": [
+    801.91,
+    804.29
+   ],
+   "baseline": {
+    "kind": "repair",
+    "talents": "F1:PRIEST:420103021300000000-00000000000000000-525022401001311251",
+    "dps": 469.08,
+    "stderr": 0.51
+   },
+   "points": 51,
+   "sims": 3346,
+   "wall_seconds": 530.6
+  },
+  {
+   "spec": "druid-balance",
+   "name": "optimized forever P1 (Balance 32 / Feral Combat 5 / Restoration 14)",
+   "talents": "F1:DRUID:15322201050501050-0500000000000000000-1550030000000000",
+   "source": "optimize-talents",
+   "game": "forever",
+   "phase": "P1",
+   "date": "2026-09-16",
+   "ruleset_id": "forever-discovery-2026-09-13-v2",
+   "manifest_sha256": "c5a8742a1f33415ab45df28f541e83bd51e7cb90c4e58b35f7e58809c9c5d11f",
+   "preset_snapshot_sha256": "1bc779a56268a4652bbaed9f188572a555450d5108d9da13499dc30707a67306",
+   "normalization_hash": "5e1aea18486be44e",
+   "normalization": {
+    "world_buffs": false,
+    "consumes_tier": "standard",
+    "race_policy": "fixed",
+    "target_level": 63,
+    "seed": 7,
+    "iterations": 200,
+    "forever_auto_rotation": "conservative",
+    "auto_rotation_ab_iterations": 300,
+    "forever_talent_policy": "repair",
+    "forever_mode": "BEST_GUESS",
+    "gear_fill": "none",
+    "reaction_time_ms": 150,
+    "channel_clip_delay_ms": 50
+   },
+   "targets": 1,
+   "duration_s": 180,
+   "seed": 7,
+   "iterations": [
+    200,
+    1000,
+    3000
+   ],
+   "dps": 456.35,
+   "stderr": 0.59,
+   "ci95": [
+    455.2,
+    457.5
+   ],
+   "baseline": {
+    "kind": "repair",
+    "talents": "F1:DRUID:54220200051521351-0000000000000000000-5500030000000000",
+    "dps": 272.61,
+    "stderr": 0.44
+   },
+   "points": 51,
+   "sims": 3214,
+   "wall_seconds": 138.4
+  },
+  {
+   "spec": "shaman-elemental",
+   "name": "optimized forever P1 (Elemental Combat 31 / Enhancement 11 / Restoration 9)",
+   "talents": "F1:SHAMAN:5532301500103030-055000001000000000-5030100000000000",
+   "source": "optimize-talents",
+   "game": "forever",
+   "phase": "P1",
+   "date": "2026-09-16",
+   "ruleset_id": "forever-discovery-2026-09-13-v2",
+   "manifest_sha256": "c5a8742a1f33415ab45df28f541e83bd51e7cb90c4e58b35f7e58809c9c5d11f",
+   "preset_snapshot_sha256": "1bc779a56268a4652bbaed9f188572a555450d5108d9da13499dc30707a67306",
+   "normalization_hash": "5e1aea18486be44e",
+   "normalization": {
+    "world_buffs": false,
+    "consumes_tier": "standard",
+    "race_policy": "fixed",
+    "target_level": 63,
+    "seed": 7,
+    "iterations": 200,
+    "forever_auto_rotation": "conservative",
+    "auto_rotation_ab_iterations": 300,
+    "forever_talent_policy": "repair",
+    "forever_mode": "BEST_GUESS",
+    "gear_fill": "none",
+    "reaction_time_ms": 150,
+    "channel_clip_delay_ms": 50
+   },
+   "targets": 1,
+   "duration_s": 180,
+   "seed": 7,
+   "iterations": [
+    200,
+    1000,
+    3000
+   ],
+   "dps": 497.31,
+   "stderr": 0.6,
+   "ci95": [
+    496.14,
+    498.48
+   ],
+   "baseline": {
+    "kind": "repair",
+    "talents": "F1:SHAMAN:0535301520121030-000000000000000000-5531010005000000",
+    "dps": 428.67,
+    "stderr": 0.54
+   },
+   "points": 51,
+   "sims": 4802,
+   "wall_seconds": 130.9
+  },
+  {
+   "spec": "shaman-enhancement",
+   "name": "optimized forever P1 (Elemental Combat 13 / Enhancement 31 / Restoration 7)",
+   "talents": "F1:SHAMAN:5000320300000000-255230030005102201-5010100000000000",
+   "source": "optimize-talents",
+   "game": "forever",
+   "phase": "P1",
+   "date": "2026-09-16",
+   "ruleset_id": "forever-discovery-2026-09-13-v2",
+   "manifest_sha256": "c5a8742a1f33415ab45df28f541e83bd51e7cb90c4e58b35f7e58809c9c5d11f",
+   "preset_snapshot_sha256": "1bc779a56268a4652bbaed9f188572a555450d5108d9da13499dc30707a67306",
+   "normalization_hash": "5e1aea18486be44e",
+   "normalization": {
+    "world_buffs": false,
+    "consumes_tier": "standard",
+    "race_policy": "fixed",
+    "target_level": 63,
+    "seed": 7,
+    "iterations": 200,
+    "forever_auto_rotation": "conservative",
+    "auto_rotation_ab_iterations": 300,
+    "forever_talent_policy": "repair",
+    "forever_mode": "BEST_GUESS",
+    "gear_fill": "none",
+    "reaction_time_ms": 150,
+    "channel_clip_delay_ms": 50
+   },
+   "targets": 1,
+   "duration_s": 180,
+   "seed": 7,
+   "iterations": [
+    200,
+    1000,
+    3000
+   ],
+   "dps": 596.31,
+   "stderr": 1.03,
+   "ci95": [
+    594.29,
+    598.33
+   ],
+   "baseline": {
+    "kind": "repair",
+    "talents": "F1:SHAMAN:0500000000000000-055230030005110010-5400510005000000",
+    "dps": 522.24,
+    "stderr": 1.03
+   },
+   "points": 51,
+   "sims": 1102,
+   "wall_seconds": 193.7
+  },
+  {
+   "spec": "paladin-retribution",
+   "name": "optimized forever P1 (Holy 17 / Protection 0 / Retribution 34)",
+   "talents": "F1:PALADIN:255003002000000000-0000000000000000-052053310212330301",
+   "source": "optimize-talents",
+   "game": "forever",
+   "phase": "P1",
+   "date": "2026-09-16",
+   "ruleset_id": "forever-discovery-2026-09-13-v2",
+   "manifest_sha256": "c5a8742a1f33415ab45df28f541e83bd51e7cb90c4e58b35f7e58809c9c5d11f",
+   "preset_snapshot_sha256": "1bc779a56268a4652bbaed9f188572a555450d5108d9da13499dc30707a67306",
+   "normalization_hash": "5e1aea18486be44e",
+   "normalization": {
+    "world_buffs": false,
+    "consumes_tier": "standard",
+    "race_policy": "fixed",
+    "target_level": 63,
+    "seed": 7,
+    "iterations": 200,
+    "forever_auto_rotation": "conservative",
+    "auto_rotation_ab_iterations": 300,
+    "forever_talent_policy": "repair",
+    "forever_mode": "BEST_GUESS",
+    "gear_fill": "none",
+    "reaction_time_ms": 150,
+    "channel_clip_delay_ms": 50
+   },
+   "targets": 1,
+   "duration_s": 180,
+   "seed": 7,
+   "iterations": [
+    200,
+    1000,
+    3000
+   ],
+   "dps": 1163.4,
+   "stderr": 1.2,
+   "ci95": [
+    1161.05,
+    1165.75
+   ],
+   "baseline": {
+    "kind": "repair",
+    "talents": "F1:PALADIN:050003000000000000-5030000000000000-522053312000330321",
+    "dps": 894.57,
+    "stderr": 1.2
+   },
+   "points": 51,
+   "sims": 5989,
+   "wall_seconds": 415.2
+  }
+ ]
+}

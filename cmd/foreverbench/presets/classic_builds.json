@@ -1,0 +1,389 @@
+{
+ "note": "Classic talent builds for specs without a UI talent preset, written by `foreverbench optimize-all -game classic` (same search and provenance as forever_builds.json). Specs with a UI talent preset always use the UI preset on the Classic side.",
+ "builds": [
+  {
+   "spec": "warrior-arms",
+   "name": "optimized classic P1 (Arms 39 / Fury 7 / Protection 0)",
+   "talents": "253253203520105001-0502-",
+   "source": "optimize-talents",
+   "game": "classic",
+   "phase": "P1",
+   "date": "2026-09-16",
+   "ruleset_id": "classic-7779ebbf",
+   "manifest_sha256": "c5a8742a1f33415ab45df28f541e83bd51e7cb90c4e58b35f7e58809c9c5d11f",
+   "preset_snapshot_sha256": "1bc779a56268a4652bbaed9f188572a555450d5108d9da13499dc30707a67306",
+   "normalization_hash": "5e1aea18486be44e",
+   "normalization": {
+    "world_buffs": false,
+    "consumes_tier": "standard",
+    "race_policy": "fixed",
+    "target_level": 63,
+    "seed": 7,
+    "iterations": 200,
+    "forever_auto_rotation": "conservative",
+    "auto_rotation_ab_iterations": 300,
+    "forever_talent_policy": "repair",
+    "forever_mode": "BEST_GUESS",
+    "gear_fill": "none",
+    "reaction_time_ms": 150,
+    "channel_clip_delay_ms": 50
+   },
+   "targets": 1,
+   "duration_s": 180,
+   "seed": 7,
+   "iterations": [
+    200,
+    1000,
+    3000
+   ],
+   "dps": 822.3,
+   "stderr": 1.04,
+   "ci95": [
+    820.26,
+    824.34
+   ],
+   "baseline": {
+    "kind": "none"
+   },
+   "points": 46,
+   "sims": 775,
+   "wall_seconds": 136.4
+  },
+  {
+   "spec": "rogue-assassination",
+   "name": "optimized classic P1 (Assassination 33 / Combat 13 / Subtlety 5)",
+   "talents": "305303105151051-320305-05",
+   "source": "optimize-talents",
+   "game": "classic",
+   "phase": "P1",
+   "date": "2026-09-16",
+   "ruleset_id": "classic-7779ebbf",
+   "manifest_sha256": "c5a8742a1f33415ab45df28f541e83bd51e7cb90c4e58b35f7e58809c9c5d11f",
+   "preset_snapshot_sha256": "1bc779a56268a4652bbaed9f188572a555450d5108d9da13499dc30707a67306",
+   "normalization_hash": "5e1aea18486be44e",
+   "normalization": {
+    "world_buffs": false,
+    "consumes_tier": "standard",
+    "race_policy": "fixed",
+    "target_level": 63,
+    "seed": 7,
+    "iterations": 200,
+    "forever_auto_rotation": "conservative",
+    "auto_rotation_ab_iterations": 300,
+    "forever_talent_policy": "repair",
+    "forever_mode": "BEST_GUESS",
+    "gear_fill": "none",
+    "reaction_time_ms": 150,
+    "channel_clip_delay_ms": 50
+   },
+   "targets": 1,
+   "duration_s": 180,
+   "seed": 7,
+   "iterations": [
+    200,
+    1000,
+    3000
+   ],
+   "dps": 717.42,
+   "stderr": 0.66,
+   "ci95": [
+    716.13,
+    718.71
+   ],
+   "baseline": {
+    "kind": "none"
+   },
+   "points": 51,
+   "sims": 658,
+   "wall_seconds": 112.8
+  },
+  {
+   "spec": "rogue-subtlety",
+   "name": "optimized classic P1 (Assassination 20 / Combat 0 / Subtlety 31)",
+   "talents": "305303105--5522530000300015",
+   "source": "optimize-talents",
+   "game": "classic",
+   "phase": "P1",
+   "date": "2026-09-16",
+   "ruleset_id": "classic-7779ebbf",
+   "manifest_sha256": "c5a8742a1f33415ab45df28f541e83bd51e7cb90c4e58b35f7e58809c9c5d11f",
+   "preset_snapshot_sha256": "1bc779a56268a4652bbaed9f188572a555450d5108d9da13499dc30707a67306",
+   "normalization_hash": "5e1aea18486be44e",
+   "normalization": {
+    "world_buffs": false,
+    "consumes_tier": "standard",
+    "race_policy": "fixed",
+    "target_level": 63,
+    "seed": 7,
+    "iterations": 200,
+    "forever_auto_rotation": "conservative",
+    "auto_rotation_ab_iterations": 300,
+    "forever_talent_policy": "repair",
+    "forever_mode": "BEST_GUESS",
+    "gear_fill": "none",
+    "reaction_time_ms": 150,
+    "channel_clip_delay_ms": 50
+   },
+   "targets": 1,
+   "duration_s": 180,
+   "seed": 7,
+   "iterations": [
+    200,
+    1000,
+    3000
+   ],
+   "dps": 622.7,
+   "stderr": 0.54,
+   "ci95": [
+    621.64,
+    623.76
+   ],
+   "baseline": {
+    "kind": "none"
+   },
+   "points": 51,
+   "sims": 524,
+   "wall_seconds": 86
+  },
+  {
+   "spec": "hunter-beast-mastery",
+   "name": "optimized classic P1 (Beast Mastery 31 / Marksmanship 20 / Survival 0)",
+   "talents": "5025300050501041-450510005-",
+   "source": "optimize-talents",
+   "game": "classic",
+   "phase": "P1",
+   "date": "2026-09-16",
+   "ruleset_id": "classic-7779ebbf",
+   "manifest_sha256": "c5a8742a1f33415ab45df28f541e83bd51e7cb90c4e58b35f7e58809c9c5d11f",
+   "preset_snapshot_sha256": "1bc779a56268a4652bbaed9f188572a555450d5108d9da13499dc30707a67306",
+   "normalization_hash": "5e1aea18486be44e",
+   "normalization": {
+    "world_buffs": false,
+    "consumes_tier": "standard",
+    "race_policy": "fixed",
+    "target_level": 63,
+    "seed": 7,
+    "iterations": 200,
+    "forever_auto_rotation": "conservative",
+    "auto_rotation_ab_iterations": 300,
+    "forever_talent_policy": "repair",
+    "forever_mode": "BEST_GUESS",
+    "gear_fill": "none",
+    "reaction_time_ms": 150,
+    "channel_clip_delay_ms": 50
+   },
+   "targets": 1,
+   "duration_s": 180,
+   "seed": 7,
+   "iterations": [
+    200,
+    1000,
+    3000
+   ],
+   "dps": 742.92,
+   "stderr": 0.5,
+   "ci95": [
+    741.95,
+    743.89
+   ],
+   "baseline": {
+    "kind": "none"
+   },
+   "points": 51,
+   "sims": 964,
+   "wall_seconds": 104.1
+  },
+  {
+   "spec": "hunter-survival",
+   "name": "optimized classic P1 (Beast Mastery 5 / Marksmanship 12 / Survival 34)",
+   "talents": "5-15051-1355252200003051",
+   "source": "optimize-talents",
+   "game": "classic",
+   "phase": "P1",
+   "date": "2026-09-16",
+   "ruleset_id": "classic-7779ebbf",
+   "manifest_sha256": "c5a8742a1f33415ab45df28f541e83bd51e7cb90c4e58b35f7e58809c9c5d11f",
+   "preset_snapshot_sha256": "1bc779a56268a4652bbaed9f188572a555450d5108d9da13499dc30707a67306",
+   "normalization_hash": "5e1aea18486be44e",
+   "normalization": {
+    "world_buffs": false,
+    "consumes_tier": "standard",
+    "race_policy": "fixed",
+    "target_level": 63,
+    "seed": 7,
+    "iterations": 200,
+    "forever_auto_rotation": "conservative",
+    "auto_rotation_ab_iterations": 300,
+    "forever_talent_policy": "repair",
+    "forever_mode": "BEST_GUESS",
+    "gear_fill": "none",
+    "reaction_time_ms": 150,
+    "channel_clip_delay_ms": 50
+   },
+   "targets": 1,
+   "duration_s": 180,
+   "seed": 7,
+   "iterations": [
+    200,
+    1000,
+    3000
+   ],
+   "dps": 660.94,
+   "stderr": 0.42,
+   "ci95": [
+    660.11,
+    661.77
+   ],
+   "baseline": {
+    "kind": "none"
+   },
+   "points": 51,
+   "sims": 989,
+   "wall_seconds": 75.8
+  },
+  {
+   "spec": "mage-fire",
+   "name": "optimized classic P1 (Arcane 10 / Fire 38 / Frost 3)",
+   "talents": "230005-5452323110033051-003",
+   "source": "optimize-talents",
+   "game": "classic",
+   "phase": "P1",
+   "date": "2026-09-16",
+   "ruleset_id": "classic-7779ebbf",
+   "manifest_sha256": "c5a8742a1f33415ab45df28f541e83bd51e7cb90c4e58b35f7e58809c9c5d11f",
+   "preset_snapshot_sha256": "1bc779a56268a4652bbaed9f188572a555450d5108d9da13499dc30707a67306",
+   "normalization_hash": "5e1aea18486be44e",
+   "normalization": {
+    "world_buffs": false,
+    "consumes_tier": "standard",
+    "race_policy": "fixed",
+    "target_level": 63,
+    "seed": 7,
+    "iterations": 200,
+    "forever_auto_rotation": "conservative",
+    "auto_rotation_ab_iterations": 300,
+    "forever_talent_policy": "repair",
+    "forever_mode": "BEST_GUESS",
+    "gear_fill": "none",
+    "reaction_time_ms": 150,
+    "channel_clip_delay_ms": 50
+   },
+   "targets": 1,
+   "duration_s": 180,
+   "seed": 7,
+   "iterations": [
+    200,
+    1000,
+    3000
+   ],
+   "dps": 659.67,
+   "stderr": 1.61,
+   "ci95": [
+    656.51,
+    662.83
+   ],
+   "baseline": {
+    "kind": "none"
+   },
+   "points": 51,
+   "sims": 670,
+   "wall_seconds": 31
+  },
+  {
+   "spec": "mage-arcane",
+   "name": "optimized classic P1 (Arcane 31 / Fire 0 / Frost 19)",
+   "talents": "2552552000001031--053500030003",
+   "source": "optimize-talents",
+   "game": "classic",
+   "phase": "P1",
+   "date": "2026-09-16",
+   "ruleset_id": "classic-7779ebbf",
+   "manifest_sha256": "c5a8742a1f33415ab45df28f541e83bd51e7cb90c4e58b35f7e58809c9c5d11f",
+   "preset_snapshot_sha256": "1bc779a56268a4652bbaed9f188572a555450d5108d9da13499dc30707a67306",
+   "normalization_hash": "5e1aea18486be44e",
+   "normalization": {
+    "world_buffs": false,
+    "consumes_tier": "standard",
+    "race_policy": "fixed",
+    "target_level": 63,
+    "seed": 7,
+    "iterations": 200,
+    "forever_auto_rotation": "conservative",
+    "auto_rotation_ab_iterations": 300,
+    "forever_talent_policy": "repair",
+    "forever_mode": "BEST_GUESS",
+    "gear_fill": "none",
+    "reaction_time_ms": 150,
+    "channel_clip_delay_ms": 50
+   },
+   "targets": 1,
+   "duration_s": 180,
+   "seed": 7,
+   "iterations": [
+    200,
+    1000,
+    3000
+   ],
+   "dps": 637.9,
+   "stderr": 0.76,
+   "ci95": [
+    636.4,
+    639.4
+   ],
+   "baseline": {
+    "kind": "none"
+   },
+   "points": 50,
+   "sims": 583,
+   "wall_seconds": 16.1
+  },
+  {
+   "spec": "warlock-destruction",
+   "name": "optimized classic P1 (Affliction 17 / Demonology 0 / Destruction 34)",
+   "talents": "54002030102--455002510010515",
+   "source": "optimize-talents",
+   "game": "classic",
+   "phase": "P1",
+   "date": "2026-09-16",
+   "ruleset_id": "classic-7779ebbf",
+   "manifest_sha256": "c5a8742a1f33415ab45df28f541e83bd51e7cb90c4e58b35f7e58809c9c5d11f",
+   "preset_snapshot_sha256": "1bc779a56268a4652bbaed9f188572a555450d5108d9da13499dc30707a67306",
+   "normalization_hash": "5e1aea18486be44e",
+   "normalization": {
+    "world_buffs": false,
+    "consumes_tier": "standard",
+    "race_policy": "fixed",
+    "target_level": 63,
+    "seed": 7,
+    "iterations": 200,
+    "forever_auto_rotation": "conservative",
+    "auto_rotation_ab_iterations": 300,
+    "forever_talent_policy": "repair",
+    "forever_mode": "BEST_GUESS",
+    "gear_fill": "none",
+    "reaction_time_ms": 150,
+    "channel_clip_delay_ms": 50
+   },
+   "targets": 1,
+   "duration_s": 180,
+   "seed": 7,
+   "iterations": [
+    200,
+    1000,
+    3000
+   ],
+   "dps": 835.38,
+   "stderr": 0.74,
+   "ci95": [
+    833.93,
+    836.83
+   ],
+   "baseline": {
+    "kind": "none"
+   },
+   "points": 51,
+   "sims": 828,
+   "wall_seconds": 47.9
+  }
+ ]
+}

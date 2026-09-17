@@ -1,0 +1,30 @@
+{
+ "type": "TypeAPL",
+ "priorityList": [
+  {
+   "action": {
+    "autocastOtherCooldowns": {}
+   }
+  },
+  {
+   "action": {
+    "channelSpell": {
+     "spellId": {
+      "spellId": 25345,
+      "rank": 8
+     }
+    }
+   }
+  },
+  {
+   "action": {
+    "castSpell": {
+     "spellId": {
+      "spellId": 25304,
+      "rank": 10
+     }
+    }
+   }
+  }
+ ]
+}

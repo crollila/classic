@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"math"
@@ -18,17 +19,6 @@ import (
 	"github.com/wowsims/classic/sim/game"
 	googleProto "google.golang.org/protobuf/proto"
 )
-
-type SimSettings struct {
-	Iterations   int32   `json:"iterations"`
-	Duration     float64 `json:"duration_s"`
-	Targets      int     `json:"targets"`
-	TargetLevel  int32   `json:"target_level"`
-	Seed         int64   `json:"seed"`
-	ForeverMode  string  `json:"forever_mode"`
-	AutoRotate   bool    `json:"forever_auto_rotation"`
-	TalentPolicy string  `json:"forever_talent_policy"`
-}
 
 // ---------------------------------------------------------------- root/files
 
@@ -70,85 +60,22 @@ func resolveRoot(flagValue string) (string, error) {
 	return "", fmt.Errorf("could not find repo root (directory containing %s); pass -root or set FOREVERBENCH_ROOT", foreverDataRelPath)
 }
 
-func loadGearSet(root, dir, name string) (*proto.EquipmentSpec, error) {
-	path := filepath.Join(root, "ui", dir, "gear_sets", name+".gear.json")
-	data, err := os.ReadFile(path)
-	if err != nil {
-		return nil, err
-	}
-	return core.EquipmentSpecFromJsonString(string(data)), nil
-}
-
-func loadApl(root, dir, name string) (*proto.APLRotation, error) {
-	path := filepath.Join(root, "ui", dir, "apls", name+".apl.json")
-	data, err := os.ReadFile(path)
-	if err != nil {
-		return nil, err
-	}
-	return core.APLRotationFromJsonString(string(data)), nil
-}
-
 // ---------------------------------------------------------------- requests
 
-func makeEncounter(s SimSettings) *proto.Encounter {
-	targets := make([]*proto.Target, max(1, s.Targets))
+func makeEncounter(targetsN int, duration float64, level int32) *proto.Encounter {
+	targets := make([]*proto.Target, max(1, targetsN))
 	for i := range targets {
 		t := googleProto.Clone(core.DefaultTargetProtoLvl60).(*proto.Target)
-		t.Level = s.TargetLevel
+		t.Level = level
 		targets[i] = t
 	}
 	return &proto.Encounter{
-		Duration:             s.Duration,
+		Duration:             duration,
 		ExecuteProportion_20: 0.2,
 		ExecuteProportion_25: 0.25,
 		ExecuteProportion_35: 0.35,
 		Targets:              targets,
 	}
-}
-
-// buildSpecRequest reproduces core.FullCharacterTestSuiteGenerator's defaultPlayer
-// and SinglePlayerRaidProto with core.FullBuffs, using CLI encounter settings.
-func buildSpecRequest(root string, spec SpecConfig, s SimSettings) (req *proto.RaidSimRequest, err error) {
-	defer func() {
-		if r := recover(); r != nil {
-			err = fmt.Errorf("building request panicked: %v", r)
-		}
-	}()
-	gear, err := loadGearSet(root, spec.GearDir, spec.GearSet)
-	if err != nil {
-		return nil, err
-	}
-	apl, err := loadApl(root, spec.AplDir, spec.Apl)
-	if err != nil {
-		return nil, err
-	}
-	player := core.WithSpec(&proto.Player{
-		Name:               spec.ID,
-		Class:              spec.Class,
-		Race:               spec.Race,
-		Equipment:          gear,
-		Consumes:           googleProto.Clone(spec.Consumes).(*proto.Consumes),
-		Buffs:              googleProto.Clone(core.FullBuffs.Player).(*proto.IndividualBuffs),
-		TalentsString:      spec.Talents,
-		Profession1:        proto.Profession_Engineering,
-		Rotation:           apl,
-		DistanceFromTarget: 5,
-		ReactionTimeMs:     150,
-		ChannelClipDelayMs: 50,
-	}, spec.SpecOptions)
-	player = googleProto.Clone(player).(*proto.Player) // detach shared spec option pointers
-	raid := core.SinglePlayerRaidProto(player,
-		googleProto.Clone(core.FullBuffs.Party).(*proto.PartyBuffs),
-		googleProto.Clone(core.FullBuffs.Raid).(*proto.RaidBuffs),
-		googleProto.Clone(core.FullBuffs.Debuffs).(*proto.Debuffs))
-	return &proto.RaidSimRequest{
-		Raid:      raid,
-		Encounter: makeEncounter(s),
-		SimOptions: &proto.SimOptions{
-			Iterations: s.Iterations,
-			RandomSeed: s.Seed,
-		},
-	}, nil
 }
 
 type ForeverPlayerInfo struct {
@@ -220,12 +147,10 @@ func (d *fvDataset) talentsFor(p *proto.Player, policy TalentPolicy, first bool,
 
 // toForever converts a Classic request into the request the Forever UI would sim.
 // Players that already carry Forever options keep them (unless overridden).
-func toForever(d *fvDataset, classic *proto.RaidSimRequest, mode proto.ForeverMode, policy TalentPolicy, autoRotate bool) (*proto.RaidSimRequest, []ForeverPlayerInfo, error) {
+func toForever(d *fvDataset, classic *proto.RaidSimRequest, mode proto.ForeverMode, policy TalentPolicy) (*proto.RaidSimRequest, []ForeverPlayerInfo, error) {
 	req := googleProto.Clone(classic).(*proto.RaidSimRequest)
 	infos := []ForeverPlayerInfo{}
 	idx := 0
-	type ref struct{ party, player int }
-	refs := []ref{}
 	for pi, party := range req.Raid.GetParties() {
 		for pj, p := range party.GetPlayers() {
 			if p == nil || p.Class == proto.Class_ClassUnknown {
@@ -258,30 +183,37 @@ func toForever(d *fvDataset, classic *proto.RaidSimRequest, mode proto.ForeverMo
 			info.Mechanics = p.Forever.Mechanics
 			info.AutoRotationAdded = []autoAddition{}
 			infos = append(infos, info)
-			refs = append(refs, ref{pi, pj})
 			idx++
 		}
 	}
-	if autoRotate && len(refs) > 0 {
-		stats, err := computeAllSpells(req)
-		if err != nil {
-			return nil, nil, err
-		}
-		for i, r := range refs {
-			p := req.Raid.Parties[r.party].Players[r.player]
-			spells := stats[[2]int{r.party, r.player}]
-			if p.Rotation == nil || p.Rotation.Type != proto.APLRotation_TypeAPL {
+	return req, infos, nil
+}
+
+// applyUIAutoRotation prepends every Forever auto-rotation action to every
+// player's APL (the Forever web UI behaviour); used for -request files.
+func applyUIAutoRotation(d *fvDataset, req *proto.RaidSimRequest, infos []ForeverPlayerInfo) error {
+	stats, err := computeAllSpells(req)
+	if err != nil {
+		return err
+	}
+	for pi, party := range req.Raid.GetParties() {
+		for pj, p := range party.GetPlayers() {
+			if p == nil || p.Forever == nil || p.Rotation == nil || p.Rotation.Type != proto.APLRotation_TypeAPL {
 				continue
 			}
-			rot, added, err := d.withForeverRotation(p.Rotation, p.Forever, p.Class, spells, len(req.Encounter.GetTargets()))
+			rot, added, err := d.withForeverRotation(p.Rotation, p.Forever, p.Class, stats[[2]int{pi, pj}], len(req.Encounter.GetTargets()))
 			if err != nil {
-				return nil, nil, err
+				return err
 			}
 			p.Rotation = rot
-			infos[i].AutoRotationAdded = added
+			for i := range infos {
+				if infos[i].PlayerIndex == pi*5+pj {
+					infos[i].AutoRotationAdded = added
+				}
+			}
 		}
 	}
-	return req, infos, nil
+	return nil
 }
 
 func computeAllSpells(req *proto.RaidSimRequest) (out map[[2]int][]*proto.SpellStats, err error) {
@@ -346,6 +278,7 @@ type RunResult struct {
 	Min        float64          `json:"min"`
 	Max        float64          `json:"max"`
 	StdErr     float64          `json:"stderr"`
+	CI95       [2]float64       `json:"ci95"`
 	Iterations int32            `json:"iterations"`
 	ElapsedMS  int64            `json:"elapsed_ms"`
 	Error      string           `json:"error,omitempty"`
@@ -376,7 +309,9 @@ func runGame(version game.Version, req *proto.RaidSimRequest) RunResult {
 		out.Min = round2(dps.GetMin())
 		out.Max = round2(dps.GetMax())
 		if out.Iterations > 0 {
-			out.StdErr = round2(dps.GetStdev() / math.Sqrt(float64(out.Iterations)))
+			se := dps.GetStdev() / math.Sqrt(float64(out.Iterations))
+			out.StdErr = round2(se)
+			out.CI95 = [2]float64{round2(dps.GetAvg() - 1.96*se), round2(dps.GetAvg() + 1.96*se)}
 		}
 	}()
 	out.ElapsedMS = time.Since(start).Milliseconds()
@@ -577,4 +512,16 @@ func compact(p *game.Provenance) *CompactProvenance {
 		}
 	}
 	return c
+}
+
+func sqrt(v float64) float64 { return math.Sqrt(v) }
+
+// normalizeJSON re-encodes protojson output (randomized whitespace) for stable output.
+func normalizeJSON(raw []byte) json.RawMessage {
+	var v interface{}
+	if err := json.Unmarshal(raw, &v); err != nil {
+		return json.RawMessage(raw)
+	}
+	out, _ := json.Marshal(v)
+	return out
 }
