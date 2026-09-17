@@ -5,12 +5,16 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { defineConfig, Plugin } from 'vite';
 import { validateRelease, rewriteLocalPaths } from './scripts/forever-contract.mjs';
+import { resolveLiveDataUrl } from './ui/forever/live-data.mjs';
 
 const root = path.dirname(fileURLToPath(import.meta.url));
 const ui = path.resolve(root, 'ui');
 const output = path.resolve(root, 'dist/forever-sim');
 const releasePath = path.resolve(root, '../shared/simulator/release.json');
 const base = '/forever-sim/';
+// Where the Oracle publishes manifest.json + overrides.json. FOREVER_LIVE_DATA_URL overrides
+// the default; an empty value disables live data (the embedded document is always used).
+const liveDataUrl = resolveLiveDataUrl(process.env.FOREVER_LIVE_DATA_URL);
 
 function release() {
   const data = JSON.parse(fs.readFileSync(releasePath, 'utf8'));
@@ -30,6 +34,8 @@ function release() {
     builtAt: new Date().toISOString(),
     databaseSha256: hash(path.join(root, 'assets/database/db.json')),
     engineSha256: hash(path.join(output, 'lib.wasm')),
+    liveDataUrl,
+    embeddedOverridesSha256: hash(path.join(root, 'sim/core/foreverdata/overrides.json')),
   };
 }
 
@@ -93,7 +99,7 @@ function foreverAdapter(): Plugin {
 export default defineConfig({
   root: ui,
   base,
-  define: { 'import.meta.env.VITE_FOREVER': '"true"' },
+  define: { 'import.meta.env.VITE_FOREVER': '"true"', 'import.meta.env.VITE_FOREVER_LIVE_DATA_URL': JSON.stringify(liveDataUrl) },
   plugins: [foreverAdapter()],
   esbuild: { jsxInject: "import { element, fragment } from 'tsx-vanilla';" },
   css: { postcss: { plugins: [{ postcssPlugin: 'forever-local-assets', Declaration(decl) { decl.value = rewriteLocalPaths(decl.value); } }] } },

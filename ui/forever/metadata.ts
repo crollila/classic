@@ -14,6 +14,8 @@ export type Release = {
   engineSha256?: string;
   upstreamCommit?: string;
   builtAt?: string;
+  liveDataUrl?: string;
+  embeddedOverridesSha256?: string | null;
 };
 
 const unknown: Release = { schemaVersion: 1, simulatorVersion: 'UNKNOWN', foreverBuild: null, mechanicsUpdatedAt: null, rulesetId: null, engineMode: 'upstream-baseline', mechanics: [], notice: 'Release metadata is unavailable. Forever build and mechanics confidence are UNKNOWN. Results cannot be treated as verified Forever predictions.' };
@@ -48,13 +50,31 @@ export function releaseSummary(release: Release) {
   ]) {
     const pair = el('div'); pair.append(el('dt', '', label), el('dd', '', value)); grid.append(pair);
   }
-  wrapper.append(grid);
+  wrapper.append(grid, liveDataStatus(release));
   if (release.notice || release.engineMode === 'upstream-baseline') {
     const warning = el('p', 'forever-disclosure');
     warning.append(badge(release.engineMode==='forever-discovery'?'PROVISIONAL':'UNKNOWN'), el('span', '', release.notice || 'Forever mechanics are not validated in this baseline build.'));
     wrapper.append(warning);
   }
   return wrapper;
+}
+
+// Which overrides document the engine runs: the published live one, or the embedded fallback.
+function liveDataStatus(release: Release) {
+  const status = el('div', 'forever-live-data');
+  const line = el('p', 'forever-live-data-line', 'Forever data: checking for live data…');
+  const warning = el('p', 'forever-disclosure forever-live-data-warning');
+  warning.hidden = true; warning.setAttribute('role', 'status');
+  status.append(line, warning);
+  watchLiveData(data => {
+    const described = describeLiveData(data, release);
+    line.textContent = `Forever data: ${described.text}`;
+    status.dataset.liveData = described.live ? 'live' : 'embedded';
+    const messages = [described.live ? '' : 'This page is running the data embedded in this build, which may be older than the Oracle.', described.warning || ''].filter(Boolean);
+    warning.replaceChildren(...(messages.length ? [el('strong', '', 'Warning'), el('span', '', messages.join(' '))] : []));
+    warning.hidden = !messages.length;
+  });
+  return status;
 }
 
 export function confidencePanel(release: Release, spec?: number | null) {
@@ -78,3 +98,5 @@ export function confidencePanel(release: Release, spec?: number | null) {
   return details;
 }
 import { validateRelease } from '../../scripts/forever-contract.mjs';
+import { describeLiveData } from './live-data.mjs';
+import { watchLiveData } from './live-data-client';

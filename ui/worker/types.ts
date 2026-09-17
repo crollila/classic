@@ -21,7 +21,7 @@ export enum SimRequest {
 /**
  * What the Worker receives from the UI
  */
-export type WorkerReceiveMessageType = keyof typeof SimRequest | 'setID';
+export type WorkerReceiveMessageType = keyof typeof SimRequest | 'setID' | 'setForeverOverrides';
 
 export interface WorkerReceiveMessageBodyBase {
 	id: string;
@@ -37,12 +37,18 @@ export interface WorkerReceiveMessageSimRequest extends Required<WorkerReceiveMe
 	msg: SimRequest;
 }
 
-export type WorkerReceiveMessage = WorkerReceiveMessageSetId | WorkerReceiveMessageSimRequest;
+/** Forever builds only: the verified live overrides document, sent before the first sim request. */
+export interface WorkerReceiveMessageSetForeverOverrides extends WorkerReceiveMessageBodyBase {
+	msg: 'setForeverOverrides';
+	text: string;
+}
+
+export type WorkerReceiveMessage = WorkerReceiveMessageSetId | WorkerReceiveMessageSetForeverOverrides | WorkerReceiveMessageSimRequest;
 
 /**
  * What the Worker sends to the UI
  */
-export type WorkerSendMessageType = 'ready' | 'idConfirm' | 'progress' | keyof typeof SimRequest;
+export type WorkerSendMessageType = 'ready' | 'idConfirm' | 'progress' | 'foreverOverrides' | keyof typeof SimRequest;
 
 export interface WorkerSendMessageBodyBase {
 	id?: string;
@@ -66,4 +72,15 @@ export interface WorkerSendMessageSimRequest extends Required<WorkerSendMessageB
 	msg: SimRequest;
 }
 
-export type WorkerSendMessage = WorkerSendMessageReady | WorkerSendMessageIdConfirm | WorkerSendMessageProgress | WorkerSendMessageSimRequest;
+/** Reply to setForeverOverrides: the engine's JSON string {ok, error?, summary}. */
+export interface WorkerSendMessageForeverOverrides extends WorkerSendMessageBodyBase {
+	msg: 'foreverOverrides';
+	result: string;
+}
+
+export type WorkerSendMessage =
+	| WorkerSendMessageReady
+	| WorkerSendMessageIdConfirm
+	| WorkerSendMessageProgress
+	| WorkerSendMessageForeverOverrides
+	| WorkerSendMessageSimRequest;

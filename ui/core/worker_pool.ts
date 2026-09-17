@@ -248,6 +248,7 @@ class SimWorker {
 	private resolveReady: (() => void) | undefined;
 	private wasmWorker: boolean;
 	private shouldDestroy: boolean;
+	private resolveForeverOverrides: ((result: string) => void) | undefined;
 
 	constructor(id: number) {
 		this.workerId = id;
@@ -277,11 +278,18 @@ class SimWorker {
 				case 'ready':
 					this.wasmWorker = !!outputData && !!outputData[0];
 					this.postMessage({ msg: 'setID', id: this.workerId.toString() });
-					this.resolveReady!();
-					this.setTaskActive('setup', false);
-					this.log(`Ready, isWasm: ${this.wasmWorker}`);
+					// Forever builds: the worker only becomes ready (and so only runs its first
+					// request) after the verified live overrides document was offered to it.
+					void this.loadForeverLiveData().finally(() => {
+						this.resolveReady?.();
+						this.setTaskActive('setup', false);
+						this.log(`Ready, isWasm: ${this.wasmWorker}`);
+					});
 					break;
 				case 'idConfirm':
+					break;
+				case 'foreverOverrides':
+					if (data.msg === 'foreverOverrides') this.resolveForeverOverrides?.(data.result);
 					break;
 				default:
 					const promiseFuncs = this.taskIdsToPromiseFuncs[id];
@@ -294,6 +302,24 @@ class SimWorker {
 					promiseFuncs[0](outputData);
 			}
 		});
+	}
+
+	private async loadForeverLiveData() {
+		if (import.meta.env.VITE_FOREVER !== 'true' || !this.wasmWorker) return;
+		try {
+			const { getLiveData, reportWorkerResult } = await import('../forever/live-data-client');
+			const live = await getLiveData();
+			if (live.status !== 'live' || !this.worker) return;
+			const result = await new Promise<string>(resolve => {
+				this.resolveForeverOverrides = resolve;
+				this.postMessage({ msg: 'setForeverOverrides', id: 'setForeverOverrides', text: live.text });
+			});
+			const state = reportWorkerResult(result);
+			this.log(`Forever data: ${state?.status === 'live' ? `live ${state.manifest.overrides_source_hash.slice(0, 12)}` : 'embedded'}`);
+		} catch (error) {
+			// The engine keeps its embedded document.
+			console.warn('Forever live data was not loaded:', error);
+		}
 	}
 
 	/** Add sim work amount (iterations) used for load balancing. */
