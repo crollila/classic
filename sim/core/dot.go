@@ -261,6 +261,20 @@ func (dot *Dot) basePeriodicOptions() PeriodicActionOptions {
 }
 
 func newDot(config Dot) *Dot {
+	// Keep existing gameplay tags (SerpentSting, class curse names, etc.) intact.
+	// Classification is separate so cleansing still recognizes a tagged poison.
+	if config.Spell != nil && !config.Spell.Flags.Matches(SpellFlagHelpful) {
+		switch {
+		case config.Spell.Flags.Matches(SpellFlagPoison):
+			config.Aura.foreverDispelType = "poison"
+		case config.Spell.Flags.Matches(SpellFlagDisease):
+			config.Aura.foreverDispelType = "disease"
+		case config.Spell.SpellSchool == SpellSchoolPhysical:
+			config.Aura.foreverDispelType = "bleed"
+		case config.Spell.SpellSchool != SpellSchoolNone:
+			config.Aura.foreverDispelType = "magic"
+		}
+	}
 	dot := &Dot{}
 	*dot = config
 

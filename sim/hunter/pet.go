@@ -63,7 +63,7 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 
 	baseMinDamage = 18.17 * attackSpeed
 	baseMaxDamage = 27.66 * attackSpeed
-	
+
 	hunterPetBaseStats = stats.Stats{
 		stats.Strength:  136,
 		stats.Agility:   100,
@@ -134,6 +134,12 @@ func (hp *HunterPet) Reset(_ *core.Simulation) {
 }
 
 func (hp *HunterPet) ExecuteCustomRotation(sim *core.Simulation) {
+	if hp.hunterOwner.Forever != nil && (hp.IsMoving() || hp.DistanceFromTarget > core.MaxMeleeAttackDistance) {
+		if hp.GCD.IsReady(sim) {
+			hp.WaitUntil(sim, sim.CurrentTime+100*time.Millisecond)
+		}
+		return
+	}
 	percentRemaining := sim.GetRemainingDurationPercent()
 	if percentRemaining < 1.0-hp.uptimePercent { // once fight is % completed, disable pet.
 		hp.Disable(sim)

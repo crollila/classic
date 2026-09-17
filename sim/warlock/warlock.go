@@ -34,12 +34,15 @@ const (
 	SpellCode_WarlockShadowBolt
 	SpellCode_WarlockShadowburn
 	SpellCode_WarlockSoulFire
+	SpellCode_WarlockDrainHope
+	SpellCode_WarlockIncinerate
 )
 
 type Warlock struct {
 	core.Character
-	Talents *proto.WarlockTalents
-	Options *proto.WarlockOptions
+	Talents      *proto.WarlockTalents
+	Options      *proto.WarlockOptions
+	foreverState *foreverWarlockState
 
 	BasePets   []*WarlockPet
 	ActivePet  *WarlockPet
@@ -128,6 +131,7 @@ func (warlock *Warlock) Initialize() {
 	warlock.registerSummonDemon()
 
 	warlock.registerPetAbilities()
+	warlock.registerForeverSpells()
 
 	warlock.OnSpellRegistered(func(spell *core.Spell) {
 		if !spell.Flags.Matches(SpellFlagWarlock) {

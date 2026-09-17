@@ -37,6 +37,9 @@ func (shaman *Shaman) newHealingStreamTotemSpellConfig(rank int) core.SpellConfi
 	spellId := HealingStreamTotemSpellId[rank]
 	healId := HealingStreamTotemHealId[rank]
 	baseHealing := HealingStreamTotemBaseHealing[rank]*shaman.purificationHealingModifier() + shaman.restorativeTotemsModifier()
+	if shaman.Forever != nil {
+		baseHealing = HealingStreamTotemBaseHealing[rank]
+	}
 	spellCoeff := HealingStreamTotemSpellCoeff[rank]
 	manaCost := HealingStreamTotemManaCost[rank]
 	level := HealingStreamTotemLevel[rank]
@@ -51,10 +54,11 @@ func (shaman *Shaman) newHealingStreamTotemSpellConfig(rank int) core.SpellConfi
 	healSpell := shaman.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: healId},
 		SpellSchool: core.SpellSchoolNature,
+		DefenseType: core.Ternary(shaman.Forever != nil, core.DefenseTypeMagic, core.DefenseTypeNone),
 		ProcMask:    core.ProcMaskSpellHealing,
 		Flags:       core.SpellFlagHelpful | core.SpellFlagNoOnCastComplete | core.SpellFlagNoLogs | core.SpellFlagNoMetrics,
 
-		DamageMultiplier: 1,
+		DamageMultiplier: core.TernaryFloat64(shaman.Forever != nil, 1+.10*shaman.fr("restorative-totems"), 1),
 		ThreatMultiplier: 1,
 		BonusCoefficient: spellCoeff,
 
@@ -70,7 +74,11 @@ func (shaman *Shaman) newHealingStreamTotemSpellConfig(rank int) core.SpellConfi
 		NumberOfTicks: int32(duration / healInterval),
 		TickLength:    healInterval,
 		OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-			healSpell.Cast(sim, target)
+			if shaman.Forever == nil || shaman.ActiveTotems[WaterTotem] == dot.Spell {
+				healSpell.Cast(sim, target)
+			} else {
+				dot.Deactivate(sim)
+			}
 		},
 	}
 
@@ -125,6 +133,20 @@ func (shaman *Shaman) newManaSpringTotemSpellConfig(rank int) core.SpellConfig {
 	spell.ApplyEffects = func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 		shaman.TotemExpirations[WaterTotem] = sim.CurrentTime + duration
 		shaman.ActiveTotems[WaterTotem] = spell
+		if shaman.Forever != nil {
+			metrics := shaman.NewManaMetrics(spell.ActionID)
+			core.StartPeriodicAction(sim, core.PeriodicActionOptions{Period: 2 * time.Second, NumTicks: 30, OnAction: func(sim *core.Simulation) {
+				if shaman.ActiveTotems[WaterTotem] != spell {
+					return
+				}
+				for _, agent := range shaman.Party.Players {
+					c := agent.GetCharacter()
+					if c.HasManaBar() {
+						c.AddMana(sim, float64(ManaSpringTotemManaRestore[rank])*(1+.05*shaman.fr("restorative-totems")), metrics)
+					}
+				}
+			}})
+		}
 	}
 	return spell
 }

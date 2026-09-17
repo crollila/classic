@@ -52,6 +52,9 @@ func (warrior *Warrior) registerCleaveSpell(realismICD *core.Cooldown) {
 	threat := 100.0
 
 	flatDamageBonus *= []float64{1, 1.4, 1.8, 2.2}[warrior.Talents.ImprovedCleave]
+	if warrior.ForeverRank("warrior.talent.improved-cleave") > 0 {
+		flatDamageBonus = 50
+	}
 
 	results := make([]*core.SpellResult, min(int32(2), warrior.Env.GetNumTargets()))
 
@@ -63,7 +66,7 @@ func (warrior *Warrior) registerCleaveSpell(realismICD *core.Cooldown) {
 		Flags:       core.SpellFlagMeleeMetrics | SpellFlagOffensive,
 
 		RageCost: core.RageCostOptions{
-			Cost: 20,
+			Cost: 20 - 2*float64(warrior.ForeverRank("warrior.talent.raging-blows")) - warrior.ForeverValue("warrior.talent.improved-cleave", 0, 0),
 		},
 
 		CritDamageBonus: warrior.impale(),

@@ -64,7 +64,7 @@ func (move *MovementHandler) removeMoveSpeedModifier(moveHeap *MoveHeap, actionI
 }
 
 func (move *MovementHandler) updateMoveSpeed() {
-	move.MoveSpeed = move.baseSpeed * move.getActveModifier(move.moveSpeedBonuses) * (1-move.getActveModifier(move.moveSpeedPenalties))
+	move.MoveSpeed = move.baseSpeed * move.getActveModifier(move.moveSpeedBonuses) * (1 - move.getActveModifier(move.moveSpeedPenalties))
 }
 
 func (move *MovementHandler) getActveModifier(moveHeap *MoveHeap) float64 {
@@ -113,7 +113,9 @@ func (unit *Unit) initMovement() {
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
 			unit.MovementHandler.Moving = false
-			unit.AutoAttacks.EnableAutoSwing(sim)
+			if !unit.foreverAutosSuppressed() {
+				unit.AutoAttacks.EnableAutoSwing(sim)
+			}
 
 			// Simulate the delay from starting attack
 			unit.AutoAttacks.DelayMeleeBy(sim, time.Millisecond*50)
@@ -136,6 +138,10 @@ func (unit *Unit) IsMoving() bool {
 }
 
 func (unit *Unit) MoveTo(moveRange float64, sim *Simulation) {
+	if unit.foreverControls != nil {
+		unit.foreverMoveTo(moveRange, sim)
+		return
+	}
 	if moveRange == unit.DistanceFromTarget {
 		return
 	}
@@ -168,12 +174,12 @@ func (unit *Unit) AddMoveSpeedModifier(actionId *ActionID, modifier float64) {
 		ActionId: actionId,
 		Modifier: modifier,
 	}
-	if(moveSpeedMod.Modifier < 1) {
+	if moveSpeedMod.Modifier < 1 {
 		unit.MovementHandler.addMoveSpeedModifier(unit.MovementHandler.moveSpeedPenalties, moveSpeedMod)
 	} else {
 		unit.MovementHandler.addMoveSpeedModifier(unit.MovementHandler.moveSpeedBonuses, moveSpeedMod)
 	}
-	
+
 }
 
 func (unit *Unit) RemoveMoveSpeedModifier(actionID *ActionID) {

@@ -7,6 +7,9 @@ import (
 )
 
 func (priest *Priest) registerVampiricEmbraceSpell() {
+	if priest.Forever != nil {
+		return
+	}
 	if !priest.Talents.VampiricEmbrace {
 		return
 	}

@@ -31,7 +31,9 @@ func (warrior *Warrior) newShoutSpellConfig(actionID core.ActionID, rank int32, 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for _, aura := range allyAuras {
 				spell.CalcAndDealOutcome(sim, aura.Unit, spell.OutcomeAlwaysHit)
-				aura.Activate(sim)
+				if warrior.Forever == nil || absForeverDistance(warrior.DistanceFromTarget-aura.Unit.DistanceFromTarget) <= 20*(1+.1*float64(warrior.ForeverRank("warrior.talent.booming-voice"))) {
+					aura.Activate(sim)
+				}
 			}
 
 			for i := 0; i < extraHits; i++ {

@@ -6,6 +6,7 @@ import { MAX_PARTY_SIZE, Party } from './party.js';
 import {
 	AuraStats as AuraStatsProto,
 	ErrorOutcomeType,
+	ForeverOptions,
 	Player as PlayerProto,
 	PlayerStats,
 	SpellStats as SpellStatsProto,
@@ -75,6 +76,8 @@ import { playerTalentStringToProto } from './talents/factory.js';
 import { EventID, TypedEvent } from './typed_event.js';
 import { stringComparator } from './utils.js';
 import { WorkerProgressCallback } from './worker_pool';
+import { foreverDefaultOptions, foreverClassicBridge, migrateClassicTalents, foreverDiscoveryTalents, foreverClassName } from '../forever/discovery';
+import { withForeverRotation } from '../forever/rotation';
 
 export interface AuraStats {
 	data: AuraStatsProto;
@@ -237,6 +240,7 @@ export class Player<SpecType extends Spec> {
 	private profession2: Profession = 0;
 	aplRotation: APLRotation = APLRotation.create();
 	private talentsString = '';
+	private forever?: ForeverOptions;
 	private specOptions: SpecOptions<SpecType>;
 	private reactionTime = 0;
 	private channelClipDelay = 0;
@@ -301,6 +305,7 @@ export class Player<SpecType extends Spec> {
 
 		this.spec = spec;
 		this.race = specToEligibleRaces[this.spec][0];
+		if (import.meta.env.VITE_FOREVER === 'true') this.forever=foreverDefaultOptions(this.getClass(),this.race);
 		this.specTypeFunctions = specTypeFunctions[this.spec] as SpecTypeFunctions<SpecType>;
 		this.specOptions = this.specTypeFunctions.optionsCreate();
 
@@ -875,16 +880,18 @@ export class Player<SpecType extends Spec> {
 
 	getTalents(): SpecTalents<SpecType> {
 		if (this.talents === null) {
-			this.talents = playerTalentStringToProto(this.spec, this.talentsString) as SpecTalents<SpecType>;
+			this.talents = playerTalentStringToProto(this.spec, this.getTalentsString()) as SpecTalents<SpecType>;
 		}
 		return this.talents!;
 	}
 
 	getTalentsString(): string {
+		if(this.forever) return foreverClassicBridge(this.getClass(),this.forever);
 		return this.talentsString;
 	}
 
 	setTalentsString(eventID: EventID, newTalentsString: string) {
+		if(this.forever){ const f=this.getForever()!;f.talents=migrateClassicTalents(this.getClass(),newTalentsString);this.setForever(eventID,f);return; }
 		if (newTalentsString === this.talentsString) return;
 
 		this.talentsString = newTalentsString;
@@ -893,10 +900,18 @@ export class Player<SpecType extends Spec> {
 	}
 
 	getTalentTree(): number {
+		if(this.forever){const points=this.getTalentTreePoints();return points.indexOf(Math.max(...points));}
 		return getTalentTree(this.getTalentsString());
+	}
+	getForever(): ForeverOptions | undefined {return this.forever?ForeverOptions.clone(this.forever):undefined;}
+	setForever(eventID:EventID, options:ForeverOptions|undefined){
+		if(ForeverOptions.equals(this.forever||ForeverOptions.create(),options||ForeverOptions.create()))return;
+		this.forever=options?ForeverOptions.clone(options):undefined;
+		this.talents=null;this.talentsChangeEmitter.emit(eventID);
 	}
 
 	getTalentTreePoints(): Array<number> {
+		if(this.forever){const rows=foreverDiscoveryTalents.records.filter(r=>r.class===foreverClassName(this.getClass()));return [...new Set(rows.map(r=>r.tree))].map(tree=>rows.filter(r=>r.tree===tree).reduce((n,r)=>n+(this.forever!.talents[r.id]||0),0));}
 		return getTalentTreePoints(this.getTalentsString());
 	}
 
@@ -960,6 +975,7 @@ export class Player<SpecType extends Spec> {
 	}
 
 	setDefaultHealingParams(hm: HealingModel) {
+		if(import.meta.env.VITE_FOREVER&&!this.sim.encounter.targets?.length)return;
 		const boss = this.sim.encounter.primaryTarget;
 		const dualWield = boss.dualWield;
 		if (hm.cadenceSeconds === 0) {
@@ -978,6 +994,7 @@ export class Player<SpecType extends Spec> {
 
 	enableHealing() {
 		this.healingEnabled = true;
+		if(import.meta.env.VITE_FOREVER&&!this.sim.encounter.targets?.length){void this.sim.waitForInit().then(()=>this.enableHealing());return;}
 		const hm = this.getHealingModel();
 		if (hm.cadenceSeconds === 0 || hm.hps === 0) {
 			this.setDefaultHealingParams(hm);
@@ -1355,7 +1372,7 @@ export class Player<SpecType extends Spec> {
 		const exportCategory = (cat: SimSettingCategories) => !exportCategories || exportCategories.length === 0 || exportCategories.includes(cat);
 
 		const gear = this.getGear();
-		const aplRotation = forSimming ? this.getResolvedAplRotation() : this.aplRotation;
+		const aplRotation = forSimming ? withForeverRotation(this.getResolvedAplRotation(),this.forever,this.getClass(),this.metadata.getSpells().map(s=>s.data),this.spec,this.sim.encounter.targets?.length||1) : this.aplRotation;
 
 		let player = PlayerProto.create({
 			class: this.getClass(),
@@ -1410,6 +1427,7 @@ export class Player<SpecType extends Spec> {
 				buffs: this.getBuffs(),
 			});
 		}
+		if(this.forever){player.forever=this.getForever();player.talentsString='';player.database=undefined;}
 		return player;
 	}
 
@@ -1431,6 +1449,7 @@ export class Player<SpecType extends Spec> {
 			}
 			if (loadCategory(SimSettingCategories.Talents)) {
 				this.setTalentsString(eventID, proto.talentsString);
+				if(proto.forever)this.setForever(eventID,proto.forever);
 			}
 			if (loadCategory(SimSettingCategories.Rotation)) {
 				if (proto.rotation?.type === APLRotationType.TypeUnknown || proto.rotation?.type === APLRotationType.TypeLegacy) {

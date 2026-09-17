@@ -1,0 +1,472 @@
+{
+  "schema_version": 2,
+  "checked_at": "2026-09-13T11:40:13.232Z",
+  "ruleset_id": "forever-discovery-2026-09-13-v2",
+  "engine_version": "0.1.0+forever-v2.e329a850c39c",
+  "engine_sha256": "e329a850c39cafb9dd7112cad223cde7acfd60790f8a3aec30522006926d04f4",
+  "manifest_sha256": "c5a8742a1f33415ab45df28f541e83bd51e7cb90c4e58b35f7e58809c9c5d11f",
+  "sim_tests": "PASS",
+  "command": "npm test",
+  "expanded_engine_command": "go test -count=1 --tags=with_db ./sim/... ./cmd/...",
+  "exit_code": 0,
+  "packages_reporting_ok": 26,
+  "full_suite": {
+    "path": ".artifacts/forever-v2-final-full-suite.log",
+    "sha256": "c1a51f72a8177cf6d6decb9ded2cc279202b388a59fd38cdc11adf97d68d35bf"
+  },
+  "includes": [
+    "Protobuf generation and Classic WebAssembly build",
+    "Full unchanged upstream Classic regression expectations",
+    "Forever class casts, costs, cooldowns, procs, pets, control, healing and iteration-reset regressions",
+    "All 19 spec factories and permitted race/spec combinations in both modes; predicted Skyborne excluded from STRICT",
+    "Private schema v2 valid/invalid fixtures and mode isolation",
+    "Legal talent samples across all 27 trees"
+  ],
+  "checks": {
+    "FOREVER_TALENT_UI": "PASS",
+    "STRICT_MODE": "PASS",
+    "BEST_GUESS_MODE": "PASS",
+    "ALL_CLASS_SIMS": "PASS",
+    "CLASSIC_REGRESSION": "PASS"
+  },
+  "browser": {
+    "checked_at": "2026-09-13T11:40:13.231Z",
+    "engine_version": "0.1.0+forever-v2.e329a850c39c",
+    "engine_sha256": "e329a850c39cafb9dd7112cad223cde7acfd60790f8a3aec30522006926d04f4",
+    "method": "Actual Codex browser interaction: select Talents, legal sample, mode, 20 iterations, Run Sim; require numerical result, run-mode provenance and absence of inline run error.",
+    "base_url": "http://127.0.0.1:4173",
+    "rows": [
+      {
+        "page": "warrior",
+        "sample": "Fury",
+        "metric": "DPS",
+        "iterations": 20,
+        "BEST_GUESS": {
+          "status": "PASS",
+          "value": 1201.18
+        },
+        "STRICT": {
+          "status": "PASS",
+          "value": 552.56
+        }
+      },
+      {
+        "page": "tank_warrior",
+        "sample": "Protection",
+        "metric": "DPS",
+        "iterations": 20,
+        "BEST_GUESS": {
+          "status": "PASS",
+          "value": 456.06
+        },
+        "STRICT": {
+          "status": "PASS",
+          "value": 290.05
+        }
+      },
+      {
+        "page": "hunter",
+        "sample": "Marksmanship",
+        "metric": "DPS",
+        "iterations": 20,
+        "BEST_GUESS": {
+          "status": "PASS",
+          "value": 632.31
+        },
+        "STRICT": {
+          "status": "PASS",
+          "value": 464.33
+        }
+      },
+      {
+        "page": "rogue",
+        "sample": "Combat",
+        "metric": "DPS",
+        "iterations": 20,
+        "BEST_GUESS": {
+          "status": "PASS",
+          "value": 758.2
+        },
+        "STRICT": {
+          "status": "PASS",
+          "value": 488.77
+        }
+      },
+      {
+        "page": "retribution_paladin",
+        "sample": "Retribution",
+        "metric": "DPS",
+        "iterations": 20,
+        "BEST_GUESS": {
+          "status": "PASS",
+          "value": 385.89
+        },
+        "STRICT": {
+          "status": "PASS",
+          "value": 178.41
+        }
+      },
+      {
+        "page": "protection_paladin",
+        "sample": "Protection",
+        "metric": "DPS",
+        "iterations": 20,
+        "BEST_GUESS": {
+          "status": "PASS",
+          "value": 215.24
+        },
+        "STRICT": {
+          "status": "PASS",
+          "value": 103.03
+        }
+      },
+      {
+        "page": "holy_paladin",
+        "sample": "Holy",
+        "metric": "HPS",
+        "iterations": 20,
+        "BEST_GUESS": {
+          "status": "PASS",
+          "value": 159.94
+        },
+        "STRICT": {
+          "status": "PASS",
+          "value": 133.03
+        }
+      },
+      {
+        "page": "healing_priest",
+        "sample": "Discipline",
+        "metric": "HPS",
+        "iterations": 20,
+        "BEST_GUESS": {
+          "status": "PASS",
+          "value": 155.75
+        },
+        "STRICT": {
+          "status": "PASS",
+          "value": 128.7
+        }
+      },
+      {
+        "page": "shadow_priest",
+        "sample": "Shadow Magic",
+        "metric": "DPS",
+        "iterations": 20,
+        "BEST_GUESS": {
+          "status": "PASS",
+          "value": 680.71
+        },
+        "STRICT": {
+          "status": "PASS",
+          "value": 248.67
+        }
+      },
+      {
+        "page": "elemental_shaman",
+        "sample": "Elemental Combat",
+        "metric": "DPS",
+        "iterations": 20,
+        "BEST_GUESS": {
+          "status": "PASS",
+          "value": 459.49
+        },
+        "STRICT": {
+          "status": "PASS",
+          "value": 311.22
+        }
+      },
+      {
+        "page": "enhancement_shaman",
+        "sample": "Enhancement",
+        "metric": "DPS",
+        "iterations": 20,
+        "BEST_GUESS": {
+          "status": "PASS",
+          "value": 696.71
+        },
+        "STRICT": {
+          "status": "PASS",
+          "value": 451.59
+        }
+      },
+      {
+        "page": "restoration_shaman",
+        "sample": "Restoration",
+        "metric": "HPS",
+        "iterations": 20,
+        "BEST_GUESS": {
+          "status": "PASS",
+          "value": 257.2
+        },
+        "STRICT": {
+          "status": "PASS",
+          "value": 200.73
+        }
+      },
+      {
+        "page": "warden_shaman",
+        "sample": "Enhancement",
+        "metric": "DPS",
+        "iterations": 20,
+        "BEST_GUESS": {
+          "status": "PASS",
+          "value": 146.46
+        },
+        "STRICT": {
+          "status": "PASS",
+          "value": 71.58
+        }
+      },
+      {
+        "page": "mage",
+        "sample": "Arcane",
+        "metric": "DPS",
+        "iterations": 20,
+        "BEST_GUESS": {
+          "status": "PASS",
+          "value": 412.9
+        },
+        "STRICT": {
+          "status": "PASS",
+          "value": 279.52
+        }
+      },
+      {
+        "page": "balance_druid",
+        "sample": "Balance",
+        "metric": "DPS",
+        "iterations": 20,
+        "BEST_GUESS": {
+          "status": "PASS",
+          "value": 699.11
+        },
+        "STRICT": {
+          "status": "PASS",
+          "value": 390.08
+        }
+      },
+      {
+        "page": "feral_druid",
+        "sample": "Feral Combat",
+        "metric": "DPS",
+        "iterations": 20,
+        "BEST_GUESS": {
+          "status": "PASS",
+          "value": 835.8
+        },
+        "STRICT": {
+          "status": "PASS",
+          "value": 453.07
+        }
+      },
+      {
+        "page": "feral_tank_druid",
+        "sample": "Feral Combat",
+        "metric": "DPS",
+        "iterations": 20,
+        "BEST_GUESS": {
+          "status": "PASS",
+          "value": 196.24
+        },
+        "STRICT": {
+          "status": "PASS",
+          "value": 158.12
+        }
+      },
+      {
+        "page": "restoration_druid",
+        "sample": "Restoration",
+        "metric": "HPS",
+        "iterations": 20,
+        "BEST_GUESS": {
+          "status": "PASS",
+          "value": 172.59
+        },
+        "STRICT": {
+          "status": "PASS",
+          "value": 151.42
+        }
+      },
+      {
+        "page": "warlock",
+        "sample": "Destruction",
+        "metric": "DPS",
+        "iterations": 20,
+        "BEST_GUESS": {
+          "status": "PASS",
+          "value": 344.33
+        },
+        "STRICT": {
+          "status": "PASS",
+          "value": 231.76
+        }
+      }
+    ],
+    "limits": [
+      "Smoke-test throughput values use local planning configurations and are not statistical accuracy benchmarks.",
+      "HPS measures engine healing throughput, including potential overhealing.",
+      "Testing uncertainty policies does not confirm the underlying predicted mechanics."
+    ]
+  },
+  "additional_checks": {
+    "typescript": {
+      "status": "PASS",
+      "included_in": "npm run build:forever"
+    },
+    "manifest_import": {
+      "status": "PASS",
+      "path": ".artifacts/forever-v2-manifest-check.log",
+      "sha256": "b881f544e70fb2ef1890ff3edd047bc7b111a26c616e0cadf0fd2ed8d47c3ce6"
+    },
+    "reviewed_classic_boundary": {
+      "status": "PASS",
+      "path": ".artifacts/forever-v2-classic-boundary.log",
+      "sha256": "998b29c7d8f96095c9beac35a0fb3852cfd7ed53cace5856067d84b4360e1b31"
+    },
+    "ui_regression": {
+      "status": "PASS",
+      "tests": 3,
+      "path": ".artifacts/forever-v2-ui-tests.log",
+      "sha256": "7e5b86b5735e80f0e02d3ab59b08f5dfd513b22e783cd09d1c6160a197544a66"
+    },
+    "static_contract": {
+      "status": "PASS",
+      "tests": 7,
+      "path": ".artifacts/forever-v2-static-tests.log",
+      "sha256": "e0202fe9cb7c8ca44c1affdf368bea76204f02ece06a0f41a7f0d0ec6cd05637"
+    },
+    "release_build": {
+      "status": "PASS",
+      "path": ".artifacts/forever-v2-final-build.log",
+      "sha256": "e73cd7ba50ca5d428fc11c71768f85c19e1b8cae800a2684619d4e092ab47548"
+    },
+    "website_build": {
+      "status": "PASS",
+      "command": "tsc -b; Vite programmatic build with unchanged React configuration",
+      "path": ".artifacts/forever-v2-website-build-fallback.log",
+      "sha256": "f7a6639ea042b3a78efaa56b50b35985fee8074502f2e5c3f20385ad7ef07a72",
+      "note": "The normal local Vite config bundler hit a sandbox ancestor-directory read restriction. Explicit configFile:false with the same React plugin built successfully; hosting configuration remains unchanged."
+    },
+    "browser_configuration": {
+      "status": "PASS",
+      "checks": [
+        "Forever talent controls visually inspected after contrast correction",
+        "Skyborne available in BEST_GUESS and absent from STRICT",
+        "Saved Forever build restores race, mode and selected talent ranks",
+        "Saved Skyborne build produces a browser simulation result",
+        "Healer result sidebars display HPS"
+      ]
+    }
+  },
+  "limits": [
+    "ACTIVE denotes the documented executable scope, including removed-talent exclusions and explicit Classic fallbacks; it is not a claim that every secondary interaction is confirmed.",
+    "Predicted ranks and components remain PREDICTED. Observed subsets may still run in STRICT.",
+    "Grounding targeting for older unclassified encounter spells remains a provisional damage-based fallback.",
+    "Encounter geometry, stealth detection and effective raid healing are modeled only within the disclosed scope.",
+    "No upstream .results, gear/APL fixtures, Classic talent definitions or item database were changed."
+  ],
+  "deployment": {
+    "checked_at": "2026-09-13T11:43:06.697Z",
+    "status": "PASS",
+    "url": "https://www.exaltedcapital.com/forever-sim/",
+    "commit": "46d621efe6870f3cfd3a884837e2cd1d2be4f62c",
+    "engine_version": "0.1.0+forever-v2.e329a850c39c",
+    "engine_sha256": "e329a850c39cafb9dd7112cad223cde7acfd60790f8a3aec30522006926d04f4",
+    "compressed_engine_sha256": "15170db3553a3ce23f023a038fb3b54d6e28c583e98720691487af47af3ab576",
+    "routes": [
+      {
+        "page": "warrior",
+        "status": 200
+      },
+      {
+        "page": "tank_warrior",
+        "status": 200
+      },
+      {
+        "page": "hunter",
+        "status": 200
+      },
+      {
+        "page": "rogue",
+        "status": 200
+      },
+      {
+        "page": "retribution_paladin",
+        "status": 200
+      },
+      {
+        "page": "protection_paladin",
+        "status": 200
+      },
+      {
+        "page": "holy_paladin",
+        "status": 200
+      },
+      {
+        "page": "healing_priest",
+        "status": 200
+      },
+      {
+        "page": "shadow_priest",
+        "status": 200
+      },
+      {
+        "page": "elemental_shaman",
+        "status": 200
+      },
+      {
+        "page": "enhancement_shaman",
+        "status": 200
+      },
+      {
+        "page": "restoration_shaman",
+        "status": 200
+      },
+      {
+        "page": "warden_shaman",
+        "status": 200
+      },
+      {
+        "page": "mage",
+        "status": 200
+      },
+      {
+        "page": "balance_druid",
+        "status": 200
+      },
+      {
+        "page": "feral_druid",
+        "status": 200
+      },
+      {
+        "page": "feral_tank_druid",
+        "status": 200
+      },
+      {
+        "page": "restoration_druid",
+        "status": 200
+      },
+      {
+        "page": "warlock",
+        "status": 200
+      }
+    ],
+    "contribution_download_links_preserved": true,
+    "browser_runs": [
+      {
+        "page": "mage",
+        "BEST_GUESS": 433.23,
+        "STRICT": 272.58,
+        "metric": "DPS"
+      },
+      {
+        "page": "holy_paladin",
+        "BEST_GUESS": 156.56,
+        "STRICT": 130.5,
+        "metric": "HPS"
+      }
+    ],
+    "browser_run_note": "Actual public browser interactions, 20 iterations each, expected mode/version provenance and no browser runtime errors. Numeric values are smoke-test observations, not accuracy benchmarks."
+  }
+}

@@ -30,6 +30,7 @@ func (paladin *Paladin) registerLayOnHands() {
 		ProcMask:    core.ProcMaskSpellHealing,
 		Flags:       core.SpellFlagAPL | core.SpellFlagMCD,
 		SpellSchool: core.SpellSchoolHoly,
+		DefenseType: core.Ternary(paladin.Forever != nil, core.DefenseTypeMagic, core.DefenseTypeNone),
 		SpellCode:   SpellCode_PaladinLayOnHands,
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

@@ -8,7 +8,7 @@ import (
 )
 
 func (paladin *Paladin) registerConsecration() {
-	if !paladin.Talents.Consecration {
+	if !paladin.Talents.Consecration && paladin.Forever == nil {
 		return
 	}
 

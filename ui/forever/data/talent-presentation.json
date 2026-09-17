@@ -1,0 +1,4848 @@
+{
+  "source": "WoWSims Classic assets/database and talent layouts; captured forevertalents.up.railway.app presentation metadata (2026-09-13). Blizzard artwork via Wowhead. Icons are presentation, not authenticated Forever spell identities.",
+  "trees": {
+    "WARRIOR": [
+      {
+        "name": "Arms",
+        "icon": "ability_rogue_eviscerate",
+        "background": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/161.jpg"
+      },
+      {
+        "name": "Fury",
+        "icon": "ability_warrior_innerrage",
+        "background": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/164.jpg"
+      },
+      {
+        "name": "Protection",
+        "icon": "ability_warrior_defensivestance",
+        "background": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/163.jpg"
+      }
+    ],
+    "PALADIN": [
+      {
+        "name": "Holy",
+        "icon": "spell_holy_holybolt",
+        "background": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/382.jpg"
+      },
+      {
+        "name": "Protection",
+        "icon": "spell_holy_devotionaura",
+        "background": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/383.jpg"
+      },
+      {
+        "name": "Retribution",
+        "icon": "spell_holy_auraoflight",
+        "background": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/381.jpg"
+      }
+    ],
+    "HUNTER": [
+      {
+        "name": "Beast Mastery",
+        "icon": "ability_hunter_beasttaming",
+        "background": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/361.jpg"
+      },
+      {
+        "name": "Marksmanship",
+        "icon": "ability_marksmanship",
+        "background": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/363.jpg"
+      },
+      {
+        "name": "Survival",
+        "icon": "ability_hunter_swiftstrike",
+        "background": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/362.jpg"
+      }
+    ],
+    "ROGUE": [
+      {
+        "name": "Assassination",
+        "icon": "ability_rogue_eviscerate",
+        "background": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/182.jpg"
+      },
+      {
+        "name": "Combat",
+        "icon": "ability_backstab",
+        "background": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/181.jpg"
+      },
+      {
+        "name": "Subtlety",
+        "icon": "ability_stealth",
+        "background": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/183.jpg"
+      }
+    ],
+    "PRIEST": [
+      {
+        "name": "Discipline",
+        "icon": "spell_holy_wordfortitude",
+        "background": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/201.jpg"
+      },
+      {
+        "name": "Holy",
+        "icon": "spell_holy_holybolt",
+        "background": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/202.jpg"
+      },
+      {
+        "name": "Shadow Magic",
+        "icon": "spell_shadow_shadowwordpain",
+        "background": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/203.jpg"
+      }
+    ],
+    "SHAMAN": [
+      {
+        "name": "Elemental Combat",
+        "icon": "spell_nature_lightning",
+        "background": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/261.jpg"
+      },
+      {
+        "name": "Enhancement",
+        "icon": "spell_nature_lightningshield",
+        "background": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/263.jpg"
+      },
+      {
+        "name": "Restoration",
+        "icon": "spell_nature_magicimmunity",
+        "background": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/262.jpg"
+      }
+    ],
+    "MAGE": [
+      {
+        "name": "Arcane",
+        "icon": "spell_holy_magicalsentry",
+        "background": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/81.jpg"
+      },
+      {
+        "name": "Fire",
+        "icon": "spell_fire_firebolt02",
+        "background": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/41.jpg"
+      },
+      {
+        "name": "Frost",
+        "icon": "spell_frost_frostbolt02",
+        "background": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/61.jpg"
+      }
+    ],
+    "WARLOCK": [
+      {
+        "name": "Affliction",
+        "icon": "spell_shadow_deathcoil",
+        "background": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/302.jpg"
+      },
+      {
+        "name": "Demonology",
+        "icon": "spell_shadow_metamorphosis",
+        "background": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/303.jpg"
+      },
+      {
+        "name": "Destruction",
+        "icon": "spell_shadow_rainoffire",
+        "background": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/301.jpg"
+      }
+    ],
+    "DRUID": [
+      {
+        "name": "Balance",
+        "icon": "spell_nature_starfall",
+        "background": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/283.jpg"
+      },
+      {
+        "name": "Feral Combat",
+        "icon": "ability_racial_bearform",
+        "background": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/281.jpg"
+      },
+      {
+        "name": "Restoration",
+        "icon": "spell_nature_healingtouch",
+        "background": "https://wow.zamimg.com/images/wow/talents/backgrounds/classic/282.jpg"
+      }
+    ]
+  },
+  "talents": {
+    "warrior.talent.improved-heroic-strike": {
+      "icon": "ability_rogue_ambush",
+      "classic": {
+        "status": "changed",
+        "tree": "Arms",
+        "row": 1,
+        "col": 1,
+        "max": 3,
+        "text": "Reduces the cost of your Heroic Strike ability by 1 rage point."
+      }
+    },
+    "warrior.talent.deflection": {
+      "icon": "ability_parry",
+      "classic": {
+        "status": "same",
+        "tree": "Arms",
+        "row": 1,
+        "col": 2,
+        "max": 5,
+        "text": "Increases your Parry chance by 1%."
+      }
+    },
+    "warrior.talent.improved-rend": {
+      "icon": "ability_gouge",
+      "classic": {
+        "status": "changed",
+        "tree": "Arms",
+        "row": 1,
+        "col": 3,
+        "max": 3,
+        "text": "Increases the bleed damage done by your Rend ability by 15%."
+      }
+    },
+    "warrior.talent.improved-charge": {
+      "icon": "ability_warrior_charge",
+      "classic": {
+        "status": "changed",
+        "tree": "Arms",
+        "row": 2,
+        "col": 1,
+        "max": 2,
+        "text": "Increases the amount of rage generated by your Charge ability by 3."
+      }
+    },
+    "warrior.talent.improved-tactical-mastery": {
+      "icon": "spell_nature_enchantarmor",
+      "classic": {
+        "status": "changed",
+        "tree": "Arms",
+        "row": 2,
+        "col": 2,
+        "max": 5,
+        "text": "You retain up to 5 of your rage points when you change stances.",
+        "renamed": "Tactical Mastery"
+      }
+    },
+    "warrior.talent.improved-overpower": {
+      "icon": "inv_sword_05",
+      "classic": {
+        "status": "moved",
+        "tree": "Arms",
+        "row": 3,
+        "col": 1,
+        "max": 2,
+        "text": "Increases the critical strike chance of your Overpower ability by 25%.",
+        "moved": true
+      }
+    },
+    "warrior.talent.anger-management": {
+      "icon": "spell_holy_blessingofstamina",
+      "classic": {
+        "status": "changed",
+        "tree": "Arms",
+        "row": 3,
+        "col": 2,
+        "max": 1,
+        "text": "Increases the time required for your rage to decay while out of combat by 30%."
+      }
+    },
+    "warrior.talent.deep-wounds": {
+      "icon": "ability_backstab",
+      "classic": {
+        "status": "changed",
+        "tree": "Arms",
+        "row": 3,
+        "col": 3,
+        "max": 3,
+        "text": "Your critical strikes cause the opponent to bleed, dealing 20% of your melee weapon's average damage over 12 sec."
+      }
+    },
+    "warrior.talent.spearing-strike": {
+      "icon": "ability_warrior_savageblow",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "warrior.talent.two-handed-weapon-specialization": {
+      "icon": "inv_axe_09",
+      "classic": {
+        "status": "changed",
+        "tree": "Arms",
+        "row": 4,
+        "col": 2,
+        "max": 5,
+        "text": "Increases the damage you deal with two-handed melee weapons by 1%."
+      }
+    },
+    "warrior.talent.impale": {
+      "icon": "ability_searingarrow",
+      "classic": {
+        "status": "changed",
+        "tree": "Arms",
+        "row": 4,
+        "col": 3,
+        "max": 2,
+        "text": "Increases the critical strike damage bonus of your abilities in Battle, Defensive, and Berserker stance by 10%."
+      }
+    },
+    "warrior.talent.bloodthrill": {
+      "icon": "ability_warrior_bloodfrenzy",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "warrior.talent.sweeping-strikes": {
+      "icon": "ability_rogue_slicedice",
+      "classic": {
+        "status": "same",
+        "tree": "Arms",
+        "row": 5,
+        "col": 2,
+        "max": 1,
+        "text": "Your next 5 melee attacks strike an additional nearby opponent."
+      }
+    },
+    "warrior.talent.weaponmaster": {
+      "icon": "ability_warrior_weaponmastery",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "warrior.talent.improved-slam": {
+      "icon": "ability_warrior_decisivestrike",
+      "classic": {
+        "status": "changed",
+        "tree": "Fury",
+        "row": 5,
+        "col": 1,
+        "max": 5,
+        "text": "Decreases the casting time of your Slam ability by 0.1 sec.",
+        "moved": true
+      }
+    },
+    "warrior.talent.improved-hamstring": {
+      "icon": "ability_shockwave",
+      "classic": {
+        "status": "same",
+        "tree": "Arms",
+        "row": 6,
+        "col": 3,
+        "max": 3,
+        "text": "Gives your Hamstring ability a 5% chance to immobilize the target for 5 sec."
+      }
+    },
+    "warrior.talent.mortal-strike": {
+      "icon": "ability_warrior_savageblow",
+      "classic": {
+        "status": "same",
+        "tree": "Arms",
+        "row": 7,
+        "col": 2,
+        "max": 1,
+        "text": "A vicious strike that deals weapon damage plus 85 and wounds the target, reducing the effectiveness of any healing by 50% for 10 sec."
+      }
+    },
+    "warrior.talent.booming-voice": {
+      "icon": "spell_nature_purge",
+      "classic": {
+        "status": "changed",
+        "tree": "Fury",
+        "row": 1,
+        "col": 2,
+        "max": 5,
+        "text": "[<span class='q2'>S03 - Tuning and Overrides Passive - Warrior</span>: <span class='q9'>Increases the area of effect of Battle Shout and Demoralizing Shout by 10%, increases the duration of Battle Shout by 10% and Demoralizing Shout by 10%, and reduces the Rage cost of Battle Shout by 20%</span> / Increases the area of effect and duration of your Battle Shout and Demoralizing Shout by 10%.]"
+      }
+    },
+    "warrior.talent.cruelty": {
+      "icon": "ability_rogue_eviscerate",
+      "classic": {
+        "status": "changed",
+        "tree": "Fury",
+        "row": 1,
+        "col": 3,
+        "max": 5,
+        "text": "Increases your chance to get a critical strike with melee weapons by 1%."
+      }
+    },
+    "warrior.talent.iron-will": {
+      "icon": "spell_magic_magearmor",
+      "classic": {
+        "status": "changed",
+        "tree": "Protection",
+        "row": 2,
+        "col": 4,
+        "max": 5,
+        "text": "Increases your chance to resist Stun and Charm effects by an additional 3%.",
+        "moved": true
+      }
+    },
+    "warrior.talent.unbridled-wrath": {
+      "icon": "spell_nature_stoneclawtotem",
+      "classic": {
+        "status": "changed",
+        "tree": "Fury",
+        "row": 2,
+        "col": 3,
+        "max": 5,
+        "text": "Gives you a 8% chance to generate an additional Rage point when you deal melee damage with a weapon."
+      }
+    },
+    "warrior.talent.improved-cleave": {
+      "icon": "ability_warrior_cleave",
+      "classic": {
+        "status": "changed",
+        "tree": "Fury",
+        "row": 3,
+        "col": 1,
+        "max": 3,
+        "text": "Increases the bonus damage done by your Cleave ability by 40%."
+      }
+    },
+    "warrior.talent.piercing-howl": {
+      "icon": "spell_shadow_deathscream",
+      "classic": {
+        "status": "changed",
+        "tree": "Fury",
+        "row": 3,
+        "col": 2,
+        "max": 1,
+        "text": "Causes all enemies near the warrior to be dazed, reducing movement speed by 50% for 6 sec."
+      }
+    },
+    "warrior.talent.blood-craze": {
+      "icon": "spell_shadow_summonimp",
+      "classic": {
+        "status": "changed",
+        "tree": "Fury",
+        "row": 3,
+        "col": 3,
+        "max": 3,
+        "text": "Regenerates 1% of your total Health over 6 sec after being the victim of a critical strike."
+      }
+    },
+    "warrior.talent.boundless-rage": {
+      "icon": "ability_warrior_endlessrage",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "warrior.talent.dual-wield-specialization": {
+      "icon": "ability_dualwield",
+      "classic": {
+        "status": "changed",
+        "tree": "Fury",
+        "row": 4,
+        "col": 1,
+        "max": 5,
+        "text": "Increases the damage done by your offhand weapon by 5%."
+      }
+    },
+    "warrior.talent.raging-blows": {
+      "icon": "ability_warrior_rampage",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "warrior.talent.enrage": {
+      "icon": "spell_shadow_unholyfrenzy",
+      "classic": {
+        "status": "changed",
+        "tree": "Fury",
+        "row": 4,
+        "col": 3,
+        "max": 5,
+        "text": "Gives you a 5% melee damage bonus for 12 sec up to a maximum of 12 swings after being the victim of a critical strike."
+      }
+    },
+    "warrior.talent.improved-execute": {
+      "icon": "inv_sword_48",
+      "classic": {
+        "status": "changed",
+        "tree": "Fury",
+        "row": 4,
+        "col": 2,
+        "max": 2,
+        "text": "Reduces the Rage cost of your Execute ability by 2."
+      }
+    },
+    "warrior.talent.precision": {
+      "icon": "ability_marksmanship",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "warrior.talent.death-wish": {
+      "icon": "spell_shadow_deathpact",
+      "classic": {
+        "status": "changed",
+        "tree": "Fury",
+        "row": 5,
+        "col": 2,
+        "max": 1,
+        "text": "When activated, increases your physical damage by 20% and makes you immune to Fear effects, but lowers your armor and all resistances by 20%.  Lasts 30 sec."
+      }
+    },
+    "warrior.talent.improved-intercept": {
+      "icon": "ability_rogue_sprint",
+      "classic": {
+        "status": "same",
+        "tree": "Fury",
+        "row": 5,
+        "col": 4,
+        "max": 2,
+        "text": "Reduces the cooldown of your Intercept ability by 5 sec."
+      }
+    },
+    "warrior.talent.improved-berserker-rage": {
+      "icon": "spell_nature_ancestralguardian",
+      "classic": {
+        "status": "changed",
+        "tree": "Fury",
+        "row": 6,
+        "col": 1,
+        "max": 2,
+        "text": "The Berserker Rage ability will generate 5 rage when used."
+      }
+    },
+    "warrior.talent.flurry": {
+      "icon": "ability_ghoulfrenzy",
+      "classic": {
+        "status": "changed",
+        "tree": "Fury",
+        "row": 6,
+        "col": 3,
+        "max": 5,
+        "text": "Increases your attack speed by 10% for your next 3 swings after dealing a melee critical strike."
+      }
+    },
+    "warrior.talent.bloodthirst": {
+      "icon": "spell_nature_bloodlust",
+      "classic": {
+        "status": "changed",
+        "tree": "Fury",
+        "row": 7,
+        "col": 2,
+        "max": 1,
+        "text": "Instantly attack the target causing damage equal to 45% of your attack power.  In addition, the next 5 successful melee attacks will restore 10 health.  This effect lasts 8 sec."
+      }
+    },
+    "warrior.talent.shield-specialization": {
+      "icon": "inv_shield_06",
+      "classic": {
+        "status": "changed",
+        "tree": "Protection",
+        "row": 1,
+        "col": 2,
+        "max": 5,
+        "text": "Increases your chance to block attacks with a shield by 1% and has a 20% chance to generate 1 rage when a block occurs."
+      }
+    },
+    "warrior.talent.anticipation": {
+      "icon": "spell_nature_mirrorimage",
+      "classic": {
+        "status": "changed",
+        "tree": "Protection",
+        "row": 1,
+        "col": 3,
+        "max": 5,
+        "text": "Increases your Defense skill by 2."
+      }
+    },
+    "warrior.talent.improved-bloodrage": {
+      "icon": "ability_racial_bloodrage",
+      "classic": {
+        "status": "changed",
+        "tree": "Protection",
+        "row": 2,
+        "col": 1,
+        "max": 2,
+        "text": "Increases the instant Rage generated by your Bloodrage ability by 2."
+      }
+    },
+    "warrior.talent.toughness": {
+      "icon": "spell_holy_devotion",
+      "classic": {
+        "status": "same",
+        "tree": "Protection",
+        "row": 2,
+        "col": 3,
+        "max": 5,
+        "text": "Increases your armor value from items by 2%."
+      }
+    },
+    "warrior.talent.improved-thunder-clap": {
+      "icon": "ability_thunderclap",
+      "classic": {
+        "status": "changed",
+        "tree": "Arms",
+        "row": 2,
+        "col": 4,
+        "max": 3,
+        "text": "Reduces the cost of your Thunder Clap ability by 1 rage point.",
+        "moved": true
+      }
+    },
+    "warrior.talent.last-stand": {
+      "icon": "spell_holy_ashestoashes",
+      "classic": {
+        "status": "changed",
+        "tree": "Protection",
+        "row": 3,
+        "col": 1,
+        "max": 1,
+        "text": "When activated, this ability temporarily grants you 30% of your maximum hit points for 20 seconds.  After the effect expires, the hit points are lost.<!--cooldown:446658:3 min cooldown-->"
+      }
+    },
+    "warrior.talent.master-of-defense": {
+      "icon": "ability_defend",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "warrior.talent.improved-revenge": {
+      "icon": "ability_warrior_revenge",
+      "classic": {
+        "status": "changed",
+        "tree": "Protection",
+        "row": 3,
+        "col": 3,
+        "max": 3,
+        "text": "Gives your Revenge ability a 15% chance to stun the target for 3 sec."
+      }
+    },
+    "warrior.talent.defiance": {
+      "icon": "ability_warrior_innerrage",
+      "classic": {
+        "status": "changed",
+        "tree": "Protection",
+        "row": 3,
+        "col": 4,
+        "max": 5,
+        "text": "Increases the threat generated by your attacks by 3% while in Defensive Stance."
+      }
+    },
+    "warrior.talent.improved-sunder-armor": {
+      "icon": "ability_warrior_sunder",
+      "classic": {
+        "status": "changed",
+        "tree": "Protection",
+        "row": 4,
+        "col": 1,
+        "max": 3,
+        "text": "Reduces the cost of your Sunder Armor ability by 1 rage point."
+      }
+    },
+    "warrior.talent.improved-disarm": {
+      "icon": "ability_warrior_disarm",
+      "classic": {
+        "status": "changed",
+        "tree": "Protection",
+        "row": 4,
+        "col": 2,
+        "max": 3,
+        "text": "Increases the duration of your Disarm ability by 1 secs."
+      }
+    },
+    "warrior.talent.vanguard": {
+      "icon": "ability_warrior_shieldguard",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "warrior.talent.improved-shield-wall": {
+      "icon": "ability_warrior_shieldwall",
+      "classic": {
+        "status": "changed",
+        "tree": "Protection",
+        "row": 5,
+        "col": 1,
+        "max": 2,
+        "text": "Increases the effect duration of your Shield Wall ability by 3 secs."
+      }
+    },
+    "warrior.talent.concussion-blow": {
+      "icon": "ability_thunderbolt",
+      "classic": {
+        "status": "changed",
+        "tree": "Protection",
+        "row": 5,
+        "col": 2,
+        "max": 1,
+        "text": "Stuns the opponent for 5 sec."
+      }
+    },
+    "warrior.talent.improved-shield-bash": {
+      "icon": "ability_warrior_shieldbash",
+      "classic": {
+        "status": "same",
+        "tree": "Protection",
+        "row": 5,
+        "col": 3,
+        "max": 2,
+        "text": "Gives your Shield Bash ability a 50% chance to silence the target for 3 sec."
+      }
+    },
+    "warrior.talent.vitality": {
+      "icon": "ability_warrior_strengthofarms",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "warrior.talent.focused-rage": {
+      "icon": "ability_warrior_focusedrage",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "warrior.talent.bastion": {
+      "icon": "ability_warrior_shieldmastery",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "warrior.talent.shield-slam": {
+      "icon": "inv_shield_05",
+      "classic": {
+        "status": "changed",
+        "tree": "Protection",
+        "row": 7,
+        "col": 2,
+        "max": 1,
+        "text": "Slam the target with your shield, causing 225 to 235 damage, modified by [<span class='q2'>S03 - Tuning and Overrides Passive - Warrior</span>: <span class='q9'>twice</span>]your shield block value, and has a 50% chance of dispelling 1 magic effect on the target.  Also causes a high amount of threat. [<span class='q2'>S03 - Tuning and Overrides Passive - Warrior</span>: <span class='q9'>Hitting a target with Shield Slam also grants you 4 Attack Power for each point of your defense skill beyond (<!--pl23922:40:60-->60 * 5). Lasts 15 sec</span>]"
+      }
+    },
+    "paladin.talent.improved-holy-strike": {
+      "icon": "spell_holy_crusaderstrike",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "paladin.talent.divine-strength": {
+      "icon": "ability_golemthunderclap",
+      "classic": {
+        "status": "same",
+        "tree": "Holy",
+        "row": 1,
+        "col": 2,
+        "max": 5,
+        "text": "Increases your Strength by 2%."
+      }
+    },
+    "paladin.talent.divine-intellect": {
+      "icon": "spell_nature_sleep",
+      "classic": {
+        "status": "same",
+        "tree": "Holy",
+        "row": 1,
+        "col": 3,
+        "max": 5,
+        "text": "Increases your total Intellect by 2%."
+      }
+    },
+    "paladin.talent.healing-light": {
+      "icon": "spell_holy_holybolt",
+      "classic": {
+        "status": "changed",
+        "tree": "Holy",
+        "row": 3,
+        "col": 1,
+        "max": 3,
+        "text": "Increases the amount healed by your Holy Light and Flash of Light spells by 12%.",
+        "moved": true
+      }
+    },
+    "paladin.talent.spiritual-focus": {
+      "icon": "spell_arcane_blink",
+      "classic": {
+        "status": "changed",
+        "tree": "Holy",
+        "row": 2,
+        "col": 2,
+        "max": 5,
+        "text": "Gives your Flash of Light and Holy Light spells a 28% chance to not lose casting time when you take damage."
+      }
+    },
+    "paladin.talent.improved-seals": {
+      "icon": "ability_thunderbolt",
+      "classic": {
+        "status": "changed",
+        "tree": "Holy",
+        "row": 2,
+        "col": 3,
+        "max": 5,
+        "text": "Increases the damage done by your Seal of Righteousness and Judgement of Righteousness by 3%.",
+        "renamed": "Improved Seal of Righteousness"
+      }
+    },
+    "paladin.talent.unyielding-faith": {
+      "icon": "spell_holy_unyieldingfaith",
+      "classic": {
+        "status": "changed",
+        "tree": "Holy",
+        "row": 3,
+        "col": 4,
+        "max": 2,
+        "text": "Increases your chance to resist Fear and Disorient effects by an additional 5%.",
+        "moved": true
+      }
+    },
+    "paladin.talent.voice-of-truth": {
+      "icon": "spell_holy_silence",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "paladin.talent.reverence": {
+      "icon": "spell_holy_mindvision",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "paladin.talent.purifying-power": {
+      "icon": "spell_holy_purifyingpower",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "paladin.talent.infusion-of-light": {
+      "icon": "ability_paladin_infusionoflight",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "paladin.talent.illumination": {
+      "icon": "spell_holy_greaterheal",
+      "classic": {
+        "status": "changed",
+        "tree": "Holy",
+        "row": 4,
+        "col": 2,
+        "max": 5,
+        "text": "After getting a critical effect from your Flash of Light, Holy Light, or Holy Shock heal spell, gives you a 20% chance to gain Mana equal to the base cost of the spell."
+      }
+    },
+    "paladin.talent.divine-favor": {
+      "icon": "spell_holy_heal",
+      "classic": {
+        "status": "moved",
+        "tree": "Holy",
+        "row": 5,
+        "col": 2,
+        "max": 1,
+        "text": "When activated, gives your next Flash of Light, Holy Light, or Holy Shock spell a 100% critical effect chance.",
+        "moved": true
+      }
+    },
+    "paladin.talent.divine-precision": {
+      "icon": "spell_holy_holybolt",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "paladin.talent.holy-shock": {
+      "icon": "spell_holy_searinglight",
+      "classic": {
+        "status": "changed",
+        "tree": "Holy",
+        "row": 7,
+        "col": 2,
+        "max": 1,
+        "text": "Blasts the target with Holy energy, causing 204 to 220 Holy damage to an enemy, or 204 to 220 healing to an ally.",
+        "moved": true
+      }
+    },
+    "paladin.talent.consecrated-ground": {
+      "icon": "spell_holy_innerfire",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "paladin.talent.holy-power": {
+      "icon": "spell_holy_power",
+      "classic": {
+        "status": "changed",
+        "tree": "Holy",
+        "row": 6,
+        "col": 3,
+        "max": 5,
+        "text": "Increases the critical effect chance of your Holy spells by 1%."
+      }
+    },
+    "paladin.talent.light-s-vigil": {
+      "icon": "spell_holy_holyguidance",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "paladin.talent.toughness": {
+      "icon": "spell_holy_devotion",
+      "classic": {
+        "status": "moved",
+        "tree": "Protection",
+        "row": 2,
+        "col": 4,
+        "max": 5,
+        "text": "Increases your armor value from items by 2%.",
+        "moved": true
+      }
+    },
+    "paladin.talent.redoubt": {
+      "icon": "ability_defend",
+      "classic": {
+        "status": "changed",
+        "tree": "Protection",
+        "row": 1,
+        "col": 3,
+        "max": 5,
+        "text": "Increases your chance to block attacks with your shield by 6% after being the victim of a critical strike.  Lasts 10 sec or 5 blocks."
+      }
+    },
+    "paladin.talent.precision": {
+      "icon": "ability_rogue_ambush",
+      "classic": {
+        "status": "changed",
+        "tree": "Protection",
+        "row": 2,
+        "col": 1,
+        "max": 3,
+        "text": "Increases your chance to hit with melee weapons by 1%."
+      }
+    },
+    "paladin.talent.guardian-s-favor": {
+      "icon": "spell_holy_sealofprotection",
+      "classic": {
+        "status": "changed",
+        "tree": "Protection",
+        "row": 2,
+        "col": 2,
+        "max": 2,
+        "text": "Reduces the cooldown of your Blessing of Protection by 60 sec and increases the duration of your Blessing of Freedom by 3 sec."
+      }
+    },
+    "paladin.talent.anticipation": {
+      "icon": "spell_magic_lesserinvisibilty",
+      "classic": {
+        "status": "changed",
+        "tree": "Protection",
+        "row": 3,
+        "col": 4,
+        "max": 5,
+        "text": "Increases your Defense skill by 2.",
+        "moved": true
+      }
+    },
+    "paladin.talent.improved-seal-of-fury": {
+      "icon": "spell_holy_sealoffury",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "paladin.talent.improved-righteous-fury": {
+      "icon": "spell_holy_sealoffury",
+      "classic": {
+        "status": "changed",
+        "tree": "Protection",
+        "row": 3,
+        "col": 2,
+        "max": 3,
+        "text": "Increases the amount of threat generated by your Righteous Fury spell by 16%."
+      }
+    },
+    "paladin.talent.shield-specialization": {
+      "icon": "inv_shield_06",
+      "classic": {
+        "status": "changed",
+        "tree": "Protection",
+        "row": 3,
+        "col": 3,
+        "max": 3,
+        "text": "Increases the amount of damage absorbed by your shield by 10%."
+      }
+    },
+    "paladin.talent.sacred-duty": {
+      "icon": "spell_holy_divineintervention",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "paladin.talent.swift-judgement": {
+      "icon": "spell_holy_righteousfury",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "paladin.talent.one-handed-weapon-specialization": {
+      "icon": "inv_sword_20",
+      "classic": {
+        "status": "changed",
+        "tree": "Protection",
+        "row": 6,
+        "col": 3,
+        "max": 5,
+        "text": "Increases the damage you deal with one-handed melee weapons by 2%.",
+        "moved": true
+      }
+    },
+    "paladin.talent.improved-hammer-of-justice": {
+      "icon": "spell_holy_sealofmight",
+      "classic": {
+        "status": "same",
+        "tree": "Protection",
+        "row": 4,
+        "col": 2,
+        "max": 3,
+        "text": "Decreases the cooldown of your Hammer of Justice spell by 5 sec."
+      }
+    },
+    "paladin.talent.templar-s-bulwark": {
+      "icon": "ability_paladin_shieldofthetemplar",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "paladin.talent.reckoning": {
+      "icon": "spell_holy_blessingofstrength",
+      "classic": {
+        "status": "changed",
+        "tree": "Protection",
+        "row": 5,
+        "col": 3,
+        "max": 5,
+        "text": "Gives you a 20% chance to gain an extra attack after being the victim of a critical strike."
+      }
+    },
+    "paladin.talent.iron-creed": {
+      "icon": "ability_paladin_shieldofvengeance",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "paladin.talent.holy-shield": {
+      "icon": "classic_spell_holy_blessingofprotection",
+      "classic": {
+        "status": "changed",
+        "tree": "Protection",
+        "row": 7,
+        "col": 2,
+        "max": 1,
+        "text": "Increases chance to block by 30% for 10 sec, and deals 65 Holy damage for each attack blocked while active.  Damage caused by Holy Shield causes 20% additional threat.<!--sp456541:0--> Each block expends a charge. 4 charges.<!--sp456541--> [<span class='q2'>S03 - Tuning and Overrides Passive - All Classes</span>: <span class='q9'>Activating Holy Shield also grants you 2 Spell Power for each point of your defense skill beyond (<!--pl20925:40:60-->60 * 5). Lasts 15 sec</span><!--sp446847:0--><!--sp446847-->]"
+      }
+    },
+    "paladin.talent.deflection": {
+      "icon": "ability_parry",
+      "classic": {
+        "status": "moved",
+        "tree": "Retribution",
+        "row": 2,
+        "col": 3,
+        "max": 5,
+        "text": "Increases your Parry chance by 1%.",
+        "moved": true
+      }
+    },
+    "paladin.talent.benediction": {
+      "icon": "spell_frost_windwalkon",
+      "classic": {
+        "status": "changed",
+        "tree": "Retribution",
+        "row": 1,
+        "col": 3,
+        "max": 5,
+        "text": "Reduces the Mana cost of your Judgement and Seal spells by 3%."
+      }
+    },
+    "paladin.talent.improved-judgement": {
+      "icon": "spell_holy_righteousfury",
+      "classic": {
+        "status": "changed",
+        "tree": "Retribution",
+        "row": 2,
+        "col": 1,
+        "max": 2,
+        "text": "Decreases the cooldown of your Judgement spell by 1 sec."
+      }
+    },
+    "paladin.talent.holy-conduit": {
+      "icon": "spell_holy_divineillumination",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "paladin.talent.conviction": {
+      "icon": "spell_holy_retributionaura",
+      "classic": {
+        "status": "changed",
+        "tree": "Retribution",
+        "row": 3,
+        "col": 2,
+        "max": 5,
+        "text": "Increases your chance to get a critical strike with melee weapons by 1%.",
+        "moved": true
+      }
+    },
+    "paladin.talent.vindication": {
+      "icon": "spell_holy_vindication",
+      "classic": {
+        "status": "changed",
+        "tree": "Retribution",
+        "row": 3,
+        "col": 1,
+        "max": 3,
+        "text": "Gives the Paladin's damaging melee attacks a chance to reduce the target's Strength and Agility by 5% [<span class='q2'>S03 - Tuning and Overrides Passive - Paladin</span>: <span class='q9'>reduce the target's Attack Power by (<!--ppl9452:20:60:-90:300:1-->30 /- 3), and increase the Paladin's Attack Power by 5% for 30 sec</span> / 10 sec.]"
+      }
+    },
+    "paladin.talent.sanctified-judgement": {
+      "icon": "spell_holy_righteousfury",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "paladin.talent.seal-of-command": {
+      "icon": "ability_warrior_innerrage",
+      "classic": {
+        "status": "changed",
+        "tree": "Retribution",
+        "row": 3,
+        "col": 3,
+        "max": 1,
+        "text": "Gives the Paladin a chance to deal additional Holy damage equal to 70% of normal weapon damage.  Only one Seal can be active on the Paladin at any one time.  Lasts 30 sec.<br /><br />Unleashing this Seal's energy will judge an enemy, instantly causing <!--ppl20375:20:28:46:280-->68 to <!--ppl20375:20:28:50:280:1-->73 Holy damage, <!--ppl20375:20:28:93:560-->137 to <!--ppl20375:20:28:101:560:1-->146 if the target is stunned or incapacitated."
+      }
+    },
+    "paladin.talent.pursuit-of-justice": {
+      "icon": "spell_holy_persuitofjustice",
+      "classic": {
+        "status": "changed",
+        "tree": "Retribution",
+        "row": 3,
+        "col": 4,
+        "max": 2,
+        "text": "Increases movement and mounted movement speed by 4%.  This does not stack with other movement speed increasing effects."
+      }
+    },
+    "paladin.talent.eye-for-an-eye": {
+      "icon": "spell_holy_eyeforaneye",
+      "classic": {
+        "status": "changed",
+        "tree": "Retribution",
+        "row": 4,
+        "col": 1,
+        "max": 2,
+        "text": "All spell criticals against you cause 15% of the damage taken to the caster as well.  The damage caused by Eye for an Eye will not exceed 50% of the Paladin's total health."
+      }
+    },
+    "paladin.talent.sacred-arbiter": {
+      "icon": "ability_paladin_judgementofthejust",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "paladin.talent.crusade": {
+      "icon": "spell_holy_crusade",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "paladin.talent.two-handed-weapon-specialization": {
+      "icon": "inv_hammer_04",
+      "classic": {
+        "status": "changed",
+        "tree": "Retribution",
+        "row": 5,
+        "col": 1,
+        "max": 3,
+        "text": "Increases the damage you deal with two-handed melee weapons by 2%."
+      }
+    },
+    "paladin.talent.vengeance": {
+      "icon": "ability_racial_avatar",
+      "classic": {
+        "status": "changed",
+        "tree": "Retribution",
+        "row": 6,
+        "col": 2,
+        "max": 5,
+        "text": "Gives you a 3% bonus to Physical and Holy damage you deal for 8 sec after dealing a critical strike from a weapon swing, spell, or ability. [<span class='q2'>S03 - Tuning and Overrides Passive - Paladin</span>: <span class='q9'>Also Reduces all Physical and Holy threat you generate by 6% while Righteous Fury is not active</span>]",
+        "moved": true
+      }
+    },
+    "paladin.talent.repentance": {
+      "icon": "spell_holy_prayerofhealing",
+      "classic": {
+        "status": "moved",
+        "tree": "Retribution",
+        "row": 7,
+        "col": 2,
+        "max": 1,
+        "text": "Puts the enemy target in a state of meditation, incapacitating them for up to 6 sec.  Any damage caused will awaken the target.  Only works against Humanoids.",
+        "moved": true
+      }
+    },
+    "paladin.talent.champion-of-the-light": {
+      "icon": "spell_holy_championsbond",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "paladin.talent.instrument-of-law": {
+      "icon": "ability_paladin_hammeroftherighteous",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "paladin.talent.twist-of-light": {
+      "icon": "spell_holy_divineintervention",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "hunter.talent.deadly-aspects": {
+      "icon": "spell_nature_ravenform",
+      "classic": {
+        "status": "changed",
+        "tree": "Beast Mastery",
+        "row": 1,
+        "col": 2,
+        "max": 5,
+        "text": "While Aspect of the Hawk is active, all normal ranged attacks have a 1% chance of increasing ranged attack speed by 30% for 12 sec.",
+        "renamed": "Improved Aspect of the Hawk"
+      }
+    },
+    "hunter.talent.endurance-training": {
+      "icon": "spell_nature_reincarnation",
+      "classic": {
+        "status": "changed",
+        "tree": "Beast Mastery",
+        "row": 1,
+        "col": 3,
+        "max": 5,
+        "text": "Increases the Health of your pets by 3%."
+      }
+    },
+    "hunter.talent.focused-fire": {
+      "icon": "ability_hunter_focusfire",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "hunter.talent.improved-aspect-of-the-monkey": {
+      "icon": "ability_hunter_aspectofthemonkey",
+      "classic": {
+        "status": "changed",
+        "tree": "Beast Mastery",
+        "row": 2,
+        "col": 2,
+        "max": 5,
+        "text": "Increases the Dodge bonus of your Aspect of the Monkey by 1%."
+      }
+    },
+    "hunter.talent.pathfinding": {
+      "icon": "ability_mount_jungletiger",
+      "classic": {
+        "status": "moved",
+        "tree": "Beast Mastery",
+        "row": 3,
+        "col": 1,
+        "max": 2,
+        "text": "Increases the speed bonus of your Aspect of the Cheetah and Aspect of the Pack by 3%.",
+        "moved": true
+      }
+    },
+    "hunter.talent.improved-revive-pet": {
+      "icon": "ability_hunter_beastsoothe",
+      "classic": {
+        "status": "same",
+        "tree": "Beast Mastery",
+        "row": 2,
+        "col": 4,
+        "max": 2,
+        "text": "Revive Pet's casting time is reduced by 3 sec, mana cost is reduced by 20%, and increases the health your pet returns with by an additional 15%."
+      }
+    },
+    "hunter.talent.bestial-swiftness": {
+      "icon": "ability_druid_dash",
+      "classic": {
+        "status": "changed",
+        "tree": "Beast Mastery",
+        "row": 3,
+        "col": 2,
+        "max": 1,
+        "text": "Increases the outdoor movement speed of your pets by 30%."
+      }
+    },
+    "hunter.talent.unleashed-fury": {
+      "icon": "ability_bullrush",
+      "classic": {
+        "status": "changed",
+        "tree": "Beast Mastery",
+        "row": 3,
+        "col": 3,
+        "max": 5,
+        "text": "Increases the damage done by your pets by 4%."
+      }
+    },
+    "hunter.talent.improved-mend-pet": {
+      "icon": "ability_hunter_mendpet",
+      "classic": {
+        "status": "changed",
+        "tree": "Beast Mastery",
+        "row": 4,
+        "col": 2,
+        "max": 2,
+        "text": "Gives the Mend Pet spell a 15% chance of cleansing 1 Curse, Disease, Magic or Poison effect from the pet each tick."
+      }
+    },
+    "hunter.talent.ferocity": {
+      "icon": "inv_misc_monsterclaw_04",
+      "classic": {
+        "status": "changed",
+        "tree": "Beast Mastery",
+        "row": 4,
+        "col": 3,
+        "max": 5,
+        "text": "Increases the critical strike chance of your pets by 3%."
+      }
+    },
+    "hunter.talent.summon-hawk": {
+      "icon": "ability_eyeoftheowl",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "hunter.talent.spirit-bond": {
+      "icon": "classic_ability_druid_demoralizingroar",
+      "classic": {
+        "status": "same",
+        "tree": "Beast Mastery",
+        "row": 5,
+        "col": 1,
+        "max": 2,
+        "text": "While your pet is active, you and your pet will regenerate 1% of total health every 10 sec."
+      }
+    },
+    "hunter.talent.intimidation": {
+      "icon": "ability_devour",
+      "classic": {
+        "status": "changed",
+        "tree": "Beast Mastery",
+        "row": 5,
+        "col": 2,
+        "max": 1,
+        "text": "Command your pet to intimidate the target on the next successful melee attack, causing a high amount of threat and stunning the target for 3 sec."
+      }
+    },
+    "hunter.talent.bestial-discipline": {
+      "icon": "spell_nature_abolishmagic",
+      "classic": {
+        "status": "changed",
+        "tree": "Beast Mastery",
+        "row": 5,
+        "col": 4,
+        "max": 2,
+        "text": "Increases the Focus regeneration of your pets by 10%."
+      }
+    },
+    "hunter.talent.frenzy": {
+      "icon": "inv_misc_monsterclaw_03",
+      "classic": {
+        "status": "same",
+        "tree": "Beast Mastery",
+        "row": 6,
+        "col": 3,
+        "max": 5,
+        "text": "Gives your pet a 20% chance to gain a 30% attack speed increase for 8 sec after dealing a critical strike."
+      }
+    },
+    "hunter.talent.bestial-wrath": {
+      "icon": "ability_druid_ferociousbite",
+      "classic": {
+        "status": "same",
+        "tree": "Beast Mastery",
+        "row": 7,
+        "col": 2,
+        "max": 1,
+        "text": "Send your pet into a rage causing 50% additional damage for 18 sec.  While enraged, the beast does not feel pity or remorse or fear and it cannot be stopped unless killed."
+      }
+    },
+    "hunter.talent.hawk-eye": {
+      "icon": "ability_townwatch",
+      "classic": {
+        "status": "moved",
+        "tree": "Marksmanship",
+        "row": 3,
+        "col": 4,
+        "max": 3,
+        "text": "Increases the range of your ranged weapons by 2 yards.",
+        "moved": true
+      }
+    },
+    "hunter.talent.improved-concussive-shot": {
+      "icon": "spell_frost_stun",
+      "classic": {
+        "status": "same",
+        "tree": "Marksmanship",
+        "row": 1,
+        "col": 2,
+        "max": 5,
+        "text": "Gives your Concussive Shot a 4% chance to stun the target for 3 sec."
+      }
+    },
+    "hunter.talent.lethal-attacks": {
+      "icon": "ability_searingarrow",
+      "classic": {
+        "status": "changed",
+        "tree": "Marksmanship",
+        "row": 2,
+        "col": 3,
+        "max": 5,
+        "text": "Increases your critical strike chance with ranged weapons by 1%.",
+        "moved": true,
+        "renamed": "Lethal Shots"
+      }
+    },
+    "hunter.talent.improved-stings": {
+      "icon": "ability_hunter_quickshot",
+      "classic": {
+        "status": "changed",
+        "tree": "Marksmanship",
+        "row": 4,
+        "col": 2,
+        "max": 5,
+        "text": "Increases the damage done by your Serpent Sting by 2%.",
+        "moved": true,
+        "renamed": "Improved Serpent Sting"
+      }
+    },
+    "hunter.talent.efficiency": {
+      "icon": "spell_frost_wizardmark",
+      "classic": {
+        "status": "changed",
+        "tree": "Marksmanship",
+        "row": 1,
+        "col": 3,
+        "max": 5,
+        "text": "Reduces the Mana cost of your Shots [<span class='q2'>S03 - Tuning and Overrides Passive - Hunter</span>: <span class='q9'>Strikes</span>] and Stings by 2%.",
+        "moved": true
+      }
+    },
+    "hunter.talent.careful-aim": {
+      "icon": "ability_hunter_zenarchery",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "hunter.talent.rapid-killing": {
+      "icon": "ability_hunter_rapidkilling",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "hunter.talent.improved-arcane-shot": {
+      "icon": "ability_impalingbolt",
+      "classic": {
+        "status": "changed",
+        "tree": "Marksmanship",
+        "row": 3,
+        "col": 2,
+        "max": 5,
+        "text": "Reduces the cooldown of your Arcane Shot by 0.2 sec."
+      }
+    },
+    "hunter.talent.lone-wolf": {
+      "icon": "spell_nature_spiritwolf",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "hunter.talent.trueshot-aura": {
+      "icon": "ability_trueshot",
+      "classic": {
+        "status": "changed",
+        "tree": "Marksmanship",
+        "row": 7,
+        "col": 2,
+        "max": 1,
+        "text": "Increases the [<span class='q2'>S03 - Tuning and Overrides Passive - Hunter</span>: <span class='q9'>ranged</span>]attack power of party members within 45 yards by 50 [<span class='q2'>S03 - Tuning and Overrides Passive - Hunter</span>: <span class='q9'>and the Hunter's ranged attack power by an additional 100</span>].  Lasts 30 min.",
+        "moved": true
+      }
+    },
+    "hunter.talent.mortal-shots": {
+      "icon": "ability_piercedamage",
+      "classic": {
+        "status": "changed",
+        "tree": "Marksmanship",
+        "row": 4,
+        "col": 3,
+        "max": 5,
+        "text": "Increases your ranged weapon [<span class='q2'>S03 - Tuning and Overrides Passive - Hunter</span>: <span class='q9'>and melee ability</span>]critical strike damage bonus by 6%."
+      }
+    },
+    "hunter.talent.rapid-recuperation": {
+      "icon": "ability_hunter_rapidregeneration",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "hunter.talent.barrage": {
+      "icon": "ability_upgrademoonglaive",
+      "classic": {
+        "status": "changed",
+        "tree": "Marksmanship",
+        "row": 5,
+        "col": 2,
+        "max": 3,
+        "text": "Increases the damage done by your Multi-Shot and Volley spells by 5%."
+      }
+    },
+    "hunter.talent.scatter-shot": {
+      "icon": "ability_golemstormbolt",
+      "classic": {
+        "status": "same",
+        "tree": "Marksmanship",
+        "row": 5,
+        "col": 1,
+        "max": 1,
+        "text": "A short-range shot that deals 50% weapon damage and disorients the target for 4 sec.  Any damage caused will remove the effect.  Turns off your attack when used."
+      }
+    },
+    "hunter.talent.ranged-weapon-specialization": {
+      "icon": "inv_weapon_rifle_06",
+      "classic": {
+        "status": "same",
+        "tree": "Marksmanship",
+        "row": 6,
+        "col": 3,
+        "max": 5,
+        "text": "Increases the damage you deal with ranged weapons by 1%."
+      }
+    },
+    "hunter.talent.sniper-shot": {
+      "icon": "inv_spear_07",
+      "classic": {
+        "status": "changed",
+        "tree": "Marksmanship",
+        "row": 3,
+        "col": 1,
+        "max": 1,
+        "text": "An aimed shot that increases ranged damage by 70.",
+        "moved": true,
+        "renamed": "Aimed Shot"
+      }
+    },
+    "hunter.talent.improved-tracking": {
+      "icon": "ability_hunter_improvedtracking",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "hunter.talent.deflection": {
+      "icon": "ability_parry",
+      "classic": {
+        "status": "changed",
+        "tree": "Survival",
+        "row": 1,
+        "col": 3,
+        "max": 5,
+        "text": "Increases your Parry chance by 1%."
+      }
+    },
+    "hunter.talent.entrapment": {
+      "icon": "spell_nature_stranglevines",
+      "classic": {
+        "status": "changed",
+        "tree": "Survival",
+        "row": 2,
+        "col": 1,
+        "max": 5,
+        "text": "Gives your Immolation Trap, Frost Trap, and Explosive Trap a 5% chance to entrap the target, preventing them from moving for 5 sec."
+      }
+    },
+    "hunter.talent.savage-strikes": {
+      "icon": "ability_racial_bloodrage",
+      "classic": {
+        "status": "changed",
+        "tree": "Survival",
+        "row": 2,
+        "col": 2,
+        "max": 2,
+        "text": "Increases the critical strike chance of Raptor Strike and Mongoose Bite by 10%."
+      }
+    },
+    "hunter.talent.survivalist": {
+      "icon": "spell_shadow_twilight",
+      "classic": {
+        "status": "changed",
+        "tree": "Survival",
+        "row": 3,
+        "col": 2,
+        "max": 5,
+        "text": "Increases total health by 2%.",
+        "moved": true
+      }
+    },
+    "hunter.talent.improved-wing-clip": {
+      "icon": "ability_rogue_trip",
+      "classic": {
+        "status": "changed",
+        "tree": "Survival",
+        "row": 2,
+        "col": 3,
+        "max": 5,
+        "text": "Gives your Wing Clip ability a 4% chance to immobilize the target for 5 sec."
+      }
+    },
+    "hunter.talent.clever-traps": {
+      "icon": "spell_nature_timestop",
+      "classic": {
+        "status": "same",
+        "tree": "Survival",
+        "row": 3,
+        "col": 1,
+        "max": 2,
+        "text": "Increases the duration of Freezing and Frost trap effects by 15% and the damage of Immolation and Explosive trap effects by 15%."
+      }
+    },
+    "hunter.talent.surefooted": {
+      "icon": "ability_kick",
+      "classic": {
+        "status": "changed",
+        "tree": "Survival",
+        "row": 4,
+        "col": 2,
+        "max": 3,
+        "text": "Increases hit chance by 1% and increases the chance movement impairing effects will be resisted by an additional 5%.",
+        "moved": true
+      }
+    },
+    "hunter.talent.deterrence": {
+      "icon": "ability_whirlwind",
+      "classic": {
+        "status": "same",
+        "tree": "Survival",
+        "row": 3,
+        "col": 3,
+        "max": 1,
+        "text": "When activated, increases your Dodge and Parry chance by 25% for 10 sec."
+      }
+    },
+    "hunter.talent.survival-tactics": {
+      "icon": "ability_hunter_survivaltactics",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "hunter.talent.predator-s-edge": {
+      "icon": "ability_hunter_huntingparty",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "hunter.talent.counterattack": {
+      "icon": "ability_warrior_challange",
+      "classic": {
+        "status": "changed",
+        "tree": "Survival",
+        "row": 5,
+        "col": 3,
+        "max": 1,
+        "text": "A strike that becomes active after parrying an opponent's attack.  This attack deals 40 damage and immobilizes the target for 5 sec.  Counterattack cannot be blocked, dodged, or parried.",
+        "moved": true
+      }
+    },
+    "hunter.talent.resourcefulness": {
+      "icon": "ability_hunter_resourcefulness",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "hunter.talent.expose-prey": {
+      "icon": "ability_hunter_markedfordeath",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "hunter.talent.survivalist-s-discipline": {
+      "icon": "ability_hunter_survivalinstincts",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "hunter.talent.strider-kick": {
+      "icon": "ability_hunter_pet_tallstrider",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "hunter.talent.lightning-reflexes": {
+      "icon": "spell_nature_invisibilty",
+      "classic": {
+        "status": "changed",
+        "tree": "Survival",
+        "row": 6,
+        "col": 3,
+        "max": 5,
+        "text": "Increases your Agility by 3%."
+      }
+    },
+    "hunter.talent.lacerating-strikes": {
+      "icon": "ability_hunter_lacerate",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "rogue.talent.improved-gouge": {
+      "icon": "ability_gouge",
+      "classic": {
+        "status": "changed",
+        "tree": "Combat",
+        "row": 1,
+        "col": 1,
+        "max": 3,
+        "text": "Increases the effect duration of your Gouge ability by 0.5 sec.",
+        "moved": true
+      }
+    },
+    "rogue.talent.remorseless-attacks": {
+      "icon": "ability_fiegndead",
+      "classic": {
+        "status": "changed",
+        "tree": "Assassination",
+        "row": 1,
+        "col": 2,
+        "max": 2,
+        "text": "After killing an opponent that yields experience or honor, gives you a 20% increased critical strike chance on your next Sinister Strike, Backstab, Ambush, or Ghostly Strike.  Lasts 20 sec."
+      }
+    },
+    "rogue.talent.malice": {
+      "icon": "ability_racial_bloodrage",
+      "classic": {
+        "status": "changed",
+        "tree": "Assassination",
+        "row": 1,
+        "col": 3,
+        "max": 5,
+        "text": "Increases your critical strike chance by 1%."
+      }
+    },
+    "rogue.talent.ruthlessness": {
+      "icon": "ability_druid_disembowel",
+      "classic": {
+        "status": "same",
+        "tree": "Assassination",
+        "row": 2,
+        "col": 1,
+        "max": 3,
+        "text": "Gives your finishing moves a 20% chance to add a combo point to your target."
+      }
+    },
+    "rogue.talent.murder": {
+      "icon": "spell_shadow_deathscream",
+      "classic": {
+        "status": "changed",
+        "tree": "Assassination",
+        "row": 2,
+        "col": 2,
+        "max": 2,
+        "text": "Increases all damage caused against Humanoid, Giant, Beast and Dragonkin targets by 1%."
+      }
+    },
+    "rogue.talent.improved-slice-and-dice": {
+      "icon": "ability_rogue_slicedice",
+      "classic": {
+        "status": "same",
+        "tree": "Assassination",
+        "row": 2,
+        "col": 4,
+        "max": 3,
+        "text": "Increases the duration of your Slice and Dice ability by 15%."
+      }
+    },
+    "rogue.talent.relentless-strikes": {
+      "icon": "ability_warrior_decisivestrike",
+      "classic": {
+        "status": "same",
+        "tree": "Assassination",
+        "row": 3,
+        "col": 1,
+        "max": 1,
+        "text": "Your finishing moves have a 20% chance per combo point to restore 25 energy."
+      }
+    },
+    "rogue.talent.improved-expose-armor": {
+      "icon": "ability_warrior_riposte",
+      "classic": {
+        "status": "changed",
+        "tree": "Assassination",
+        "row": 3,
+        "col": 2,
+        "max": 2,
+        "text": "Increases the armor reduced by your Expose Armor ability by 25%."
+      }
+    },
+    "rogue.talent.lethality": {
+      "icon": "ability_criticalstrike",
+      "classic": {
+        "status": "changed",
+        "tree": "Assassination",
+        "row": 3,
+        "col": 3,
+        "max": 5,
+        "text": "Increases the critical strike damage bonus of your Sinister Strike, Gouge, Backstab, Ghostly Strike, and Hemorrhage abilities by 6%."
+      }
+    },
+    "rogue.talent.vile-poisons": {
+      "icon": "ability_rogue_feigndeath",
+      "classic": {
+        "status": "same",
+        "tree": "Assassination",
+        "row": 4,
+        "col": 2,
+        "max": 5,
+        "text": "Increases the damage dealt by your poisons by 4% and gives your poisons an additional 8% chance to resist dispel effects."
+      }
+    },
+    "rogue.talent.cold-blood": {
+      "icon": "spell_ice_lament",
+      "classic": {
+        "status": "changed",
+        "tree": "Assassination",
+        "row": 5,
+        "col": 2,
+        "max": 1,
+        "text": "When activated, increases the critical strike chance of your next Sinister Strike, Backstab, Ambush, or Eviscerate by 100%.",
+        "moved": true
+      }
+    },
+    "rogue.talent.improved-poisons": {
+      "icon": "ability_poisons",
+      "classic": {
+        "status": "changed",
+        "tree": "Assassination",
+        "row": 4,
+        "col": 3,
+        "max": 5,
+        "text": "Increases the chance to apply poisons to your target by 2%."
+      }
+    },
+    "rogue.talent.vigor": {
+      "icon": "spell_nature_earthbindtotem",
+      "classic": {
+        "status": "changed",
+        "tree": "Assassination",
+        "row": 7,
+        "col": 2,
+        "max": 1,
+        "text": "Increases your maximum Energy by 10.",
+        "moved": true
+      }
+    },
+    "rogue.talent.mutilate": {
+      "icon": "ability_rogue_shadowstrikes",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "rogue.talent.improved-kidney-shot": {
+      "icon": "ability_rogue_kidneyshot",
+      "classic": {
+        "status": "changed",
+        "tree": "Assassination",
+        "row": 5,
+        "col": 3,
+        "max": 3,
+        "text": "While affected by your Kidney Shot ability, the target receives an additional 3% damage from all sources."
+      }
+    },
+    "rogue.talent.seal-fate": {
+      "icon": "spell_shadow_chilltouch",
+      "classic": {
+        "status": "same",
+        "tree": "Assassination",
+        "row": 6,
+        "col": 2,
+        "max": 5,
+        "text": "Your critical strikes from abilities that add combo points  have a 20% chance to add an additional combo point."
+      }
+    },
+    "rogue.talent.venom": {
+      "icon": "ability_rogue_deadlybrew",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "rogue.talent.improved-eviscerate": {
+      "icon": "ability_rogue_eviscerate",
+      "classic": {
+        "status": "changed",
+        "tree": "Assassination",
+        "row": 1,
+        "col": 1,
+        "max": 3,
+        "text": "Increases the damage done by your Eviscerate ability by 5%.",
+        "moved": true
+      }
+    },
+    "rogue.talent.improved-sinister-strike": {
+      "icon": "spell_shadow_ritualofsacrifice",
+      "classic": {
+        "status": "same",
+        "tree": "Combat",
+        "row": 1,
+        "col": 2,
+        "max": 2,
+        "text": "Reduces the Energy cost of your Sinister Strike ability by 3."
+      }
+    },
+    "rogue.talent.lightning-reflexes": {
+      "icon": "spell_nature_invisibilty",
+      "classic": {
+        "status": "same",
+        "tree": "Combat",
+        "row": 1,
+        "col": 3,
+        "max": 5,
+        "text": "Increases your Dodge chance by 1%."
+      }
+    },
+    "rogue.talent.puncturing-wounds": {
+      "icon": "ability_backstab",
+      "classic": {
+        "status": "changed",
+        "tree": "Combat",
+        "row": 2,
+        "col": 1,
+        "max": 3,
+        "text": "Increases the critical strike chance of your Backstab ability by 10%.",
+        "renamed": "Improved Backstab"
+      }
+    },
+    "rogue.talent.deflection": {
+      "icon": "ability_parry",
+      "classic": {
+        "status": "changed",
+        "tree": "Combat",
+        "row": 2,
+        "col": 2,
+        "max": 5,
+        "text": "Increases your Parry chance by 1%."
+      }
+    },
+    "rogue.talent.precision": {
+      "icon": "ability_marksmanship",
+      "classic": {
+        "status": "changed",
+        "tree": "Combat",
+        "row": 2,
+        "col": 3,
+        "max": 5,
+        "text": "Increases your chance to hit with melee weapons by 1%."
+      }
+    },
+    "rogue.talent.endurance": {
+      "icon": "spell_shadow_shadowward",
+      "classic": {
+        "status": "changed",
+        "tree": "Combat",
+        "row": 3,
+        "col": 1,
+        "max": 2,
+        "text": "Reduces the cooldown of your Sprint and Evasion abilities by 45 sec."
+      }
+    },
+    "rogue.talent.riposte": {
+      "icon": "ability_warrior_challange",
+      "classic": {
+        "status": "same",
+        "tree": "Combat",
+        "row": 3,
+        "col": 2,
+        "max": 1,
+        "text": "A strike that becomes active after parrying an opponent's attack.  This attack deals 150% weapon damage and disarms the target for 6 sec."
+      }
+    },
+    "rogue.talent.improved-sprint": {
+      "icon": "ability_rogue_sprint",
+      "classic": {
+        "status": "same",
+        "tree": "Combat",
+        "row": 3,
+        "col": 4,
+        "max": 2,
+        "text": "Gives a 50% chance to remove all movement impairing effects when you activate your Sprint ability."
+      }
+    },
+    "rogue.talent.improved-kick": {
+      "icon": "ability_kick",
+      "classic": {
+        "status": "same",
+        "tree": "Combat",
+        "row": 4,
+        "col": 1,
+        "max": 2,
+        "text": "Gives your Kick ability a 50% chance to silence the target for 2 sec."
+      }
+    },
+    "rogue.talent.restless-blades": {
+      "icon": "ability_rogue_restlessblades",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "rogue.talent.dual-wield-specialization": {
+      "icon": "ability_dualwield",
+      "classic": {
+        "status": "changed",
+        "tree": "Combat",
+        "row": 4,
+        "col": 3,
+        "max": 5,
+        "text": "Increases the damage done by your offhand weapon by 10%."
+      }
+    },
+    "rogue.talent.blade-flurry": {
+      "icon": "ability_warrior_punishingblow",
+      "classic": {
+        "status": "changed",
+        "tree": "Combat",
+        "row": 5,
+        "col": 2,
+        "max": 1,
+        "text": "Increases your attack speed by 20%.  In addition, attacks strike an additional nearby opponent.  Lasts 15 sec."
+      }
+    },
+    "rogue.talent.hack-and-slash": {
+      "icon": "inv_sword_27",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "rogue.talent.weapon-expertise": {
+      "icon": "spell_holy_blessingofstrength",
+      "classic": {
+        "status": "changed",
+        "tree": "Combat",
+        "row": 6,
+        "col": 2,
+        "max": 2,
+        "text": "Increases your skill with Sword, Fist and Dagger weapons by 3."
+      }
+    },
+    "rogue.talent.aggression": {
+      "icon": "ability_racial_avatar",
+      "classic": {
+        "status": "changed",
+        "tree": "Combat",
+        "row": 6,
+        "col": 3,
+        "max": 3,
+        "text": "Increases the damage of your Sinister Strike and Eviscerate abilities by 2%."
+      }
+    },
+    "rogue.talent.adrenaline-rush": {
+      "icon": "spell_shadow_shadowworddominate",
+      "classic": {
+        "status": "same",
+        "tree": "Combat",
+        "row": 7,
+        "col": 2,
+        "max": 1,
+        "text": "Increases your Energy regeneration rate by 100% for 15 sec."
+      }
+    },
+    "rogue.talent.camouflage": {
+      "icon": "ability_stealth",
+      "classic": {
+        "status": "changed",
+        "tree": "Subtlety",
+        "row": 2,
+        "col": 3,
+        "max": 5,
+        "text": "Increases your speed while stealthed by 3% and reduces the cooldown of your Stealth ability by 1 sec.",
+        "moved": true
+      }
+    },
+    "rogue.talent.master-of-deception": {
+      "icon": "spell_shadow_charm",
+      "classic": {
+        "status": "changed",
+        "tree": "Subtlety",
+        "row": 1,
+        "col": 2,
+        "max": 5,
+        "text": "Reduces the chance enemies have to detect you while in Stealth mode."
+      }
+    },
+    "rogue.talent.opportunity": {
+      "icon": "ability_warrior_warcry",
+      "classic": {
+        "status": "changed",
+        "tree": "Subtlety",
+        "row": 1,
+        "col": 3,
+        "max": 5,
+        "text": "Increases the damage dealt when striking from behind with your Backstab, Garrote, or Ambush abilities by 4%."
+      }
+    },
+    "rogue.talent.setup": {
+      "icon": "spell_nature_mirrorimage",
+      "classic": {
+        "status": "changed",
+        "tree": "Subtlety",
+        "row": 4,
+        "col": 1,
+        "max": 3,
+        "text": "Gives you a 15% chance to add a combo point to your target after dodging their attack or fully resisting one of their spells.",
+        "moved": true
+      }
+    },
+    "rogue.talent.elusiveness": {
+      "icon": "spell_magic_lesserinvisibilty",
+      "classic": {
+        "status": "same",
+        "tree": "Subtlety",
+        "row": 2,
+        "col": 2,
+        "max": 2,
+        "text": "Reduces the cooldown of your Vanish and Blind abilities by 45 sec."
+      }
+    },
+    "rogue.talent.dirty-tricks": {
+      "icon": "ability_rogue_dirtydeeds",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "rogue.talent.improved-ambush": {
+      "icon": "ability_rogue_ambush",
+      "classic": {
+        "status": "moved",
+        "tree": "Subtlety",
+        "row": 3,
+        "col": 3,
+        "max": 3,
+        "text": "Increases the critical strike chance of your Ambush ability by 15%.",
+        "moved": true
+      }
+    },
+    "rogue.talent.initiative": {
+      "icon": "spell_shadow_fumble",
+      "classic": {
+        "status": "changed",
+        "tree": "Subtlety",
+        "row": 3,
+        "col": 1,
+        "max": 3,
+        "text": "Gives you a 25% chance to add an additional combo point to your target when using your Ambush, Garrote, or Cheap Shot ability."
+      }
+    },
+    "rogue.talent.ghostly-strike": {
+      "icon": "spell_shadow_curse",
+      "classic": {
+        "status": "changed",
+        "tree": "Subtlety",
+        "row": 3,
+        "col": 2,
+        "max": 1,
+        "text": "A strike that deals 125% weapon damage and increases your chance to dodge by 15% for 7 sec.  Awards 1 combo <!--singular:point:points-->point<!--singular-->."
+      }
+    },
+    "rogue.talent.improved-distract": {
+      "icon": "ability_rogue_distract",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "rogue.talent.heightened-senses": {
+      "icon": "ability_ambush",
+      "classic": {
+        "status": "changed",
+        "tree": "Subtlety",
+        "row": 5,
+        "col": 1,
+        "max": 2,
+        "text": "Increases your Stealth detection and reduces the chance you are hit by spells and ranged attacks by 2%.",
+        "moved": true
+      }
+    },
+    "rogue.talent.premeditation": {
+      "icon": "spell_shadow_possession",
+      "classic": {
+        "status": "changed",
+        "tree": "Subtlety",
+        "row": 7,
+        "col": 2,
+        "max": 1,
+        "text": "When used, adds 2 combo points to your target.  You must add to or use those combo points within 10 sec or the combo points are lost.",
+        "moved": true
+      }
+    },
+    "rogue.talent.serrated-blades": {
+      "icon": "inv_sword_17",
+      "classic": {
+        "status": "changed",
+        "tree": "Subtlety",
+        "row": 4,
+        "col": 3,
+        "max": 3,
+        "text": "Causes your attacks to ignore 0 of your target's Armor and increases the damage dealt by your Rupture ability by 10%.  The amount of Armor reduced increases with your level."
+      }
+    },
+    "rogue.talent.dirty-deeds": {
+      "icon": "spell_shadow_summonsuccubus",
+      "classic": {
+        "status": "changed",
+        "tree": "Subtlety",
+        "row": 5,
+        "col": 3,
+        "max": 2,
+        "text": "Reduces the Energy cost of your Cheap Shot and Garrote abilities by 10."
+      }
+    },
+    "rogue.talent.preparation": {
+      "icon": "spell_shadow_antishadow",
+      "classic": {
+        "status": "same",
+        "tree": "Subtlety",
+        "row": 5,
+        "col": 2,
+        "max": 1,
+        "text": "When activated, this ability immediately finishes the cooldown on your other Rogue abilities."
+      }
+    },
+    "rogue.talent.hemorrhage": {
+      "icon": "spell_shadow_lifedrain",
+      "classic": {
+        "status": "changed",
+        "tree": "Subtlety",
+        "row": 5,
+        "col": 4,
+        "max": 1,
+        "text": "An instant strike that damages the opponent and causes the target to hemorrhage, increasing any Physical damage dealt to the target by up to 3.  Lasts 30 charges or 15 sec.  Awards 1 combo <!--singular:point:points-->point<!--singular-->."
+      }
+    },
+    "rogue.talent.quietus": {
+      "icon": "ability_rogue_quickrecovery",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "rogue.talent.cutthroat": {
+      "icon": "ability_rogue_cuttothechase",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "rogue.talent.thousand-cuts": {
+      "icon": "ability_rogue_shadowstrikes",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "priest.talent.power-in-light": {
+      "icon": "spell_holy_searinglightpriest",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "priest.talent.wand-specialization": {
+      "icon": "inv_wand_01",
+      "classic": {
+        "status": "changed",
+        "tree": "Discipline",
+        "row": 1,
+        "col": 3,
+        "max": 5,
+        "text": "Increases your damage with Wands by 5%."
+      }
+    },
+    "priest.talent.twin-disciplines": {
+      "icon": "spell_holy_sealofvengeance",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "priest.talent.silent-resolve": {
+      "icon": "spell_nature_manaregentotem",
+      "classic": {
+        "status": "changed",
+        "tree": "Discipline",
+        "row": 2,
+        "col": 1,
+        "max": 5,
+        "text": "Reduces the threat generated by your spells by 4%."
+      }
+    },
+    "priest.talent.holy-precision": {
+      "icon": "spell_holy_surgeoflight",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "priest.talent.improved-power-word-shield": {
+      "icon": "spell_holy_powerwordshield",
+      "classic": {
+        "status": "changed",
+        "tree": "Discipline",
+        "row": 2,
+        "col": 3,
+        "max": 3,
+        "text": "Increases the damage absorbed by your Power Word: Shield by 5%."
+      }
+    },
+    "priest.talent.martyrdom": {
+      "icon": "spell_nature_tranquility",
+      "classic": {
+        "status": "changed",
+        "tree": "Discipline",
+        "row": 2,
+        "col": 4,
+        "max": 2,
+        "text": "Gives you a 50% chance to gain the Focused Casting effect that lasts for 6 sec after being the victim of a melee or ranged critical strike.  The Focused Casting effect prevents you from losing casting time when taking damage and increases resistance to Interrupt effects by 10%."
+      }
+    },
+    "priest.talent.mental-agility": {
+      "icon": "ability_hibernation",
+      "classic": {
+        "status": "changed",
+        "tree": "Discipline",
+        "row": 4,
+        "col": 2,
+        "max": 5,
+        "text": "Reduces the mana cost of your instant cast spells by 2%.",
+        "moved": true
+      }
+    },
+    "priest.talent.inner-focus": {
+      "icon": "spell_frost_windwalkon",
+      "classic": {
+        "status": "same",
+        "tree": "Discipline",
+        "row": 3,
+        "col": 2,
+        "max": 1,
+        "text": "When activated, reduces the Mana cost of your next spell by 100% and increases its critical effect chance by 25% if it is capable of a critical effect."
+      }
+    },
+    "priest.talent.meditation": {
+      "icon": "spell_nature_sleep",
+      "classic": {
+        "status": "changed",
+        "tree": "Discipline",
+        "row": 3,
+        "col": 3,
+        "max": 3,
+        "text": "Allows 5% of your Mana regeneration to continue while casting."
+      }
+    },
+    "priest.talent.improved-inner-fire": {
+      "icon": "spell_holy_innerfire",
+      "classic": {
+        "status": "changed",
+        "tree": "Discipline",
+        "row": 4,
+        "col": 1,
+        "max": 3,
+        "text": "Increases the Armor bonus of your Inner Fire spell by 10%."
+      }
+    },
+    "priest.talent.mental-strength": {
+      "icon": "spell_nature_enchantarmor",
+      "classic": {
+        "status": "changed",
+        "tree": "Discipline",
+        "row": 5,
+        "col": 2,
+        "max": 5,
+        "text": "Increases your maximum Mana by 2%.",
+        "moved": true
+      }
+    },
+    "priest.talent.soul-warding": {
+      "icon": "spell_holy_powerwordshield",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "priest.talent.improved-mana-burn": {
+      "icon": "spell_shadow_manaburn",
+      "classic": {
+        "status": "changed",
+        "tree": "Discipline",
+        "row": 4,
+        "col": 4,
+        "max": 2,
+        "text": "Reduces the casting time of your Mana Burn spell by 0.25 secs."
+      }
+    },
+    "priest.talent.penance": {
+      "icon": "spell_holy_penance",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "priest.talent.renewed-hope": {
+      "icon": "spell_holy_holyprotection",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "priest.talent.divine-aegis": {
+      "icon": "spell_holy_devineaegis",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "priest.talent.power-infusion": {
+      "icon": "spell_holy_powerinfusion",
+      "classic": {
+        "status": "changed",
+        "tree": "Discipline",
+        "row": 7,
+        "col": 2,
+        "max": 1,
+        "text": "Infuses the target with power, increasing their spell damage and healing by 20%.  Lasts 15 sec."
+      }
+    },
+    "priest.talent.twilight-focus": {
+      "icon": "spell_holy_healingfocus",
+      "classic": {
+        "status": "changed",
+        "tree": "Holy",
+        "row": 1,
+        "col": 1,
+        "max": 2,
+        "text": "Gives you a 35% chance to avoid interruption caused by damage while casting any healing spell.",
+        "renamed": "Healing Focus"
+      }
+    },
+    "priest.talent.improved-renew": {
+      "icon": "spell_holy_renew",
+      "classic": {
+        "status": "same",
+        "tree": "Holy",
+        "row": 1,
+        "col": 2,
+        "max": 3,
+        "text": "Increases the amount healed by your Renew spell by 5%."
+      }
+    },
+    "priest.talent.holy-specialization": {
+      "icon": "spell_holy_sealofsalvation",
+      "classic": {
+        "status": "same",
+        "tree": "Holy",
+        "row": 1,
+        "col": 3,
+        "max": 5,
+        "text": "Increases the critical effect chance of your Holy spells by 1%."
+      }
+    },
+    "priest.talent.spell-warding": {
+      "icon": "spell_holy_spellwarding",
+      "classic": {
+        "status": "same",
+        "tree": "Holy",
+        "row": 2,
+        "col": 2,
+        "max": 5,
+        "text": "Reduces all spell damage taken by 2%."
+      }
+    },
+    "priest.talent.divine-fury": {
+      "icon": "spell_holy_sealofwrath",
+      "classic": {
+        "status": "same",
+        "tree": "Holy",
+        "row": 2,
+        "col": 3,
+        "max": 5,
+        "text": "Reduces the casting time of your Smite, Holy Fire, Heal and Greater Heal spells by 0.1 sec."
+      }
+    },
+    "priest.talent.holy-nova": {
+      "icon": "spell_holy_holynova",
+      "classic": {
+        "status": "changed",
+        "tree": "Holy",
+        "row": 3,
+        "col": 1,
+        "max": 1,
+        "text": "Causes an explosion of holy light around the caster, causing <!--ppl15237:20:26:28:20-->29 to <!--ppl15237:20:26:32:20:1-->34 Holy damage to all enemy targets within 10 yards and healing all party members within 10 yards for <!--ppl15237:20:26:52:40-->54 to <!--ppl15237:20:26:60:40:1-->63.  These effects cause no threat."
+      }
+    },
+    "priest.talent.blessed-recovery": {
+      "icon": "spell_holy_blessedrecovery",
+      "classic": {
+        "status": "changed",
+        "tree": "Holy",
+        "row": 3,
+        "col": 2,
+        "max": 3,
+        "text": "After being struck by a melee or ranged critical hit, heal 8% of the damage taken over 6 sec."
+      }
+    },
+    "priest.talent.inspiration": {
+      "icon": "spell_holy_layonhands",
+      "classic": {
+        "status": "changed",
+        "tree": "Holy",
+        "row": 3,
+        "col": 4,
+        "max": 3,
+        "text": "Increases your target's armor by 8% for 15 sec after getting a critical effect from [<span class='q2'>S03 - Tuning and Overrides Passive - Priest</span>: <span class='q9'>any of your heals</span> / your Flash Heal, Heal, Greater Heal, or Prayer of Healing spell.]"
+      }
+    },
+    "priest.talent.holy-reach": {
+      "icon": "spell_holy_purify",
+      "classic": {
+        "status": "same",
+        "tree": "Holy",
+        "row": 4,
+        "col": 1,
+        "max": 2,
+        "text": "Increases the range of your Smite and Holy Fire spells and the radius of your Prayer of Healing and Holy Nova spells by 10%."
+      }
+    },
+    "priest.talent.improved-healing": {
+      "icon": "spell_holy_heal02",
+      "classic": {
+        "status": "changed",
+        "tree": "Holy",
+        "row": 4,
+        "col": 2,
+        "max": 3,
+        "text": "Reduces the Mana cost of your Lesser Heal, Heal, and Greater Heal spells by 5%."
+      }
+    },
+    "priest.talent.searing-light": {
+      "icon": "spell_holy_searinglightpriest",
+      "classic": {
+        "status": "changed",
+        "tree": "Holy",
+        "row": 4,
+        "col": 3,
+        "max": 2,
+        "text": "Increases the damage of your Smite and Holy Fire spells by 5%."
+      }
+    },
+    "priest.talent.binding-heal": {
+      "icon": "spell_holy_blindingheal",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "priest.talent.litany-of-light": {
+      "icon": "spell_holy_holyguidance",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "priest.talent.spirit-of-redemption": {
+      "icon": "inv_enchant_essenceeternallarge",
+      "classic": {
+        "status": "changed",
+        "tree": "Holy",
+        "row": 5,
+        "col": 2,
+        "max": 1,
+        "text": "Upon death, the priest becomes the Spirit of Redemption for 10 sec.  The Spirit of Redemption cannot move, attack, be attacked or targeted by any spells or effects.  While in this form the priest can cast any healing spell free of cost.  When the effect ends, the priest dies."
+      }
+    },
+    "priest.talent.spiritual-guidance": {
+      "icon": "spell_holy_spiritualguidence",
+      "classic": {
+        "status": "changed",
+        "tree": "Holy",
+        "row": 5,
+        "col": 3,
+        "max": 5,
+        "text": "Increases spell damage and healing by up to 5% of your total Spirit."
+      }
+    },
+    "priest.talent.spiritual-healing": {
+      "icon": "spell_nature_moonglow",
+      "classic": {
+        "status": "changed",
+        "tree": "Holy",
+        "row": 6,
+        "col": 3,
+        "max": 5,
+        "text": "Increases the amount healed by your healing spells by 2%."
+      }
+    },
+    "priest.talent.prayer-of-mending": {
+      "icon": "spell_holy_prayerofmendingtga",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "priest.talent.shadow-focus": {
+      "icon": "spell_shadow_burningspirit",
+      "classic": {
+        "status": "changed",
+        "tree": "Shadow Magic",
+        "row": 2,
+        "col": 3,
+        "max": 5,
+        "text": "Reduces your target's chance to resist your Shadow spells by 2%.",
+        "moved": true
+      }
+    },
+    "priest.talent.blackout": {
+      "icon": "spell_shadow_gathershadows",
+      "classic": {
+        "status": "same",
+        "tree": "Shadow Magic",
+        "row": 1,
+        "col": 3,
+        "max": 5,
+        "text": "Gives your Shadow damage spells a 2% chance to stun the target for 3 sec."
+      }
+    },
+    "priest.talent.spirit-tap": {
+      "icon": "spell_shadow_requiem",
+      "classic": {
+        "status": "changed",
+        "tree": "Shadow Magic",
+        "row": 1,
+        "col": 2,
+        "max": 5,
+        "text": "Gives you a 20% chance to gain a 100% bonus to your Spirit after killing a target that yields experience.  For the duration, your Mana will regenerate at a 50% rate while casting.  Lasts 15 sec."
+      }
+    },
+    "priest.talent.shadow-affinity": {
+      "icon": "spell_shadow_shadowward",
+      "classic": {
+        "status": "changed",
+        "tree": "Shadow Magic",
+        "row": 2,
+        "col": 1,
+        "max": 3,
+        "text": "Reduces the threat generated by your Shadow spells by 8%."
+      }
+    },
+    "priest.talent.improved-shadow-word-pain": {
+      "icon": "spell_shadow_shadowwordpain",
+      "classic": {
+        "status": "same",
+        "tree": "Shadow Magic",
+        "row": 2,
+        "col": 2,
+        "max": 2,
+        "text": "Increases the duration of your Shadow Word: Pain spell by 3 sec."
+      }
+    },
+    "priest.talent.shadow-reach": {
+      "icon": "spell_shadow_chilltouch",
+      "classic": {
+        "status": "changed",
+        "tree": "Shadow Magic",
+        "row": 4,
+        "col": 3,
+        "max": 3,
+        "text": "Increases the range of your Shadow damage spells by 6%.",
+        "moved": true
+      }
+    },
+    "priest.talent.improved-mind-blast": {
+      "icon": "spell_shadow_unholyfrenzy",
+      "classic": {
+        "status": "same",
+        "tree": "Shadow Magic",
+        "row": 3,
+        "col": 2,
+        "max": 5,
+        "text": "Reduces the cooldown of your Mind Blast spell by 0.5 sec."
+      }
+    },
+    "priest.talent.improved-psychic-scream": {
+      "icon": "spell_shadow_psychicscream",
+      "classic": {
+        "status": "same",
+        "tree": "Shadow Magic",
+        "row": 3,
+        "col": 1,
+        "max": 2,
+        "text": "Reduces the cooldown of your Psychic Scream spell by 2 sec."
+      }
+    },
+    "priest.talent.mind-flay": {
+      "icon": "spell_shadow_siphonmana",
+      "classic": {
+        "status": "changed",
+        "tree": "Shadow Magic",
+        "row": 3,
+        "col": 3,
+        "max": 1,
+        "text": "Assault the target's mind with Shadow energy, causing 75 Shadow damage over 3 sec and slowing their movement speed by 50%."
+      }
+    },
+    "priest.talent.improved-mind-flay": {
+      "icon": "spell_shadow_siphonmana",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "priest.talent.improved-fade": {
+      "icon": "spell_magic_lesserinvisibilty",
+      "classic": {
+        "status": "same",
+        "tree": "Shadow Magic",
+        "row": 4,
+        "col": 2,
+        "max": 2,
+        "text": "Decreases the cooldown of your Fade ability by 3 sec."
+      }
+    },
+    "priest.talent.vampiric-embrace": {
+      "icon": "spell_shadow_unsummonbuilding",
+      "classic": {
+        "status": "changed",
+        "tree": "Shadow Magic",
+        "row": 5,
+        "col": 2,
+        "max": 1,
+        "text": "Afflicts your target with Shadow energy that causes all party members to be healed for 20% of any Shadow spell damage you deal for 1 min<!--sp440247:0--><!--sp440247-->.",
+        "moved": true
+      }
+    },
+    "priest.talent.shadow-weaving": {
+      "icon": "spell_shadow_blackplague",
+      "classic": {
+        "status": "changed",
+        "tree": "Shadow Magic",
+        "row": 4,
+        "col": 4,
+        "max": 5,
+        "text": "Your Shadow damage spells have a 20% chance to cause your target to be vulnerable to Shadow damage.  This vulnerability increases the Shadow damage dealt to your target by 3% and lasts 15 sec.  Stacks up to 5 times."
+      }
+    },
+    "priest.talent.silence": {
+      "icon": "spell_shadow_impphaseshift",
+      "classic": {
+        "status": "changed",
+        "tree": "Shadow Magic",
+        "row": 5,
+        "col": 1,
+        "max": 1,
+        "text": "Silences the target, preventing them from casting spells for 5 sec."
+      }
+    },
+    "priest.talent.devouring-contagion": {
+      "icon": "spell_shadow_devouringplague",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "priest.talent.early-demise": {
+      "icon": "spell_shadow_demonicfortitude",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "priest.talent.darkness": {
+      "icon": "spell_shadow_twilight",
+      "classic": {
+        "status": "changed",
+        "tree": "Shadow Magic",
+        "row": 6,
+        "col": 3,
+        "max": 5,
+        "text": "Increases your Shadow spell damage by 2%."
+      }
+    },
+    "priest.talent.shadowform": {
+      "icon": "spell_shadow_shadowform",
+      "classic": {
+        "status": "changed",
+        "tree": "Shadow Magic",
+        "row": 7,
+        "col": 2,
+        "max": 1,
+        "text": "Assume a Shadowform, increasing your Shadow damage by 15% [<span class='q2'>S03 - Tuning and Overrides Passive - Priest</span>: <span class='q9'>reducing the mana cost of all Shadow spells by 0%</span>] and reducing Physical damage done to you by 15%.  However, you may not cast Holy spells while in this form."
+      }
+    },
+    "shaman.talent.convection": {
+      "icon": "spell_nature_wispsplode",
+      "classic": {
+        "status": "changed",
+        "tree": "Elemental Combat",
+        "row": 1,
+        "col": 2,
+        "max": 5,
+        "text": "Reduces the mana cost of your Shock, Lightning Bolt and Chain Lightning spells by 2%."
+      }
+    },
+    "shaman.talent.concussion": {
+      "icon": "spell_fire_fireball",
+      "classic": {
+        "status": "changed",
+        "tree": "Elemental Combat",
+        "row": 1,
+        "col": 3,
+        "max": 5,
+        "text": "Increases the damage done by your Lightning Bolt, Chain Lightning and Shock spells by 1%."
+      }
+    },
+    "shaman.talent.elemental-warding": {
+      "icon": "spell_nature_spiritarmor",
+      "classic": {
+        "status": "changed",
+        "tree": "Elemental Combat",
+        "row": 2,
+        "col": 2,
+        "max": 3,
+        "text": "Reduces damage taken from Fire, Frost and Nature effects by 4%."
+      }
+    },
+    "shaman.talent.reverberation": {
+      "icon": "spell_frost_frostward",
+      "classic": {
+        "status": "moved",
+        "tree": "Elemental Combat",
+        "row": 3,
+        "col": 2,
+        "max": 5,
+        "text": "Reduces the cooldown of your Shock spells by 0.2 sec.",
+        "moved": true
+      }
+    },
+    "shaman.talent.call-of-flame": {
+      "icon": "spell_fire_immolation",
+      "classic": {
+        "status": "changed",
+        "tree": "Elemental Combat",
+        "row": 2,
+        "col": 3,
+        "max": 3,
+        "text": "Increases the damage done by your Fire Totems by 5%."
+      }
+    },
+    "shaman.talent.elemental-devastation": {
+      "icon": "classic_spell_fire_elementaldevastation",
+      "classic": {
+        "status": "changed",
+        "tree": "Elemental Combat",
+        "row": 4,
+        "col": 4,
+        "max": 3,
+        "text": "Your offensive spell crits will increase your chance to get a critical strike with melee attacks by 3% for 10 sec.",
+        "moved": true
+      }
+    },
+    "shaman.talent.elemental-focus": {
+      "icon": "spell_shadow_manaburn",
+      "classic": {
+        "status": "same",
+        "tree": "Elemental Combat",
+        "row": 3,
+        "col": 1,
+        "max": 1,
+        "text": "Gives you a 10% chance to enter a Clearcasting state after casting any Fire, Frost, or Nature damage spell.  The Clearcasting state reduces the mana cost of your next damage spell by 100%."
+      }
+    },
+    "shaman.talent.elemental-fury": {
+      "icon": "spell_fire_volcano",
+      "classic": {
+        "status": "changed",
+        "tree": "Elemental Combat",
+        "row": 5,
+        "col": 2,
+        "max": 1,
+        "text": "Increases the critical strike damage bonus of your Searing, Magma, and Fire Nova Totems and your Fire, Frost, and Nature spells by 100%.",
+        "moved": true
+      }
+    },
+    "shaman.talent.improved-fire-nova": {
+      "icon": "spell_fire_sealoffire",
+      "classic": {
+        "status": "changed",
+        "tree": "Elemental Combat",
+        "row": 4,
+        "col": 1,
+        "max": 2,
+        "text": "Reduces the delay before your Fire Nova Totem activates by 1 sec. and decreases the threat generated by your Magma Totem by 25%.",
+        "renamed": "Improved Fire Totems"
+      }
+    },
+    "shaman.talent.eye-of-the-storm": {
+      "icon": "spell_nature_eyeofthestorm",
+      "classic": {
+        "status": "changed",
+        "tree": "Elemental Combat",
+        "row": 4,
+        "col": 2,
+        "max": 3,
+        "text": "Gives you a 33% chance to gain the Focused Casting effect that lasts for 6 sec after being the victim of a melee or ranged critical strike.  The Focused Casting effect prevents you from losing casting time when taking damage."
+      }
+    },
+    "shaman.talent.call-of-thunder": {
+      "icon": "spell_nature_callstorm",
+      "classic": {
+        "status": "changed",
+        "tree": "Elemental Combat",
+        "row": 3,
+        "col": 3,
+        "max": 5,
+        "text": "Increases the critical strike chance of your Lightning Bolt and Chain Lightning spells by an additional 1%.",
+        "moved": true
+      }
+    },
+    "shaman.talent.elemental-reach": {
+      "icon": "spell_nature_stormreach",
+      "classic": {
+        "status": "changed",
+        "tree": "Elemental Combat",
+        "row": 5,
+        "col": 1,
+        "max": 2,
+        "text": "Increases the range of your Lightning Bolt and Chain Lightning spells by 3 yards.",
+        "renamed": "Storm Reach"
+      }
+    },
+    "shaman.talent.lightning-overload": {
+      "icon": "spell_nature_lightningoverload",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "shaman.talent.earthbound": {
+      "icon": "spell_nature_strengthofearthtotem02",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "shaman.talent.elemental-alacrity": {
+      "icon": "spell_lightning_lightningbolt01",
+      "classic": {
+        "status": "changed",
+        "tree": "Elemental Combat",
+        "row": 6,
+        "col": 3,
+        "max": 5,
+        "text": "Reduces the cast time of your Lightning Bolt and Chain Lightning spells by 0.2 sec.",
+        "renamed": "Lightning Mastery"
+      }
+    },
+    "shaman.talent.lava-burst": {
+      "icon": "spell_shaman_lavaburst",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "shaman.talent.earth-s-grasp": {
+      "icon": "spell_nature_stoneclawtotem",
+      "classic": {
+        "status": "moved",
+        "tree": "Elemental Combat",
+        "row": 2,
+        "col": 1,
+        "max": 2,
+        "text": "Increases the health of your Stoneclaw Totem by 25% and the radius of your Earthbind Totem by 10%.",
+        "moved": true
+      }
+    },
+    "shaman.talent.thundering-strikes": {
+      "icon": "ability_thunderbolt",
+      "classic": {
+        "status": "changed",
+        "tree": "Enhancement",
+        "row": 2,
+        "col": 2,
+        "max": 5,
+        "text": "Improves your chance to get a critical strike with your weapon attacks by 1%.",
+        "moved": true
+      }
+    },
+    "shaman.talent.ancestral-knowledge": {
+      "icon": "spell_shadow_grimward",
+      "classic": {
+        "status": "changed",
+        "tree": "Enhancement",
+        "row": 1,
+        "col": 2,
+        "max": 5,
+        "text": "Increases your maximum Mana by 1%."
+      }
+    },
+    "shaman.talent.guardian-totems": {
+      "icon": "spell_nature_stoneskintotem",
+      "classic": {
+        "status": "same",
+        "tree": "Enhancement",
+        "row": 2,
+        "col": 1,
+        "max": 2,
+        "text": "Increases the amount of damage reduced by your Stoneskin Totem and Windwall Totem by 10% and reduces the cooldown of your Grounding Totem by 1 sec."
+      }
+    },
+    "shaman.talent.mental-dexterity": {
+      "icon": "ability_shaman_mentaldexterity",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "shaman.talent.improved-ghost-wolf": {
+      "icon": "spell_nature_spiritwolf",
+      "classic": {
+        "status": "changed",
+        "tree": "Enhancement",
+        "row": 2,
+        "col": 3,
+        "max": 2,
+        "text": "Reduces the cast time of your Ghost Wolf spell by 1 sec."
+      }
+    },
+    "shaman.talent.improved-lightning-shield": {
+      "icon": "spell_nature_lightningshield",
+      "classic": {
+        "status": "same",
+        "tree": "Enhancement",
+        "row": 2,
+        "col": 4,
+        "max": 3,
+        "text": "Increases the damage done by your Lightning Shield orbs by 5%."
+      }
+    },
+    "shaman.talent.elemental-weapons": {
+      "icon": "spell_fire_flametounge",
+      "classic": {
+        "status": "moved",
+        "tree": "Enhancement",
+        "row": 5,
+        "col": 2,
+        "max": 3,
+        "text": "Increases the melee attack power bonus of your Rockbiter Weapon by 7%, your Windfury Weapon effect by 13% and increases the damage caused by your Flametongue Weapon and Frostbrand Weapon by 5%.",
+        "moved": true
+      }
+    },
+    "shaman.talent.shamanistic-focus": {
+      "icon": "spell_nature_elementalabsorption",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "shaman.talent.anticipation": {
+      "icon": "spell_nature_mirrorimage",
+      "classic": {
+        "status": "changed",
+        "tree": "Enhancement",
+        "row": 3,
+        "col": 4,
+        "max": 5,
+        "text": "Increases your chance to dodge by an additional 1%."
+      }
+    },
+    "shaman.talent.toughness": {
+      "icon": "spell_holy_devotion",
+      "classic": {
+        "status": "changed",
+        "tree": "Enhancement",
+        "row": 4,
+        "col": 3,
+        "max": 5,
+        "text": "Increases your armor value from items by 2%."
+      }
+    },
+    "shaman.talent.flurry": {
+      "icon": "ability_ghoulfrenzy",
+      "classic": {
+        "status": "changed",
+        "tree": "Enhancement",
+        "row": 4,
+        "col": 2,
+        "max": 5,
+        "text": "Increases your attack speed by 10% for your next 3 swings after dealing a critical strike."
+      }
+    },
+    "shaman.talent.stormstrike": {
+      "icon": "spell_holy_sealofmight",
+      "classic": {
+        "status": "changed",
+        "tree": "Enhancement",
+        "row": 7,
+        "col": 2,
+        "max": 1,
+        "text": "Gives you an extra attack.  <!--sp435884:0-->In addition, the next 2 sources of Nature damage dealt to the target are increased by 20%.  Lasts 12 sec.<!--sp435884--><!--cooldown:435884:6 sec cooldown-->",
+        "moved": true
+      }
+    },
+    "shaman.talent.spirit-weapons": {
+      "icon": "ability_parry",
+      "classic": {
+        "status": "changed",
+        "tree": "Enhancement",
+        "row": 5,
+        "col": 3,
+        "max": 1,
+        "text": "Gives a chance to parry enemy melee attacks.",
+        "renamed": "Parry"
+      }
+    },
+    "shaman.talent.mental-quickness": {
+      "icon": "spell_nature_mentalquickness",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "shaman.talent.improved-stormstrike": {
+      "icon": "ability_shaman_stormstrike",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "shaman.talent.maelstrom-weapon": {
+      "icon": "spell_shaman_maelstromweapon",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "shaman.talent.rage-of-the-farseer": {
+      "icon": "spell_nature_bloodlust",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "shaman.talent.improved-healing-wave": {
+      "icon": "spell_nature_magicimmunity",
+      "classic": {
+        "status": "same",
+        "tree": "Restoration",
+        "row": 1,
+        "col": 2,
+        "max": 5,
+        "text": "Reduces the casting time of your Healing Wave spell by 0.1 sec."
+      }
+    },
+    "shaman.talent.tidal-mastery": {
+      "icon": "spell_nature_tranquility",
+      "classic": {
+        "status": "changed",
+        "tree": "Restoration",
+        "row": 4,
+        "col": 3,
+        "max": 5,
+        "text": "Increases the critical effect chance of your healing and lightning spells by 1%.",
+        "moved": true
+      }
+    },
+    "shaman.talent.mindfulness": {
+      "icon": "spell_nature_sleep",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "shaman.talent.natural-grace": {
+      "icon": "spell_nature_healingtouch",
+      "classic": {
+        "status": "changed",
+        "tree": "Restoration",
+        "row": 3,
+        "col": 4,
+        "max": 3,
+        "text": "Reduces the threat generated by your healing spells by 5%.",
+        "moved": true,
+        "renamed": "Healing Grace"
+      }
+    },
+    "shaman.talent.tidal-focus": {
+      "icon": "spell_frost_manarecharge",
+      "classic": {
+        "status": "changed",
+        "tree": "Restoration",
+        "row": 1,
+        "col": 3,
+        "max": 5,
+        "text": "Reduces the Mana cost of your healing spells by 1%.",
+        "moved": true
+      }
+    },
+    "shaman.talent.improved-reincarnation": {
+      "icon": "spell_nature_reincarnation",
+      "classic": {
+        "status": "changed",
+        "tree": "Restoration",
+        "row": 2,
+        "col": 1,
+        "max": 2,
+        "text": "Reduces the cooldown of your Reincarnation spell by 10 min and increases the amount of health and mana you reincarnate with by an additional 10%."
+      }
+    },
+    "shaman.talent.ancestral-healing": {
+      "icon": "spell_nature_undyingstrength",
+      "classic": {
+        "status": "moved",
+        "tree": "Restoration",
+        "row": 2,
+        "col": 2,
+        "max": 3,
+        "text": "Increases your target's armor value by 8% for 15 sec after getting a critical effect from one of your healing spells.",
+        "moved": true
+      }
+    },
+    "shaman.talent.healing-focus": {
+      "icon": "spell_nature_healingwavelesser",
+      "classic": {
+        "status": "changed",
+        "tree": "Restoration",
+        "row": 3,
+        "col": 2,
+        "max": 5,
+        "text": "Gives you a 14% chance to avoid interruption caused by damage while casting any healing spell."
+      }
+    },
+    "shaman.talent.water-shield": {
+      "icon": "ability_shaman_watershield",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "shaman.talent.totemic-focus": {
+      "icon": "spell_nature_moonglow",
+      "classic": {
+        "status": "changed",
+        "tree": "Restoration",
+        "row": 2,
+        "col": 3,
+        "max": 5,
+        "text": "Reduces the Mana cost of your totems by 5%.",
+        "moved": true
+      }
+    },
+    "shaman.talent.restorative-totems": {
+      "icon": "spell_nature_manaregentotem",
+      "classic": {
+        "status": "changed",
+        "tree": "Restoration",
+        "row": 4,
+        "col": 2,
+        "max": 5,
+        "text": "Increases the effect of your Mana Spring and Healing Stream Totems by 5%."
+      }
+    },
+    "shaman.talent.mana-tide-totem": {
+      "icon": "spell_frost_summonwaterelemental",
+      "classic": {
+        "status": "changed",
+        "tree": "Restoration",
+        "row": 7,
+        "col": 2,
+        "max": 1,
+        "text": "Summons a Mana Tide Totem with 5 health at the feet of the caster for 12 sec that restores 170 mana every 3 seconds to group members within 20 yards.",
+        "moved": true
+      }
+    },
+    "shaman.talent.healing-way": {
+      "icon": "classic_spell_nature_healingway",
+      "classic": {
+        "status": "changed",
+        "tree": "Restoration",
+        "row": 5,
+        "col": 1,
+        "max": 3,
+        "text": "Your Healing Wave spells have a 33% chance to increase the effect of subsequent Healing Wave spells on that target by 6% for 15 sec.  This effect will stack up to 3 times."
+      }
+    },
+    "shaman.talent.nature-s-swiftness": {
+      "icon": "spell_nature_ravenform",
+      "classic": {
+        "status": "same",
+        "tree": "Restoration",
+        "row": 5,
+        "col": 3,
+        "max": 1,
+        "text": "When activated, your next Nature spell with a casting time less than 10 sec. becomes an instant cast spell."
+      }
+    },
+    "shaman.talent.purification": {
+      "icon": "spell_frost_wizardmark",
+      "classic": {
+        "status": "changed",
+        "tree": "Restoration",
+        "row": 6,
+        "col": 3,
+        "max": 5,
+        "text": "Increases the effectiveness of your healing spells by 2%. [<span class='q2'>S03 - Tuning and Overrides Passive - Shaman</span>: <span class='q9'>Increases healing from your Riptide and Earth Shield by an additional 20%</span>]"
+      }
+    },
+    "shaman.talent.riptide": {
+      "icon": "spell_nature_riptide",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "mage.talent.wand-specialization": {
+      "icon": "inv_wand_01",
+      "classic": {
+        "status": "moved",
+        "tree": "Arcane",
+        "row": 2,
+        "col": 1,
+        "max": 2,
+        "text": "Increases your damage with Wands by 13%.",
+        "moved": true
+      }
+    },
+    "mage.talent.arcane-focus": {
+      "icon": "spell_holy_devotion",
+      "classic": {
+        "status": "changed",
+        "tree": "Arcane",
+        "row": 1,
+        "col": 2,
+        "max": 5,
+        "text": "Reduces the chance that the opponent can resist your Arcane spells by 2%."
+      }
+    },
+    "mage.talent.improved-channeling": {
+      "icon": "spell_nature_starfall",
+      "classic": {
+        "status": "changed",
+        "tree": "Arcane",
+        "row": 1,
+        "col": 3,
+        "max": 5,
+        "text": "Gives you a 20% chance to avoid interruption caused by damage while channeling Arcane Missiles [<span class='q2'>S03 - Tuning and Overrides Passive - Mage</span>: <span class='q9'>Regeneration, or Mass Regeneration, and a 14% chance to avoid interruption caused by damage while casting Arcane Blast or Spellfrost Bolt</span>].",
+        "renamed": "Improved Arcane Missiles"
+      }
+    },
+    "mage.talent.arcane-subtlety": {
+      "icon": "spell_holy_dispelmagic",
+      "classic": {
+        "status": "changed",
+        "tree": "Arcane",
+        "row": 1,
+        "col": 1,
+        "max": 2,
+        "text": "Reduces your target's resistance to all your spells by 5 and reduces the threat caused by your Arcane spells by 20%.",
+        "moved": true
+      }
+    },
+    "mage.talent.magic-absorption": {
+      "icon": "spell_nature_astralrecalgroup",
+      "classic": {
+        "status": "changed",
+        "tree": "Arcane",
+        "row": 2,
+        "col": 2,
+        "max": 5,
+        "text": "Increases all resistances by 2 and causes all spells you fully resist to restore 1% of your total mana.  1 sec. cooldown."
+      }
+    },
+    "mage.talent.arcane-concentration": {
+      "icon": "spell_shadow_manaburn",
+      "classic": {
+        "status": "same",
+        "tree": "Arcane",
+        "row": 2,
+        "col": 3,
+        "max": 5,
+        "text": "Gives you a 2% chance of entering a Clearcasting state after any damage spell hits a target.  The Clearcasting state reduces the mana cost of your next damage spell by 100%."
+      }
+    },
+    "mage.talent.arcane-resilience": {
+      "icon": "spell_arcane_arcaneresilience",
+      "classic": {
+        "status": "changed",
+        "tree": "Arcane",
+        "row": 3,
+        "col": 3,
+        "max": 1,
+        "text": "Increases your armor by an amount equal to 50% of your Intellect.",
+        "moved": true
+      }
+    },
+    "mage.talent.arcane-geometry": {
+      "icon": "spell_arcane_arcane01",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "mage.talent.arcane-impact": {
+      "icon": "spell_nature_wispsplode",
+      "classic": {
+        "status": "changed",
+        "tree": "Arcane",
+        "row": 3,
+        "col": 2,
+        "max": 3,
+        "text": "Increases the critical strike chance of your Arcane Explosion spell by an additional 2%.",
+        "renamed": "Improved Arcane Explosion"
+      }
+    },
+    "mage.talent.arcane-blast": {
+      "icon": "spell_arcane_blast",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "mage.talent.arcane-shielding": {
+      "icon": "spell_shadow_detectlesserinvisibility",
+      "classic": {
+        "status": "changed",
+        "tree": "Arcane",
+        "row": 4,
+        "col": 1,
+        "max": 2,
+        "text": "Decreases the mana lost per point of damage taken when Mana Shield is active by 10%.",
+        "renamed": "Improved Mana Shield"
+      }
+    },
+    "mage.talent.improved-counterspell": {
+      "icon": "spell_frost_iceshock",
+      "classic": {
+        "status": "changed",
+        "tree": "Arcane",
+        "row": 4,
+        "col": 2,
+        "max": 2,
+        "text": "Gives your Counterspell a 50% chance to silence the target for 4 sec."
+      }
+    },
+    "mage.talent.arcane-meditation": {
+      "icon": "spell_shadow_siphonmana",
+      "classic": {
+        "status": "changed",
+        "tree": "Arcane",
+        "row": 4,
+        "col": 4,
+        "max": 3,
+        "text": "Allows 5% of your Mana regeneration to continue while casting."
+      }
+    },
+    "mage.talent.missile-barrage": {
+      "icon": "ability_mage_missilebarrage",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "mage.talent.presence-of-mind": {
+      "icon": "spell_nature_enchantarmor",
+      "classic": {
+        "status": "same",
+        "tree": "Arcane",
+        "row": 5,
+        "col": 2,
+        "max": 1,
+        "text": "When activated, your next Mage spell with a casting time less than 10 sec becomes an instant cast spell."
+      }
+    },
+    "mage.talent.arcane-mind": {
+      "icon": "spell_shadow_charm",
+      "classic": {
+        "status": "changed",
+        "tree": "Arcane",
+        "row": 5,
+        "col": 3,
+        "max": 5,
+        "text": "Increases your maximum Mana by 2%."
+      }
+    },
+    "mage.talent.arcane-instability": {
+      "icon": "spell_shadow_teleport",
+      "classic": {
+        "status": "changed",
+        "tree": "Arcane",
+        "row": 6,
+        "col": 2,
+        "max": 3,
+        "text": "Increases your spell damage and critical strike chance by 1%."
+      }
+    },
+    "mage.talent.arcane-power": {
+      "icon": "spell_nature_lightning",
+      "classic": {
+        "status": "changed",
+        "tree": "Arcane",
+        "row": 7,
+        "col": 2,
+        "max": 1,
+        "text": "When activated, your spells deal 30% more damage while costing 30% more mana to cast.  This effect lasts 15 sec."
+      }
+    },
+    "mage.talent.wake-of-fire": {
+      "icon": "spell_fire_fireball",
+      "classic": {
+        "status": "changed",
+        "tree": "Fire",
+        "row": 2,
+        "col": 3,
+        "max": 3,
+        "text": "Reduces the cooldown of your Fire Blast spell by 0.5 sec.",
+        "moved": true,
+        "renamed": "Improved Fire Blast"
+      }
+    },
+    "mage.talent.incineration": {
+      "icon": "spell_fire_flameshock",
+      "classic": {
+        "status": "changed",
+        "tree": "Fire",
+        "row": 3,
+        "col": 1,
+        "max": 2,
+        "text": "Increases the critical strike chance of your Fire Blast and Scorch spells by 2%.",
+        "moved": true,
+        "renamed": "Incinerate"
+      }
+    },
+    "mage.talent.improved-fireball": {
+      "icon": "spell_fire_flamebolt",
+      "classic": {
+        "status": "changed",
+        "tree": "Fire",
+        "row": 1,
+        "col": 2,
+        "max": 5,
+        "text": "Reduces the casting time of your Fireball spell by 0.1 sec."
+      }
+    },
+    "mage.talent.ignite": {
+      "icon": "spell_fire_incinerate",
+      "classic": {
+        "status": "same",
+        "tree": "Fire",
+        "row": 2,
+        "col": 1,
+        "max": 5,
+        "text": "Your critical strikes from Fire damage spells cause the target to burn for an additional 8% of your spell's damage over 4 sec."
+      }
+    },
+    "mage.talent.flame-throwing": {
+      "icon": "spell_fire_flare",
+      "classic": {
+        "status": "same",
+        "tree": "Fire",
+        "row": 2,
+        "col": 2,
+        "max": 2,
+        "text": "Increases the range of your Fire spells by 3 yards."
+      }
+    },
+    "mage.talent.impact": {
+      "icon": "spell_fire_meteorstorm",
+      "classic": {
+        "status": "changed",
+        "tree": "Fire",
+        "row": 1,
+        "col": 3,
+        "max": 5,
+        "text": "Gives your Fire spells a 2% chance to stun the target for 2 sec.",
+        "moved": true
+      }
+    },
+    "mage.talent.burning-soul": {
+      "icon": "spell_fire_fire",
+      "classic": {
+        "status": "changed",
+        "tree": "Fire",
+        "row": 3,
+        "col": 4,
+        "max": 2,
+        "text": "Gives your Fire spells a 35% chance to not lose casting time when you take damage and reduces the threat caused by your Fire spells by 15%."
+      }
+    },
+    "mage.talent.improved-flamestrike": {
+      "icon": "spell_fire_selfdestruct",
+      "classic": {
+        "status": "same",
+        "tree": "Fire",
+        "row": 3,
+        "col": 2,
+        "max": 3,
+        "text": "Increases the critical strike chance of your Flamestrike spell by 5%."
+      }
+    },
+    "mage.talent.pyroblast": {
+      "icon": "spell_fire_fireball02",
+      "classic": {
+        "status": "changed",
+        "tree": "Fire",
+        "row": 3,
+        "col": 3,
+        "max": 1,
+        "text": "Hurls an immense fiery boulder that causes <!--ppl11366:20:24:141:190-->148 to <!--ppl11366:20:24:187:190:1-->195 Fire damage and an additional 56 Fire damage over 12 sec."
+      }
+    },
+    "mage.talent.improved-scorch": {
+      "icon": "spell_fire_soulburn",
+      "classic": {
+        "status": "changed",
+        "tree": "Fire",
+        "row": 4,
+        "col": 1,
+        "max": 3,
+        "text": "Your Scorch spells have a 33% chance to cause your target to be vulnerable to Fire damage.  This vulnerability increases the Fire damage dealt to your target by 3% and lasts 30 sec.  Stacks up to 5 times."
+      }
+    },
+    "mage.talent.improved-fire-ward": {
+      "icon": "spell_fire_firearmor",
+      "classic": {
+        "status": "same",
+        "tree": "Fire",
+        "row": 4,
+        "col": 2,
+        "max": 2,
+        "text": "Causes your Fire Ward to have a 10% chance to reflect Fire spells while active."
+      }
+    },
+    "mage.talent.hot-streak": {
+      "icon": "ability_mage_hotstreak",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "mage.talent.master-of-elements": {
+      "icon": "spell_fire_masterofelements",
+      "classic": {
+        "status": "changed",
+        "tree": "Fire",
+        "row": 4,
+        "col": 4,
+        "max": 3,
+        "text": "Your Fire and Frost spell criticals will refund 10% of their base mana cost."
+      }
+    },
+    "mage.talent.critical-mass": {
+      "icon": "spell_nature_wispheal",
+      "classic": {
+        "status": "same",
+        "tree": "Fire",
+        "row": 5,
+        "col": 2,
+        "max": 3,
+        "text": "Increases the critical strike chance of your Fire spells by 2%."
+      }
+    },
+    "mage.talent.blast-wave": {
+      "icon": "spell_holy_excorcism_02",
+      "classic": {
+        "status": "changed",
+        "tree": "Fire",
+        "row": 5,
+        "col": 3,
+        "max": 1,
+        "text": "A wave of flame radiates outward from the caster, damaging all enemies caught within the blast for <!--ppl11113:30:36:154:100-->160 to <!--ppl11113:30:36:186:100:1-->192 Fire damage, and dazing them for 6 sec."
+      }
+    },
+    "mage.talent.fire-power": {
+      "icon": "spell_fire_immolation",
+      "classic": {
+        "status": "same",
+        "tree": "Fire",
+        "row": 6,
+        "col": 3,
+        "max": 5,
+        "text": "Increases the damage done by your Fire spells by 2%."
+      }
+    },
+    "mage.talent.combustion": {
+      "icon": "spell_fire_sealoffire",
+      "classic": {
+        "status": "changed",
+        "tree": "Fire",
+        "row": 7,
+        "col": 2,
+        "max": 1,
+        "text": "When activated, this spell causes each of your Fire damage spell hits to increase your critical strike chance with Fire damage spells by 10%.  This effect lasts until you have caused 3 critical strikes with Fire spells."
+      }
+    },
+    "mage.talent.frost-warding": {
+      "icon": "spell_frost_frostward",
+      "classic": {
+        "status": "changed",
+        "tree": "Frost",
+        "row": 1,
+        "col": 1,
+        "max": 2,
+        "text": "Increases the armor and resistances given by your Frost Armor and Ice Armor spells by 15%.  In addition, gives your Frost Ward a 10% chance to reflect Frost spells and effects while active."
+      }
+    },
+    "mage.talent.improved-frostbolt": {
+      "icon": "spell_frost_frostbolt02",
+      "classic": {
+        "status": "same",
+        "tree": "Frost",
+        "row": 1,
+        "col": 2,
+        "max": 5,
+        "text": "Reduces the casting time of your Frostbolt spell by 0.1 sec."
+      }
+    },
+    "mage.talent.elemental-precision": {
+      "icon": "spell_ice_magicdamage",
+      "classic": {
+        "status": "changed",
+        "tree": "Frost",
+        "row": 1,
+        "col": 3,
+        "max": 3,
+        "text": "Reduces the chance that the opponent can resist your Frost and Fire spells by 2%."
+      }
+    },
+    "mage.talent.ice-shards": {
+      "icon": "spell_frost_iceshard",
+      "classic": {
+        "status": "same",
+        "tree": "Frost",
+        "row": 2,
+        "col": 1,
+        "max": 5,
+        "text": "Increases the critical strike damage bonus of your Frost spells by 20%."
+      }
+    },
+    "mage.talent.permafrost": {
+      "icon": "spell_frost_wisp",
+      "classic": {
+        "status": "changed",
+        "tree": "Frost",
+        "row": 2,
+        "col": 4,
+        "max": 3,
+        "text": "Increases the duration of your Chill effects by 1 <!--singular:sec:secs-->sec<!--singular--> and reduces the target's speed by an additional 4%."
+      }
+    },
+    "mage.talent.improved-frost-nova": {
+      "icon": "spell_frost_freezingbreath",
+      "classic": {
+        "status": "same",
+        "tree": "Frost",
+        "row": 2,
+        "col": 3,
+        "max": 2,
+        "text": "Reduces the cooldown of your Frost Nova spell by 2 sec."
+      }
+    },
+    "mage.talent.frostbite": {
+      "icon": "spell_frost_frostarmor",
+      "classic": {
+        "status": "same",
+        "tree": "Frost",
+        "row": 2,
+        "col": 2,
+        "max": 3,
+        "text": "Gives your Chill effects a 5% chance to freeze the target for 5 sec."
+      }
+    },
+    "mage.talent.piercing-ice": {
+      "icon": "spell_frost_frostbolt",
+      "classic": {
+        "status": "same",
+        "tree": "Frost",
+        "row": 3,
+        "col": 1,
+        "max": 3,
+        "text": "Increases the damage done by your Frost spells by 2%."
+      }
+    },
+    "mage.talent.frost-channeling": {
+      "icon": "spell_frost_stun",
+      "classic": {
+        "status": "moved",
+        "tree": "Frost",
+        "row": 4,
+        "col": 2,
+        "max": 3,
+        "text": "Reduces the mana cost of your Frost spells by 5% and reduces the threat caused by your Frost spells by 10%.",
+        "moved": true
+      }
+    },
+    "mage.talent.ice-lance": {
+      "icon": "spell_frost_frostblast",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "mage.talent.improved-blizzard": {
+      "icon": "spell_frost_icestorm",
+      "classic": {
+        "status": "changed",
+        "tree": "Frost",
+        "row": 3,
+        "col": 4,
+        "max": 3,
+        "text": "Adds a chill effect to your Blizzard spell.  This effect lowers the target's movement speed by 30%.  Lasts 1.50 sec."
+      }
+    },
+    "mage.talent.arctic-reach": {
+      "icon": "spell_shadow_darkritual",
+      "classic": {
+        "status": "same",
+        "tree": "Frost",
+        "row": 4,
+        "col": 1,
+        "max": 2,
+        "text": "Increases the range of your Frostbolt and Blizzard spells and the radius of your Frost Nova and Cone of Cold spells by 10%."
+      }
+    },
+    "mage.talent.ice-block": {
+      "icon": "spell_frost_frost",
+      "classic": {
+        "status": "moved",
+        "tree": "Frost",
+        "row": 5,
+        "col": 2,
+        "max": 1,
+        "text": "You become encased in a block of ice, protecting you from all physical attacks and spells for 10 sec, but during that time you cannot attack, move or cast spells.",
+        "moved": true
+      }
+    },
+    "mage.talent.shatter": {
+      "icon": "spell_frost_frostshock",
+      "classic": {
+        "status": "changed",
+        "tree": "Frost",
+        "row": 4,
+        "col": 3,
+        "max": 5,
+        "text": "Increases the critical strike chance of all your spells against frozen targets by 10%."
+      }
+    },
+    "mage.talent.improved-cone-of-cold": {
+      "icon": "spell_frost_glacier",
+      "classic": {
+        "status": "changed",
+        "tree": "Frost",
+        "row": 5,
+        "col": 3,
+        "max": 3,
+        "text": "Increases the damage dealt by your Cone of Cold spell by 15%."
+      }
+    },
+    "mage.talent.cold-snap": {
+      "icon": "spell_frost_wizardmark",
+      "classic": {
+        "status": "changed",
+        "tree": "Frost",
+        "row": 3,
+        "col": 2,
+        "max": 1,
+        "text": "When activated, this spell finishes the cooldown on all of your Frost spells.<!--cooldown:442543:5 min cooldown-->",
+        "moved": true
+      }
+    },
+    "mage.talent.fingers-of-frost": {
+      "icon": "ability_mage_wintersgrasp",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "mage.talent.winter-s-chill": {
+      "icon": "spell_frost_chillingblast",
+      "classic": {
+        "status": "changed",
+        "tree": "Frost",
+        "row": 6,
+        "col": 3,
+        "max": 5,
+        "text": "Gives your Frost damage spells a 20% chance to apply the Winter's Chill effect, which increases the chance a Frost spell will critically hit the target by 2% for 15 sec.  Stacks up to 5 times."
+      }
+    },
+    "mage.talent.ice-barrier": {
+      "icon": "spell_ice_lament",
+      "classic": {
+        "status": "changed",
+        "tree": "Frost",
+        "row": 7,
+        "col": 2,
+        "max": 1,
+        "text": "Instantly shields you, absorbing <!--ppl11426:40:46:438:280:1-->455 damage.  Lasts 1 min.  While the shield holds, spells will not be interrupted."
+      }
+    },
+    "warlock.talent.improved-life-tap": {
+      "icon": "spell_shadow_burningspirit",
+      "classic": {
+        "status": "moved",
+        "tree": "Affliction",
+        "row": 2,
+        "col": 3,
+        "max": 2,
+        "text": "Increases the amount of Mana awarded by your Life Tap spell by 10%.",
+        "moved": true
+      }
+    },
+    "warlock.talent.suppression": {
+      "icon": "spell_shadow_unsummonbuilding",
+      "classic": {
+        "status": "changed",
+        "tree": "Affliction",
+        "row": 1,
+        "col": 2,
+        "max": 5,
+        "text": "Reduces the chance for enemies to resist your Affliction spells by 2%."
+      }
+    },
+    "warlock.talent.improved-corruption": {
+      "icon": "spell_shadow_abominationexplosion",
+      "classic": {
+        "status": "changed",
+        "tree": "Affliction",
+        "row": 1,
+        "col": 3,
+        "max": 5,
+        "text": "Reduces the casting time of your Corruption spell by 0.4 sec."
+      }
+    },
+    "warlock.talent.malediction": {
+      "icon": "spell_shadow_curseofachimonde",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "warlock.talent.soul-harvesting": {
+      "icon": "spell_shadow_soulgem",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "warlock.talent.improved-drains": {
+      "icon": "spell_shadow_lifedrain02",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "warlock.talent.improved-bane-of-agony": {
+      "icon": "spell_shadow_curseofsargeras",
+      "classic": {
+        "status": "changed",
+        "tree": "Affliction",
+        "row": 3,
+        "col": 1,
+        "max": 3,
+        "text": "Increases the damage done by your Curse of Agony by 2%.",
+        "renamed": "Improved Curse of Agony"
+      }
+    },
+    "warlock.talent.fel-concentration": {
+      "icon": "spell_shadow_fingerofdeath",
+      "classic": {
+        "status": "changed",
+        "tree": "Affliction",
+        "row": 3,
+        "col": 2,
+        "max": 5,
+        "text": "Gives you a 14% chance to avoid interruption caused by damage while channeling the Drain Life, Drain Mana, or Drain Soul spell."
+      }
+    },
+    "warlock.talent.amplify-curse": {
+      "icon": "spell_shadow_contagion",
+      "classic": {
+        "status": "changed",
+        "tree": "Affliction",
+        "row": 3,
+        "col": 3,
+        "max": 1,
+        "text": "Increases the effect of your next Curse of Weakness or Curse of Agony by 50%, or your next Curse of Exhaustion by 20%.  Lasts 30 sec."
+      }
+    },
+    "warlock.talent.pandemic": {
+      "icon": "spell_shadow_unstableaffliction_2",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "warlock.talent.malevolence": {
+      "icon": "spell_shadow_deathpact",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "warlock.talent.nightfall": {
+      "icon": "spell_shadow_twilight",
+      "classic": {
+        "status": "changed",
+        "tree": "Affliction",
+        "row": 4,
+        "col": 2,
+        "max": 2,
+        "text": "Gives your Corruption and Drain Life spells a 2% chance to cause you to enter a Shadow Trance state after damaging the opponent.  The Shadow Trance state reduces the casting time of your next Shadow Bolt spell by 100%<!--sp403873:0--><!--sp403873-->."
+      }
+    },
+    "warlock.talent.curse-of-exhaustion": {
+      "icon": "spell_shadow_grimward",
+      "classic": {
+        "status": "changed",
+        "tree": "Affliction",
+        "row": 5,
+        "col": 3,
+        "max": 1,
+        "text": "Reduces the target's movement speed by <!--sp18312:0--><!--sp18288:0--><!--sp18311:0--><!--sp18310:0--><!--sp18313:0-->10<!--sp18313--><!--sp18310--><!--sp18311--><!--sp18288--><!--sp18312-->% for 12 sec.  Only one Curse per Warlock can be active on any one target.",
+        "moved": true
+      }
+    },
+    "warlock.talent.siphon-life": {
+      "icon": "spell_shadow_requiem",
+      "classic": {
+        "status": "same",
+        "tree": "Affliction",
+        "row": 5,
+        "col": 2,
+        "max": 1,
+        "text": "Transfers 15 health from the target to the caster every 3 sec.  Lasts 30 sec."
+      }
+    },
+    "warlock.talent.soul-siphon": {
+      "icon": "spell_shadow_soulleech_3",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "warlock.talent.shadow-mastery": {
+      "icon": "spell_shadow_shadetruesight",
+      "classic": {
+        "status": "changed",
+        "tree": "Affliction",
+        "row": 6,
+        "col": 2,
+        "max": 5,
+        "text": "Increases the damage dealt or life drained by your Shadow spells by 2%."
+      }
+    },
+    "warlock.talent.drain-hope": {
+      "icon": "spell_shadow_haunting",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "warlock.talent.improved-health-funnel": {
+      "icon": "spell_shadow_lifedrain",
+      "classic": {
+        "status": "changed",
+        "tree": "Demonology",
+        "row": 2,
+        "col": 1,
+        "max": 2,
+        "text": "Increases the amount of Health transferred by your Health Funnel spell by 10%.",
+        "moved": true
+      }
+    },
+    "warlock.talent.improved-imp": {
+      "icon": "spell_shadow_summonimp",
+      "classic": {
+        "status": "changed",
+        "tree": "Demonology",
+        "row": 1,
+        "col": 2,
+        "max": 3,
+        "text": "Increases the effect of your Imp's Firebolt, Fire Shield, and Blood Pact spells by 10%."
+      }
+    },
+    "warlock.talent.demonic-embrace": {
+      "icon": "spell_shadow_metamorphosis",
+      "classic": {
+        "status": "changed",
+        "tree": "Demonology",
+        "row": 1,
+        "col": 3,
+        "max": 5,
+        "text": "Increases your total Stamina by 3% but reduces your total Spirit by 1%."
+      }
+    },
+    "warlock.talent.unholy-power": {
+      "icon": "spell_shadow_shadowworddominate",
+      "classic": {
+        "status": "changed",
+        "tree": "Demonology",
+        "row": 4,
+        "col": 3,
+        "max": 5,
+        "text": "Increases the damage done by your Voidwalker, Succubus, Incubus, and Felhunter's melee attacks by 4%.",
+        "moved": true
+      }
+    },
+    "warlock.talent.demonic-aegis": {
+      "icon": "spell_shadow_ragingscream",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "warlock.talent.improved-voidwalker": {
+      "icon": "spell_shadow_summonvoidwalker",
+      "classic": {
+        "status": "same",
+        "tree": "Demonology",
+        "row": 2,
+        "col": 2,
+        "max": 3,
+        "text": "Increases the effectiveness of your Voidwalker's Torment, Consume Shadows, Sacrifice and Suffering spells by 10%."
+      }
+    },
+    "warlock.talent.fel-vitality": {
+      "icon": "spell_shadow_antishadow",
+      "classic": {
+        "status": "changed",
+        "tree": "Demonology",
+        "row": 3,
+        "col": 3,
+        "max": 5,
+        "text": "Increases the maximum Health of your Imp, Voidwalker, Succubus, Incubus, and Felhunter by 3%.",
+        "moved": true,
+        "renamed": "Fel Stamina"
+      }
+    },
+    "warlock.talent.demonic-energies": {
+      "icon": "spell_shadow_demonicempathy",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "warlock.talent.improved-sayaad": {
+      "icon": "ability_warlock_randomizesuccubusincubus",
+      "classic": {
+        "status": "same",
+        "tree": "Demonology",
+        "row": 3,
+        "col": 1,
+        "max": 3,
+        "text": "Increases the effect of your Succubus' and Incubus' Lash of Pain and Soothing Kiss spells by 10%, and increases the duration of your Succubus' and Incubus' Seduction and Lesser Invisibility spells by 10%."
+      }
+    },
+    "warlock.talent.demonic-sacrifice": {
+      "icon": "spell_shadow_psychicscream",
+      "classic": {
+        "status": "changed",
+        "tree": "Demonology",
+        "row": 5,
+        "col": 2,
+        "max": 1,
+        "text": "When activated, sacrifices your summoned demon to grant you an effect that lasts 30 min.  The effect is canceled if any Demon is summoned.<br /><br />Imp: Increases your Fire damage by 15%.<br /><br />Voidwalker: Restores 3% of total Health every 4 sec.<br /><br />Succubus/Incubus: Increases your Shadow damage by 15%.<br /><br />Felhunter: Restores 2% of total Mana every 4 sec.",
+        "moved": true
+      }
+    },
+    "warlock.talent.master-summoner": {
+      "icon": "spell_shadow_impphaseshift",
+      "classic": {
+        "status": "moved",
+        "tree": "Demonology",
+        "row": 4,
+        "col": 2,
+        "max": 2,
+        "text": "Reduces the casting time of your Imp, Voidwalker, Succubus, Incubus, and Felhunter Summoning spells by 2 sec and the Mana cost by 20%.",
+        "moved": true
+      }
+    },
+    "warlock.talent.decimation": {
+      "icon": "spell_fire_fireball02",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "warlock.talent.fel-domination": {
+      "icon": "spell_nature_removecurse",
+      "classic": {
+        "status": "moved",
+        "tree": "Demonology",
+        "row": 3,
+        "col": 2,
+        "max": 1,
+        "text": "Your next Imp, Voidwalker, Succubus, Incubus, or Felhunter Summon spell has its casting time reduced by 5.5 sec and its Mana cost reduced by 50%.",
+        "moved": true
+      }
+    },
+    "warlock.talent.demonic-brand": {
+      "icon": "spell_shadow_demonbreath",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "warlock.talent.improved-felhunter": {
+      "icon": "spell_shadow_summonfelhunter",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "warlock.talent.soul-link": {
+      "icon": "spell_shadow_gathershadows",
+      "classic": {
+        "status": "changed",
+        "tree": "Demonology",
+        "row": 7,
+        "col": 2,
+        "max": 1,
+        "text": "When active, 30% of all damage taken by the caster is taken by your Imp, Voidwalker, Succubus, Incubus, or Felhunter demon instead.  In addition, both the demon and master will inflict 3% more damage.  Lasts as long as the demon is active.",
+        "moved": true
+      }
+    },
+    "warlock.talent.demonic-knowledge": {
+      "icon": "spell_shadow_improvedvampiricembrace",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "warlock.talent.master-demonologist": {
+      "icon": "spell_shadow_shadowpact",
+      "classic": {
+        "status": "changed",
+        "tree": "Demonology",
+        "row": 6,
+        "col": 3,
+        "max": 5,
+        "text": "Grants both the Warlock and the summoned demon an effect as long as that demon is active.<br /><br />Imp - <!--sp403789:0-->Reduces<!--sp403789--> threat caused by 4%.<br /><br />Voidwalker - Reduces physical damage taken by 2%.<br /><br />Succubus/Incubus - Increases all damage caused by 2%.<br /><br />Felhunter - Increases all resistances by .2 per level."
+      }
+    },
+    "warlock.talent.demonic-pact": {
+      "icon": "spell_shadow_demonicpact",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "warlock.talent.destructive-reach": {
+      "icon": "spell_shadow_corpseexplode",
+      "classic": {
+        "status": "changed",
+        "tree": "Destruction",
+        "row": 4,
+        "col": 2,
+        "max": 2,
+        "text": "Increases the range of your Destruction spells by 10%.",
+        "moved": true
+      }
+    },
+    "warlock.talent.improved-shadow-bolt": {
+      "icon": "spell_shadow_shadowbolt",
+      "classic": {
+        "status": "changed",
+        "tree": "Destruction",
+        "row": 1,
+        "col": 2,
+        "max": 5,
+        "text": "Your Shadow Bolt critical strikes increase Shadow damage dealt to the target by 4% until 4 non-periodic damage sources are applied.  Effect lasts a maximum of 12 sec."
+      }
+    },
+    "warlock.talent.bane": {
+      "icon": "spell_shadow_deathpact",
+      "classic": {
+        "status": "changed",
+        "tree": "Destruction",
+        "row": 2,
+        "col": 2,
+        "max": 5,
+        "text": "Reduces the casting time of your Shadow Bolt and Immolate spells by 0.1 sec and your Soul Fire spell by 0.4 sec.",
+        "moved": true
+      }
+    },
+    "warlock.talent.molten-skin": {
+      "icon": "ability_mage_moltenarmor",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "warlock.talent.cataclysm": {
+      "icon": "spell_fire_windsofwoe",
+      "classic": {
+        "status": "changed",
+        "tree": "Destruction",
+        "row": 1,
+        "col": 3,
+        "max": 5,
+        "text": "Reduces the Mana cost of your Destruction spells by 1%.",
+        "moved": true
+      }
+    },
+    "warlock.talent.aftermath": {
+      "icon": "spell_fire_fire",
+      "classic": {
+        "status": "changed",
+        "tree": "Destruction",
+        "row": 2,
+        "col": 3,
+        "max": 5,
+        "text": "Gives your Destruction spells a 2% chance to daze the target for 5 sec."
+      }
+    },
+    "warlock.talent.ruin": {
+      "icon": "spell_shadow_shadowwordpain",
+      "classic": {
+        "status": "changed",
+        "tree": "Destruction",
+        "row": 5,
+        "col": 3,
+        "max": 1,
+        "text": "Increases the critical strike damage bonus of your Destruction spells by 100%.",
+        "moved": true
+      }
+    },
+    "warlock.talent.shadowburn": {
+      "icon": "spell_shadow_scourgebuild",
+      "classic": {
+        "status": "changed",
+        "tree": "Destruction",
+        "row": 3,
+        "col": 4,
+        "max": 1,
+        "text": "Instantly blasts the target for <!--ppl17877:20:24:87:120-->91 to <!--ppl17877:20:24:99:120:1-->104 Shadow damage.  If the target dies within 5 sec of Shadowburn, and yields experience or honor, the caster gains a Soul Shard."
+      }
+    },
+    "warlock.talent.intensity": {
+      "icon": "spell_fire_lavaspawn",
+      "classic": {
+        "status": "changed",
+        "tree": "Destruction",
+        "row": 4,
+        "col": 1,
+        "max": 2,
+        "text": "Gives you a 35% chance to resist interruption caused by damage while channeling the Rain of Fire, Hellfire or Soul Fire spell."
+      }
+    },
+    "warlock.talent.agonizing-flames": {
+      "icon": "spell_fire_soulburn",
+      "classic": {
+        "status": "changed",
+        "tree": "Destruction",
+        "row": 4,
+        "col": 4,
+        "max": 5,
+        "text": "Increases the critical strike chance of your Searing Pain spell by 2%.",
+        "renamed": "Improved Searing Pain"
+      }
+    },
+    "warlock.talent.conflagrate": {
+      "icon": "spell_fire_fireball",
+      "classic": {
+        "status": "changed",
+        "tree": "Destruction",
+        "row": 7,
+        "col": 2,
+        "max": 1,
+        "text": "Ignites a target that is already afflicted by Immolate, dealing <!--ppl17962:40:46:240:160-->249 to <!--ppl17962:40:46:306:160:1-->316 Fire damage and consuming the Immolate spell.",
+        "moved": true
+      }
+    },
+    "warlock.talent.pyroclasm": {
+      "icon": "spell_fire_volcano",
+      "classic": {
+        "status": "changed",
+        "tree": "Destruction",
+        "row": 5,
+        "col": 1,
+        "max": 2,
+        "text": "Gives your Rain of Fire, Hellfire, and Soul Fire spells a 13% chance to stun the target for 3 sec."
+      }
+    },
+    "warlock.talent.bane-of-havoc": {
+      "icon": "ability_warlock_baneofhavoc",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "warlock.talent.fire-and-brimstone": {
+      "icon": "ability_warlock_fireandbrimstone",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "warlock.talent.shadow-and-flame": {
+      "icon": "spell_shadow_shadowandflame",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "warlock.talent.incinerate": {
+      "icon": "spell_fire_burnout",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "druid.talent.improved-wrath": {
+      "icon": "spell_nature_abolishmagic",
+      "classic": {
+        "status": "changed",
+        "tree": "Balance",
+        "row": 1,
+        "col": 1,
+        "max": 5,
+        "text": "Reduces the cast time of your Wrath spell by 0.1 sec."
+      }
+    },
+    "druid.talent.genesis": {
+      "icon": "spell_arcane_arcane03",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "druid.talent.moonglow": {
+      "icon": "spell_nature_sentinal",
+      "classic": {
+        "status": "changed",
+        "tree": "Balance",
+        "row": 5,
+        "col": 3,
+        "max": 3,
+        "text": "Reduces the Mana cost of your Moonfire, Starfire, Wrath, Healing Touch, Regrowth and Rejuvenation spells by 3%.",
+        "moved": true
+      }
+    },
+    "druid.talent.improved-moonfire": {
+      "icon": "spell_nature_starfall",
+      "classic": {
+        "status": "changed",
+        "tree": "Balance",
+        "row": 2,
+        "col": 2,
+        "max": 5,
+        "text": "Increases the damage and critical strike chance of your Moonfire spell by 2%."
+      }
+    },
+    "druid.talent.nature-s-majesty": {
+      "icon": "spell_nature_wispsplode",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "druid.talent.nature-s-reach": {
+      "icon": "spell_nature_naturetouchgrow",
+      "classic": {
+        "status": "changed",
+        "tree": "Balance",
+        "row": 3,
+        "col": 4,
+        "max": 2,
+        "text": "Increases the range of your Wrath, Entangling Roots, Faerie Fire, Moonfire, Starfire, and Hurricane spells by 10%.",
+        "moved": true
+      }
+    },
+    "druid.talent.improved-entangling-roots": {
+      "icon": "spell_nature_stranglevines",
+      "classic": {
+        "status": "changed",
+        "tree": "Balance",
+        "row": 2,
+        "col": 1,
+        "max": 3,
+        "text": "Gives you a 40% chance to avoid interruption caused by damage while casting Entangling Roots.",
+        "moved": true
+      }
+    },
+    "druid.talent.nature-s-splendor": {
+      "icon": "spell_nature_naturesblessing",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "druid.talent.balance-of-nature": {
+      "icon": "ability_druid_balanceofpower",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "druid.talent.vengeance": {
+      "icon": "spell_nature_purge",
+      "classic": {
+        "status": "changed",
+        "tree": "Balance",
+        "row": 4,
+        "col": 2,
+        "max": 5,
+        "text": "Increases the critical strike damage bonus of your Starfire, Moonfire, and Wrath spells by 20%."
+      }
+    },
+    "druid.talent.insect-swarm": {
+      "icon": "spell_nature_insectswarm",
+      "classic": {
+        "status": "changed",
+        "tree": "Restoration",
+        "row": 3,
+        "col": 3,
+        "max": 1,
+        "text": "The enemy target is swarmed by insects, decreasing their chance to hit by 2% and causing 66 Nature damage over 12 sec.",
+        "moved": true
+      }
+    },
+    "druid.talent.improved-starfire": {
+      "icon": "spell_arcane_starfire",
+      "classic": {
+        "status": "changed",
+        "tree": "Balance",
+        "row": 4,
+        "col": 3,
+        "max": 5,
+        "text": "Reduces the cast time of Starfire by 0.1 sec and has a 3% chance to stun the target for 3 sec."
+      }
+    },
+    "druid.talent.overgrowth": {
+      "icon": "ability_druid_flourish",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "druid.talent.nature-s-grace": {
+      "icon": "spell_nature_naturesblessing",
+      "classic": {
+        "status": "changed",
+        "tree": "Balance",
+        "row": 5,
+        "col": 2,
+        "max": 1,
+        "text": "All spell criticals grace you with a blessing of nature, reducing the casting time of your next spell by 0.5 sec."
+      }
+    },
+    "druid.talent.eclipse": {
+      "icon": "ability_druid_eclipse",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "druid.talent.moonfury": {
+      "icon": "spell_nature_moonglow",
+      "classic": {
+        "status": "changed",
+        "tree": "Balance",
+        "row": 6,
+        "col": 2,
+        "max": 5,
+        "text": "Increases the damage done by your Starfire, Moonfire and Wrath spells by [<span class='q2'>S03 - Tuning and Overrides Passive - Druid</span>: <span class='q9'>2%</span> / 2%]."
+      }
+    },
+    "druid.talent.moonkin-form": {
+      "icon": "spell_nature_forceofnature",
+      "classic": {
+        "status": "changed",
+        "tree": "Balance",
+        "row": 7,
+        "col": 2,
+        "max": 1,
+        "text": "Transforms the Druid into Moonkin Form.  While in this form the armor contribution from items is increased by 360% [<span class='q2'>S03 - Tuning and Overrides Passive - Druid</span>: <span class='q9'>Moonfire costs 50% less mana and deals 100% more damage over time, your periodic damage spells can deal critical periodic damage, you gain (<!--pl24858:40:60-->60 * 3) spell damage</span>] and all party members within 30 yards have their spell critical chance increased by 3%.  [<span class='q2'>S03 - Tuning and Overrides Passive - Druid</span>: <span class='q9'>The Moonkin cannot cast healing spells while shapeshifted</span> / The Moonkin can only cast Balance spells while shapeshifted.] [<span class='q9'>Reduces all threat from Arcane and Nature spells by 0% while in this form</span><!--sp436895:0--><!--sp436895-->]<br /><br />The act of shapeshifting frees the caster of Polymorph and Movement Impairing effects."
+      }
+    },
+    "druid.talent.ferocity": {
+      "icon": "ability_hunter_pet_hyena",
+      "classic": {
+        "status": "changed",
+        "tree": "Feral Combat",
+        "row": 1,
+        "col": 2,
+        "max": 5,
+        "text": "Reduces the cost of your Maul, Swipe, Claw, and Rake abilities by 1 Rage or Energy."
+      }
+    },
+    "druid.talent.heart-of-the-wild": {
+      "icon": "spell_holy_blessingofagility",
+      "classic": {
+        "status": "changed",
+        "tree": "Feral Combat",
+        "row": 6,
+        "col": 2,
+        "max": 5,
+        "text": "Increases your Intellect by 4%.  In addition, while in Bear or Dire Bear Form your Stamina is increased by 4% and while in Cat Form your Strength is increased by 4%.",
+        "moved": true
+      }
+    },
+    "druid.talent.feral-swiftness": {
+      "icon": "spell_nature_spiritwolf",
+      "classic": {
+        "status": "changed",
+        "tree": "Feral Combat",
+        "row": 3,
+        "col": 1,
+        "max": 2,
+        "text": "Increases your movement speed by 15% <!--sp436895:0-->while outdoors<!--sp436895--> in Cat Form and increases your chance to dodge while in Cat Form by 2%.",
+        "moved": true,
+        "renamed": "Feline Swiftness"
+      }
+    },
+    "druid.talent.feral-instinct": {
+      "icon": "ability_ambush",
+      "classic": {
+        "status": "changed",
+        "tree": "Feral Combat",
+        "row": 2,
+        "col": 1,
+        "max": 5,
+        "text": "Increases threat caused in Bear and Dire Bear Form by 3% and reduces the chance enemies have to detect you while Prowling."
+      }
+    },
+    "druid.talent.brutal-impact": {
+      "icon": "ability_druid_bash",
+      "classic": {
+        "status": "changed",
+        "tree": "Feral Combat",
+        "row": 2,
+        "col": 2,
+        "max": 2,
+        "text": "Increases the stun duration of your Bash and Pounce abilities by 0.5 sec."
+      }
+    },
+    "druid.talent.thick-hide": {
+      "icon": "inv_misc_pelt_bear_03",
+      "classic": {
+        "status": "changed",
+        "tree": "Feral Combat",
+        "row": 2,
+        "col": 3,
+        "max": 5,
+        "text": "Increases your Armor contribution from items by 2%."
+      }
+    },
+    "druid.talent.savage-fury": {
+      "icon": "ability_druid_ravage",
+      "classic": {
+        "status": "changed",
+        "tree": "Feral Combat",
+        "row": 5,
+        "col": 1,
+        "max": 2,
+        "text": "Increases the damage caused by your Claw, Rake, Maul and Swipe abilities by 10%.",
+        "moved": true
+      }
+    },
+    "druid.talent.feral-charge": {
+      "icon": "ability_hunter_pet_bear",
+      "classic": {
+        "status": "changed",
+        "tree": "Feral Combat",
+        "row": 3,
+        "col": 2,
+        "max": 1,
+        "text": "Causes you to charge an enemy, immobilizing and interrupting any spell being cast for 4 sec."
+      }
+    },
+    "druid.talent.sharpened-claws": {
+      "icon": "inv_misc_monsterclaw_04",
+      "classic": {
+        "status": "changed",
+        "tree": "Feral Combat",
+        "row": 3,
+        "col": 3,
+        "max": 3,
+        "text": "Increases your critical strike chance while in Bear, Dire Bear or Cat Form by 2%."
+      }
+    },
+    "druid.talent.shredding-attacks": {
+      "icon": "spell_shadow_vampiricaura",
+      "classic": {
+        "status": "changed",
+        "tree": "Feral Combat",
+        "row": 4,
+        "col": 1,
+        "max": 2,
+        "text": "Reduces the Energy cost of your Shred ability by 6.",
+        "renamed": "Improved Shred"
+      }
+    },
+    "druid.talent.mangle": {
+      "icon": "ability_druid_mangle2",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "druid.talent.predatory-strikes": {
+      "icon": "ability_hunter_pet_cat",
+      "classic": {
+        "status": "changed",
+        "tree": "Feral Combat",
+        "row": 4,
+        "col": 2,
+        "max": 3,
+        "text": "Increases your melee attack power in Cat, Bear and Dire Bear Forms by 50% of your level."
+      }
+    },
+    "druid.talent.primal-fury": {
+      "icon": "ability_racial_cannibalize",
+      "classic": {
+        "status": "changed",
+        "tree": "Feral Combat",
+        "row": 4,
+        "col": 4,
+        "max": 2,
+        "text": "Gives you a 50% chance to gain an additional 5 Rage anytime you get a critical strike while in Bear and Dire Bear Form."
+      }
+    },
+    "druid.talent.predatory-instincts": {
+      "icon": "ability_druid_predatoryinstincts",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "druid.talent.leader-of-the-pack": {
+      "icon": "spell_nature_unyeildingstamina",
+      "classic": {
+        "status": "changed",
+        "tree": "Feral Combat",
+        "row": 7,
+        "col": 2,
+        "max": 1,
+        "text": "While in Cat, Bear or Dire Bear Form, the Leader of the Pack increases ranged and melee critical chance of all party members within 45 yards by 3%.",
+        "moved": true
+      }
+    },
+    "druid.talent.king-of-the-jungle": {
+      "icon": "ability_druid_kingofthejungle",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "druid.talent.natural-reaction": {
+      "icon": "ability_bullrush",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "druid.talent.rend-and-tear": {
+      "icon": "ability_druid_swipe",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "druid.talent.berserk": {
+      "icon": "ability_druid_berserk",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "druid.talent.nature-s-focus": {
+      "icon": "spell_nature_healingwavegreater",
+      "classic": {
+        "status": "changed",
+        "tree": "Restoration",
+        "row": 2,
+        "col": 2,
+        "max": 5,
+        "text": "Gives you a 14% chance to avoid interruption caused by damage while casting the Healing Touch, Regrowth and Tranquility spells.",
+        "moved": true
+      }
+    },
+    "druid.talent.furor": {
+      "icon": "spell_holy_blessingofstamina",
+      "classic": {
+        "status": "changed",
+        "tree": "Restoration",
+        "row": 1,
+        "col": 3,
+        "max": 5,
+        "text": "Gives you 20% chance to gain 10 Rage when you shapeshift into Bear and Dire Bear Form or 40 Energy when you shapeshift into Cat Form."
+      }
+    },
+    "druid.talent.naturalist": {
+      "icon": "spell_nature_healingtouch",
+      "classic": {
+        "status": "changed",
+        "tree": "Restoration",
+        "row": 2,
+        "col": 1,
+        "max": 5,
+        "text": "Reduces the cast time of your Healing Touch spell by 0.1 sec.",
+        "renamed": "Improved Healing Touch"
+      }
+    },
+    "druid.talent.subtlety": {
+      "icon": "ability_eyeoftheowl",
+      "classic": {
+        "status": "changed",
+        "tree": "Restoration",
+        "row": 3,
+        "col": 4,
+        "max": 5,
+        "text": "Reduces the threat generated by your Healing spells by 4%.",
+        "moved": true
+      }
+    },
+    "druid.talent.natural-shapeshifter": {
+      "icon": "spell_nature_wispsplode",
+      "classic": {
+        "status": "moved",
+        "tree": "Balance",
+        "row": 2,
+        "col": 4,
+        "max": 3,
+        "text": "Reduces the mana cost of all shapeshifting by 10%.",
+        "moved": true
+      }
+    },
+    "druid.talent.reflection": {
+      "icon": "spell_frost_windwalkon",
+      "classic": {
+        "status": "changed",
+        "tree": "Restoration",
+        "row": 3,
+        "col": 2,
+        "max": 3,
+        "text": "Allows 5% of your Mana regeneration to continue while casting."
+      }
+    },
+    "druid.talent.gift-of-nature": {
+      "icon": "spell_nature_protectionformnature",
+      "classic": {
+        "status": "changed",
+        "tree": "Restoration",
+        "row": 5,
+        "col": 3,
+        "max": 5,
+        "text": "Increases the effect of all healing spells by 2%.",
+        "moved": true
+      }
+    },
+    "druid.talent.gift-of-the-earthmother": {
+      "icon": "ability_druid_manatree",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "druid.talent.tranquil-spirit": {
+      "icon": "spell_holy_elunesgrace",
+      "classic": {
+        "status": "same",
+        "tree": "Restoration",
+        "row": 4,
+        "col": 2,
+        "max": 5,
+        "text": "Reduces the mana cost of your Healing Touch and Tranquility spells by 2%."
+      }
+    },
+    "druid.talent.improved-rejuvenation": {
+      "icon": "spell_nature_rejuvenation",
+      "classic": {
+        "status": "same",
+        "tree": "Restoration",
+        "row": 4,
+        "col": 4,
+        "max": 3,
+        "text": "Increases the effect of your Rejuvenation spell by 5%."
+      }
+    },
+    "druid.talent.swiftmend": {
+      "icon": "inv_relics_idolofrejuvenation",
+      "classic": {
+        "status": "changed",
+        "tree": "Restoration",
+        "row": 7,
+        "col": 2,
+        "max": 1,
+        "text": "[<span class='q2'>S03 - Tuning and Overrides Passive - Druid</span>: <span class='q9'>Instantly heals a target with an active Rejuvenation or Regrowth effect for</span> / Consumes a Rejuvenation or Regrowth effect on a friendly target to instantly heal them] an amount equal to 12 sec. of Rejuvenation or 18 sec. of Regrowth.",
+        "moved": true
+      }
+    },
+    "druid.talent.nature-s-swiftness": {
+      "icon": "spell_nature_ravenform",
+      "classic": {
+        "status": "same",
+        "tree": "Restoration",
+        "row": 5,
+        "col": 1,
+        "max": 1,
+        "text": "When activated, your next Nature spell becomes an instant cast spell."
+      }
+    },
+    "druid.talent.living-spirit": {
+      "icon": "spell_nature_giftofthewild",
+      "classic": {
+        "status": "new"
+      }
+    },
+    "druid.talent.improved-tranquility": {
+      "icon": "spell_nature_tranquility",
+      "classic": {
+        "status": "changed",
+        "tree": "Restoration",
+        "row": 5,
+        "col": 4,
+        "max": 2,
+        "text": "Reduces threat caused by Tranquility by 50%."
+      }
+    },
+    "druid.talent.improved-regrowth": {
+      "icon": "spell_nature_resistnature",
+      "classic": {
+        "status": "same",
+        "tree": "Restoration",
+        "row": 6,
+        "col": 3,
+        "max": 5,
+        "text": "Increases the critical effect chance of your Regrowth spell by 10%."
+      }
+    },
+    "druid.talent.wild-growth": {
+      "icon": "ability_druid_flourish",
+      "classic": {
+        "status": "new"
+      }
+    }
+  }
+}

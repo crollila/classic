@@ -42,6 +42,18 @@ func (hunter *Hunter) getFreezingTrapConfig(timer *core.Timer) core.SpellConfig 
 
 func (hunter *Hunter) registerFreezingTrapSpell(timer *core.Timer) {
 	config := hunter.getFreezingTrapConfig(timer)
+	if hunter.Forever != nil {
+		config.ActionID = core.ActionID{SpellID: 14311}
+		config.ManaCost.FlatCost = 100
+		config.RequiredLevel = 60
+		config.ApplyEffects = func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
+			r := s.CalcOutcome(sim, t, s.OutcomeMagicHit)
+			s.DealOutcome(sim, r)
+			if r.Landed() {
+				t.ForeverControlAura("Freezing Trap", s.ActionID, core.ForeverIncapacitate, time.Duration(float64(20*time.Second)*(1+.15*float64(hunter.ForeverRank("hunter.talent.clever-traps"))))).Activate(sim)
+			}
+		}
+	}
 
 	if config.RequiredLevel <= int(hunter.Level) {
 		hunter.FreezingTrap = hunter.GetOrRegisterSpell(config)

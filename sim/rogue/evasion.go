@@ -20,6 +20,10 @@ func (rogue *Rogue) RegisterEvasionSpell() {
 		},
 	})
 
+	cd := []time.Duration{time.Minute * 5, time.Minute*5 - time.Second*45, time.Second*5 - time.Second*90}[rogue.Talents.Elusiveness]
+	if rogue.Forever != nil {
+		cd = time.Duration(float64(5*time.Minute) * (1 - .3*float64(rogue.ForeverRank("rogue.talent.endurance"))))
+	}
 	rogue.Evasion = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 5277},
 		SpellSchool: core.SpellSchoolPhysical,
@@ -29,7 +33,7 @@ func (rogue *Rogue) RegisterEvasionSpell() {
 			DefaultCast: core.Cast{},
 			CD: core.Cooldown{
 				Timer:    rogue.NewTimer(),
-				Duration: []time.Duration{time.Minute * 5, time.Minute*5 - time.Second*45, time.Second*5 - time.Second*90}[rogue.Talents.Elusiveness],
+				Duration: cd,
 			},
 			IgnoreHaste: true,
 		},

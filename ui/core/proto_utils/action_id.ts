@@ -5,6 +5,7 @@ import { ActionID as ActionIdProto, ItemRandomSuffix, OtherAction } from '../pro
 import { IconData, UIItem as Item } from '../proto/ui';
 import { buildWowheadTooltipDataset, WowheadTooltipItemParams, WowheadTooltipSpellParams } from '../wowhead';
 import { Database } from './database';
+import foreverActions from '../../forever/data/actions.json';
 
 // Used to filter action IDs by level
 export interface ActionIdConfig {
@@ -46,6 +47,11 @@ export class ActionId {
 
 		switch (otherId) {
 			case OtherAction.OtherActionNone:
+				break;
+			case OtherAction.OtherActionForever:
+				baseName = (foreverActions as Record<string, string>)[String(Math.abs(tag))] || `Forever mechanic ${tag}`;
+				if(tag<0)baseName=baseName==='Shredding Attacks'?'Lacerate (PREDICTED)':baseName==='Penance'?'Penance (healing)':`${baseName} (effect)`;
+				iconUrl = 'https://wow.zamimg.com/images/wow/icons/large/inv_misc_questionmark.jpg';
 				break;
 			case OtherAction.OtherActionWait:
 				baseName = 'Wait';

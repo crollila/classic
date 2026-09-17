@@ -34,11 +34,20 @@ func (mage *Mage) newBlastWaveSpellConfig(rank int, cooldownTimer *core.Timer) c
 	spellId := BlastWaveSpellId[rank]
 	baseDamageLow := BlastWaveBaseDamage[rank][0]
 	baseDamageHigh := BlastWaveBaseDamage[rank][1]
+	if mage.Forever != nil && rank == 1 {
+		baseDamageHigh = 191
+	}
 	manaCost := BlastWaveManaCost[rank]
 	level := BlastWaveLevel[rank]
 
 	spellCoeff := .129
 	cooldown := time.Second * 45
+	var dazes core.AuraArray
+	if mage.Forever != nil {
+		dazes = mage.NewEnemyAuraArray(func(t *core.Unit) *core.Aura {
+			return t.ForeverSnareAura("Forever Blast Wave-"+mage.Label, core.ActionID{SpellID: spellId}, 6*time.Second, .5)
+		})
+	}
 
 	return core.SpellConfig{
 		SpellCode:   SpellCode_MageBlastWave,
@@ -71,7 +80,10 @@ func (mage *Mage) newBlastWaveSpellConfig(rank int, cooldownTimer *core.Timer) c
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
-				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicCrit)
+				r := spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicCrit)
+				if dazes != nil && r.Landed() {
+					dazes.Get(aoeTarget).Activate(sim)
+				}
 			}
 		},
 	}

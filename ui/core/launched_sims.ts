@@ -105,7 +105,7 @@ export const simLaunchStatuses: Record<Spec, SimStatus> = {
 export function getLaunchedSims(): Array<Spec> {
 	return Object.keys(simLaunchStatuses)
 		.map(specStr => parseInt(specStr) as Spec)
-		.filter(spec => simLaunchStatuses[spec].status > LaunchStatus.Unlaunched);
+		.filter(spec => isSimLaunched(spec));
 }
 
 export function getLaunchedSimsForClass(klass: Class): Array<Spec> {
@@ -115,5 +115,6 @@ export function getLaunchedSimsForClass(klass: Class): Array<Spec> {
 }
 
 export function isSimLaunched(specIndex: Spec): boolean {
+	if(import.meta.env.VITE_FOREVER==='true')return true;
 	return simLaunchStatuses[specIndex].status > LaunchStatus.Unlaunched;
 }

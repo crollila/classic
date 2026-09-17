@@ -166,7 +166,7 @@ export class SimTitleDropdown extends Component {
 				<div className="sim-link-content">
 					<img src={this.getSimIconPath(data)} className="sim-link-icon" />
 					<div className="d-flex flex-column">
-						<span className="sim-link-label text-white">WoWSims - Classic</span>
+						<span className="sim-link-label text-white">{import.meta.env.VITE_FOREVER === 'true' ? 'Forever Simulator' : 'WoWSims - Classic'}</span>
 						<span className="sim-link-title">{label}</span>
 						{this.launchStatusLabel(data)}
 					</div>
@@ -235,6 +235,7 @@ export class SimTitleDropdown extends Component {
 	}
 
 	private launchStatusLabel(data: SpecOptions | RaidOptions): Element {
+		if(import.meta.env.VITE_FOREVER === 'true')return <span className="launch-status-label text-brand">Forever · Pre-beta</span>;
 		const status = data.type == 'Raid' ? raidSimStatus.status : simLaunchStatuses[data.index].status;
 		const phase = data.type == 'Raid' ? raidSimStatus.phase : simLaunchStatuses[data.index].phase;
 

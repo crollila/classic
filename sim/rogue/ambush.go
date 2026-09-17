@@ -45,7 +45,7 @@ func (rogue *Rogue) registerAmbushSpell() {
 			if !rogue.HasDagger(core.MainHand) {
 				return false
 			}
-			if rogue.IsStealthed() {
+			if rogue.IsStealthed() || (rogue.ForeverCutthroat != nil && rogue.ForeverCutthroat.IsActive()) {
 				return true
 			}
 			return !rogue.PseudoStats.InFrontOfTarget && rogue.IsStealthed()
@@ -58,6 +58,9 @@ func (rogue *Rogue) registerAmbushSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
+			if rogue.ForeverCutthroat != nil {
+				rogue.ForeverCutthroat.Deactivate(sim)
+			}
 			baseDamage := (flatDamageBonus + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower(target)))
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)

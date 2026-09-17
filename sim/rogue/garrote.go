@@ -43,7 +43,7 @@ func (rogue *Rogue) registerGarrote() {
 			if !rogue.IsStealthed() {
 				return false
 			}
-			return !rogue.PseudoStats.InFrontOfTarget
+			return !rogue.PseudoStats.InFrontOfTarget || rogue.ForeverRank("rogue.talent.dirty-deeds") > 0
 		},
 
 		DamageMultiplier: 1 +

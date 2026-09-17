@@ -11,6 +11,13 @@ func (warrior *Warrior) registerSlamSpell() {
 	spellID := int32(11605)
 	flatDamageBonus := 87.0
 
+	castTime := time.Millisecond*1500 - time.Millisecond*100*time.Duration(warrior.Talents.ImprovedSlam)
+	gcd := core.GCDDefault
+	if warrior.ForeverRank("warrior.talent.improved-slam") > 0 {
+		reduction := time.Duration(warrior.ForeverValue("warrior.talent.improved-slam", 0, 0) * float64(time.Second))
+		castTime = 1500*time.Millisecond - reduction
+		gcd -= reduction
+	}
 	warrior.Slam = warrior.RegisterSpell(AnyStance, core.SpellConfig{
 		SpellCode:   SpellCode_WarriorSlam,
 		ActionID:    core.ActionID{SpellID: spellID},
@@ -27,11 +34,11 @@ func (warrior *Warrior) registerSlamSpell() {
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD:      core.GCDDefault,
-				CastTime: time.Millisecond*1500 - time.Millisecond*100*time.Duration(warrior.Talents.ImprovedSlam),
+				GCD:      gcd,
+				CastTime: castTime,
 			},
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
-				if spell.CastTime() > 0 {
+				if spell.CastTime() > 0 && warrior.ForeverRank("warrior.talent.improved-slam") == 0 {
 					warrior.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+cast.CastTime, true)
 				}
 			},

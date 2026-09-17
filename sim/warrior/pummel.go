@@ -42,6 +42,8 @@ func (warrior *Warrior) registerPummelSpell() {
 
 			if !result.Landed() {
 				spell.IssueRefund(sim)
+			} else if warrior.Forever != nil {
+				target.ForeverInterruptSchool(sim, 4*time.Second)
 			}
 		},
 	})

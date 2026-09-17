@@ -24,6 +24,9 @@ const (
 	SpellCode_MageFrostbolt
 	SpellCode_MageIgnite
 	SpellCode_MageScorch
+	SpellCode_MageArcaneBlast
+	SpellCode_MageIceLance
+	SpellCode_MageFrostfireBolt
 )
 
 var TalentTreeSizes = [3]int{16, 16, 17}
@@ -52,21 +55,22 @@ type Mage struct {
 	Options *proto.Mage_Options
 
 	activeBarrier *core.Aura
+	foreverState  *foreverMageState
 
 	ArcaneExplosion         []*core.Spell
 	ArcaneMissiles          []*core.Spell
 	ArcaneMissilesTickSpell []*core.Spell
 	BlastWave               []*core.Spell
 	Blizzard                []*core.Spell
-	Counterspell			*core.Spell
-	Evocation				*core.Spell
+	Counterspell            *core.Spell
+	Evocation               *core.Spell
 	Fireball                []*core.Spell
 	FireBlast               []*core.Spell
 	Flamestrike             []*core.Spell
 	Frostbolt               []*core.Spell
 	IceBarrier              []*core.Spell
 	Ignite                  *core.Spell
-	igniteTick		 		*core.Spell
+	igniteTick              *core.Spell
 	ManaGem                 []*core.Spell
 	PresenceOfMind          *core.Spell
 	Pyroblast               []*core.Spell
@@ -116,6 +120,7 @@ func (mage *Mage) Initialize() {
 	mage.registerEvocationCD()
 	mage.registerManaGemCD()
 	mage.registerCounterspellSpell()
+	mage.registerForeverSpells()
 }
 
 func (mage *Mage) Reset(sim *core.Simulation) {

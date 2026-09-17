@@ -10,9 +10,17 @@ func (rogue *Rogue) registerStealthAura() {
 		ActionID: core.ActionID{SpellID: 1787},
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			if rogue.Forever != nil {
+				id := aura.ActionID
+				rogue.AddMoveSpeedModifier(&id, .7+.03*float64(rogue.ForeverRank("rogue.talent.camouflage")))
+			}
 			// Stealth triggered auras
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			if rogue.Forever != nil {
+				id := aura.ActionID
+				rogue.RemoveMoveSpeedModifier(&id)
+			}
 		},
 		// Stealth breaks on damage taken (if not absorbed)
 		// This may be desirable later, but not applicable currently

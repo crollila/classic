@@ -27,6 +27,8 @@ func (mage *Mage) applyFrostIceArmor() {
 		60: 15,
 	}[mage.Level]
 
+	armor *= 1 + mage.ForeverValue("mage.talent.frost-warding", 0, 0)/100
+	frostRes *= 1 + mage.ForeverValue("mage.talent.frost-warding", 0, 0)/100
 	mage.IceArmorAura = core.MakePermanent(mage.RegisterAura(core.Aura{
 		Label:    "Ice Armor",
 		ActionID: core.ActionID{SpellID: spellID},
@@ -69,6 +71,7 @@ func (mage *Mage) applyMageArmor() {
 		60: 15,
 	}[mage.Level]
 
+	spellRes *= 1 + mage.ForeverValue("mage.talent.arcane-shielding", 1, 0)/100
 	mage.MageArmorAura = core.MakePermanent(mage.RegisterAura(core.Aura{
 		Label:      "Mage Armor",
 		ActionID:   core.ActionID{SpellID: spellID},

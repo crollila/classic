@@ -41,7 +41,10 @@ func (rogue *Rogue) applyRiposte() {
 			riposteReady.Deactivate(sim)
 
 			damage := rogue.MHWeaponDamage(sim, spell.MeleeAttackPower(target))
-			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+			r := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+			if rogue.Forever != nil && r.Landed() {
+				target.ForeverControlAura("Riposte", spell.ActionID, core.ForeverDisarm, 6*time.Second).Activate(sim)
+			}
 		},
 	})
 

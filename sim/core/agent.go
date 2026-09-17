@@ -1,6 +1,7 @@
 package core
 
 import (
+	"github.com/wowsims/classic/sim/core/foreverdata"
 	"reflect"
 	"strconv"
 	"strings"
@@ -162,6 +163,11 @@ func RegisterAgentFactory(emptyOptions interface{}, spec proto.Spec, factory Age
 
 // Constructs a new Agent.
 func NewAgent(party *Party, partyIndex int, player *proto.Player) Agent {
+	var err error
+	player, err = foreverdata.Prepare(player)
+	if err != nil {
+		panic(err)
+	}
 	typeName := reflect.TypeOf(player.GetSpec()).Elem().Name()
 
 	factory, ok := agentFactories[typeName]

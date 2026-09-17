@@ -54,6 +54,9 @@ func (warlock *Warlock) getLifeTapBaseConfig(rank int) core.SpellConfig {
 			}
 
 			warlock.AddMana(sim, restore, manaMetrics)
+			if warlock.ForeverRank("warlock.talent.demonic-energies") > 0 && warlock.ActivePet != nil {
+				warlock.ActivePet.AddMana(sim, restore*warlock.ForeverValue("warlock.talent.demonic-energies", 1, 0)/100, warlock.ActivePet.LifeTapManaMetrics)
+			}
 		},
 	}
 }

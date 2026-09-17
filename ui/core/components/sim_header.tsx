@@ -37,9 +37,9 @@ export class SimHeader extends Component {
 		this.knownIssuesContent = (<ul className="text-start ps-3 mb-0"></ul>) as HTMLUListElement;
 		this.knownIssuesLink = this.addKnownIssuesLink();
 		this.addBugReportLink();
-		this.addDownloadBinaryLink();
+		if (import.meta.env.VITE_FOREVER !== 'true') this.addDownloadBinaryLink();
 		this.addSimOptionsLink();
-		this.addSocialLinks();
+		if (import.meta.env.VITE_FOREVER !== 'true') this.addSocialLinks();
 
 		// Allow styling the sticky header
 		new IntersectionObserver(([e]) => e.target.classList.toggle('stuck', e.intersectionRatio < 1), { threshold: [1] }).observe(this.rootElem);

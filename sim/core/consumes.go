@@ -26,6 +26,7 @@ func applyConsumeEffects(agent Agent) {
 	applyZanzaBuffConsumes(character, consumes)
 	applyHitConsumableConsumes(character, consumes)
 	applyMiscConsumes(character, consumes.MiscConsumes)
+	character.finishForeverAlchemyDuration()
 
 	registerPotionCD(agent, consumes)
 	registerConjuredCD(agent, consumes)
@@ -43,6 +44,8 @@ func ApplyPetConsumeEffects(pet *Character, ownerConsumes *proto.Consumes) {
 ///////////////////////////////////////////////////////////////////////////
 
 func applyFlaskConsumes(character *Character, consumes *proto.Consumes) {
+	before := character.stats
+	defer character.applyForeverMixology(before)
 	if consumes.Flask == proto.Flask_FlaskUnknown {
 		return
 	}
@@ -308,6 +311,7 @@ func registerFrostOil(character *Character, isMh bool) {
 ///////////////////////////////////////////////////////////////////////////
 
 func applyFoodConsumes(character *Character, consumes *proto.Consumes) {
+	before := character.stats
 	if consumes.Food != proto.Food_FoodUnknown {
 		switch consumes.Food {
 		case proto.Food_FoodHotWolfRibs:
@@ -359,6 +363,7 @@ func applyFoodConsumes(character *Character, consumes *proto.Consumes) {
 		}
 	}
 
+	character.applyForeverFoodDuration(before)
 	if consumes.Alcohol != proto.Alcohol_AlcoholUnknown {
 		switch consumes.Alcohol {
 		case proto.Alcohol_AlcoholRumseyRumBlackLabel:
@@ -441,19 +446,19 @@ func applyDefensiveBuffConsumes(character *Character, consumes *proto.Consumes) 
 	if consumes.ArmorElixir != proto.ArmorElixir_ArmorElixirUnknown {
 		switch consumes.ArmorElixir {
 		case proto.ArmorElixir_ElixirOfSuperiorDefense:
-			character.AddStats(stats.Stats{
+			character.addForeverElixirStats(stats.Stats{
 				stats.BonusArmor: 450,
 			})
 		case proto.ArmorElixir_ElixirOfGreaterDefense:
-			character.AddStats(stats.Stats{
+			character.addForeverElixirStats(stats.Stats{
 				stats.BonusArmor: 250,
 			})
 		case proto.ArmorElixir_ElixirOfDefense:
-			character.AddStats(stats.Stats{
+			character.addForeverElixirStats(stats.Stats{
 				stats.BonusArmor: 150,
 			})
 		case proto.ArmorElixir_ElixirOfMinorDefense:
-			character.AddStats(stats.Stats{
+			character.addForeverElixirStats(stats.Stats{
 				stats.BonusArmor: 50,
 			})
 		case proto.ArmorElixir_ScrollOfProtection:
@@ -464,11 +469,11 @@ func applyDefensiveBuffConsumes(character *Character, consumes *proto.Consumes) 
 	if consumes.HealthElixir != proto.HealthElixir_HealthElixirUnknown {
 		switch consumes.HealthElixir {
 		case proto.HealthElixir_ElixirOfFortitude:
-			character.AddStats(stats.Stats{
+			character.addForeverElixirStats(stats.Stats{
 				stats.Health: 120,
 			})
 		case proto.HealthElixir_ElixirOfMinorFortitude:
-			character.AddStats(stats.Stats{
+			character.addForeverElixirStats(stats.Stats{
 				stats.Health: 27,
 			})
 		}
@@ -497,20 +502,20 @@ func applyPhysicalBuffConsumes(character *Character, consumes *proto.Consumes) {
 	if consumes.AgilityElixir != proto.AgilityElixir_AgilityElixirUnknown {
 		switch consumes.AgilityElixir {
 		case proto.AgilityElixir_ElixirOfTheMongoose:
-			character.AddStats(stats.Stats{
+			character.addForeverElixirStats(stats.Stats{
 				stats.Agility:   25,
 				stats.MeleeCrit: 2 * CritRatingPerCritChance,
 			})
 		case proto.AgilityElixir_ElixirOfGreaterAgility:
-			character.AddStats(stats.Stats{
+			character.addForeverElixirStats(stats.Stats{
 				stats.Agility: 25,
 			})
 		case proto.AgilityElixir_ElixirOfAgility:
-			character.AddStats(stats.Stats{
+			character.addForeverElixirStats(stats.Stats{
 				stats.Agility: 15,
 			})
 		case proto.AgilityElixir_ElixirOfLesserAgility:
-			character.AddStats(stats.Stats{
+			character.addForeverElixirStats(stats.Stats{
 				stats.Agility: 8,
 			})
 		case proto.AgilityElixir_ScrollOfAgility:
@@ -525,11 +530,11 @@ func applyPhysicalBuffConsumes(character *Character, consumes *proto.Consumes) {
 				stats.Strength: 30,
 			})
 		case proto.StrengthBuff_ElixirOfGiants:
-			character.AddStats(stats.Stats{
+			character.addForeverElixirStats(stats.Stats{
 				stats.Strength: 25,
 			})
 		case proto.StrengthBuff_ElixirOfOgresStrength:
-			character.AddStats(stats.Stats{
+			character.addForeverElixirStats(stats.Stats{
 				stats.Strength: 8,
 			})
 		case proto.StrengthBuff_ScrollOfStrength:
@@ -546,11 +551,11 @@ func applySpellBuffConsumes(character *Character, consumes *proto.Consumes) {
 	if consumes.SpellPowerBuff != proto.SpellPowerBuff_SpellPowerBuffUnknown {
 		switch consumes.SpellPowerBuff {
 		case proto.SpellPowerBuff_ArcaneElixir:
-			character.AddStats(stats.Stats{
+			character.addForeverElixirStats(stats.Stats{
 				stats.SpellDamage: 20,
 			})
 		case proto.SpellPowerBuff_GreaterArcaneElixir:
-			character.AddStats(stats.Stats{
+			character.addForeverElixirStats(stats.Stats{
 				stats.SpellDamage: 35,
 			})
 		}
@@ -559,11 +564,11 @@ func applySpellBuffConsumes(character *Character, consumes *proto.Consumes) {
 	if consumes.FirePowerBuff != proto.FirePowerBuff_FirePowerBuffUnknown {
 		switch consumes.FirePowerBuff {
 		case proto.FirePowerBuff_ElixirOfFirepower:
-			character.AddStats(stats.Stats{
+			character.addForeverElixirStats(stats.Stats{
 				stats.FirePower: 10,
 			})
 		case proto.FirePowerBuff_ElixirOfGreaterFirepower:
-			character.AddStats(stats.Stats{
+			character.addForeverElixirStats(stats.Stats{
 				stats.FirePower: 40,
 			})
 		}
@@ -572,7 +577,7 @@ func applySpellBuffConsumes(character *Character, consumes *proto.Consumes) {
 	if consumes.ShadowPowerBuff != proto.ShadowPowerBuff_ShadowPowerBuffUnknown {
 		switch consumes.ShadowPowerBuff {
 		case proto.ShadowPowerBuff_ElixirOfShadowPower:
-			character.AddStats(stats.Stats{
+			character.addForeverElixirStats(stats.Stats{
 				stats.ShadowPower: 40,
 			})
 		}
@@ -581,7 +586,7 @@ func applySpellBuffConsumes(character *Character, consumes *proto.Consumes) {
 	if consumes.FrostPowerBuff != proto.FrostPowerBuff_FrostPowerBuffUnknown {
 		switch consumes.FrostPowerBuff {
 		case proto.FrostPowerBuff_ElixirOfFrostPower:
-			character.AddStats(stats.Stats{
+			character.addForeverElixirStats(stats.Stats{
 				stats.FrostPower: 15,
 			})
 		}
@@ -590,7 +595,7 @@ func applySpellBuffConsumes(character *Character, consumes *proto.Consumes) {
 	if consumes.ManaRegenElixir != proto.ManaRegenElixir_ManaRegenElixirUnknown {
 		switch consumes.ManaRegenElixir {
 		case proto.ManaRegenElixir_MagebloodPotion:
-			character.AddStats(stats.Stats{
+			character.addForeverElixirStats(stats.Stats{
 				stats.MP5: 12,
 			})
 		}

@@ -8,6 +8,7 @@ import (
 )
 
 func (druid *Druid) ApplyTalents() {
+	druid.applyForeverTalents()
 	// Balance
 	druid.registerMoonkinFormSpell()
 	druid.applyOmenOfClarity()
@@ -345,6 +346,10 @@ func (druid *Druid) applyImprovedMoonfire() {
 
 	damageMultiplier := 0.02 * float64(druid.Talents.ImprovedMoonfire)
 	bonusCrit := 2 * float64(druid.Talents.ImprovedMoonfire) * core.SpellCritRatingPerCritChance
+	if druid.Forever != nil {
+		damageMultiplier = .05 * druid.fr("improved-moonfire")
+		bonusCrit = 5 * druid.fr("improved-moonfire") * core.SpellCritRatingPerCritChance
+	}
 
 	druid.RegisterAura(core.Aura{
 		Label: "Improved moonfire",

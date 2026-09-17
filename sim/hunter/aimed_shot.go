@@ -13,6 +13,14 @@ func (hunter *Hunter) getAimedShotConfig(rank int, timer *core.Timer) core.Spell
 	manaCost := [7]float64{0, 75, 115, 160, 210, 260, 310}[rank]
 	level := [7]int{0, 0, 28, 36, 44, 52, 60}[rank]
 
+	castTime := 3500 * time.Millisecond
+	cooldown := 6 * time.Second
+	if hunter.ForeverRank("hunter.talent.sniper-shot") > 0 {
+		baseDamage = 160
+		manaCost = 365
+		castTime = 4 * time.Second
+		cooldown = 15 * time.Second
+	}
 	return core.SpellConfig{
 		SpellCode:     SpellCode_HunterAimedShot,
 		ActionID:      core.ActionID{SpellID: spellId},
@@ -31,11 +39,11 @@ func (hunter *Hunter) getAimedShotConfig(rank int, timer *core.Timer) core.Spell
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Millisecond * 3500,
+				CastTime: castTime,
 			},
 			CD: core.Cooldown{
 				Timer:    timer,
-				Duration: time.Second * 6,
+				Duration: cooldown,
 			},
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
 				cast.CastTime = spell.CastTime()
@@ -47,6 +55,9 @@ func (hunter *Hunter) getAimedShotConfig(rank int, timer *core.Timer) core.Spell
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			if hunter.ForeverRank("hunter.talent.sniper-shot") > 0 {
+				return hunter.DistanceFromTarget >= 8
+			}
 			return hunter.DistanceFromTarget >= core.MinRangedAttackDistance
 		},
 
@@ -76,6 +87,12 @@ func (hunter *Hunter) registerAimedShotSpell(timer *core.Timer) {
 	}
 
 	maxRank := 6
+	if hunter.ForeverRank("hunter.talent.sniper-shot") > 0 {
+		config := hunter.getAimedShotConfig(1, hunter.NewTimer())
+		config.ActionID = hunter.ForeverAction("hunter.talent.sniper-shot")
+		hunter.AimedShot = hunter.GetOrRegisterSpell(config)
+		return
+	}
 
 	for i := 1; i <= maxRank; i++ {
 		config := hunter.getAimedShotConfig(i, timer)

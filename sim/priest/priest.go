@@ -26,13 +26,21 @@ const (
 	SpellCode_PriestSmite
 	SpellCode_PriestStarshards
 	SpellCode_PriestVampiricTouch
+	SpellCode_PriestPenance
+	SpellCode_PriestBindingHeal
+	SpellCode_PriestHolyNova
+	SpellCode_PriestPrayerOfMending
+	SpellCode_PriestShadowWordDeath
+	SpellCode_PriestRenew
+	SpellCode_PriestPowerWordShield
 )
 
 type Priest struct {
 	core.Character
 	Talents *proto.PriestTalents
 
-	Latency float64
+	Latency      float64
+	foreverState *foreverPriestState
 
 	CircleOfHealing   *core.Spell
 	DevouringPlague   []*core.Spell
@@ -85,7 +93,7 @@ func (priest *Priest) Initialize() {
 	priest.registerMindBlast()
 	priest.registerMindFlay()
 	priest.registerShadowWordPainSpell()
-	if priest.GetCharacter().Race == proto.Race_RaceUndead {
+	if priest.GetCharacter().Race == proto.Race_RaceUndead || priest.HasForeverMechanic("priest.baseline.devouring-plague") {
 		priest.registerDevouringPlagueSpell()
 	}
 	if priest.GetCharacter().Race == proto.Race_RaceNightElf {
@@ -95,6 +103,7 @@ func (priest *Priest) Initialize() {
 	priest.registerHolyFire()
 
 	priest.registerPowerInfusionCD()
+	priest.registerForeverSpells()
 }
 
 func (priest *Priest) RegisterHealingSpells() {

@@ -47,6 +47,7 @@ func (priest *Priest) ApplyTalents() {
 	priest.applyShadowFocus()
 	priest.applyShadowWeaving()
 	priest.applyDarkness()
+	priest.applyForeverCasterTalents()
 }
 
 func (priest *Priest) applyMentalAgility() {
@@ -318,6 +319,10 @@ func (priest *Priest) registerInnerFocus() {
 }
 
 func (priest *Priest) registerShadowform() {
+	if priest.Forever != nil {
+		priest.registerForeverShadowform()
+		return
+	}
 	if !priest.Talents.Shadowform {
 		return
 	}

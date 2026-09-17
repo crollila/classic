@@ -1,5 +1,7 @@
 # nodejs modules
 node_modules
+.tools/
+.artifacts/
 ui/core/index.ts
 ui/*/index.html
 .dirstamp

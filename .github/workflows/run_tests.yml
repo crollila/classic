@@ -1,38 +1,37 @@
-name: Run Tests
+name: Classic baseline and Forever isolation
 on:
   pull_request:
-    branches:
-      - master
+    branches: [master]
+  push:
+    branches: ['forever/**']
+  workflow_dispatch:
+permissions:
+  contents: read
 jobs:
   build-and-test:
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     steps:
-      - name: Install Go
-        uses: actions/setup-go@v2
+      - uses: actions/checkout@v4
         with:
-          go-version: 1.23.x
-
-      - name: Install Protoc
-        uses: arduino/setup-protoc@v1
+          fetch-depth: 0
+      - uses: actions/setup-go@v5
         with:
-          version: 3.x
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Install Protoc Go plugin
-        run: go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
-
-      - name: Install Node
-        uses: actions/setup-node@v3
+          go-version: '1.23.4'
+      - uses: actions/setup-node@v4
         with:
-          node-version: '19'
-
-      - name: Checkout 🛎️
-        uses: actions/checkout@v2.3.1
-
-      - name: Build 🔧
+          node-version: '20.13.1'
+          cache: npm
+      - name: Install pinned dependencies
         run: |
-          make dist/classic/.dirstamp
-
-      - name: Test
-        run: |
-          make test
+          go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.36.6
+          npm ci
+      - name: Preserve the known Classic implementation
+        run: npm run check:classic
+      - name: Build browser, WebAssembly, and CLIs
+        run: npm run build
+      - name: Run upstream regressions and version isolation tests
+        run: npm test
