@@ -112,6 +112,8 @@ type Aura struct {
 	metrics AuraMetrics
 
 	initialized bool
+	// Only the cached Forever control constructor can opt into bounded late registration.
+	foreverControlRuntime bool
 }
 
 func (aura *Aura) init(sim *Simulation) {
@@ -378,7 +380,7 @@ func (at *auraTracker) HasActiveAura(label string) bool {
 }
 
 func (at *auraTracker) registerAura(unit *Unit, aura Aura) *Aura {
-	if unit.Env != nil && unit.Env.IsFinalized() {
+	if unit.Env != nil && unit.Env.IsFinalized() && !aura.foreverControlRuntime {
 		panic("Tried to add new aura in a finalized environment!")
 	}
 	if unit == nil {
@@ -570,6 +572,12 @@ restart:
 // Adds a new aura to the simulation. If an aura with the same ID already
 // exists it will be replaced with the new one.
 func (aura *Aura) Activate(sim *Simulation) {
+	if aura.foreverControlRuntime {
+		aura.init(sim)
+	}
+	if aura.Unit.foreverAuraImmune(aura) {
+		return
+	}
 	aura.metrics.Procs++
 	if aura.IsActive() {
 		aura.Refresh(sim)

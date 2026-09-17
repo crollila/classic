@@ -28,6 +28,10 @@ func (spell *Spell) ResistanceMultiplier(sim *Simulation, isPeriodic bool, attac
 			}
 
 			// Physical resistance (armor).
+			if spell.BonusArmorPenetration != 0 {
+				armor := max(attackTable.Defender.Armor()-attackTable.Attacker.stats[stats.ArmorPenetration], 0) * (1 - min(1, max(0, spell.BonusArmorPenetration)))
+				return 1 - armor/(armor+400+85*float64(attackTable.Attacker.Level)), OutcomeEmpty
+			}
 			return attackTable.GetArmorDamageModifier(), OutcomeEmpty
 		}
 	}

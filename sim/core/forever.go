@@ -19,6 +19,14 @@ func (c *Character) ForeverRank(id string) int32 {
 	}
 	return c.Forever.Talents[id]
 }
+func (c *Character) ForeverParameter(name string, fallback float64) float64 {
+	if c.Forever != nil {
+		if value, ok := c.Forever.Parameters[name]; ok {
+			return value
+		}
+	}
+	return fallback
+}
 func (c *Character) HasForeverMechanic(id string) bool {
 	return c.Forever != nil && slices.Contains(c.Forever.Mechanics, id)
 }
@@ -34,11 +42,17 @@ func (c *Character) ForeverValue(id string, index int, classic float64) float64 
 	return r.Ranks[rank-1].Values[index]
 }
 func (c *Character) ForeverAction(id string) ActionID {
-	r, ok := foreverdata.Lookup(id)
-	if !ok {
+	tag := foreverdata.ActionTag(id)
+	if tag == 0 {
 		panic(id)
 	}
-	return ActionID{OtherID: proto.OtherAction_OtherActionForever, Tag: r.ActionTag}
+	return ActionID{OtherID: proto.OtherAction_OtherActionForever, Tag: tag}
+}
+func (c *Character) ForeverMechanicRank(id string) int32 {
+	if !c.HasForeverMechanic(id) {
+		return 0
+	}
+	return max(1, c.Forever.MechanicRanks[id])
 }
 func (c *Character) ForeverMaxRage() float64 {
 	capacity := 100 + c.ForeverValue("warrior.talent.boundless-rage", 0, 0)
@@ -342,4 +356,9 @@ func (c *Character) applyForeverBuffs(raid *proto.RaidBuffs) {
 		return
 	}
 	c.AddStat(stats.Stamina, 34)
+	duration := c.ForeverParameter("scenario.campsite_seconds_remaining", 1800) * (1 + .5*float64(c.ForeverMechanicRank("legacy.permanence")))
+	aura := c.foreverTimedStats("buffs.first-aid-kit", stats.Stats{stats.Stamina: 34}, time.Duration(duration*float64(time.Second)))
+	c.RegisterSpell(SpellConfig{ActionID: c.ForeverAction("buffs.camping"), Flags: SpellFlagAPL | SpellFlagHelpful | SpellFlagPrepullOnly,
+		Cast:               CastConfig{DefaultCast: Cast{CastTime: 5 * time.Second}, CD: Cooldown{Timer: c.NewTimer(), Duration: time.Duration(float64(time.Hour) * (1 - .08*float64(c.ForeverMechanicRank("legacy.field-guide"))))}},
+		ExtraCastCondition: func(sim *Simulation, t *Unit) bool { return sim.CurrentTime < 0 && !c.IsMoving() }, ApplyEffects: func(sim *Simulation, t *Unit, s *Spell) { aura.Activate(sim) }})
 }
