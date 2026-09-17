@@ -933,10 +933,10 @@ func (b *bench) optimizeSetup(specID string, opts setupOptions, stderr io.Writer
 	problem := func(c setupConfig) string {
 		mh, oh := gearWeapons(c.entry.gearRaw())
 		for _, x := range []struct {
-			dim          string
+			dim           string
 			value, preset proto.WeaponImbue
-			w            weaponInfo
-			offHand      bool
+			w             weaponInfo
+			offHand       bool
 		}{{"main_hand_imbue", c.consumes.MainHandImbue, base.consumes.MainHandImbue, mh, false}, {"off_hand_imbue", c.consumes.OffHandImbue, base.consumes.OffHandImbue, oh, true}} {
 			if why := imbueProblem(x.value, x.w, x.offHand); why != "" && x.value != x.preset {
 				mu.Lock()
