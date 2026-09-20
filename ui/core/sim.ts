@@ -719,8 +719,9 @@ export class Sim {
 			oneHandedWeapons: true,
 			twoHandedWeapons: true,
 			// Forever's database is the client's whole item pool rather than a curated Classic list, so the
-			// picker opens on uncommon and better. Everything is still there: Min Quality lists it again.
-			minQuality: import.meta.env.VITE_FOREVER ? ItemQuality.ItemQualityUncommon : ItemQuality.ItemQualityJunk,
+			// picker opens without the grey vendor trash. It stops there on purpose: at a level-capped beta a
+			// white weapon is a real choice, and Min Quality lists every item again.
+			minQuality: import.meta.env.VITE_FOREVER ? ItemQuality.ItemQualityCommon : ItemQuality.ItemQualityJunk,
 		});
 	}
 }
