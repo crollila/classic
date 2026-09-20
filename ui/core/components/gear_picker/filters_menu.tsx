@@ -1,5 +1,5 @@
 import { Player } from '../../player.js';
-import { ArmorType, ItemSlot } from '../../proto/common.js';
+import { ArmorType, ItemQuality, ItemSlot } from '../../proto/common.js';
 import { RaidFilterOption, SourceFilterOption, UIItem_FactionRestriction } from '../../proto/ui.js';
 import { armorTypeNames, raidNames, rangedWeaponTypeNames, sourceNames, weaponTypeNames } from '../../proto_utils/names.js';
 import { canDualWield, classToEligibleRangedWeaponTypes, classToEligibleWeaponTypes, classToMaxArmorType } from '../../proto_utils/utils.js';
@@ -50,6 +50,26 @@ export class FiltersMenu extends BaseModal {
 			setValue: (eventID: EventID, sim: Sim, newValue: number) => {
 				const newFilters = sim.getFilters();
 				newFilters.maxIlvl = newValue;
+				sim.setFilters(eventID, newFilters);
+			},
+		});
+
+		new EnumPicker(generalSection, player.sim, {
+			id: 'filters-min-quality',
+			label: 'Min Quality',
+			labelTooltip: 'Lowest item quality the picker lists. Poor lists every item in the database.',
+			values: [
+				{ name: 'Junk', value: ItemQuality.ItemQualityJunk },
+				{ name: 'Common', value: ItemQuality.ItemQualityCommon },
+				{ name: 'Uncommon', value: ItemQuality.ItemQualityUncommon },
+				{ name: 'Rare', value: ItemQuality.ItemQualityRare },
+				{ name: 'Epic', value: ItemQuality.ItemQualityEpic },
+			],
+			changedEvent: sim => sim.filtersChangeEmitter,
+			getValue: (sim: Sim) => sim.getFilters().minQuality,
+			setValue: (eventID: EventID, sim: Sim, newValue: number) => {
+				const newFilters = sim.getFilters();
+				newFilters.minQuality = newValue;
 				sim.setFilters(eventID, newFilters);
 			},
 		});

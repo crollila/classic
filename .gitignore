@@ -48,3 +48,6 @@ wowsimsod*.so
 wowsimsod*.dll
 wowsimsod*.h
 .vscode/launch.json
+
+# Local restore point for the Classic item database; the .json baseline beside it is committed.
+assets/db_inputs/db.classic-backup.bin

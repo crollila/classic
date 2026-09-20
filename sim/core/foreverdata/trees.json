@@ -5057,7 +5057,7 @@
       "name": "Focused Rage",
       "max_rank": 3,
       "row": 6,
-      "column": 1,
+      "column": 3,
       "required_points": 25,
       "prerequisites": [],
       "source_url": "https://forevertalents.up.railway.app/",
@@ -5136,9 +5136,9 @@
       "tree": "Protection",
       "name": "Bastion",
       "max_rank": 5,
-      "row": 6,
-      "column": 3,
-      "required_points": 25,
+      "row": 5,
+      "column": 4,
+      "required_points": 20,
       "prerequisites": [],
       "source_url": "https://forevertalents.up.railway.app/",
       "classification": {
@@ -26412,9 +26412,9 @@
       "tree": "Restoration",
       "name": "Tidal Mastery",
       "max_rank": 5,
-      "row": 1,
-      "column": 3,
-      "required_points": 0,
+      "row": 4,
+      "column": 1,
+      "required_points": 15,
       "prerequisites": [],
       "source_url": "https://forevertalents.up.railway.app/",
       "classification": {
@@ -27156,9 +27156,9 @@
       "tree": "Restoration",
       "name": "Totemic Focus",
       "max_rank": 5,
-      "row": 4,
-      "column": 1,
-      "required_points": 15,
+      "row": 1,
+      "column": 3,
+      "required_points": 0,
       "prerequisites": [],
       "source_url": "https://forevertalents.up.railway.app/",
       "classification": {
@@ -47173,5 +47173,15 @@
       "min": 0,
       "max": 3600
     }
-  ]
+  ],
+  "layout_source": {
+    "from_build": "1.60.1.69913",
+    "agreed_by": [
+      "client trait-tree coordinates",
+      "foreverchanges.pro calculator"
+    ],
+    "moved": 4,
+    "disputed": 44,
+    "at": "2026-09-20T20:57:33.783083+00:00"
+  }
 }

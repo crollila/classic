@@ -18,6 +18,7 @@ import {
 } from './proto/api.js';
 import {
 	ArmorType,
+	ItemQuality,
 	Faction,
 	PseudoStat,
 	RangedWeaponType,
@@ -717,6 +718,9 @@ export class Sim {
 		return DatabaseFilters.create({
 			oneHandedWeapons: true,
 			twoHandedWeapons: true,
+			// Forever's database is the client's whole item pool rather than a curated Classic list, so the
+			// picker opens on uncommon and better. Everything is still there: Min Quality lists it again.
+			minQuality: import.meta.env.VITE_FOREVER ? ItemQuality.ItemQualityUncommon : ItemQuality.ItemQualityJunk,
 		});
 	}
 }

@@ -29,7 +29,7 @@ export async function mountForever(simUI: SimUI, spec: Spec | null) {
       const panel = root.querySelector<HTMLElement>(`#${id}`);
       if (!panel || panel.querySelector('.forever-option-note')) continue;
       const note = el('p', 'forever-option-note');
-      const notes:Record<string,string>={'gear-tab':'Classic equipment remains the planning catalogue until specific Forever item stats or set bonuses are available.','talents-tab':'These are Forever trees. Each rank shows its evidence and confidence; STRICT suppresses predictions.','settings-tab':'Forever racial and profession options are available in Talents. Existing encounter and consumable rules provide the Classic fallback.','rotation-tab':'New Forever offensive actions are added when enabled in Talents. The APL editor exposes registered abilities for custom rotations.'};
+      const notes:Record<string,string>={'gear-tab':'This catalogue is Forever: items are the Forever client’s, plus the ones the client only receives in game. Combat ratings have no confirmed conversion yet, so they are listed rather than applied.','talents-tab':'These are Forever trees. Each rank shows its evidence and confidence; STRICT suppresses predictions.','settings-tab':'Forever racial and profession options are available in Talents. Existing encounter and consumable rules provide the Classic fallback.','rotation-tab':'New Forever offensive actions are added when enabled in Talents. The APL editor exposes registered abilities for custom rotations.'};
       note.append(document.createTextNode(`${notes[id]} `));
       const link = el('a', '', 'Review Forever mechanics confidence'); link.href = '#forever-mechanics';
       link.addEventListener('click', () => { status.querySelector('details')!.open = true; });

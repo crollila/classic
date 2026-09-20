@@ -22,6 +22,7 @@ import {
 	HandType,
 	HealingModel,
 	IndividualBuffs,
+	ItemQuality,
 	ItemRandomSuffix,
 	ItemSlot,
 	Profession,
@@ -1219,6 +1220,11 @@ export class Player<SpecType extends Spec> {
 		}
 		if (filters.maxIlvl !== 0) {
 			itemData = filterItems(itemData, item => item.ilvl <= filters.maxIlvl);
+		}
+		// Forever's item pool is the whole client, so the picker lists uncommon and better by default.
+		// Nothing is removed from the database: lowering this shows the rest again.
+		if (filters.minQuality !== ItemQuality.ItemQualityJunk) {
+			itemData = filterItems(itemData, item => item.quality >= filters.minQuality);
 		}
 
 		if (filters.factionRestriction !== UIItem_FactionRestriction.UNSPECIFIED) {

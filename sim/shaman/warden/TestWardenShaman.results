@@ -99,29 +99,29 @@ stat_weights_results: {
 dps_results: {
  key: "TestWardenShaman-Phase1-AllItems-Champion'sEarthshaker"
  value: {
-  dps: 219.45394
-  tps: 227.42441
+  dps: 214.07041
+  tps: 221.97647
  }
 }
 dps_results: {
  key: "TestWardenShaman-Phase1-AllItems-Champion'sStormcaller"
  value: {
-  dps: 223.08659
-  tps: 230.96888
+  dps: 216.9673
+  tps: 225.34186
  }
 }
 dps_results: {
  key: "TestWardenShaman-Phase1-AllItems-GiftoftheGatheringStorm"
  value: {
-  dps: 373.09344
-  tps: 489.01204
+  dps: 386.62219
+  tps: 504.48125
  }
 }
 dps_results: {
  key: "TestWardenShaman-Phase1-AllItems-Stormcaller'sGarb"
  value: {
-  dps: 234.58091
-  tps: 239.4746
+  dps: 231.31466
+  tps: 236.7031
  }
 }
 dps_results: {
@@ -129,20 +129,6 @@ dps_results: {
  value: {
   dps: 198.79059
   tps: 208.0236
- }
-}
-dps_results: {
- key: "TestWardenShaman-Phase1-AllItems-TheEarthshatterer"
- value: {
-  dps: 192.02875
-  tps: 204.33975
- }
-}
-dps_results: {
- key: "TestWardenShaman-Phase1-AllItems-TheFiveThunders"
- value: {
-  dps: 221.73693
-  tps: 228.32304
  }
 }
 dps_results: {
@@ -155,8 +141,8 @@ dps_results: {
 dps_results: {
  key: "TestWardenShaman-Phase1-AllItems-Warlord'sEarthshaker"
  value: {
-  dps: 236.16872
-  tps: 243.44868
+  dps: 224.42496
+  tps: 231.76312
  }
 }
 dps_results: {

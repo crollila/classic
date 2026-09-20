@@ -99,8 +99,8 @@ stat_weights_results: {
 dps_results: {
  key: "TestRetribution-Phase5-AllItems-Avenger'sBattlegear"
  value: {
-  dps: 416.8195
-  tps: 442.43533
+  dps: 406.27809
+  tps: 431.89392
  }
 }
 dps_results: {
@@ -113,15 +113,15 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase5-AllItems-FieldMarshal'sAegis"
  value: {
-  dps: 410.34555
-  tps: 436.35963
+  dps: 397.03075
+  tps: 423.04483
  }
 }
 dps_results: {
  key: "TestRetribution-Phase5-AllItems-Freethinker'sArmor"
  value: {
-  dps: 333.52015
-  tps: 358.6099
+  dps: 330.66794
+  tps: 355.75769
  }
 }
 dps_results: {
@@ -141,15 +141,8 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase5-AllItems-LieutenantCommander'sRedoubt"
  value: {
-  dps: 378.85138
-  tps: 403.91163
- }
-}
-dps_results: {
- key: "TestRetribution-Phase5-AllItems-RedemptionArmor"
- value: {
-  dps: 329.49158
-  tps: 356.13255
+  dps: 375.76785
+  tps: 400.8281
  }
 }
 dps_results: {
