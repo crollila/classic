@@ -40,11 +40,8 @@ func (mage *Mage) newPyroblastSpellConfig(rank int) core.SpellConfig {
 	baseDamageLow := PyroblastBaseDamage[rank][0]
 	baseDamageHigh := PyroblastBaseDamage[rank][1]
 	baseDotDamage := PyroblastDotDamage[rank] / float64(numTicks)
-	if mage.Forever != nil && rank == 1 {
-		baseDamageLow = 155
-		baseDamageHigh = 185
-		baseDotDamage = 76 / float64(numTicks)
-	}
+	// Forever needs no rank 1 special case: the client override for 11366 scales this
+	// Classic rank to the client's 101-131 + 44 at registration.
 	manaCost := PyroblastManaCost[rank]
 	level := PyroblastLevel[rank]
 

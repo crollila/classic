@@ -388,6 +388,9 @@ func (rogue *Rogue) registerBladeFlurryCD() {
 			}
 
 			// Since this is our last BF, wait until we have SND / procs up.
+			if rogue.SliceAndDiceAura == nil {
+				return true
+			}
 			sndTimeRemaining := rogue.SliceAndDiceAura.RemainingDuration(sim)
 			return sndTimeRemaining >= time.Second
 		},
@@ -443,6 +446,19 @@ func (rogue *Rogue) registerAdrenalineRushCD() {
 	})
 }
 
+// lethality is the crit damage bonus of Lethality: Classic 6% a rank, Forever 4% a rank
+// ("by 4%" ... "by 20%" in the client).
 func (rogue *Rogue) lethality() float64 {
+	if rogue.Forever != nil {
+		return 0.04 * float64(rogue.ForeverRank("rogue.talent.lethality"))
+	}
 	return 0.06 * float64(rogue.Talents.Lethality)
+}
+
+// flawlessExecutionRank is Flawless Execution (Combat row 4, column 2: "Reduces the Energy
+// cost of your Eviscerate ability by 10."). The ruleset still stores that slot as the
+// non-client "rogue.talent.restless-blades" record, so a point there is read as Flawless
+// Execution until the record is renamed.
+func (rogue *Rogue) flawlessExecutionRank() int32 {
+	return min(1, rogue.ForeverRank("rogue.talent.flawless-execution")+rogue.ForeverRank("rogue.talent.restless-blades"))
 }

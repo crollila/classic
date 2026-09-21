@@ -1,0 +1,814 @@
+{
+"warrior": [
+{
+"label": "#1 Fury 17/34/0 — popular on talentsforever.com",
+"talents": {
+"warrior.talent.cruelty": 5,
+"warrior.talent.unbridled-wrath": 5,
+"warrior.talent.improved-cleave": 3,
+"warrior.talent.boundless-rage": 3,
+"warrior.talent.dual-wield-specialization": 5,
+"warrior.talent.raging-blows": 1,
+"warrior.talent.enrage": 5,
+"warrior.talent.death-wish": 1,
+"warrior.talent.flurry": 5,
+"warrior.talent.bloodthirst": 1,
+"warrior.talent.improved-heroic-strike": 3,
+"warrior.talent.improved-rend": 3,
+"warrior.talent.improved-tactical-mastery": 5,
+"warrior.talent.anger-management": 1,
+"warrior.talent.deep-wounds": 3,
+"warrior.talent.impale": 2
+}
+},
+{
+"label": "#2 Arms 37/14/0 — popular on talentsforever.com",
+"talents": {
+"warrior.talent.improved-heroic-strike": 3,
+"warrior.talent.improved-rend": 3,
+"warrior.talent.improved-tactical-mastery": 5,
+"warrior.talent.improved-overpower": 2,
+"warrior.talent.anger-management": 1,
+"warrior.talent.deep-wounds": 3,
+"warrior.talent.spearing-strike": 1,
+"warrior.talent.two-handed-weapon-specialization": 3,
+"warrior.talent.impale": 2,
+"warrior.talent.bloodthrill": 5,
+"warrior.talent.sweeping-strikes": 1,
+"warrior.talent.weaponmaster": 5,
+"warrior.talent.improved-slam": 2,
+"warrior.talent.mortal-strike": 1,
+"warrior.talent.cruelty": 5,
+"warrior.talent.unbridled-wrath": 5,
+"warrior.talent.piercing-howl": 1,
+"warrior.talent.boundless-rage": 3
+}
+},
+{
+"label": "#3 Fury 15/36/0 — popular on talentsforever.com",
+"talents": {
+"warrior.talent.cruelty": 5,
+"warrior.talent.unbridled-wrath": 5,
+"warrior.talent.improved-cleave": 2,
+"warrior.talent.boundless-rage": 3,
+"warrior.talent.dual-wield-specialization": 5,
+"warrior.talent.raging-blows": 1,
+"warrior.talent.enrage": 5,
+"warrior.talent.precision": 3,
+"warrior.talent.death-wish": 1,
+"warrior.talent.flurry": 5,
+"warrior.talent.bloodthirst": 1,
+"warrior.talent.improved-heroic-strike": 3,
+"warrior.talent.improved-rend": 3,
+"warrior.talent.improved-tactical-mastery": 5,
+"warrior.talent.anger-management": 1,
+"warrior.talent.deep-wounds": 3
+}
+},
+{
+"label": "#4 Arms 36/15/0 — popular on talentsforever.com",
+"talents": {
+"warrior.talent.improved-heroic-strike": 3,
+"warrior.talent.improved-rend": 3,
+"warrior.talent.improved-tactical-mastery": 5,
+"warrior.talent.improved-overpower": 2,
+"warrior.talent.anger-management": 1,
+"warrior.talent.deep-wounds": 3,
+"warrior.talent.two-handed-weapon-specialization": 3,
+"warrior.talent.impale": 2,
+"warrior.talent.bloodthrill": 5,
+"warrior.talent.sweeping-strikes": 1,
+"warrior.talent.weaponmaster": 5,
+"warrior.talent.improved-slam": 2,
+"warrior.talent.mortal-strike": 1,
+"warrior.talent.cruelty": 5,
+"warrior.talent.unbridled-wrath": 5,
+"warrior.talent.improved-cleave": 3,
+"warrior.talent.boundless-rage": 2
+}
+}
+],
+"retribution_paladin": [
+{
+"label": "#1 Retribution 10/8/33 — popular on talentsforever.com",
+"talents": {
+"paladin.talent.benediction": 5,
+"paladin.talent.improved-judgement": 2,
+"paladin.talent.conviction": 5,
+"paladin.talent.vindication": 2,
+"paladin.talent.sanctified-judgement": 3,
+"paladin.talent.seal-of-command": 1,
+"paladin.talent.sacred-arbiter": 1,
+"paladin.talent.crusade": 2,
+"paladin.talent.two-handed-weapon-specialization": 3,
+"paladin.talent.vengeance": 3,
+"paladin.talent.champion-of-the-light": 3,
+"paladin.talent.instrument-of-law": 2,
+"paladin.talent.twist-of-light": 1,
+"paladin.talent.improved-holy-strike": 2,
+"paladin.talent.divine-strength": 5,
+"paladin.talent.toughness": 5,
+"paladin.talent.precision": 3,
+"paladin.talent.improved-seals": 3
+}
+},
+{
+"label": "#2 Retribution 21/0/30 — popular on talentsforever.com",
+"talents": {
+"paladin.talent.benediction": 5,
+"paladin.talent.improved-judgement": 2,
+"paladin.talent.conviction": 4,
+"paladin.talent.vindication": 3,
+"paladin.talent.sanctified-judgement": 3,
+"paladin.talent.pursuit-of-justice": 2,
+"paladin.talent.sacred-arbiter": 1,
+"paladin.talent.two-handed-weapon-specialization": 3,
+"paladin.talent.vengeance": 3,
+"paladin.talent.repentance": 1,
+"paladin.talent.champion-of-the-light": 3,
+"paladin.talent.improved-holy-strike": 2,
+"paladin.talent.divine-strength": 5,
+"paladin.talent.divine-intellect": 5,
+"paladin.talent.healing-light": 3,
+"paladin.talent.improved-seals": 3,
+"paladin.talent.unyielding-faith": 2,
+"paladin.talent.holy-shock": 1
+}
+},
+{
+"label": "#3 Retribution 15/0/36 — popular on talentsforever.com",
+"talents": {
+"paladin.talent.benediction": 5,
+"paladin.talent.improved-judgement": 2,
+"paladin.talent.holy-conduit": 2,
+"paladin.talent.conviction": 5,
+"paladin.talent.vindication": 3,
+"paladin.talent.sanctified-judgement": 3,
+"paladin.talent.seal-of-command": 1,
+"paladin.talent.sacred-arbiter": 1,
+"paladin.talent.crusade": 2,
+"paladin.talent.two-handed-weapon-specialization": 3,
+"paladin.talent.vengeance": 3,
+"paladin.talent.champion-of-the-light": 3,
+"paladin.talent.instrument-of-law": 2,
+"paladin.talent.twist-of-light": 1,
+"paladin.talent.improved-holy-strike": 2,
+"paladin.talent.divine-strength": 5,
+"paladin.talent.divine-intellect": 5,
+"paladin.talent.improved-seals": 3
+}
+}
+],
+"hunter": [
+{
+"label": "#1 Survival 5/11/35 — popular on talentsforever.com",
+"talents": {
+"hunter.talent.improved-tracking": 5,
+"hunter.talent.savage-strikes": 2,
+"hunter.talent.survivalist": 3,
+"hunter.talent.clever-traps": 2,
+"hunter.talent.surefooted": 3,
+"hunter.talent.survival-tactics": 2,
+"hunter.talent.predator-s-edge": 5,
+"hunter.talent.resourcefulness": 2,
+"hunter.talent.expose-prey": 2,
+"hunter.talent.survivalist-s-discipline": 2,
+"hunter.talent.strider-kick": 1,
+"hunter.talent.lightning-reflexes": 5,
+"hunter.talent.lacerating-strikes": 1,
+"hunter.talent.deadly-aspects": 5,
+"hunter.talent.lethal-attacks": 5,
+"hunter.talent.careful-aim": 5,
+"hunter.talent.lone-wolf": 1
+}
+},
+{
+"label": "#2 Marksmanship 5/41/5 — popular on talentsforever.com",
+"talents": {
+"hunter.talent.hawk-eye": 3,
+"hunter.talent.lethal-attacks": 5,
+"hunter.talent.improved-stings": 3,
+"hunter.talent.efficiency": 5,
+"hunter.talent.careful-aim": 5,
+"hunter.talent.rapid-killing": 2,
+"hunter.talent.lone-wolf": 1,
+"hunter.talent.trueshot-aura": 1,
+"hunter.talent.mortal-shots": 5,
+"hunter.talent.rapid-recuperation": 2,
+"hunter.talent.barrage": 3,
+"hunter.talent.ranged-weapon-specialization": 5,
+"hunter.talent.sniper-shot": 1,
+"hunter.talent.deadly-aspects": 5,
+"hunter.talent.improved-tracking": 5
+}
+},
+{
+"label": "#3 Survival 5/11/35 — popular on talentsforever.com",
+"talents": {
+"hunter.talent.improved-tracking": 5,
+"hunter.talent.entrapment": 3,
+"hunter.talent.savage-strikes": 2,
+"hunter.talent.clever-traps": 2,
+"hunter.talent.surefooted": 3,
+"hunter.talent.survival-tactics": 2,
+"hunter.talent.predator-s-edge": 5,
+"hunter.talent.resourcefulness": 2,
+"hunter.talent.expose-prey": 2,
+"hunter.talent.survivalist-s-discipline": 2,
+"hunter.talent.strider-kick": 1,
+"hunter.talent.lightning-reflexes": 5,
+"hunter.talent.lacerating-strikes": 1,
+"hunter.talent.deadly-aspects": 5,
+"hunter.talent.lethal-attacks": 5,
+"hunter.talent.careful-aim": 5,
+"hunter.talent.lone-wolf": 1
+}
+},
+{
+"label": "#4 Survival 5/15/31 — popular on talentsforever.com",
+"talents": {
+"hunter.talent.improved-tracking": 5,
+"hunter.talent.savage-strikes": 2,
+"hunter.talent.survivalist": 3,
+"hunter.talent.clever-traps": 2,
+"hunter.talent.surefooted": 3,
+"hunter.talent.predator-s-edge": 5,
+"hunter.talent.resourcefulness": 2,
+"hunter.talent.expose-prey": 2,
+"hunter.talent.strider-kick": 1,
+"hunter.talent.lightning-reflexes": 5,
+"hunter.talent.lacerating-strikes": 1,
+"hunter.talent.deadly-aspects": 5,
+"hunter.talent.lethal-attacks": 5,
+"hunter.talent.efficiency": 4,
+"hunter.talent.careful-aim": 5,
+"hunter.talent.lone-wolf": 1
+}
+},
+{
+"label": "#11 Beast Mastery 31/20/0 — popular on talentsforever.com",
+"talents": {
+"hunter.talent.deadly-aspects": 5,
+"hunter.talent.endurance-training": 1,
+"hunter.talent.focused-fire": 2,
+"hunter.talent.improved-revive-pet": 2,
+"hunter.talent.bestial-swiftness": 1,
+"hunter.talent.unleashed-fury": 5,
+"hunter.talent.ferocity": 5,
+"hunter.talent.summon-hawk": 1,
+"hunter.talent.intimidation": 1,
+"hunter.talent.bestial-discipline": 2,
+"hunter.talent.frenzy": 5,
+"hunter.talent.bestial-wrath": 1,
+"hunter.talent.lethal-attacks": 5,
+"hunter.talent.efficiency": 3,
+"hunter.talent.careful-aim": 5,
+"hunter.talent.rapid-killing": 2,
+"hunter.talent.mortal-shots": 5
+}
+}
+],
+"rogue": [
+{
+"label": "#1 Combat 18/32/0 — popular on talentsforever.com",
+"talents": {
+"rogue.talent.improved-eviscerate": 3,
+"rogue.talent.improved-sinister-strike": 2,
+"rogue.talent.lightning-reflexes": 3,
+"rogue.talent.precision": 3,
+"rogue.talent.endurance": 2,
+"rogue.talent.improved-sprint": 2,
+"rogue.talent.dual-wield-specialization": 5,
+"rogue.talent.blade-flurry": 1,
+"rogue.talent.hack-and-slash": 5,
+"rogue.talent.weapon-expertise": 2,
+"rogue.talent.aggression": 3,
+"rogue.talent.adrenaline-rush": 1,
+"rogue.talent.malice": 5,
+"rogue.talent.ruthlessness": 3,
+"rogue.talent.improved-slice-and-dice": 3,
+"rogue.talent.relentless-strikes": 1,
+"rogue.talent.lethality": 5,
+"rogue.talent.cold-blood": 1
+}
+},
+{
+"label": "#2 Subtlety 16/12/23 — popular on talentsforever.com",
+"talents": {
+"rogue.talent.camouflage": 3,
+"rogue.talent.master-of-deception": 3,
+"rogue.talent.opportunity": 2,
+"rogue.talent.dirty-tricks": 2,
+"rogue.talent.improved-ambush": 3,
+"rogue.talent.initiative": 2,
+"rogue.talent.heightened-senses": 2,
+"rogue.talent.premeditation": 1,
+"rogue.talent.serrated-blades": 2,
+"rogue.talent.dirty-deeds": 2,
+"rogue.talent.preparation": 1,
+"rogue.talent.improved-gouge": 3,
+"rogue.talent.improved-eviscerate": 3,
+"rogue.talent.improved-sinister-strike": 2,
+"rogue.talent.malice": 5,
+"rogue.talent.puncturing-wounds": 3,
+"rogue.talent.murder": 2,
+"rogue.talent.precision": 2,
+"rogue.talent.relentless-strikes": 1,
+"rogue.talent.lethality": 4,
+"rogue.talent.improved-sprint": 2,
+"rogue.talent.cold-blood": 1
+}
+},
+{
+"label": "#3 Combat 18/32/0 — popular on talentsforever.com",
+"talents": {
+"rogue.talent.improved-eviscerate": 3,
+"rogue.talent.improved-sinister-strike": 2,
+"rogue.talent.puncturing-wounds": 3,
+"rogue.talent.precision": 3,
+"rogue.talent.endurance": 2,
+"rogue.talent.improved-sprint": 2,
+"rogue.talent.dual-wield-specialization": 5,
+"rogue.talent.blade-flurry": 1,
+"rogue.talent.hack-and-slash": 5,
+"rogue.talent.weapon-expertise": 2,
+"rogue.talent.aggression": 3,
+"rogue.talent.adrenaline-rush": 1,
+"rogue.talent.malice": 5,
+"rogue.talent.ruthlessness": 3,
+"rogue.talent.improved-slice-and-dice": 3,
+"rogue.talent.relentless-strikes": 1,
+"rogue.talent.lethality": 5,
+"rogue.talent.cold-blood": 1
+}
+},
+{
+"label": "#4 Assassination 38/11/2 — popular on talentsforever.com",
+"talents": {
+"rogue.talent.malice": 5,
+"rogue.talent.ruthlessness": 3,
+"rogue.talent.murder": 1,
+"rogue.talent.improved-slice-and-dice": 3,
+"rogue.talent.relentless-strikes": 1,
+"rogue.talent.lethality": 5,
+"rogue.talent.vile-poisons": 5,
+"rogue.talent.cold-blood": 1,
+"rogue.talent.improved-poisons": 5,
+"rogue.talent.vigor": 2,
+"rogue.talent.mutilate": 1,
+"rogue.talent.seal-fate": 5,
+"rogue.talent.venom": 1,
+"rogue.talent.improved-eviscerate": 3,
+"rogue.talent.lightning-reflexes": 2,
+"rogue.talent.opportunity": 2,
+"rogue.talent.puncturing-wounds": 3,
+"rogue.talent.precision": 3
+}
+},
+{
+"label": "#5 Combat 18/32/0 — popular on talentsforever.com",
+"talents": {
+"rogue.talent.improved-eviscerate": 3,
+"rogue.talent.improved-sinister-strike": 2,
+"rogue.talent.deflection": 3,
+"rogue.talent.precision": 3,
+"rogue.talent.endurance": 2,
+"rogue.talent.improved-sprint": 2,
+"rogue.talent.dual-wield-specialization": 5,
+"rogue.talent.blade-flurry": 1,
+"rogue.talent.hack-and-slash": 5,
+"rogue.talent.weapon-expertise": 2,
+"rogue.talent.aggression": 3,
+"rogue.talent.adrenaline-rush": 1,
+"rogue.talent.malice": 5,
+"rogue.talent.ruthlessness": 3,
+"rogue.talent.improved-slice-and-dice": 3,
+"rogue.talent.relentless-strikes": 1,
+"rogue.talent.lethality": 5,
+"rogue.talent.cold-blood": 1
+}
+}
+],
+"shadow_priest": [
+{
+"label": "#2 Shadow 14/3/34 — popular on talentsforever.com",
+"talents": {
+"priest.talent.twilight-focus": 3,
+"priest.talent.shadow-focus": 5,
+"priest.talent.wand-specialization": 2,
+"priest.talent.twin-disciplines": 5,
+"priest.talent.shadow-affinity": 3,
+"priest.talent.improved-power-word-shield": 3,
+"priest.talent.improved-shadow-word-pain": 2,
+"priest.talent.shadow-reach": 2,
+"priest.talent.improved-mind-blast": 5,
+"priest.talent.inner-focus": 1,
+"priest.talent.mind-flay": 1,
+"priest.talent.meditation": 3,
+"priest.talent.improved-mind-flay": 2,
+"priest.talent.vampiric-embrace": 1,
+"priest.talent.shadow-weaving": 3,
+"priest.talent.devouring-contagion": 2,
+"priest.talent.early-demise": 2,
+"priest.talent.darkness": 5,
+"priest.talent.shadowform": 1
+}
+}
+],
+"enhancement_shaman": [
+{
+"label": "#1 Enhancement 19/32/0 — popular on talentsforever.com",
+"talents": {
+"shaman.talent.thundering-strikes": 5,
+"shaman.talent.ancestral-knowledge": 1,
+"shaman.talent.mental-dexterity": 3,
+"shaman.talent.improved-ghost-wolf": 2,
+"shaman.talent.elemental-weapons": 3,
+"shaman.talent.shamanistic-focus": 1,
+"shaman.talent.flurry": 5,
+"shaman.talent.stormstrike": 1,
+"shaman.talent.spirit-weapons": 1,
+"shaman.talent.mental-quickness": 2,
+"shaman.talent.improved-stormstrike": 2,
+"shaman.talent.maelstrom-weapon": 5,
+"shaman.talent.rage-of-the-farseer": 1,
+"shaman.talent.concussion": 5,
+"shaman.talent.call-of-flame": 3,
+"shaman.talent.elemental-devastation": 3,
+"shaman.talent.elemental-fury": 5,
+"shaman.talent.improved-fire-nova": 2,
+"shaman.talent.call-of-thunder": 1
+}
+},
+{
+"label": "#2 Enhancement 17/34/0 — popular on talentsforever.com",
+"talents": {
+"shaman.talent.thundering-strikes": 5,
+"shaman.talent.ancestral-knowledge": 5,
+"shaman.talent.mental-dexterity": 3,
+"shaman.talent.elemental-weapons": 3,
+"shaman.talent.shamanistic-focus": 1,
+"shaman.talent.flurry": 5,
+"shaman.talent.stormstrike": 1,
+"shaman.talent.spirit-weapons": 1,
+"shaman.talent.mental-quickness": 2,
+"shaman.talent.improved-stormstrike": 2,
+"shaman.talent.maelstrom-weapon": 5,
+"shaman.talent.rage-of-the-farseer": 1,
+"shaman.talent.concussion": 5,
+"shaman.talent.call-of-flame": 3,
+"shaman.talent.elemental-devastation": 3,
+"shaman.talent.elemental-fury": 5,
+"shaman.talent.call-of-thunder": 1
+}
+},
+{
+"label": "#4 Enhancement 20/31/0 — popular on talentsforever.com",
+"talents": {
+"shaman.talent.thundering-strikes": 5,
+"shaman.talent.ancestral-knowledge": 3,
+"shaman.talent.mental-dexterity": 3,
+"shaman.talent.elemental-weapons": 3,
+"shaman.talent.shamanistic-focus": 1,
+"shaman.talent.flurry": 5,
+"shaman.talent.stormstrike": 1,
+"shaman.talent.mental-quickness": 2,
+"shaman.talent.improved-stormstrike": 2,
+"shaman.talent.maelstrom-weapon": 5,
+"shaman.talent.rage-of-the-farseer": 1,
+"shaman.talent.concussion": 5,
+"shaman.talent.call-of-flame": 3,
+"shaman.talent.elemental-devastation": 3,
+"shaman.talent.elemental-focus": 1,
+"shaman.talent.elemental-fury": 5,
+"shaman.talent.improved-fire-nova": 2,
+"shaman.talent.call-of-thunder": 1
+}
+}
+],
+"elemental_shaman": [
+{
+"label": "#5 Elemental 38/13/0 — popular on talentsforever.com",
+"talents": {
+"shaman.talent.convection": 5,
+"shaman.talent.thundering-strikes": 5,
+"shaman.talent.concussion": 5,
+"shaman.talent.ancestral-knowledge": 5,
+"shaman.talent.reverberation": 5,
+"shaman.talent.call-of-flame": 3,
+"shaman.talent.improved-ghost-wolf": 2,
+"shaman.talent.elemental-focus": 1,
+"shaman.talent.elemental-fury": 5,
+"shaman.talent.shamanistic-focus": 1,
+"shaman.talent.eye-of-the-storm": 3,
+"shaman.talent.call-of-thunder": 1,
+"shaman.talent.elemental-reach": 2,
+"shaman.talent.lightning-overload": 3,
+"shaman.talent.earthbound": 1,
+"shaman.talent.elemental-alacrity": 3,
+"shaman.talent.lava-burst": 1
+}
+}
+],
+"mage": [
+{
+"label": "#1 Fire 0/29/22 — popular on talentsforever.com",
+"talents": {
+"mage.talent.improved-fireball": 5,
+"mage.talent.ignite": 5,
+"mage.talent.flame-throwing": 1,
+"mage.talent.burning-soul": 3,
+"mage.talent.pyroblast": 1,
+"mage.talent.improved-scorch": 3,
+"mage.talent.hot-streak": 1,
+"mage.talent.master-of-elements": 3,
+"mage.talent.critical-mass": 3,
+"mage.talent.fire-power": 4,
+"mage.talent.elemental-precision": 5,
+"mage.talent.ice-shards": 5,
+"mage.talent.piercing-ice": 3,
+"mage.talent.frost-channeling": 3,
+"mage.talent.ice-lance": 1,
+"mage.talent.shatter": 3,
+"mage.talent.fingers-of-frost": 2
+}
+},
+{
+"label": "#2 Arcane 47/4/0 — popular on talentsforever.com",
+"talents": {
+"mage.talent.wand-specialization": 2,
+"mage.talent.arcane-focus": 5,
+"mage.talent.improved-channeling": 5,
+"mage.talent.arcane-subtlety": 2,
+"mage.talent.magic-absorption": 2,
+"mage.talent.arcane-concentration": 5,
+"mage.talent.arcane-resilience": 2,
+"mage.talent.arcane-geometry": 2,
+"mage.talent.arcane-impact": 3,
+"mage.talent.arcane-blast": 1,
+"mage.talent.arcane-shielding": 2,
+"mage.talent.improved-counterspell": 2,
+"mage.talent.arcane-meditation": 3,
+"mage.talent.missile-barrage": 1,
+"mage.talent.presence-of-mind": 1,
+"mage.talent.arcane-mind": 5,
+"mage.talent.arcane-instability": 3,
+"mage.talent.arcane-power": 1,
+"mage.talent.wake-of-fire": 1,
+"mage.talent.incineration": 3
+}
+},
+{
+"label": "#3 Fire 10/39/2 — popular on talentsforever.com",
+"talents": {
+"mage.talent.wake-of-fire": 2,
+"mage.talent.incineration": 3,
+"mage.talent.improved-fireball": 5,
+"mage.talent.ignite": 5,
+"mage.talent.flame-throwing": 2,
+"mage.talent.impact": 3,
+"mage.talent.burning-soul": 3,
+"mage.talent.pyroblast": 1,
+"mage.talent.improved-scorch": 3,
+"mage.talent.hot-streak": 1,
+"mage.talent.master-of-elements": 1,
+"mage.talent.critical-mass": 3,
+"mage.talent.blast-wave": 1,
+"mage.talent.fire-power": 5,
+"mage.talent.combustion": 1,
+"mage.talent.arcane-focus": 5,
+"mage.talent.elemental-precision": 2,
+"mage.talent.arcane-concentration": 5
+}
+},
+{
+"label": "#4 Fire 10/36/5 — popular on talentsforever.com",
+"talents": {
+"mage.talent.incineration": 3,
+"mage.talent.improved-fireball": 5,
+"mage.talent.ignite": 5,
+"mage.talent.flame-throwing": 2,
+"mage.talent.burning-soul": 3,
+"mage.talent.pyroblast": 1,
+"mage.talent.improved-scorch": 3,
+"mage.talent.hot-streak": 1,
+"mage.talent.master-of-elements": 3,
+"mage.talent.critical-mass": 3,
+"mage.talent.blast-wave": 1,
+"mage.talent.fire-power": 5,
+"mage.talent.combustion": 1,
+"mage.talent.arcane-focus": 5,
+"mage.talent.elemental-precision": 5,
+"mage.talent.arcane-concentration": 5
+}
+},
+{
+"label": "#7 Frost 0/0/51 — popular on talentsforever.com",
+"talents": {
+"mage.talent.improved-frostbolt": 5,
+"mage.talent.elemental-precision": 5,
+"mage.talent.ice-shards": 5,
+"mage.talent.permafrost": 3,
+"mage.talent.improved-frost-nova": 2,
+"mage.talent.frostbite": 3,
+"mage.talent.piercing-ice": 3,
+"mage.talent.frost-channeling": 3,
+"mage.talent.ice-lance": 1,
+"mage.talent.improved-blizzard": 3,
+"mage.talent.arctic-reach": 2,
+"mage.talent.ice-block": 1,
+"mage.talent.shatter": 3,
+"mage.talent.improved-cone-of-cold": 3,
+"mage.talent.cold-snap": 1,
+"mage.talent.fingers-of-frost": 2,
+"mage.talent.winter-s-chill": 5,
+"mage.talent.ice-barrier": 1
+}
+}
+],
+"warlock": [
+{
+"label": "#1 Affliction 39/11/0 — popular on talentsforever.com",
+"talents": {
+"warlock.talent.suppression": 5,
+"warlock.talent.improved-corruption": 5,
+"warlock.talent.malediction": 5,
+"warlock.talent.improved-drains": 3,
+"warlock.talent.improved-bane-of-agony": 2,
+"warlock.talent.pandemic": 3,
+"warlock.talent.malevolence": 5,
+"warlock.talent.nightfall": 2,
+"warlock.talent.siphon-life": 1,
+"warlock.talent.soul-siphon": 3,
+"warlock.talent.shadow-mastery": 5,
+"warlock.talent.demonic-embrace": 5,
+"warlock.talent.demonic-aegis": 2,
+"warlock.talent.fel-vitality": 3,
+"warlock.talent.demonic-sacrifice": 1
+}
+},
+{
+"label": "#2 Destruction 0/17/34 — popular on talentsforever.com",
+"talents": {
+"warlock.talent.destructive-reach": 2,
+"warlock.talent.bane": 5,
+"warlock.talent.aftermath": 5,
+"warlock.talent.ruin": 5,
+"warlock.talent.shadowburn": 1,
+"warlock.talent.intensity": 3,
+"warlock.talent.agonizing-flames": 3,
+"warlock.talent.conflagrate": 1,
+"warlock.talent.bane-of-havoc": 1,
+"warlock.talent.fire-and-brimstone": 2,
+"warlock.talent.shadow-and-flame": 5,
+"warlock.talent.incinerate": 1,
+"warlock.talent.improved-imp": 3,
+"warlock.talent.demonic-embrace": 3,
+"warlock.talent.demonic-aegis": 2,
+"warlock.talent.fel-vitality": 3,
+"warlock.talent.demonic-energies": 1,
+"warlock.talent.demonic-sacrifice": 1,
+"warlock.talent.master-summoner": 2,
+"warlock.talent.decimation": 2
+}
+},
+{
+"label": "#3 Destruction 5/11/35 — popular on talentsforever.com",
+"talents": {
+"warlock.talent.destructive-reach": 2,
+"warlock.talent.bane": 5,
+"warlock.talent.cataclysm": 3,
+"warlock.talent.aftermath": 5,
+"warlock.talent.ruin": 5,
+"warlock.talent.shadowburn": 1,
+"warlock.talent.agonizing-flames": 3,
+"warlock.talent.conflagrate": 1,
+"warlock.talent.bane-of-havoc": 1,
+"warlock.talent.fire-and-brimstone": 3,
+"warlock.talent.shadow-and-flame": 5,
+"warlock.talent.incinerate": 1,
+"warlock.talent.suppression": 5,
+"warlock.talent.demonic-embrace": 5,
+"warlock.talent.demonic-aegis": 2,
+"warlock.talent.fel-vitality": 3,
+"warlock.talent.demonic-sacrifice": 1
+}
+},
+{
+"label": "#4 Demonology 5/33/13 — popular on talentsforever.com",
+"talents": {
+"warlock.talent.demonic-embrace": 5,
+"warlock.talent.demonic-aegis": 2,
+"warlock.talent.improved-voidwalker": 3,
+"warlock.talent.fel-vitality": 3,
+"warlock.talent.demonic-energies": 2,
+"warlock.talent.demonic-sacrifice": 1,
+"warlock.talent.master-summoner": 2,
+"warlock.talent.decimation": 1,
+"warlock.talent.fel-domination": 1,
+"warlock.talent.improved-felhunter": 3,
+"warlock.talent.soul-link": 1,
+"warlock.talent.demonic-knowledge": 3,
+"warlock.talent.master-demonologist": 5,
+"warlock.talent.demonic-pact": 1,
+"warlock.talent.destructive-reach": 2,
+"warlock.talent.improved-corruption": 5,
+"warlock.talent.bane": 5,
+"warlock.talent.molten-skin": 5,
+"warlock.talent.shadowburn": 1
+}
+},
+{
+"label": "#5 Affliction 34/11/5 — popular on talentsforever.com",
+"talents": {
+"warlock.talent.improved-life-tap": 1,
+"warlock.talent.suppression": 5,
+"warlock.talent.malediction": 5,
+"warlock.talent.improved-drains": 3,
+"warlock.talent.improved-bane-of-agony": 2,
+"warlock.talent.amplify-curse": 1,
+"warlock.talent.pandemic": 3,
+"warlock.talent.malevolence": 5,
+"warlock.talent.siphon-life": 1,
+"warlock.talent.soul-siphon": 3,
+"warlock.talent.shadow-mastery": 5,
+"warlock.talent.improved-shadow-bolt": 5,
+"warlock.talent.demonic-embrace": 5,
+"warlock.talent.demonic-aegis": 2,
+"warlock.talent.fel-vitality": 3,
+"warlock.talent.demonic-sacrifice": 1
+}
+}
+],
+"feral_druid": [
+{
+"label": "#2 Feral Combat 9/37/5 — popular on talentsforever.com",
+"talents": {
+"druid.talent.ferocity": 5,
+"druid.talent.heart-of-the-wild": 5,
+"druid.talent.feral-swiftness": 2,
+"druid.talent.savage-fury": 2,
+"druid.talent.feral-charge": 1,
+"druid.talent.sharpened-claws": 2,
+"druid.talent.shredding-attacks": 3,
+"druid.talent.predatory-strikes": 3,
+"druid.talent.primal-fury": 2,
+"druid.talent.predatory-instincts": 2,
+"druid.talent.leader-of-the-pack": 1,
+"druid.talent.king-of-the-jungle": 3,
+"druid.talent.rend-and-tear": 5,
+"druid.talent.berserk": 1,
+"druid.talent.genesis": 5,
+"druid.talent.furor": 5,
+"druid.talent.nature-s-majesty": 2,
+"druid.talent.nature-s-reach": 2
+}
+},
+{
+"label": "#3 Feral Combat 9/42/0 — popular on talentsforever.com",
+"talents": {
+"druid.talent.ferocity": 5,
+"druid.talent.heart-of-the-wild": 5,
+"druid.talent.feral-swiftness": 2,
+"druid.talent.feral-instinct": 3,
+"druid.talent.thick-hide": 2,
+"druid.talent.savage-fury": 2,
+"druid.talent.feral-charge": 1,
+"druid.talent.sharpened-claws": 2,
+"druid.talent.mangle": 1,
+"druid.talent.predatory-strikes": 3,
+"druid.talent.primal-fury": 2,
+"druid.talent.predatory-instincts": 2,
+"druid.talent.leader-of-the-pack": 1,
+"druid.talent.natural-reaction": 5,
+"druid.talent.rend-and-tear": 5,
+"druid.talent.berserk": 1,
+"druid.talent.genesis": 5,
+"druid.talent.nature-s-majesty": 2,
+"druid.talent.nature-s-reach": 2
+}
+}
+],
+"balance_druid": [
+{
+"label": "#6 Balance 41/5/0 — popular on talentsforever.com",
+"talents": {
+"druid.talent.improved-wrath": 5,
+"druid.talent.genesis": 5,
+"druid.talent.moonglow": 3,
+"druid.talent.improved-moonfire": 2,
+"druid.talent.nature-s-majesty": 2,
+"druid.talent.nature-s-reach": 2,
+"druid.talent.nature-s-splendor": 1,
+"druid.talent.insect-swarm": 1,
+"druid.talent.vengeance": 5,
+"druid.talent.improved-starfire": 5,
+"druid.talent.nature-s-grace": 1,
+"druid.talent.eclipse": 3,
+"druid.talent.moonfury": 5,
+"druid.talent.moonkin-form": 1,
+"druid.talent.heart-of-the-wild": 5
+}
+}
+]
+}

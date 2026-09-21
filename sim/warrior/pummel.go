@@ -7,10 +7,14 @@ import (
 )
 
 func (warrior *Warrior) registerPummelSpell() {
-	damage := 50.0
+	rank, spellID := warrior.trainerRank("Pummel")
+	if rank == 0 {
+		return
+	}
+	damage := pummelDamage[rank-1]
 
 	warrior.RegisterSpell(BerserkerStance, core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 6554},
+		ActionID:    core.ActionID{SpellID: spellID},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,

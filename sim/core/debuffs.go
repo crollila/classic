@@ -112,6 +112,11 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 	if targetIdx == 0 {
 		if debuffs.ExposeArmor != proto.TristateEffect_TristateEffectMissing {
 			aura := ExposeArmorAura(target, TernaryInt32(debuffs.ExposeArmor == proto.TristateEffect_TristateEffectRegular, 0, 2))
+			if raidHasForever(raid) {
+				// Forever's Expose Armor is 450 armor per combo point at the top rank and
+				// Improved Expose Armor no longer scales it.
+				aura = foreverExposeArmorAura(target)
+			}
 			SchedulePeriodicDebuffApplication(aura, PeriodicActionOptions{
 				Period:   time.Second * 3,
 				NumTicks: 1,
@@ -693,10 +698,26 @@ func SunderArmorAura(target *Unit) *Aura {
 }
 
 func ExposeArmorAura(target *Unit, improvedEA int32) *Aura {
-	spellID := int32(11198)
-	arpen := 1700.0
+	return exposeArmorAura(target, 1700*[]float64{1, 1.25, 1.5}[improvedEA])
+}
 
-	arpen *= []float64{1, 1.25, 1.5}[improvedEA]
+func foreverExposeArmorAura(target *Unit) *Aura {
+	return exposeArmorAura(target, 2250)
+}
+
+func raidHasForever(raid *proto.Raid) bool {
+	for _, party := range raid.GetParties() {
+		for _, player := range party.GetPlayers() {
+			if player.GetForever() != nil {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+func exposeArmorAura(target *Unit, arpen float64) *Aura {
+	spellID := int32(11198)
 
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "ExposeArmor",

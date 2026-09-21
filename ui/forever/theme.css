@@ -181,3 +181,6 @@
 .forever-page .forever-extra-row small,.forever-page .forever-extra-row .predicted{color:#845008}
 .forever-page .forever-sample-builds{display:flex;flex-wrap:wrap;gap:.4rem;margin:.75rem 0}
 .forever-page .forever-build-picker>label{margin-bottom:.65rem}
+.forever-primary{display:inline-block;margin-top:8px;padding:12px 22px;background:var(--forever-accent,#2f5d50);color:#fff;font-weight:700;letter-spacing:.04em;text-decoration:none;border-radius:3px}
+.forever-primary:hover{filter:brightness(1.15)}
+.forever-advanced-link{display:block;margin:-4px 0 8px;font-size:12px;opacity:.7}

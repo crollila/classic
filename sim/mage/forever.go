@@ -72,9 +72,17 @@ func (m *Mage) applyForeverCasterTalents() {
 			}
 		},
 	})
+	// A charge is spent by the next spell cast. Arcane Missiles' missiles land after its
+	// cast completes, so its charge is spent when the channel ends instead, letting the
+	// missiles see the Frozen state they paid for.
+	fingersMissiles := false
 	f.fingers = m.RegisterAura(core.Aura{Label: "Forever Fingers of Frost", ActionID: m.ForeverAction("mage.talent.fingers-of-frost"), Duration: 15 * time.Second, MaxStacks: max(1, int32(value("fingers-of-frost", 1, 1))),
 		OnCastComplete: func(a *core.Aura, sim *core.Simulation, s *core.Spell) {
 			if s.Flags.Matches(core.SpellFlagAPL) && s.Flags.Matches(SpellFlagMage) && s.DefenseType == core.DefenseTypeMagic && a.RemainingDuration(sim) != a.Duration {
+				if s.SpellCode == SpellCode_MageArcaneMissiles {
+					fingersMissiles = true
+					return
+				}
 				a.RemoveStack(sim)
 			}
 		},
@@ -93,7 +101,10 @@ func (m *Mage) applyForeverCasterTalents() {
 			}
 		},
 		OnCastComplete: func(a *core.Aura, sim *core.Simulation, s *core.Spell) {
-			if s.Flags.Matches(SpellFlagMage) && s.SpellCode != SpellCode_MageArcaneBlast && s.DefenseType == core.DefenseTypeMagic && !s.Flags.Matches(core.SpellFlagChanneled) && s.SpellCode != SpellCode_MageArcaneMissilesTick {
+			// "Lasts 8 sec or until any other damage spell is cast." Arcane Missiles drops the
+			// stacks when its channel ends (below) so its missiles keep the bonus; other
+			// channels such as Blizzard snapshot the bonus before this runs.
+			if s.Flags.Matches(SpellFlagMage) && s.SpellCode != SpellCode_MageArcaneBlast && s.DefenseType == core.DefenseTypeMagic && s.ProcMask.Matches(core.ProcMaskSpellDamage) && s.SpellCode != SpellCode_MageArcaneMissiles && s.SpellCode != SpellCode_MageArcaneMissilesTick {
 				a.Deactivate(sim)
 			}
 		},
@@ -155,6 +166,12 @@ func (m *Mage) applyForeverCasterTalents() {
 						oldExpire(a, sim)
 					}
 					f.blast.Deactivate(sim)
+					if fingersMissiles {
+						fingersMissiles = false
+						if f.fingers.IsActive() {
+							f.fingers.RemoveStack(sim)
+						}
+					}
 				}
 			}
 		}
@@ -267,38 +284,57 @@ func (m *Mage) registerForeverSpells() {
 		return
 	}
 	f := m.foreverState
+	// Talent spells keep their Forever action at every rank (rotations name it); the rank
+	// the character's level has learned supplies damage and cost.
 	if m.ForeverRank("mage.talent.arcane-blast") > 0 {
+		ab := foreverTalentRankAt(m.Level, foreverArcaneBlastRanks)
 		m.RegisterSpell(core.SpellConfig{ActionID: m.ForeverAction("mage.talent.arcane-blast"), SpellCode: SpellCode_MageArcaneBlast, SpellSchool: core.SpellSchoolArcane, DefenseType: core.DefenseTypeMagic, ProcMask: core.ProcMaskSpellDamage, Flags: SpellFlagMage | core.SpellFlagAPL,
-			ManaCost: core.ManaCostOptions{FlatCost: 122}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault, CastTime: 2500 * time.Millisecond}}, DamageMultiplier: 1, ThreatMultiplier: 1, BonusCoefficient: 2.5 / 3.5,
+			ManaCost: core.ManaCostOptions{BaseCost: .15}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault, CastTime: 2500 * time.Millisecond}}, DamageMultiplier: 1, ThreatMultiplier: 1, BonusCoefficient: 2.5 / 3.5,
 			ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
-				s.CalcAndDealDamage(sim, t, sim.Roll(95, 104), s.OutcomeMagicHitAndCrit)
+				s.CalcAndDealDamage(sim, t, sim.Roll(ab.low, ab.high), s.OutcomeMagicHitAndCrit)
 				f.blast.Activate(sim)
 				f.blast.AddStack(sim)
 			},
 		})
 	}
 	if m.ForeverRank("mage.talent.ice-lance") > 0 {
+		il := foreverTalentRankAt(m.Level, foreverIceLanceRanks)
+		// The client's damage effect carries no coefficient; 1.5/3.5/3 stays an assumption.
 		m.RegisterSpell(core.SpellConfig{ActionID: m.ForeverAction("mage.talent.ice-lance"), SpellCode: SpellCode_MageIceLance, SpellSchool: core.SpellSchoolFrost, DefenseType: core.DefenseTypeMagic, ProcMask: core.ProcMaskSpellDamage, Flags: SpellFlagMage | core.SpellFlagAPL,
-			ManaCost: core.ManaCostOptions{FlatCost: 45}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}}, DamageMultiplier: 1, ThreatMultiplier: 1, BonusCoefficient: 1.5 / 3.5 / 3,
+			ManaCost: core.ManaCostOptions{FlatCost: il.mana}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}}, DamageMultiplier: 1, ThreatMultiplier: 1, BonusCoefficient: 1.5 / 3.5 / 3,
 			ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
 				mult := 1.0
 				if f.frozen.Get(t).IsActive() || f.fingers.IsActive() {
 					mult = 4
 				}
 				s.DamageMultiplier *= mult
-				s.CalcAndDealDamage(sim, t, sim.Roll(28, 33), s.OutcomeMagicHitAndCrit)
+				s.CalcAndDealDamage(sim, t, sim.Roll(il.low, il.high), s.OutcomeMagicHitAndCrit)
 				s.DamageMultiplier /= mult
 			},
 		})
 	}
-	// PREDICTED baseline: Frostbolt's highest existing rank is used as the damage,
-	// mana and coefficient analogue; Fire/Frost dual school and Fireball talents
-	// are established by the referencing Forever talents.
-	if m.HasForeverMechanic("mage.baseline.frostfire-bolt") {
-		m.RegisterSpell(core.SpellConfig{ActionID: m.ForeverAction("mage.baseline.frostfire-bolt"), SpellCode: SpellCode_MageFrostfireBolt, SpellSchool: core.SpellSchoolFire | core.SpellSchoolFrost, DefenseType: core.DefenseTypeMagic, ProcMask: core.ProcMaskSpellDamage, Flags: SpellFlagMage | SpellFlagChillSpell | core.SpellFlagAPL,
-			ManaCost: core.ManaCostOptions{FlatCost: 290}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault, CastTime: 3*time.Second - 100*time.Millisecond*time.Duration(m.ForeverRank("mage.talent.improved-fireball"))}}, DamageMultiplier: 1, ThreatMultiplier: 1, BonusCoefficient: .814,
+	// Frostfire Bolt from the client tooltips: Fire and Frost, 3 sec, .814 direct, and a
+	// 9 sec periodic part (3 ticks) with no listed coefficient. Learned at 40.
+	if fr, ok := foreverRankAt(m.Level, foreverFrostfireBoltRanks); ok && m.HasForeverMechanic("mage.baseline.frostfire-bolt") {
+		action := m.ForeverAction("mage.baseline.frostfire-bolt")
+		if fr.id != 0 {
+			action = core.ActionID{SpellID: fr.id}
+		}
+		dotTick := foreverFrostfireBoltDot[fr.level] / 3
+		m.RegisterSpell(core.SpellConfig{ActionID: action, SpellCode: SpellCode_MageFrostfireBolt, SpellSchool: core.SpellSchoolFire | core.SpellSchoolFrost, DefenseType: core.DefenseTypeMagic, ProcMask: core.ProcMaskSpellDamage, Flags: SpellFlagMage | SpellFlagChillSpell | core.SpellFlagAPL,
+			ManaCost: core.ManaCostOptions{FlatCost: fr.mana}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault, CastTime: 3*time.Second - 100*time.Millisecond*time.Duration(m.ForeverRank("mage.talent.improved-fireball"))}}, DamageMultiplier: 1, ThreatMultiplier: 1, BonusCoefficient: .814,
+			Dot: core.DotConfig{Aura: core.Aura{Label: "Frostfire Bolt"}, NumberOfTicks: 3, TickLength: 3 * time.Second,
+				OnSnapshot: func(sim *core.Simulation, t *core.Unit, dot *core.Dot, isRollover bool) {
+					dot.Snapshot(t, dotTick, isRollover)
+				},
+				OnTick: func(sim *core.Simulation, t *core.Unit, dot *core.Dot) {
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, t, dot.OutcomeTick)
+				},
+			},
 			ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
-				s.CalcAndDealDamage(sim, t, sim.Roll(429, 463), s.OutcomeMagicHitAndCrit)
+				if s.CalcAndDealDamage(sim, t, sim.Roll(fr.low, fr.high), s.OutcomeMagicHitAndCrit).Landed() && dotTick > 0 {
+					s.Dot(t).Apply(sim)
+				}
 			},
 		})
 	}

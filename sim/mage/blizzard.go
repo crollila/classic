@@ -43,6 +43,10 @@ func (mage *Mage) newBlizzardSpellConfig(rank int) core.SpellConfig {
 			return t.ForeverSnareAura("Forever Blizzard chill-"+mage.Label, mage.ForeverAction("mage.talent.improved-blizzard"), time.Duration(1.5*float64(time.Second)*(1+mage.ForeverValue("mage.talent.permafrost", 0, 0)/100)), (mage.ForeverValue("mage.talent.improved-blizzard", 0, 0)+mage.ForeverValue("mage.talent.permafrost", 1, 0))/100)
 		})
 	}
+	winterChance := 0.0
+	if mage.ForeverRank("mage.talent.winter-s-chill") > 0 {
+		winterChance = min(1, mage.ForeverValue("mage.talent.winter-s-chill", 0, 0)/100)
+	}
 	var improvedBlizzardProcApplication *core.Spell
 	if mage.Talents.ImprovedBlizzard > 0 {
 		impId := []int32{0, 11185, 12487, 12488}[mage.Talents.ImprovedBlizzard]
@@ -95,6 +99,12 @@ func (mage *Mage) newBlizzardSpellConfig(rank int) core.SpellConfig {
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					dot.CalcAndDealPeriodicSnapshotDamage(sim, aoeTarget, dot.OutcomeTick)
+					// Forever Winter's Chill: "your Frost damage spells" include Blizzard's ticks.
+					if winterChance > 0 && sim.Proc(winterChance, "Forever Winter's Chill") {
+						a := mage.foreverState.winter.Get(aoeTarget)
+						a.Activate(sim)
+						a.AddStack(sim)
+					}
 					if foreverChill != nil {
 						foreverChill.Get(aoeTarget).Activate(sim)
 						if sim.Proc(mage.ForeverValue("mage.talent.frostbite", 0, 0)/100, "Forever Blizzard Frostbite") {

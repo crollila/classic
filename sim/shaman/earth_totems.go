@@ -1,6 +1,7 @@
 package shaman
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/classic/sim/core"
@@ -37,7 +38,18 @@ func (shaman *Shaman) newStrengthOfEarthTotemSpellConfig(rank int) core.SpellCon
 	duration := time.Second * 120
 	multiplier := []float64{1, 1.08, 1.15}[shaman.Talents.EnhancingTotems]
 
-	buffAura := core.StrengthOfEarthTotemAura(&shaman.Unit, multiplier)
+	// Core models the top rank. Below its level every registered rank shares one aura
+	// holding the highest known rank's value, so the APL sees a single buff.
+	var buffAura *core.Aura
+	if known := rankAtLevel(StrengthOfEarthTotemLevel[:], shaman.Level); known >= StrengthOfEarthTotemRanks {
+		buffAura = core.StrengthOfEarthTotemAura(&shaman.Unit, multiplier)
+	} else {
+		buffAura = shaman.GetAura("Strength of Earth Totem (Shaman)")
+		if buffAura == nil {
+			buffAura = shaman.lowRankStatTotemAura("Strength of Earth Totem (Shaman)", StrengthOfEarthTotemSpellId[known], core.StrengthOfEarth,
+				StrengthOfEarthTotemStrength[known]/StrengthOfEarthTotemStrength[StrengthOfEarthTotemRanks], multiplier)
+		}
+	}
 
 	spell := shaman.newTotemSpellConfig(manaCost, spellId)
 	spell.RequiredLevel = level
@@ -81,9 +93,30 @@ func (shaman *Shaman) newStoneskinTotemSpellConfig(rank int) core.SpellConfig {
 
 	duration := time.Second * 120
 
+	var stoneskinAura *core.Aura
 	spell := shaman.newTotemSpellConfig(manaCost, spellId)
 	spell.RequiredLevel = level
 	spell.Rank = rank
+	if shaman.Forever == nil {
+		// Core's Stoneskin aura is the top rank; below it use the highest known rank's value.
+		if known := rankAtLevel(StoneskinTotemLevel[:], shaman.Level); known < StoneskinTotemRanks {
+			stoneskinAura = shaman.GetAura("Stoneskin (Shaman)")
+			if stoneskinAura == nil {
+				reduction := -math.Floor(StoneskinTotemReduction[known] * (1 + .1*float64(shaman.Talents.GuardianTotems)))
+				stoneskinAura = shaman.RegisterAura(core.Aura{
+					Label:    "Stoneskin (Shaman)",
+					ActionID: core.ActionID{SpellID: StoneskinTotemSpellId[known]},
+					Duration: core.NeverExpires,
+					OnGain: func(aura *core.Aura, sim *core.Simulation) {
+						aura.Unit.PseudoStats.BonusDamageTakenAfterModifiers[core.DefenseTypeMelee] += reduction
+					},
+					OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+						aura.Unit.PseudoStats.BonusDamageTakenAfterModifiers[core.DefenseTypeMelee] -= reduction
+					},
+				})
+			}
+		}
+	}
 	if shaman.Forever != nil {
 		aura := shaman.RegisterAura(core.Aura{Label: "Forever Stoneskin-" + core.ActionID{SpellID: spellId}.String(), ActionID: core.ActionID{SpellID: spellId}, Duration: duration})
 		amount := []float64{0, 4, 7, 11, 16, 22, 30}[rank] * (1 + .1*shaman.fr("guardian-totems"))
@@ -106,7 +139,10 @@ func (shaman *Shaman) newStoneskinTotemSpellConfig(rank int) core.SpellConfig {
 		shaman.TotemExpirations[EarthTotem] = sim.CurrentTime + duration
 		shaman.ActiveTotems[EarthTotem] = spell
 
-		core.StoneskinTotemAura(&shaman.Unit, shaman.Talents.GuardianTotems).Activate(sim)
+		if stoneskinAura == nil {
+			stoneskinAura = core.StoneskinTotemAura(&shaman.Unit, shaman.Talents.GuardianTotems)
+		}
+		stoneskinAura.Activate(sim)
 	}
 	return spell
 }
@@ -116,6 +152,9 @@ func (shaman *Shaman) registerTremorTotemSpell() {
 	manaCost := float64(60)
 	duration := time.Second * 120
 	level := 18
+	if int(shaman.Level) < level {
+		return
+	}
 
 	spell := shaman.newTotemSpellConfig(manaCost, spellId)
 	spell.RequiredLevel = level

@@ -8,16 +8,15 @@ import (
 
 func (warrior *Warrior) registerRendSpell() {
 
-	rend := map[int32]struct {
+	rank, spellID := warrior.trainerRank("Rend")
+	if rank == 0 {
+		return
+	}
+	rend := struct {
 		ticks   int32
 		damage  float64
 		spellID int32
-	}{
-		25: {spellID: 6547, damage: 9, ticks: 5},
-		40: {spellID: 11572, damage: 14, ticks: 7},
-		50: {spellID: 11573, damage: 18, ticks: 7},
-		60: {spellID: 11574, damage: 21, ticks: 7},
-	}[warrior.Level]
+	}{spellID: spellID, damage: rendTick[rank-1], ticks: rendTicks[rank-1]}
 
 	baseDamage := rend.damage
 

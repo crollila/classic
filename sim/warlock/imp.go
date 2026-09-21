@@ -14,67 +14,71 @@ func (warlock *Warlock) makeImp() *WarlockPet {
 		PowerModifier: 0.33,
 	}
 
-	switch warlock.Level {
-	case 25:
-		cfg.Stats = stats.Stats{
-			stats.Strength:  47,
-			stats.Agility:   25,
-			stats.Stamina:   49,
-			stats.Intellect: 94,
-			stats.Spirit:    95,
-			stats.Mana:      149,
-			stats.MP5:       0,
-			stats.MeleeCrit: 3.454 * core.CritRatingPerCritChance,
-			stats.SpellCrit: 0.9075 * core.CritRatingPerCritChance,
+	at := func(level int32) PetConfig {
+		cfg := PetConfig{}
+		switch level {
+		case 25:
+			cfg.Stats = stats.Stats{
+				stats.Strength:  47,
+				stats.Agility:   25,
+				stats.Stamina:   49,
+				stats.Intellect: 94,
+				stats.Spirit:    95,
+				stats.Mana:      149,
+				stats.MP5:       0,
+				stats.MeleeCrit: 3.454 * core.CritRatingPerCritChance,
+				stats.SpellCrit: 0.9075 * core.CritRatingPerCritChance,
+			}
+		case 40:
+			cfg.Stats = stats.Stats{
+				stats.Strength:  70,
+				stats.Agility:   29,
+				stats.Stamina:   67,
+				stats.Intellect: 163,
+				stats.Spirit:    163,
+				stats.Mana:      318,
+				stats.MP5:       0,
+				stats.MeleeCrit: 3.454 * core.CritRatingPerCritChance,
+				stats.SpellCrit: 0.9075 * core.CritRatingPerCritChance,
+			}
+		case 50:
+			cfg.Stats = stats.Stats{
+				stats.Strength:  101,
+				stats.Agility:   32,
+				stats.Stamina:   71,
+				stats.Intellect: 212,
+				stats.Spirit:    211,
+				stats.Mana:      476,
+				stats.MP5:       0,
+				stats.MeleeCrit: 3.454 * core.CritRatingPerCritChance,
+				stats.SpellCrit: 0.9075 * core.CritRatingPerCritChance,
+			}
+		case 60:
+			cfg.Stats = stats.Stats{
+				stats.Strength:  122,
+				stats.Agility:   35,
+				stats.Stamina:   86,
+				stats.Intellect: 264,
+				stats.Spirit:    260,
+				stats.Mana:      576,
+				stats.MP5:       0,
+				stats.MeleeCrit: 3.454 * core.CritRatingPerCritChance,
+				stats.SpellCrit: 0.9075 * core.CritRatingPerCritChance,
+			}
 		}
-	case 40:
-		cfg.Stats = stats.Stats{
-			stats.Strength:  70,
-			stats.Agility:   29,
-			stats.Stamina:   67,
-			stats.Intellect: 163,
-			stats.Spirit:    163,
-			stats.Mana:      318,
-			stats.MP5:       0,
-			stats.MeleeCrit: 3.454 * core.CritRatingPerCritChance,
-			stats.SpellCrit: 0.9075 * core.CritRatingPerCritChance,
-		}
-	case 50:
-		cfg.Stats = stats.Stats{
-			stats.Strength:  101,
-			stats.Agility:   32,
-			stats.Stamina:   71,
-			stats.Intellect: 212,
-			stats.Spirit:    211,
-			stats.Mana:      476,
-			stats.MP5:       0,
-			stats.MeleeCrit: 3.454 * core.CritRatingPerCritChance,
-			stats.SpellCrit: 0.9075 * core.CritRatingPerCritChance,
-		}
-	case 60:
-		cfg.Stats = stats.Stats{
-			stats.Strength:  122,
-			stats.Agility:   35,
-			stats.Stamina:   86,
-			stats.Intellect: 264,
-			stats.Spirit:    260,
-			stats.Mana:      576,
-			stats.MP5:       0,
-			stats.MeleeCrit: 3.454 * core.CritRatingPerCritChance,
-			stats.SpellCrit: 0.9075 * core.CritRatingPerCritChance,
-		}
+		return cfg
 	}
+	// Stats were measured at these levels; others interpolate between them.
+	cfg = petConfigAtLevel(cfg, warlock.Level, []int32{25, 40, 50, 60}, at)
 
-	return warlock.makePet(cfg, warlock.Options.Summon == proto.WarlockOptions_Imp)
+	return warlock.makePet(cfg, warlock.Options.Summon == proto.WarlockOptions_Imp && warlock.Level >= summonImpLevel)
 }
 
 func (wp *WarlockPet) registerImpFireboltSpell() {
-	warlockLevel := wp.owner.Level
-	// assuming max rank available
-	rank := map[int32]int{25: 3, 40: 5, 50: 6, 60: 7}[warlockLevel]
-
+	// Highest Firebolt rank the imp knows at the warlock's level.
+	rank := rankAtLevel([]int{0, 1, 8, 18, 28, 38, 48, 58}, wp.owner.Level)
 	if rank == 0 {
-		rank = 1
+		return
 	}
 
 	if wp.owner.Options.MaxFireboltRank != proto.WarlockOptions_NoMaximum {

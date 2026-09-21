@@ -49,6 +49,9 @@ const (
 	SpellCode_HunterPetLightningBreath
 	SpellCode_HunterPetScreech
 	SpellCode_HunterPetScorpidPoison
+
+	// Forever
+	SpellCode_HunterSniperShot
 )
 
 func RegisterHunter() {
@@ -87,6 +90,7 @@ type Hunter struct {
 	curQueuedAutoSpell *core.Spell
 
 	AimedShot       *core.Spell
+	SniperShot      *core.Spell
 	ArcaneShot      *core.Spell
 	ExplosiveTrap   *core.Spell
 	ImmolationTrap  *core.Spell
@@ -154,7 +158,7 @@ func (hunter *Hunter) Initialize() {
 	hunter.registerSerpentStingSpell()
 
 	hunter.registerArcaneShotSpell(arcaneShotTimer)
-	hunter.registerAimedShotSpell(arcaneShotTimer)
+	hunter.registerAimedShotSpell(arcaneShotTimer, multiShotTimer)
 	hunter.registerMultiShotSpell(multiShotTimer)
 
 	hunter.registerRaptorStrikeSpell()
@@ -167,7 +171,7 @@ func (hunter *Hunter) Initialize() {
 	hunter.registerExplosiveTrapSpell(traps)
 	hunter.registerImmolationTrapSpell(traps)
 	hunter.registerFreezingTrapSpell(traps)
-	if hunter.Forever != nil {
+	if hunter.Forever != nil && hunter.Level >= 28 {
 		hunter.registerForeverFrostTrap(traps)
 	}
 
@@ -286,8 +290,8 @@ func NewHunter(character *core.Character, options *proto.Player) *Hunter {
 	hunter.AddStatDependency(stats.Strength, stats.AttackPower, core.APPerStrength[character.Class])
 	hunter.AddStatDependency(stats.Agility, stats.AttackPower, 1)
 	hunter.AddStatDependency(stats.Agility, stats.RangedAttackPower, 2)
-	hunter.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[character.Class]*core.CritRatingPerCritChance)
-	hunter.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[character.Class]*core.SpellCritRatingPerCritChance)
+	hunter.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAt(character.Class, hunter.Level)*core.CritRatingPerCritChance)
+	hunter.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAt(character.Class, hunter.Level)*core.SpellCritRatingPerCritChance)
 
 	guardians.ConstructGuardians(&hunter.Character)
 

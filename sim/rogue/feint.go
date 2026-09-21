@@ -7,8 +7,12 @@ import (
 )
 
 func (rogue *Rogue) registerFeintSpell() {
+	spellID := rogue.trainerSpellID("Feint") // ranks differ only in threat reduction, not modelled
+	if spellID == 0 {
+		return
+	}
 	rogue.Feint = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 1966},
+		ActionID:    core.ActionID{SpellID: spellID},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMH,

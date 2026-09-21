@@ -81,7 +81,7 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 func (hunter *Hunter) registerSerpentStingSpell() {
 
 	maxRank := core.TernaryInt(core.IncludeAQ, 9, 8)
-	for rank := maxRank; rank >= 0; rank-- {
+	for rank := maxRank; rank >= 1; rank-- {
 		config := hunter.getSerpentStingConfig(rank)
 
 		if config.RequiredLevel <= int(hunter.Level) {

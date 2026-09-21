@@ -6,12 +6,20 @@ import (
 	"github.com/wowsims/classic/sim/core"
 )
 
+// Claw's flat bonus per rank (Classic). The Forever client shows these times 1.1
+// ("110% normal damage plus 29/42/62/96/126").
+var clawRanks = []catRank{{1082, 20, 27}, {3029, 28, 39}, {5201, 38, 57}, {9849, 48, 88}, {9850, 58, 115}}
+
 func (druid *Druid) registerClawSpell() {
-	flatDamageBonus := 115.0
+	rank, ok := catRankAt(clawRanks, druid.Level)
+	if !ok {
+		return
+	}
+	flatDamageBonus := rank.value
 
 	druid.Claw = druid.RegisterSpell(Cat, core.SpellConfig{
 		SpellCode:   SpellCode_DruidClaw,
-		ActionID:    core.ActionID{SpellID: 9850},
+		ActionID:    core.ActionID{SpellID: rank.id},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,

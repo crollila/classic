@@ -13,11 +13,36 @@ import (
 type foreverStoneclaw struct {
 	core.Pet
 	previous map[*core.Unit]*core.Unit
+	rank     foreverStoneclawRank
+}
+
+// Lower Stoneclaw ranks use the Forever client tooltips (health, Mana); the top rank keeps
+// the Classic cache values above.
+type foreverStoneclawRank struct {
+	level   int32
+	spellID int32
+	health  float64
+	mana    float64
+}
+
+var foreverStoneclawRanks = []foreverStoneclawRank{
+	{8, 5730, 206, 15}, {18, 6390, 276, 30}, {28, 6391, 316, 55}, {38, 6392, 346, 75}, {48, 10427, 426, 105}, {58, 10428, 480, 140},
+}
+
+// foreverStoneclawRankAt is the highest Stoneclaw rank known at level; ok is false below level 8.
+func foreverStoneclawRankAt(level int32) (rank foreverStoneclawRank, ok bool) {
+	for _, r := range foreverStoneclawRanks {
+		if r.level <= level {
+			rank, ok = r, true
+		}
+	}
+	return rank, ok
 }
 
 func newForeverStoneclaw(s *Shaman) *foreverStoneclaw {
 	// Core applies a -180 Health first-20-Stamina offset even to zero-Stamina totems.
-	p := &foreverStoneclaw{Pet: core.NewPet("Stoneclaw Totem", &s.Character, stats.Stats{stats.Health: 180 + 480*(1+.25*s.fr("earth-s-grasp"))}, func(stats.Stats) stats.Stats { return stats.Stats{} }, false, true), previous: map[*core.Unit]*core.Unit{}}
+	rank, _ := foreverStoneclawRankAt(s.Level)
+	p := &foreverStoneclaw{Pet: core.NewPet("Stoneclaw Totem", &s.Character, stats.Stats{stats.Health: 180 + rank.health*(1+.25*s.fr("earth-s-grasp"))}, func(stats.Stats) stats.Stats { return stats.Stats{} }, false, true), previous: map[*core.Unit]*core.Unit{}, rank: rank}
 	p.OnPetDisable = func(sim *core.Simulation) {
 		for t, old := range p.previous {
 			if t.CurrentTarget == &p.Unit {
@@ -51,7 +76,7 @@ func (p *foreverStoneclaw) Initialize() {
 func (s *Shaman) registerForeverTotems() {
 	if s.foreverStoneclaw != nil {
 		pet := s.foreverStoneclaw
-		s.RegisterSpell(core.SpellConfig{ActionID: core.ActionID{SpellID: 10428}, Flags: core.SpellFlagAPL | SpellFlagTotem, ManaCost: core.ManaCostOptions{FlatCost: 140, Multiplier: s.totemManaMultiplier()}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, CD: core.Cooldown{Timer: s.NewTimer(), Duration: 30 * time.Second}}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, sp *core.Spell) {
+		s.RegisterSpell(core.SpellConfig{ActionID: core.ActionID{SpellID: pet.rank.spellID}, Flags: core.SpellFlagAPL | SpellFlagTotem, ManaCost: core.ManaCostOptions{FlatCost: pet.rank.mana, Multiplier: s.totemManaMultiplier()}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, CD: core.Cooldown{Timer: s.NewTimer(), Duration: 30 * time.Second}}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, sp *core.Spell) {
 			pet.Disable(sim)
 			pet.EnableWithTimeout(sim, pet, 15*time.Second)
 			pet.GainHealth(sim, pet.MaxHealth(), pet.NewHealthMetrics(sp.ActionID))
@@ -65,7 +90,7 @@ func (s *Shaman) registerForeverTotems() {
 			}
 		}})
 	}
-	if s.fr("guardian-totems") > 0 {
+	if s.fr("guardian-totems") > 0 && s.Level >= 30 {
 		// One charge covers nearby party members. Explicitly classified harmful
 		// single-target spells are consumed before damage or control is applied.
 		// The damage fallback retains provisional behavior for older encounter

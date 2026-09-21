@@ -11,8 +11,13 @@ func (warrior *Warrior) registerMortalStrikeSpell(cdTimer *core.Timer) {
 		return
 	}
 
-	bonusDamage := warrior.ForeverValue("warrior.talent.mortal-strike", 0, 160)
-	spellID := int32(21553)
+	rank, spellID := warrior.trainerRank("Mortal Strike")
+	if rank == 0 {
+		return
+	}
+	// The learned rank's bonus. The Forever talent record's value is the talent tooltip,
+	// i.e. rank 1 (85), not the rank the warrior has learned (rank 4: 160).
+	bonusDamage := mortalStrikeBonus[rank-1]
 
 	var mortalAuras core.AuraArray
 	if warrior.Forever != nil {

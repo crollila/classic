@@ -1,7 +1,6 @@
 import type { SimUI } from '../core/sim_ui';
 import { Spec } from '../core/proto/common';
-import { ForeverMode } from '../core/proto/api';
-import { el, getRelease, releaseSummary, confidencePanel } from './metadata';
+import { el, getRelease } from './metadata';
 import { mountOptimizer } from './optimizer-ui';
 
 export async function mountForever(simUI: SimUI, spec: Spec | null) {
@@ -19,25 +18,8 @@ export async function mountForever(simUI: SimUI, spec: Spec | null) {
 
   const release = await getRelease();
   mountOptimizer(simUI, release);
-  const status = el('div', 'forever-sim-status');
-  status.append(releaseSummary(release), confidencePanel(release, spec));
-  simUI.simContentContainer.insertBefore(status, simUI.simHeader.rootElem);
-
-  const categories: Record<string, string> = { 'gear-tab': 'Equipment and enchants', 'talents-tab': 'Talents', 'settings-tab': 'Races, buffs, debuffs, consumes, and encounter mechanics', 'rotation-tab': 'Rotation and APL assumptions' };
-  const annotate = () => {
-    for (const [id, label] of Object.entries(categories)) {
-      const panel = root.querySelector<HTMLElement>(`#${id}`);
-      if (!panel || panel.querySelector('.forever-option-note')) continue;
-      const note = el('p', 'forever-option-note');
-      const notes:Record<string,string>={'gear-tab':'This catalogue is Forever: items are the Forever client’s, plus the ones the client only receives in game. Combat ratings have no confirmed conversion yet, so they are listed rather than applied.','talents-tab':'These are Forever trees. Each rank shows its evidence and confidence; STRICT suppresses predictions.','settings-tab':'Forever racial and profession options are available in Talents. Existing encounter and consumable rules provide the Classic fallback.','rotation-tab':'New Forever offensive actions are added when enabled in Talents. The APL editor exposes registered abilities for custom rotations.'};
-      note.append(document.createTextNode(`${notes[id]} `));
-      const link = el('a', '', 'Review Forever mechanics confidence'); link.href = '#forever-mechanics';
-      link.addEventListener('click', () => { status.querySelector('details')!.open = true; });
-      note.append(link); panel.prepend(note);
-    }
-  };
-  annotate();
-  simUI.sim.waitForInit().then(annotate);
+  const back = el('a', 'forever-app-link', '← Back to Forever Sim'); back.href = `${import.meta.env.BASE_URL}app/`;
+  simUI.simContentContainer.insertBefore(back, simUI.simHeader.rootElem);
   const stats = root.querySelector<HTMLElement>('.sim-sidebar-stats');
   if (stats) {
     const disclosure = el('details', 'forever-character-stats');
@@ -48,15 +30,6 @@ export async function mountForever(simUI: SimUI, spec: Spec | null) {
     syncStats(); desktop.addEventListener('change', syncStats);
     simUI.addOnDisposeCallback(() => desktop.removeEventListener('change', syncStats));
   }
-  // Results retain provenance even after the user changes the current configuration.
-  const provenance = el('p', 'forever-result-provenance');
-  provenance.hidden = true;
-  root.querySelector('.sim-sidebar-results')?.append(provenance);
-  simUI.sim.simResultEmitter.on((_eventID,result) => {
-    provenance.hidden = false;
-    const modes=[...new Set(result.request.raid?.parties.flatMap(p=>p.players.filter(p=>p.forever).map(p=>p.forever!.mode===ForeverMode.STRICT?'STRICT':'BEST_GUESS'))||[])];
-    provenance.textContent = `Run ${modes.join(' / ')} · ${release.simulatorVersion} · ${release.rulesetId || 'Classic baseline'} · Mechanics ${release.mechanicsUpdatedAt || 'UNKNOWN'}. Pre-beta result; see rank evidence and interaction assumptions.`;
-  });
   const footer = el('footer', 'forever-footer');
   footer.append(el('span', '', 'Exalted Capital · Forever Simulator'));
   const upstream = el('a', '', 'Built on WoWSims Classic · MIT'); upstream.href = 'https://github.com/wowsims/classic'; footer.append(upstream);

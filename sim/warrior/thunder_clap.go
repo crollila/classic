@@ -7,14 +7,28 @@ import (
 )
 
 func (warrior *Warrior) registerThunderClapSpell() {
-	spellID := int32(11581)
-	baseDamage := 103.0
+	rank, spellID := warrior.trainerRank("Thunder Clap")
+	if rank == 0 {
+		return
+	}
+	baseDamage := thunderClapDamage[rank-1]
+	duration := thunderClapDuration[rank-1] * time.Second
 	has5pcConq := warrior.HasSetBonus(ItemSetConquerorsBattleGear, 5)
 	attackSpeedReduction := core.TernaryInt32(has5pcConq, 15, 10)
 	stanceMask := BattleStance
+	cooldown := time.Second * 4
+	if warrior.Forever != nil {
+		// Forever client: 20% slower attacks (the set's +5 kept), 6 sec cooldown, usable in
+		// Battle or Defensive Stance.
+		attackSpeedReduction += 10
+		stanceMask |= DefensiveStance
+		cooldown = time.Second * 6
+	}
 
 	warrior.ThunderClapAuras = warrior.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
-		return core.ThunderClapAura(target, spellID, attackSpeedReduction)
+		aura := core.ThunderClapAura(target, spellID, attackSpeedReduction)
+		aura.Duration = duration
+		return aura
 	})
 
 	results := make([]*core.SpellResult, min(4, warrior.Env.GetNumTargets()))
@@ -36,7 +50,7 @@ func (warrior *Warrior) registerThunderClapSpell() {
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    warrior.NewTimer(),
-				Duration: time.Second * 4,
+				Duration: cooldown,
 			},
 		},
 

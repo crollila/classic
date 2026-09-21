@@ -21,7 +21,12 @@ func (mage *Mage) registerArcaneMissilesSpell() {
 	mage.ArcaneMissilesTickSpell = make([]*core.Spell, ArcaneMissilesRanks+1)
 
 	// TODO AQ <=
-	for rank := 1; rank < ArcaneMissilesRanks; rank++ {
+	// Forever's trainer teaches rank 8 at 56 (Classic keeps it as the AQ book).
+	maxRank := ArcaneMissilesRanks - 1
+	if mage.Forever != nil {
+		maxRank = ArcaneMissilesRanks
+	}
+	for rank := 1; rank <= maxRank; rank++ {
 		config := mage.getArcaneMissilesSpellConfig(rank)
 
 		if config.RequiredLevel <= int(mage.Level) {
@@ -30,9 +35,18 @@ func (mage *Mage) registerArcaneMissilesSpell() {
 	}
 }
 
+// arcaneMissilesTick is one missile's base damage and coefficient; Forever uses the
+// client's per-rank values.
+func (mage *Mage) arcaneMissilesTick(rank int) (float64, float64) {
+	if mage.Forever != nil {
+		return foreverArcaneMissilesTick[rank], foreverArcaneMissilesCoeff
+	}
+	return ArcaneMissilesBaseTickDamage[rank], ArcaneMissilesSpellCoeff[rank]
+}
+
 func (mage *Mage) getArcaneMissilesSpellConfig(rank int) core.SpellConfig {
 	spellId := ArcaneMissilesSpellId[rank]
-	baseTickDamage := ArcaneMissilesBaseTickDamage[rank]
+	baseTickDamage, _ := mage.arcaneMissilesTick(rank)
 	castTime := ArcaneMissilesCastTime[rank]
 	manaCost := ArcaneMissilesManaCost[rank]
 	level := ArcaneMissilesLevel[rank]
@@ -97,8 +111,7 @@ func (mage *Mage) getArcaneMissilesSpellConfig(rank int) core.SpellConfig {
 
 func (mage *Mage) getArcaneMissilesTickSpell(rank int) *core.Spell {
 	spellId := ArcaneMissilesSpellId[rank]
-	baseTickDamage := ArcaneMissilesBaseTickDamage[rank]
-	spellCoeff := ArcaneMissilesSpellCoeff[rank]
+	baseTickDamage, spellCoeff := mage.arcaneMissilesTick(rank)
 
 	return mage.RegisterSpell(core.SpellConfig{
 		SpellCode:    SpellCode_MageArcaneMissilesTick,

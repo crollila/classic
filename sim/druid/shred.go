@@ -6,23 +6,20 @@ import (
 	"github.com/wowsims/classic/sim/core"
 )
 
+// Shred's flat bonus before the 225% weapon multiplier (Classic 54/72/99/144/180 total).
+var shredRanks = []catRank{{5221, 22, 24}, {6800, 30, 32}, {8992, 38, 44}, {9829, 46, 64}, {9830, 54, 80}}
+
 func (druid *Druid) registerShredSpell() {
+	rank, ok := catRankAt(shredRanks, druid.Level)
+	if !ok {
+		return
+	}
 	damageMultiplier := 2.25
-	flatDamageBonus := map[int32]float64{
-		25: 24,
-		40: 44,
-		50: 64,
-		60: 80,
-	}[druid.Level]
+	flatDamageBonus := rank.value
 
 	druid.Shred = druid.RegisterSpell(Cat, core.SpellConfig{
 		SpellCode: SpellCode_DruidShred,
-		ActionID: core.ActionID{SpellID: map[int32]int32{
-			25: 5221,
-			40: 8992,
-			50: 9829,
-			60: 9830,
-		}[druid.Level]},
+		ActionID:  core.ActionID{SpellID: rank.id},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,

@@ -5,9 +5,12 @@ import (
 )
 
 func (warrior *Warrior) registerHamstringSpell() {
-	damage := 45.0
-	spellID := int32(7373)
-	spell_level := 54.0
+	rank, spellID := warrior.trainerRank("Hamstring")
+	if rank == 0 {
+		return
+	}
+	damage := hamstringDamage[rank-1]
+	spell_level := float64(core.SpellLearnedLevel(spellID))
 
 	warrior.Hamstring = warrior.RegisterSpell(BattleStance|BerserkerStance, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},

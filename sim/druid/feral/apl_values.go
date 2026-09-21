@@ -91,7 +91,14 @@ func (impl *APLActionCatOptimalRotationAction) GetNextAction(*core.Simulation) *
 	return nil
 }
 
-func (cat *FeralDruid) newActionCatOptimalRotationAction(_ *core.APLRotation, config *proto.APLActionCatOptimalRotationAction) core.APLActionImpl {
+func (cat *FeralDruid) newActionCatOptimalRotationAction(rot *core.APLRotation, config *proto.APLActionCatOptimalRotationAction) core.APLActionImpl {
+	// The optimal rotation assumes the full level-60 kit; below the level that learns
+	// every ability it is unavailable (the APL reports it and skips the action).
+	if cat.Shred == nil || cat.Rake == nil || cat.Rip == nil || cat.FerociousBite == nil ||
+		cat.TigersFury == nil || cat.FaerieFire == nil || cat.Claw == nil {
+		rot.ValidationWarning("Optimal cat rotation needs Shred, Rake, Rip, Ferocious Bite, Tiger's Fury and Faerie Fire; not all are learned at level %d", cat.Level)
+		return nil
+	}
 	cat.setupRotation(config)
 
 	return &APLActionCatOptimalRotationAction{
@@ -108,7 +115,7 @@ func (action *APLActionCatOptimalRotationAction) Execute(sim *core.Simulation) {
 
 	// If a melee swing resulted in an Omen or Wild Strikes proc, then schedule the
 	// next player decision based on latency.
-	if cat.Talents.OmenOfClarity && cat.ClearcastingAura.RemainingDuration(sim) == cat.ClearcastingAura.Duration {
+	if cat.ClearcastingAura != nil && cat.ClearcastingAura.RemainingDuration(sim) == cat.ClearcastingAura.Duration {
 		// Kick gcd loop, also need to account for any gcd 'left'
 		// otherwise it breaks gcd logic
 		kickTime := max(cat.NextGCDAt(), sim.CurrentTime+cat.latency)

@@ -152,9 +152,9 @@ func NewPaladin(character *core.Character, options *proto.Player, paladinOptions
 	paladin.PseudoStats.CanParry = true
 	paladin.EnableManaBar()
 	paladin.AddStatDependency(stats.Strength, stats.AttackPower, core.APPerStrength[character.Class])
-	paladin.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[character.Class]*core.CritRatingPerCritChance)
-	paladin.AddStatDependency(stats.Agility, stats.Dodge, core.CritPerAgiAtLevel[character.Class]*core.CritRatingPerCritChance)
-	paladin.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[character.Class]*core.SpellCritRatingPerCritChance)
+	paladin.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAt(character.Class, paladin.Level)*core.CritRatingPerCritChance)
+	paladin.AddStatDependency(stats.Agility, stats.Dodge, core.CritPerAgiAt(character.Class, paladin.Level)*core.CritRatingPerCritChance)
+	paladin.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAt(character.Class, paladin.Level)*core.SpellCritRatingPerCritChance)
 
 	// Paladins get 1 block value per 20 str
 	paladin.PseudoStats.BlockValuePerStrength = 0.05

@@ -9,10 +9,10 @@ character_stats_results: {
   final_stats: 210
   final_stats: 0
   final_stats: 0
+  final_stats: 40
   final_stats: 0
   final_stats: 0
-  final_stats: 0
-  final_stats: 141
+  final_stats: 240
   final_stats: 41.25
   final_stats: 0
   final_stats: 29.17096
@@ -27,7 +27,7 @@ character_stats_results: {
   final_stats: 5891.5
   final_stats: 0
   final_stats: 0
-  final_stats: 798.3
+  final_stats: 879.3
   final_stats: 440
   final_stats: 0
   final_stats: 5
@@ -53,7 +53,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.33048
+  weights: 0.36228
   weights: 0
   weights: 0.28934
   weights: 0
@@ -63,8 +63,8 @@ stat_weights_results: {
   weights: 0
   weights: 0.28934
   weights: 0
-  weights: 3.9813
-  weights: 0.3952
+  weights: 4.24878
+  weights: 0.41753
   weights: 0
   weights: 0
   weights: 0
@@ -113,8 +113,8 @@ dps_results: {
 dps_results: {
  key: "TestP1Shadow-Phase1-AllItems-Confessor'sRaiment"
  value: {
-  dps: 431.74381
-  tps: 427.53007
+  dps: 454.22228
+  tps: 449.1094
  }
 }
 dps_results: {
@@ -127,8 +127,8 @@ dps_results: {
 dps_results: {
  key: "TestP1Shadow-Phase1-AllItems-GarmentsoftheOracle"
  value: {
-  dps: 492.99944
-  tps: 486.53371
+  dps: 509.07993
+  tps: 501.9993
  }
 }
 dps_results: {
@@ -150,6 +150,13 @@ dps_results: {
  value: {
   dps: 446.42278
   tps: 441.4614
+ }
+}
+dps_results: {
+ key: "TestP1Shadow-Phase1-AllItems-VestmentsofFaith"
+ value: {
+  dps: 478.85361
+  tps: 473.33603
  }
 }
 dps_results: {
@@ -176,98 +183,98 @@ dps_results: {
 dps_results: {
  key: "TestP1Shadow-Phase1-Average-Default"
  value: {
-  dps: 409.51003
-  tps: 405.90112
+  dps: 438.0905
+  tps: 433.33837
  }
 }
 dps_results: {
  key: "TestP1Shadow-Phase1-Settings-Dwarf-p0.bis-Basic-p1-FullBuffs-P1-Consumes-LongMultiTarget"
  value: {
-  dps: 435.22615
-  tps: 677.80445
+  dps: 465.76397
+  tps: 707.12077
  }
 }
 dps_results: {
  key: "TestP1Shadow-Phase1-Settings-Dwarf-p0.bis-Basic-p1-FullBuffs-P1-Consumes-LongSingleTarget"
  value: {
-  dps: 435.22615
-  tps: 430.81647
+  dps: 465.76397
+  tps: 460.13278
  }
 }
 dps_results: {
  key: "TestP1Shadow-Phase1-Settings-Dwarf-p0.bis-Basic-p1-FullBuffs-P1-Consumes-ShortSingleTarget"
  value: {
-  dps: 558.3488
-  tps: 556.46765
+  dps: 596.60979
+  tps: 593.19821
  }
 }
 dps_results: {
  key: "TestP1Shadow-Phase1-Settings-Dwarf-p0.bis-Basic-p1-NoBuffs-P1-Consumes-LongMultiTarget"
  value: {
-  dps: 212.24899
-  tps: 377.27599
+  dps: 227.32293
+  tps: 391.74697
  }
 }
 dps_results: {
  key: "TestP1Shadow-Phase1-Settings-Dwarf-p0.bis-Basic-p1-NoBuffs-P1-Consumes-LongSingleTarget"
  value: {
-  dps: 212.24899
-  tps: 212.43488
+  dps: 227.32293
+  tps: 226.90586
  }
 }
 dps_results: {
  key: "TestP1Shadow-Phase1-Settings-Dwarf-p0.bis-Basic-p1-NoBuffs-P1-Consumes-ShortSingleTarget"
  value: {
-  dps: 404.10268
-  tps: 402.51498
+  dps: 431.96831
+  tps: 429.26599
  }
 }
 dps_results: {
  key: "TestP1Shadow-Phase1-Settings-Undead-p0.bis-Basic-p1-FullBuffs-P1-Consumes-LongMultiTarget"
  value: {
-  dps: 412.43622
-  tps: 652.71652
+  dps: 441.19643
+  tps: 680.32633
  }
 }
 dps_results: {
  key: "TestP1Shadow-Phase1-Settings-Undead-p0.bis-Basic-p1-FullBuffs-P1-Consumes-LongSingleTarget"
  value: {
-  dps: 412.43622
-  tps: 408.77766
+  dps: 441.19643
+  tps: 436.38746
  }
 }
 dps_results: {
  key: "TestP1Shadow-Phase1-Settings-Undead-p0.bis-Basic-p1-FullBuffs-P1-Consumes-ShortSingleTarget"
  value: {
-  dps: 569.91016
-  tps: 567.63736
+  dps: 608.49394
+  tps: 604.67779
  }
 }
 dps_results: {
  key: "TestP1Shadow-Phase1-Settings-Undead-p0.bis-Basic-p1-NoBuffs-P1-Consumes-LongMultiTarget"
  value: {
-  dps: 209.86163
-  tps: 374.98412
+  dps: 224.58547
+  tps: 389.119
  }
 }
 dps_results: {
  key: "TestP1Shadow-Phase1-Settings-Undead-p0.bis-Basic-p1-NoBuffs-P1-Consumes-LongSingleTarget"
  value: {
-  dps: 209.86163
-  tps: 210.14302
+  dps: 224.58547
+  tps: 224.27789
  }
 }
 dps_results: {
  key: "TestP1Shadow-Phase1-Settings-Undead-p0.bis-Basic-p1-NoBuffs-P1-Consumes-ShortSingleTarget"
  value: {
-  dps: 411.45577
-  tps: 409.57395
+  dps: 439.4849
+  tps: 436.48191
  }
 }
 dps_results: {
  key: "TestP1Shadow-Phase1-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 412.43622
-  tps: 408.77766
+  dps: 441.19643
+  tps: 436.38746
  }
 }

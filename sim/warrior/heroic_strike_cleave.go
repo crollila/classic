@@ -5,10 +5,13 @@ import (
 )
 
 func (warrior *Warrior) registerHeroicStrikeSpell(realismICD *core.Cooldown) {
-	flatDamageBonus := core.TernaryFloat64(core.IncludeAQ, 157, 138)
-	spellID := core.TernaryInt32(core.IncludeAQ, 25286, 11567)
+	rank, spellID := warrior.trainerRank("Heroic Strike")
+	if rank == 0 {
+		return
+	}
+	flatDamageBonus := heroicStrikeBonus[rank-1]
 	// No known equation
-	threat := core.TernaryFloat64(core.IncludeAQ, 173, 145)
+	threat := heroicStrikeThreat[rank-1]
 
 	warrior.HeroicStrike = warrior.RegisterSpell(AnyStance, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
@@ -47,13 +50,17 @@ func (warrior *Warrior) registerHeroicStrikeSpell(realismICD *core.Cooldown) {
 }
 
 func (warrior *Warrior) registerCleaveSpell(realismICD *core.Cooldown) {
-	flatDamageBonus := 50.0
-	spellID := int32(20569)
-	threat := 100.0
+	rank, spellID := warrior.trainerRank("Cleave")
+	if rank == 0 {
+		return
+	}
+	rankBonus := cleaveBonus[rank-1]
+	flatDamageBonus := rankBonus
+	threat := cleaveThreat[rank-1]
 
 	flatDamageBonus *= []float64{1, 1.4, 1.8, 2.2}[warrior.Talents.ImprovedCleave]
 	if warrior.ForeverRank("warrior.talent.improved-cleave") > 0 {
-		flatDamageBonus = 50
+		flatDamageBonus = rankBonus
 	}
 
 	results := make([]*core.SpellResult, min(int32(2), warrior.Env.GetNumTargets()))

@@ -97,6 +97,13 @@ stat_weights_results: {
  }
 }
 dps_results: {
+ key: "TestP1Hunter-Phase1-AllItems-BeastmasterArmor"
+ value: {
+  dps: 451.29908
+  tps: 294.6183
+ }
+}
+dps_results: {
  key: "TestP1Hunter-Phase1-AllItems-BloodGuard'sChainGauntlets-16530"
  value: {
   dps: 459.88555
@@ -113,15 +120,22 @@ dps_results: {
 dps_results: {
  key: "TestP1Hunter-Phase1-AllItems-Champion'sPursuance"
  value: {
-  dps: 444.57853
-  tps: 287.9668
+  dps: 466.95677
+  tps: 310.34503
  }
 }
 dps_results: {
  key: "TestP1Hunter-Phase1-AllItems-Champion'sPursuit"
  value: {
-  dps: 440.93801
-  tps: 284.32628
+  dps: 446.72615
+  tps: 290.11441
+ }
+}
+dps_results: {
+ key: "TestP1Hunter-Phase1-AllItems-CryptstalkerArmor"
+ value: {
+  dps: 501.13065
+  tps: 344.47395
  }
 }
 dps_results: {
@@ -148,15 +162,15 @@ dps_results: {
 dps_results: {
  key: "TestP1Hunter-Phase1-AllItems-FieldMarshal'sPursuit"
  value: {
-  dps: 457.59453
-  tps: 300.98279
+  dps: 472.50679
+  tps: 315.66295
  }
 }
 dps_results: {
  key: "TestP1Hunter-Phase1-AllItems-General'sChainGloves-16571"
  value: {
-  dps: 462.23931
-  tps: 305.47206
+  dps: 464.98819
+  tps: 308.22094
  }
 }
 dps_results: {
@@ -183,22 +197,22 @@ dps_results: {
 dps_results: {
  key: "TestP1Hunter-Phase1-AllItems-LieutenantCommander'sPursuance"
  value: {
-  dps: 444.57853
-  tps: 287.9668
+  dps: 466.95677
+  tps: 310.34503
  }
 }
 dps_results: {
  key: "TestP1Hunter-Phase1-AllItems-LieutenantCommander'sPursuit"
  value: {
-  dps: 440.93801
-  tps: 284.32628
+  dps: 446.72615
+  tps: 290.11441
  }
 }
 dps_results: {
  key: "TestP1Hunter-Phase1-AllItems-Marshal'sChainGrips-16463"
  value: {
-  dps: 462.23931
-  tps: 305.47206
+  dps: 464.98819
+  tps: 308.22094
  }
 }
 dps_results: {
@@ -218,15 +232,15 @@ dps_results: {
 dps_results: {
  key: "TestP1Hunter-Phase1-AllItems-Striker'sGarb"
  value: {
-  dps: 455.14748
-  tps: 298.54658
+  dps: 463.38117
+  tps: 306.78027
  }
 }
 dps_results: {
  key: "TestP1Hunter-Phase1-AllItems-Warlord'sPursuit"
  value: {
-  dps: 457.59453
-  tps: 300.98279
+  dps: 472.50679
+  tps: 315.66295
  }
 }
 dps_results: {

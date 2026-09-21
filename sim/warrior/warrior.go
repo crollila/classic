@@ -204,27 +204,35 @@ func (warrior *Warrior) Reset(sim *core.Simulation) {
 	warrior.curQueuedAutoSpell = nil
 
 	// Reset Stance
+	stance := BattleStance
 	switch warrior.WarriorInputs.Stance {
 	case proto.WarriorStance_WarriorStanceBattle:
-		warrior.Stance = BattleStance
-		warrior.BattleStanceAura.Activate(sim)
+		stance = BattleStance
 	case proto.WarriorStance_WarriorStanceDefensive:
-		warrior.Stance = DefensiveStance
-		warrior.DefensiveStanceAura.Activate(sim)
+		stance = DefensiveStance
 	case proto.WarriorStance_WarriorStanceBerserker:
-		warrior.Stance = BerserkerStance
-		warrior.BerserkerStanceAura.Activate(sim)
+		stance = BerserkerStance
 	default:
 		if warrior.PrimaryTalentTree == ArmsTree {
-			warrior.Stance = BattleStance
-			warrior.BattleStanceAura.Activate(sim)
+			stance = BattleStance
 		} else if warrior.PrimaryTalentTree == FuryTree {
-			warrior.Stance = BerserkerStance
-			warrior.BerserkerStanceAura.Activate(sim)
+			stance = BerserkerStance
 		} else {
-			warrior.Stance = DefensiveStance
-			warrior.DefensiveStanceAura.Activate(sim)
+			stance = DefensiveStance
 		}
+	}
+	// A stance not learned yet at the warrior's level starts in Battle Stance.
+	if !warrior.knowsStance(stance) {
+		stance = BattleStance
+	}
+	warrior.Stance = stance
+	switch stance {
+	case BattleStance:
+		warrior.BattleStanceAura.Activate(sim)
+	case DefensiveStance:
+		warrior.DefensiveStanceAura.Activate(sim)
+	case BerserkerStance:
+		warrior.BerserkerStanceAura.Activate(sim)
 	}
 }
 
@@ -240,8 +248,8 @@ func NewWarrior(character *core.Character, talents string, inputs WarriorInputs)
 
 	warrior.AddStatDependency(stats.Strength, stats.AttackPower, core.APPerStrength[character.Class])
 	warrior.PseudoStats.BlockValuePerStrength = .05 // 20 str = 1 block
-	warrior.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[character.Class]*core.CritRatingPerCritChance)
-	warrior.AddStatDependency(stats.Agility, stats.Dodge, core.DodgePerAgiAtLevel[character.Class]*core.DodgeRatingPerDodgeChance)
+	warrior.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAt(character.Class, warrior.Level)*core.CritRatingPerCritChance)
+	warrior.AddStatDependency(stats.Agility, stats.Dodge, core.DodgePerAgiAt(character.Class, warrior.Level)*core.DodgeRatingPerDodgeChance)
 	warrior.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 
 	guardians.ConstructGuardians(&warrior.Character)

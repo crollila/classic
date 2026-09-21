@@ -7,6 +7,9 @@ import (
 )
 
 func (warrior *Warrior) registerBloodrageCD() {
+	if warrior.Level < levelBloodrage {
+		return
+	}
 	actionID := core.ActionID{SpellID: 2687}
 	rageMetrics := warrior.NewRageMetrics(actionID)
 

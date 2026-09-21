@@ -90,6 +90,9 @@ func (druid *Druid) registerCatFormSpell() {
 	statBonus := druid.GetFormShiftStats().Add(stats.Stats{
 		stats.AttackPower: float64(druid.Level) * 2,
 	})
+	if druid.Forever != nil {
+		statBonus[stats.AttackPower] += druid.foreverPredatoryStrikesAP()
+	}
 
 	agiApDep := druid.NewDynamicStatDependency(stats.Agility, stats.AttackPower, 1)
 	feralApDep := druid.NewDynamicStatDependency(stats.FeralAttackPower, stats.AttackPower, 1)
@@ -175,7 +178,9 @@ func (druid *Druid) registerCatFormSpell() {
 			}
 			druid.SetCurrentPowerBar(core.ManaBar)
 
-			druid.TigersFuryAura.Deactivate(sim)
+			if druid.TigersFuryAura != nil {
+				druid.TigersFuryAura.Deactivate(sim)
+			}
 
 			druid.AutoAttacks.SetMH(druid.WeaponFromMainHand())
 
@@ -243,7 +248,7 @@ func (druid *Druid) registerCatFormSpell() {
 					if druid.InForm(Humanoid | Moonkin) {
 						outside += sim.CurrentTime - druid.foreverHumanoidSince
 					}
-					maxShiftEnergy = min(20*druid.fr("furor"), druid.foreverLastCatEnergy*.2*druid.fr("furor")+2*outside.Seconds())
+					maxShiftEnergy = druid.foreverFurorEnergy(outside)
 					druid.foreverHumanoidTime = 0
 				}
 				maxShiftEnergy = core.TernaryFloat64(hasWolfheadBonus, maxShiftEnergy+20, maxShiftEnergy)

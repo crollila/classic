@@ -11,7 +11,7 @@ func player() *proto.Player {
 	return &proto.Player{Class: proto.Class_ClassWarrior, Race: proto.Race_RaceHuman, Spec: &proto.Player_Warrior{Warrior: &proto.Warrior{}}, Forever: &proto.ForeverOptions{RulesetId: RulesetID, Talents: map[string]int32{"warrior.talent.deflection": 5, "warrior.talent.improved-overpower": 1}}}
 }
 func TestTreeImportAndCorrections(t *testing.T) {
-	if len(data.Records) != 470 {
+	if len(data.Records) != 469 { // 470 pre-beta records minus Vitality, which the beta client does not have
 		t.Fatal(len(data.Records))
 	}
 	trees := map[string]bool{}

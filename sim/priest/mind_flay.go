@@ -47,9 +47,8 @@ func (priest *Priest) newMindFlaySpellConfig(rank int, tickIdx int32) core.Spell
 
 	spellId := MindFlaySpellId[rank]
 	baseDamage := MindFlayBaseDamage[rank] / float64(ticks)
-	if priest.Forever != nil && rank == 1 {
-		baseDamage = 104 / float64(ticks)
-	}
+	// Forever needs no rank 1 special case: the client override for 15407 scales 75 to the
+	// tooltip's 63 at registration.
 	manaCost := MindFlayManaCost[rank]
 	level := MindFlayLevel[rank]
 

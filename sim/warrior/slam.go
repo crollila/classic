@@ -7,9 +7,12 @@ import (
 )
 
 func (warrior *Warrior) registerSlamSpell() {
-	requiredLevel := 54
-	spellID := int32(11605)
-	flatDamageBonus := 87.0
+	rank, spellID := warrior.trainerRank("Slam")
+	if rank == 0 {
+		return
+	}
+	requiredLevel := int(core.SpellLearnedLevel(spellID))
+	flatDamageBonus := slamBonus[rank-1]
 
 	castTime := time.Millisecond*1500 - time.Millisecond*100*time.Duration(warrior.Talents.ImprovedSlam)
 	gcd := core.GCDDefault
@@ -17,6 +20,11 @@ func (warrior *Warrior) registerSlamSpell() {
 		reduction := time.Duration(warrior.ForeverValue("warrior.talent.improved-slam", 0, 0) * float64(time.Second))
 		castTime = 1500*time.Millisecond - reduction
 		gcd -= reduction
+	}
+	// Forever: every Slam rank has a 15 sec cooldown.
+	var cd core.Cooldown
+	if warrior.Forever != nil {
+		cd = core.Cooldown{Timer: warrior.NewTimer(), Duration: 15 * time.Second}
 	}
 	warrior.Slam = warrior.RegisterSpell(AnyStance, core.SpellConfig{
 		SpellCode:   SpellCode_WarriorSlam,
@@ -37,6 +45,7 @@ func (warrior *Warrior) registerSlamSpell() {
 				GCD:      gcd,
 				CastTime: castTime,
 			},
+			CD: cd,
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
 				if spell.CastTime() > 0 && warrior.ForeverRank("warrior.talent.improved-slam") == 0 {
 					warrior.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+cast.CastTime, true)

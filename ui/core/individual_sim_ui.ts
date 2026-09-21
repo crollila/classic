@@ -1,3 +1,4 @@
+import * as OtherInputs from './components/other_inputs';
 import { CharacterStats, StatMods } from './components/character_stats';
 import { ContentBlock } from './components/content_block';
 import { EmbeddedDetailedResults } from './components/detailed_results';
@@ -190,6 +191,15 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 		});
 		this.rootElem.classList.add('individual-sim-ui');
 		this.player = player;
+		if (import.meta.env.VITE_FOREVER === 'true') {
+			// The shipped presets are Classic gear, talents and consumes. A Forever character
+			// starts naked with nothing applied; builds come from the Forever talent picker.
+			config.presets = { ...config.presets, gear: [], talents: [], builds: [] };
+			config.defaults = { ...config.defaults, gear: EquipmentSpec.create(), consumes: Consumes.create(),
+				individualBuffs: IndividualBuffs.create(), partyBuffs: PartyBuffs.create(), raidBuffs: RaidBuffs.create(), debuffs: Debuffs.create() };
+			if (config.otherInputs && !config.otherInputs.inputs.includes(OtherInputs.CharacterLevel))
+				config.otherInputs = { ...config.otherInputs, inputs: [OtherInputs.CharacterLevel, ...config.otherInputs.inputs] };
+		}
 		this.individualConfig = config;
 		this.raidSimResultsManager = null;
 		this.prevEpIterations = 0;

@@ -15,8 +15,12 @@ type foreverWarlockState struct {
 	decimation, shadowFlame, fireFlame  *core.Aura
 }
 
+// foreverDotOutcome lets Forever damage over time crit at its snapshot crit chance with or
+// without Pandemic: the client's Pandemic "increases the critical strike damage bonus" of
+// DoTs, which implies they already crit (ElliotWood/Forever crits every DoT). Needs
+// in-game confirmation. Classic ticks never crit.
 func (w *Warlock) foreverDotOutcome(dot *core.Dot) core.OutcomeApplier {
-	if w.ForeverRank("warlock.talent.pandemic") > 0 {
+	if w.Forever != nil {
 		return dot.OutcomeSnapshotCrit
 	}
 	return dot.OutcomeTick
@@ -40,7 +44,7 @@ func (w *Warlock) applyForeverCasterTalents() {
 		return t.GetOrRegisterAura(core.Aura{Label: "Forever Bane of Havoc-" + w.Label, Tag: "forever-debuff-bane", ActionID: w.ForeverAction("warlock.talent.bane-of-havoc"), Duration: 5 * time.Minute})
 	})
 	f.brand = w.NewEnemyAuraArray(func(t *core.Unit) *core.Aura {
-		return t.GetOrRegisterAura(core.Aura{Label: "Forever Demonic Brand-" + w.Label, ActionID: w.ForeverAction("warlock.talent.demonic-brand"), Duration: 10 * time.Second, MaxStacks: 2})
+		return t.GetOrRegisterAura(core.Aura{Label: "Forever Demonic Brand-" + w.Label, ActionID: w.ForeverAction("warlock.talent.demonic-brand"), Duration: 10 * time.Second, MaxStacks: 6})
 	})
 	f.decimation = w.RegisterAura(core.Aura{Label: "Forever Decimation", ActionID: w.ForeverAction("warlock.talent.decimation"), Duration: 10 * time.Second,
 		OnGain: func(a *core.Aura, sim *core.Simulation) {
@@ -75,23 +79,8 @@ func (w *Warlock) applyForeverCasterTalents() {
 		if s.SpellSchool.Matches(core.SpellSchoolShadow) && s.SpellCode != SpellCode_WarlockDrainHope && len(s.Dots()) > 0 && f.hope.Get(at.Defender).IsActive() {
 			mult *= 1.1
 		}
-		if (s.SpellCode == SpellCode_WarlockDrainLife || s.SpellCode == SpellCode_WarlockDrainSoul) && rank("improved-drains") > 0 {
-			count := 0
-			for _, other := range w.Spellbook {
-				if other != s && other.Flags.Matches(WarlockFlagAffliction) && len(other.Dots()) > 0 {
-					if d := other.Dot(at.Defender); d != nil && d.IsActive() {
-						count++
-					}
-				}
-			}
-			if curse := w.ActiveCurseAura.Get(at.Defender); curse != nil && curse.IsActive() {
-				count++
-			}
-			bonus := min(float64(count)*val("improved-drains", 0), val("improved-drains", 1)) / 100
-			if s.SpellCode == SpellCode_WarlockDrainSoul && (f.execute20 || (at.Defender.HasHealthBar() && at.Defender.CurrentHealthPercent() < .2)) {
-				bonus *= 3
-			}
-			mult *= 1 + bonus
+		if isForeverDrain(s) {
+			mult *= w.foreverDrainMultiplier(s, at.Defender)
 		}
 		return mult
 	})
@@ -100,7 +89,8 @@ func (w *Warlock) applyForeverCasterTalents() {
 			return
 		}
 		if s.DefenseType == core.DefenseTypeMagic {
-			w.ForeverSpellRange(s, 30*(1+val("destructive-reach", 0)/100)+core.TernaryFloat64(s.SpellCode == SpellCode_WarlockDrainLife, val("improved-drains", 3), 0))
+			// The client's Improved Drains no longer extends Drain Life's range.
+			w.ForeverSpellRange(s, 30*(1+val("destructive-reach", 0)/100))
 		}
 		if s.Flags.Matches(WarlockFlagDestruction) {
 			if s.Cost != nil {
@@ -119,7 +109,8 @@ func (w *Warlock) applyForeverCasterTalents() {
 		}
 		if s.SpellCode == SpellCode_WarlockSearingPain {
 			s.BonusCritRating += val("agonizing-flames", 0) * core.SpellCritRatingPerCritChance
-			s.ThreatMultiplier *= 1 - val("demonic-brand", 0)/100
+			// Client: 17/33/50% less threat (the demo record reads 17/34/51).
+			s.ThreatMultiplier *= 1 - [4]float64{0, .17, .33, .50}[min(3, rank("demonic-brand"))]
 		}
 		if s.SpellCode == SpellCode_WarlockConflagrate {
 			s.BonusCritRating += val("fire-and-brimstone", 0) * core.SpellCritRatingPerCritChance
@@ -131,7 +122,7 @@ func (w *Warlock) applyForeverCasterTalents() {
 			s.DefaultCast.CastTime -= time.Duration(val("bane", 1) * float64(time.Second))
 			s.CD.Duration = time.Duration(float64(s.CD.Duration) * (1 - val("decimation", 0)/100))
 		}
-		if s.SpellCode == SpellCode_WarlockDrainLife || s.SpellCode == SpellCode_WarlockDrainSoul {
+		if isForeverDrain(s) {
 			s.PushbackReduction += val("fel-concentration", 0) / 100
 		}
 		if d := s.AOEDot(); d != nil {
@@ -142,9 +133,6 @@ func (w *Warlock) applyForeverCasterTalents() {
 				continue
 			}
 			d.DamageMultiplier *= 1 + val("malediction", 0)/100
-			if s.SpellCode == SpellCode_WarlockDrainLife || s.SpellCode == SpellCode_WarlockDrainSoul {
-				d.TickLength = time.Duration(float64(d.TickLength) / (1 + val("soul-siphon", 0)/100))
-			}
 		}
 		if s.SpellSchool.Matches(core.SpellSchoolShadow) && len(s.Dots()) > 0 {
 			s.CritDamageBonus += val("pandemic", 0) / 100
@@ -199,7 +187,8 @@ func (w *Warlock) applyForeverCasterTalents() {
 		if s.SpellCode == SpellCode_WarlockSearingPain && rank("demonic-brand") > 0 {
 			a := f.brand.Get(r.Target)
 			a.Activate(sim)
-			a.SetStacks(sim, 2)
+			// Client: the brand arms 2/4/6 pet attacks (the demo record reads 2 at every rank).
+			a.SetStacks(sim, 2*min(3, rank("demonic-brand")))
 		}
 		if rank("shadow-and-flame") > 0 {
 			if s.SpellCode == SpellCode_WarlockConflagrate {
@@ -218,21 +207,31 @@ func (w *Warlock) registerForeverSpells() {
 	}
 	f := w.foreverState
 	if w.ForeverRank("warlock.talent.incinerate") > 0 {
-		w.RegisterSpell(core.SpellConfig{ActionID: w.ForeverAction("warlock.talent.incinerate"), SpellCode: SpellCode_WarlockIncinerate, SpellSchool: core.SpellSchoolFire, DefenseType: core.DefenseTypeMagic, ProcMask: core.ProcMaskSpellDamage, Flags: WarlockFlagDestruction | core.SpellFlagAPL, ManaCost: core.ManaCostOptions{FlatCost: 205}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault, CastTime: 2500 * time.Millisecond}}, DamageMultiplier: 1, ThreatMultiplier: 1, BonusCoefficient: 2.5 / 3.5,
+		// The talent keeps its Forever action at every rank; the rank the level has learned
+		// (client tooltips) supplies damage and mana.
+		inc := foreverIncinerateRanks[0]
+		for _, r := range foreverIncinerateRanks {
+			if r.level <= w.Level {
+				inc = r
+			}
+		}
+		w.RegisterSpell(core.SpellConfig{ActionID: w.ForeverAction("warlock.talent.incinerate"), SpellCode: SpellCode_WarlockIncinerate, SpellSchool: core.SpellSchoolFire, DefenseType: core.DefenseTypeMagic, ProcMask: core.ProcMaskSpellDamage, Flags: WarlockFlagDestruction | core.SpellFlagAPL, ManaCost: core.ManaCostOptions{FlatCost: inc.mana}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault, CastTime: 2500 * time.Millisecond}}, DamageMultiplier: 1, ThreatMultiplier: 1, BonusCoefficient: 2.5 / 3.5,
 			ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
 				mult := 1.0
 				if w.getActiveImmolateSpell(t) != nil {
 					mult = 1.25
 				}
 				s.DamageMultiplier *= mult
-				s.CalcAndDealDamage(sim, t, sim.Roll(125, 140), s.OutcomeMagicHitAndCrit)
+				s.CalcAndDealDamage(sim, t, sim.Roll(inc.min, inc.max), s.OutcomeMagicHitAndCrit)
 				s.DamageMultiplier /= mult
 			},
 		})
 	}
 	if w.ForeverRank("warlock.talent.drain-hope") > 0 {
 		w.RegisterSpell(core.SpellConfig{ActionID: w.ForeverAction("warlock.talent.drain-hope"), SpellCode: SpellCode_WarlockDrainHope, SpellSchool: core.SpellSchoolShadow, DefenseType: core.DefenseTypeMagic, ProcMask: core.ProcMaskSpellDamage, Flags: WarlockFlagAffliction | core.SpellFlagAPL | core.SpellFlagChanneled, ManaCost: core.ManaCostOptions{FlatCost: 200}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}}, DamageMultiplier: 1, ThreatMultiplier: 1,
-			Dot: core.DotConfig{Aura: core.Aura{Label: "Forever Drain Hope damage-" + w.Label}, NumberOfTicks: 6, TickLength: time.Second, BonusCoefficient: .1, OnSnapshot: func(sim *core.Simulation, t *core.Unit, d *core.Dot, roll bool) { d.Snapshot(t, 52, roll) }, OnTick: func(sim *core.Simulation, t *core.Unit, d *core.Dot) {
+			// Wrack (1316697) in the beta client: 36 Shadow a second for 6 sec at 14.3% a tick,
+			// 200 mana. The talent record still carries the demo's "Drain Hope" 52 and 10%.
+			Dot: core.DotConfig{Aura: core.Aura{Label: "Forever Drain Hope damage-" + w.Label}, NumberOfTicks: 6, TickLength: time.Second, BonusCoefficient: .143, OnSnapshot: func(sim *core.Simulation, t *core.Unit, d *core.Dot, roll bool) { d.Snapshot(t, 36, roll) }, OnTick: func(sim *core.Simulation, t *core.Unit, d *core.Dot) {
 				d.CalcAndDealPeriodicSnapshotDamage(sim, t, w.foreverDotOutcome(d))
 			}},
 			ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
@@ -290,4 +289,43 @@ func (w *Warlock) registerForeverSpells() {
 	w.registerForeverMissingAffliction()
 	w.registerForeverPetUtilities()
 	w.registerForeverSoulShards()
+}
+
+// foreverIncinerateRanks: 412758 (40), 1293812 (50), 1293813 (60) from the beta client.
+var foreverIncinerateRanks = []struct {
+	level          int32
+	mana, min, max float64
+}{{40, 205, 99, 113}, {50, 265, 145, 167}, {60, 325, 201, 233}}
+
+// isForeverDrain is Drain Life, Drain Soul or Wrack, the spells Improved Drains, Soul
+// Siphon, Fel Concentration and Nightfall name in the Forever client.
+func isForeverDrain(s *core.Spell) bool {
+	return s.SpellCode == SpellCode_WarlockDrainLife || s.SpellCode == SpellCode_WarlockDrainSoul || s.SpellCode == SpellCode_WarlockDrainHope
+}
+
+// foreverImprovedDrains is the client's flat Improved Drains bonus per rank.
+var foreverImprovedDrains = [4]float64{0, .07, .13, .20}
+
+// foreverDrainMultiplier is Improved Drains (flat 7/13/20%) times Soul Siphon (4/8/12% for
+// each of the warlock's other Affliction effects on the target, up to three effects, so
+// 12/24/36%). The two talents are separate multipliers, as ElliotWood/Forever has them.
+func (w *Warlock) foreverDrainMultiplier(s *core.Spell, target *core.Unit) float64 {
+	mult := 1 + foreverImprovedDrains[min(3, w.ForeverRank("warlock.talent.improved-drains"))]
+	if w.ForeverRank("warlock.talent.soul-siphon") == 0 {
+		return mult
+	}
+	count := 0
+	for _, other := range w.Spellbook {
+		if other != s && other.Flags.Matches(WarlockFlagAffliction) && len(other.Dots()) > 0 {
+			if d := other.Dot(target); d != nil && d.IsActive() {
+				count++
+			}
+		}
+	}
+	if curse := w.ActiveCurseAura.Get(target); curse != nil && curse.IsActive() {
+		count++
+	}
+	perEffect := w.ForeverValue("warlock.talent.soul-siphon", 0, 0) / 100
+	limit := w.ForeverValue("warlock.talent.soul-siphon", 1, 0) / 100
+	return mult * (1 + min(float64(count)*perEffect, limit))
 }

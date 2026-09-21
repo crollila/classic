@@ -4,28 +4,74 @@ import (
 	"time"
 
 	"github.com/wowsims/classic/sim/core"
+	"github.com/wowsims/classic/sim/core/stats"
 )
 
+// Faerie Fire ranks: spell id, Faerie Fire (Feral) id, learned level, mana, armor.
+var faerieFireRanks = []struct {
+	id, feralID, level int32
+	mana, armor        float64
+}{
+	{770, 16857, 18, 55, 175},
+	{778, 17390, 30, 75, 285},
+	{9749, 17391, 42, 95, 395},
+	{9907, 17392, 54, 115, 505},
+}
+
+// faerieFireRankAura mirrors core.FaerieFireAura for a rank below the top one.
+func faerieFireRankAura(target *core.Unit, label string, spellID int32, armor float64) *core.Aura {
+	aura := target.GetOrRegisterAura(core.Aura{
+		Label:    label,
+		ActionID: core.ActionID{SpellID: spellID},
+		Duration: time.Second * 40,
+	})
+	aura.NewExclusiveEffect("MinorArmorReduction", true, core.ExclusiveEffect{
+		Priority: armor,
+		OnGain: func(ee *core.ExclusiveEffect, sim *core.Simulation) {
+			ee.Aura.Unit.AddStatDynamic(sim, stats.Armor, -armor)
+		},
+		OnExpire: func(ee *core.ExclusiveEffect, sim *core.Simulation) {
+			ee.Aura.Unit.AddStatDynamic(sim, stats.Armor, armor)
+		},
+	})
+	return aura
+}
+
 func (druid *Druid) registerFaerieFireSpell() {
+	rank := -1
+	for i, r := range faerieFireRanks {
+		if r.level <= druid.Level {
+			rank = i
+		}
+	}
+	if rank < 0 {
+		return // learned at level 18
+	}
+	ffRank := faerieFireRanks[rank]
+	topRank := rank == len(faerieFireRanks)-1
+
 	spellCode := SpellCode_DruidFaerieFire
-	actionID := core.ActionID{SpellID: 9907}
+	actionID := core.ActionID{SpellID: ffRank.id}
 	manaCostOptions := core.ManaCostOptions{
-		FlatCost: 115,
+		FlatCost: ffRank.mana,
 	}
 	gcd := core.GCDDefault
 	ignoreHaste := false
 	cd := core.Cooldown{}
-	flatThreatBonus := 2. * 54
+	flatThreatBonus := 2. * float64(ffRank.level)
 	flags := core.SpellFlagNone
 	formMask := Humanoid | Moonkin
 
 	druid.FaerieFireAuras = druid.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
+		if !topRank {
+			return faerieFireRankAura(target, "Faerie Fire", ffRank.id, ffRank.armor)
+		}
 		return core.FaerieFireAura(target)
 	})
 
 	if druid.InForm(Cat|Bear) && druid.Talents.FaerieFireFeral {
 		spellCode = SpellCode_DruidFaerieFireFeral
-		actionID = core.ActionID{SpellID: 17392}
+		actionID = core.ActionID{SpellID: ffRank.feralID}
 		manaCostOptions = core.ManaCostOptions{}
 		gcd = time.Second
 		ignoreHaste = true
@@ -35,6 +81,9 @@ func (druid *Druid) registerFaerieFireSpell() {
 			Duration: time.Second * 6,
 		}
 		druid.FaerieFireAuras = druid.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
+			if !topRank {
+				return faerieFireRankAura(target, "Faerie Fire (Feral)", ffRank.feralID, ffRank.armor)
+			}
 			return core.FaerieFireFeralAura(target)
 		})
 	}

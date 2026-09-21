@@ -8,10 +8,13 @@ import { el } from './metadata';
 import { ForeverTalent, effectiveForeverRank, foreverDefaultOptions, foreverRaces, foreverRaceKeys, foreverClassName, foreverBuildErrors, sampleForeverBuild, foreverKnowledgeState, foreverStateMeaning } from './discovery';
 import { classRecords, treeNames, rankChange, encodeTalents, decodeTalents, talentURL, readTalentURL } from './talent-build';
 import importedPresentation from './data/talent-presentation.json';
+import clientText from '../app/data/talent-text.json';
 import './talent-window.css';
 
 type Presentation={icon:string;classic:null|{status?:string;tree?:string;row?:number;col?:number;max?:number;text?:string}};
 const art=importedPresentation as unknown as {trees:Record<string,Array<{name:string;icon:string;background:string}>>;talents:Record<string,Presentation>};
+// Rank text as the Forever beta client writes it (talentsforever.com export, CC BY 4.0).
+const clientRanks=(cls:string,name:string):string[]|undefined=>(clientText as unknown as {talents:Record<string,Record<string,{desc:string[]}>>}).talents[cls]?.[name]?.desc;
 const iconURL=(icon:string)=>`https://wow.zamimg.com/images/wow/icons/large/${icon}.jpg`;
 function image(icon:string){const img=el('img');img.src=iconURL(icon);img.alt='';img.draggable=false;img.addEventListener('error',()=>{img.hidden=true},{once:true});return img;}
 function button(label:string,action:()=>void){const b=el('button','ft-button',label);b.type='button';b.addEventListener('click',action);return b;}
@@ -69,9 +72,8 @@ export class ForeverTalentWindow {
   this.mode.addEventListener('change',()=>{const f=this.options();f.mode=Number(this.mode.value);this.save(f);if(f.mode===ForeverMode.STRICT&&this.player.getRace()>=9)this.player.setRace(TypedEvent.nextEventID(),foreverRaces(this.player.getClass()).find(r=>r<9)!);});modeLabel.append(this.mode);
   const raceLabel=el('label','','Race ');this.race.setAttribute('aria-label','Forever race');this.race.addEventListener('change',()=>this.player.setRace(TypedEvent.nextEventID(),Number(this.race.value)));raceLabel.append(this.race);
   const compare=button('Compare to Classic',()=>{this.compare=!this.compare;compare.setAttribute('aria-pressed',String(this.compare));this.root.classList.toggle('ft-comparing',this.compare);this.refresh();});compare.setAttribute('aria-pressed','false');
-  toolbar.append(modeLabel,raceLabel,button('Reset',()=>{const f=this.options();f.talents={};this.save(f);this.message('All talent points refunded.');}),button('Copy URL',()=>void this.copy(this.link.value)),button('Share build',()=>void this.share()),compare);
+  toolbar.append(raceLabel,button('Reset',()=>{const f=this.options();f.talents={};this.save(f);this.message('All talent points refunded.');}),button('Copy URL',()=>void this.copy(this.link.value)),button('Share build',()=>void this.share()),compare);
   this.root.append(toolbar,this.notice);
-  const strip=el('div','ft-mode-strip');strip.dataset.modeStrip='';this.root.append(strip);
   this.root.append(el('p','ft-mobile-hint','Swipe across the three trees. Tap an icon to inspect it.'));
   const trees=el('div','ft-trees');trees.setAttribute('aria-label','Three talent trees');
   const maxRow=Math.max(...this.records.map(r=>r.row));
@@ -122,7 +124,7 @@ export class ForeverTalentWindow {
   }
   this.root.append(trees);
   this.root.append(el('p','ft-help','Click to add · Right-click or Shift+click to remove · Hover for details. Touch: tap to inspect, tap again to add, hold to remove. Keyboard: Enter to add, − to remove, Esc to close.'));
-  this.root.append(el('p','ft-legend','✦ New in Forever   ·   ◆ Changed   ·   ↗ Moved   ·   ~ Predicted   ·   unmarked = BASELINE_ASSUMED, inherited from Classic. Compare highlights changes; inspect a talent for details.'));
+  this.root.append(el('p','ft-legend','✦ New in Forever   ·   ◆ Changed   ·   ↗ Moved. Talent text is the Forever beta client\'s.'));
   const samples=el('details','ft-disclosure');samples.append(el('summary','','Explore sample builds'));
   samples.append(el('p','','Legal 51-point examples, not optimized builds.'));
   for(const tree of treeNames(this.player.getClass()))samples.append(button(tree,()=>{this.save({...this.options(),talents:sampleForeverBuild(this.player.getClass(),tree)});this.message(`${tree} sample loaded.`);}));
@@ -133,27 +135,12 @@ export class ForeverTalentWindow {
   box.append(el('h4','',r.name),el('div','ft-tooltip-rank',`Rank ${n}/${r.max_rank}`));
   if(r.activation_text)box.append(el('p','',r.activation_text));
   const ranks=n===0?[r.ranks[0]]:r.ranks.slice(n-1,Math.min(n+1,r.max_rank));
-  for(const rank of ranks){const predicted=rank.estimated||rank.confidence==='PREDICTED'||r.confidence==='PREDICTED';box.append(el('p','ft-effect',`${rank.rank===n?'Current rank':'Next rank'} ${rank.rank}${predicted?' · PREDICTED':''}\n${rank.effect}`));}
+  const client=clientRanks(foreverClassName(this.player.getClass()),r.name);
+  for(const rank of ranks)box.append(el('p','ft-effect',`${rank.rank===n?'Current rank':'Next rank'} ${rank.rank}\n${client?.[rank.rank-1]||rank.effect}`));
   if(!n)box.append(el('small','','Not learned.'));
   const lower=this.records.filter(t=>t.tree===r.tree&&t.row<r.row).reduce((a,t)=>a+(f.talents[t.id]||0),0);
   if(r.required_points)box.append(el('p',lower<r.required_points?'ft-unmet':'ft-met',`Requires ${r.required_points} points in earlier ${r.tree} rows (${lower} spent).`));
   for(const p of r.prerequisites)box.append(el('p',(f.talents[p.id]||0)<p.rank?'ft-unmet':'ft-met',`Requires ${p.rank} ranks in ${this.records.find(t=>t.id===p.id)?.name}.`));
-  if(active<n)box.append(el('p','ft-unmet',`Selected ${n}; active ${active} in ${f.mode===ForeverMode.STRICT?'STRICT':'BEST GUESS'}. ${active?'Only the supported rank effect runs.':'This effect is disabled.'}`));
-  const evidence=el('section','ft-evidence');evidence.append(el('h5','','MECHANIC STATUS'));
-  const status=foreverKnowledgeState(r,ranks.some(rank=>rank.estimated||rank.confidence==='PREDICTED'));
-  evidence.append(el('strong',`ft-status ft-status-${status.toLowerCase()}`,status));
-  evidence.append(el('small','',foreverStateMeaning[status]));
-  if(status==='BASELINE_ASSUMED')evidence.append(el('p','','Inherited from Classic\nNo Forever change is recorded for this talent, so the WoWSims Classic implementation is what the simulator runs. That is our current model, not a Forever measurement.'));
-  if(['PROVISIONAL','PREDICTED'].includes(status)){
-   evidence.append(el('p','',`Why we currently believe this\n${r.adapter?.reason||'Source tooltip transcription; live Forever interactions are not yet verified.'}`));
-   for(const rank of ranks.filter(rank=>rank.estimated||rank.confidence==='PREDICTED'))evidence.append(el('p','',`Rank ${rank.rank} prediction method\n${rank.prediction_reason||'The source does not specify a prediction method.'}`));
-   evidence.append(el('p','',`What remains unknown\n${r.adapter?.remaining_unknowns?.join(' ')||'Live Forever behavior, stacking and rank scaling are not established by this tooltip.'}`));
-  }
-  for(const prediction of r.adapter?.predicted_components||[])evidence.append(el('p','',`Predicted component: ${prediction}`));
-  const source=el('a','','Source / evidence');source.href=r.source_url;source.target='_blank';source.rel='noopener noreferrer';evidence.append(source);
-  evidence.append(el('p','',f.mode===ForeverMode.STRICT?'STRICT: predicted effects are disabled; selection still counts toward row access.':'BEST GUESS: supported predictions are enabled.'));
-  if(r.adapter?.scope)evidence.append(el('small','',r.adapter.scope));
-  box.append(evidence);
   const classic=art.talents[r.id].classic,comparison=el('section','ft-comparison');comparison.append(el('h5','','COMPARE TO CLASSIC'));
   const labels=this.labels(r);if(labels.length)comparison.append(el('p','',labels.join(' · ')));
   if(classic?.tree)comparison.append(el('p','',`Classic: ${classic.tree}, row ${classic.row}, column ${classic.col}, ${classic.max} ranks.\nForever: ${r.tree}, row ${r.row}, column ${r.column}, ${r.max_rank} ranks.`));
@@ -170,7 +157,6 @@ export class ForeverTalentWindow {
   this.mode.value=String(f.mode||ForeverMode.BEST_GUESS);
   const races=foreverRaces(this.player.getClass()).filter(r=>f.mode!==ForeverMode.STRICT||r<9);
   this.race.replaceChildren(...races.map(r=>{const option=el('option','',raceNames.get(r)||foreverRaceKeys[r]);option.value=String(r);return option;}));this.race.value=String(this.player.getRace());
-  this.root.querySelector('[data-mode-strip]')!.textContent=f.mode===ForeverMode.STRICT?'STRICT · Predicted effects disabled. Selected points preserve your build; active ranks appear in tooltips.':'BEST GUESS · Predicted effects enabled. Rank evidence and assumptions are inside each tooltip.';
   for(const r of this.records){
    const node=this.nodes.get(r.id)!,n=f.talents[r.id]||0,rank=r.ranks[Math.max(0,n-1)],locked=rankChange(this.player.getClass(),f.talents,r,1).errors.length>0&&n<r.max_rank;
    const predicted=rank.estimated||rank.confidence==='PREDICTED'||r.confidence==='PREDICTED';

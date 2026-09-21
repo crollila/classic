@@ -32,7 +32,12 @@ func (rogue *Rogue) registerPreparationCD() {
 				for _, s := range rogue.Spellbook {
 					allowed := false
 					switch s.SpellID {
-					case 14177, 1856, 5277, 11305, 13877, 13750, 14183, 14278, 14251, 11286, 2094, 1769, 8643, 1787:
+					case 14177, 1856, 1857, 5277, 13877, 13750, 14183, 14278, 14251, 2094,
+						2983, 8696, 11305, // Sprint
+						1776, 1777, 8629, 11285, 11286, // Gouge
+						1766, 1767, 1768, 1769, // Kick
+						408, 8643, // Kidney Shot
+						1784, 1785, 1786, 1787: // Stealth
 						allowed = true
 					}
 					if allowed && s != spell && s.CD.Timer != nil {
@@ -54,7 +59,7 @@ func (rogue *Rogue) registerPreparationCD() {
 		Type:     core.CooldownTypeDPS,
 		Priority: core.CooldownPriorityDefault,
 		ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
-			return !rogue.Vanish.CD.IsReady(sim)
+			return rogue.Vanish == nil || !rogue.Vanish.CD.IsReady(sim)
 		},
 	})
 }

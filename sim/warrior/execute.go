@@ -6,9 +6,12 @@ import (
 
 func (warrior *Warrior) registerExecuteSpell() {
 
-	flatDamage := 600.0
-	convertedRageDamage := 15.0
-	spellID := int32(20662)
+	rank, spellID := warrior.trainerRank("Execute")
+	if rank == 0 {
+		return
+	}
+	flatDamage := executeValues[rank-1][0]
+	convertedRageDamage := executeValues[rank-1][1]
 
 	var rageMetrics *core.ResourceMetrics
 	warrior.Execute = warrior.RegisterSpell(BattleStance|BerserkerStance, core.SpellConfig{

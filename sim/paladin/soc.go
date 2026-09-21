@@ -82,11 +82,10 @@ func (paladin *Paladin) registerSealOfCommand() {
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				baseDamage := sim.Roll(minDamage, maxDamage) * 0.5 // unless stunned
-				if paladin.Forever != nil {
-					baseDamage = sim.Roll(68, 73)
-					if target.ForeverControlled(core.ForeverStun) || target.ForeverControlled(core.ForeverIncapacitate) {
-						baseDamage = sim.Roll(137, 146)
-					}
+				// Forever keeps every Classic rank (client tooltips at 60: 68-73, 97-104, 124-134,
+				// 154-168, 169-187) and honours the full amount on a stunned or incapacitated target.
+				if paladin.Forever != nil && (target.ForeverControlled(core.ForeverStun) || target.ForeverControlled(core.ForeverIncapacitate)) {
+					baseDamage *= 2
 				}
 
 				// Seal of Command requires this spell to act as its intermediary dummy,
@@ -155,7 +154,7 @@ func (paladin *Paladin) registerSealOfCommand() {
 			Rank:          i + 1,
 
 			ManaCost: core.ManaCostOptions{
-				FlatCost:   core.TernaryFloat64(paladin.Forever != nil, 65, rank.manaCost) - paladin.getLibramSealCostReduction(),
+				FlatCost:   rank.manaCost - paladin.getLibramSealCostReduction(),
 				Multiplier: paladin.benediction(),
 			},
 			Cast: core.CastConfig{

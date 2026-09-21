@@ -106,22 +106,29 @@ dps_results: {
 dps_results: {
  key: "TestP1Balance-Phase1-AllItems-Champion'sRefuge"
  value: {
-  dps: 227.54218
-  tps: 241.80976
+  dps: 229.83145
+  tps: 244.12927
+ }
+}
+dps_results: {
+ key: "TestP1Balance-Phase1-AllItems-FeralheartRaiment"
+ value: {
+  dps: 237.65321
+  tps: 250.87882
  }
 }
 dps_results: {
  key: "TestP1Balance-Phase1-AllItems-FieldMarshal'sSanctuary"
  value: {
-  dps: 232.26317
-  tps: 246.52482
+  dps: 232.34414
+  tps: 246.60579
  }
 }
 dps_results: {
  key: "TestP1Balance-Phase1-AllItems-LieutenantCommander'sRefuge"
  value: {
-  dps: 227.54218
-  tps: 241.80976
+  dps: 229.83145
+  tps: 244.12927
  }
 }
 dps_results: {
@@ -134,15 +141,15 @@ dps_results: {
 dps_results: {
  key: "TestP1Balance-Phase1-AllItems-SymbolsofUnendingLife"
  value: {
-  dps: 187.95492
-  tps: 201.73587
+  dps: 206.88257
+  tps: 220.66352
  }
 }
 dps_results: {
  key: "TestP1Balance-Phase1-AllItems-Warlord'sSanctuary"
  value: {
-  dps: 232.26317
-  tps: 246.52482
+  dps: 232.34414
+  tps: 246.60579
  }
 }
 dps_results: {

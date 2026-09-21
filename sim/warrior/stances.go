@@ -26,6 +26,17 @@ var StanceCodes = []int32{SpellCode_WarriorStanceBattle, SpellCode_WarriorStance
 
 const stanceEffectCategory = "Stance"
 
+// knowsStance reports whether the warrior has learned the stance at its level.
+func (warrior *Warrior) knowsStance(stance Stance) bool {
+	switch stance {
+	case DefensiveStance:
+		return warrior.Level >= levelDefensiveStance
+	case BerserkerStance:
+		return warrior.Level >= levelBerserkerStance
+	}
+	return true
+}
+
 func (warrior *Warrior) StanceMatches(other Stance) bool {
 	return warrior.Stance.Matches(other)
 }
@@ -159,6 +170,10 @@ func (warrior *Warrior) registerStances() {
 	warrior.registerDefensiveStanceAura()
 	warrior.registerBerserkerStanceAura()
 	warrior.BattleStance = warrior.makeStanceSpell(BattleStance, warrior.BattleStanceAura, stanceCD)
-	warrior.DefensiveStance = warrior.makeStanceSpell(DefensiveStance, warrior.DefensiveStanceAura, stanceCD)
-	warrior.BerserkerStance = warrior.makeStanceSpell(BerserkerStance, warrior.BerserkerStanceAura, stanceCD)
+	if warrior.Level >= levelDefensiveStance {
+		warrior.DefensiveStance = warrior.makeStanceSpell(DefensiveStance, warrior.DefensiveStanceAura, stanceCD)
+	}
+	if warrior.Level >= levelBerserkerStance {
+		warrior.BerserkerStance = warrior.makeStanceSpell(BerserkerStance, warrior.BerserkerStanceAura, stanceCD)
+	}
 }

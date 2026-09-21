@@ -5,10 +5,17 @@ import (
 )
 
 func (warrior *Warrior) registerDemoralizingShoutSpell() {
-	rank := int32(5)
+	known, _ := warrior.trainerRank("Demoralizing Shout")
+	if known == 0 {
+		return
+	}
+	rank := int32(known)
 	actionId := core.DemoralizingShoutSpellId[rank]
 
 	warrior.DemoralizingShoutAuras = warrior.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
+		if rank < core.DemoralizingShoutRanks {
+			return demoralizingShoutAuraAtRank(target, rank, warrior.Talents.BoomingVoice, warrior.Talents.ImprovedDemoralizingShout)
+		}
 		return core.DemoralizingShoutAura(target, warrior.Talents.BoomingVoice, warrior.Talents.ImprovedDemoralizingShout)
 	})
 

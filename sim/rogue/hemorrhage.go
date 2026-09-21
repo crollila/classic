@@ -11,7 +11,13 @@ func (rogue *Rogue) registerHemorrhageSpell() {
 		return
 	}
 
-	spellID := int32(17348)
+	// Classic ranks: 16511 (talent, level 30), 17347 (46), 17348 (58).
+	spellID := int32(16511)
+	if rogue.Level >= 58 {
+		spellID = 17348
+	} else if rogue.Level >= 46 {
+		spellID = 17347
+	}
 
 	actionID := core.ActionID{SpellID: spellID}
 

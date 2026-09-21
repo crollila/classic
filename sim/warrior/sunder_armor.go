@@ -5,11 +5,19 @@ import (
 )
 
 func (warrior *Warrior) registerSunderArmorSpell() {
-	warrior.SunderArmorAuras = warrior.NewEnemyAuraArray(core.SunderArmorAura)
+	rank, spellID := warrior.trainerRank("Sunder Armor")
+	if rank == 0 {
+		return
+	}
+	if rank == trainerRankCount("Sunder Armor") {
+		warrior.SunderArmorAuras = warrior.NewEnemyAuraArray(core.SunderArmorAura)
+	} else {
+		warrior.SunderArmorAuras = warrior.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
+			return sunderArmorAuraAtRank(target, rank, spellID)
+		})
+	}
 
-	spellID := int32(11597)
-
-	spell_level := 58
+	spell_level := core.SpellLearnedLevel(spellID)
 
 	var canApplySunder bool
 

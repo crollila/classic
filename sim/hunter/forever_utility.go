@@ -95,7 +95,9 @@ func (h *Hunter) registerForeverStings() {
 		}
 		a := t.GetOrRegisterAura(core.Aura{Label: "Scorpid Sting-" + h.Label, ActionID: core.ActionID{SpellID: 14277}, Tag: "forever-debuff-poison", Duration: duration}).AttachStatsBuff(delta)
 		a.NewExclusiveEffect(category, true, core.ExclusiveEffect{})
-		h.SerpentSting.Dot(t).NewExclusiveEffect(category, true, core.ExclusiveEffect{})
+		if h.SerpentSting != nil {
+			h.SerpentSting.Dot(t).NewExclusiveEffect(category, true, core.ExclusiveEffect{})
+		}
 		return a
 	})
 	castRange := func(sim *core.Simulation, t *core.Unit) bool {
@@ -111,8 +113,8 @@ func (h *Hunter) registerForeverStings() {
 			}
 		},
 	})
-	if foreverdata.IsStrict(h.Forever) {
-		return
+	if foreverdata.IsStrict(h.Forever) || h.Level < 36 {
+		return // Viper Sting is learned at level 36
 	}
 	manaMetrics := map[*core.Unit]*core.ResourceMetrics{}
 	for _, t := range h.Env.Encounter.TargetUnits {
@@ -229,7 +231,7 @@ func (h *Hunter) registerForeverMendPet() {
 					return
 				}
 				h.pet.GainHealth(sim, 245, metrics)
-				if sim.Proc(.15*float64(h.ForeverRank("hunter.talent.improved-mend-pet")), "Improved Mend Pet") {
+				if sim.Proc([]float64{0, .15, .5}[h.ForeverRank("hunter.talent.improved-mend-pet")], "Improved Mend Pet") { // client: 15%/50%
 					h.pet.ForeverDispelOne(sim, "curse", "disease", "magic", "poison")
 				}
 			},

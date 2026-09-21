@@ -38,8 +38,11 @@ var ItemSetGiantStalkers = core.NewItemSet(core.ItemSet{
 			hunter.RegisterAura(core.Aura{
 				Label: "Improved Volley and Multishot",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					hunter.Volley.BaseDamageMultiplierAdditive += 0.15
-					hunter.MultiShot.BaseDamageMultiplierAdditive += 0.15
+					for _, s := range []*core.Spell{hunter.Volley, hunter.MultiShot} {
+						if s != nil {
+							s.BaseDamageMultiplierAdditive += 0.15
+						}
+					}
 				},
 			})
 		},
@@ -124,6 +127,9 @@ var ItemSetPredatorsArmor = core.NewItemSet(core.ItemSet{
 			core.MakePermanent(hunter.RegisterAura(core.Aura{
 				Label: "Improved Serpent Sting",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					if hunter.SerpentSting == nil {
+						return
+					}
 					for _, dot := range hunter.SerpentSting.Dots() {
 						if dot != nil {
 							dot.NumberOfTicks += 1
@@ -207,7 +213,9 @@ var ItemSetStrikersGarb = core.NewItemSet(core.ItemSet{
 			core.MakePermanent(hunter.RegisterAura(core.Aura{
 				Label: "Striker's Rapid Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					hunter.RapidFire.CD.Duration -= time.Minute * 2
+					if hunter.RapidFire != nil {
+						hunter.RapidFire.CD.Duration -= time.Minute * 2
+					}
 				},
 			}))
 		},
@@ -282,7 +290,9 @@ var ItemSetCryptstalkerArmor = core.NewItemSet(core.ItemSet{
 					if hunter.AimedShot != nil {
 						hunter.AimedShot.Cost.FlatModifier -= 20.0
 					}
-					hunter.MultiShot.Cost.FlatModifier -= 20.0
+					if hunter.MultiShot != nil {
+						hunter.MultiShot.Cost.FlatModifier -= 20.0
+					}
 				},
 			}))
 		},

@@ -142,7 +142,7 @@ func TestForeverAuditEnemyManaWithoutHunter(t *testing.T) {
 }
 
 func TestForeverAuditAmplifiedWeaknessAndDrainBonus(t *testing.T) {
-	p := foreverCasterBuild(t, proto.Class_ClassWarlock, map[string]int32{"warlock.talent.amplify-curse": 1, "warlock.talent.improved-drains": 1})
+	p := foreverCasterBuild(t, proto.Class_ClassWarlock, map[string]int32{"warlock.talent.amplify-curse": 1, "warlock.talent.improved-drains": 1, "warlock.talent.soul-siphon": 1})
 	sim, c := foreverCasterSim(t, p)
 	drain := c.GetSpell(core.ActionID{SpellID: 11699})
 	before := drain.TargetDamageMultiplier(c.AttackTables[c.CurrentTarget.UnitIndex][drain.CastType], true)
@@ -157,8 +157,12 @@ func TestForeverAuditAmplifiedWeaknessAndDrainBonus(t *testing.T) {
 		t.Fatalf("amplified weakness physical bonus %f", c.CurrentTarget.PseudoStats.BonusPhysicalDamage)
 	}
 	after := drain.TargetDamageMultiplier(c.AttackTables[c.CurrentTarget.UnitIndex][drain.CastType], true)
-	if math.Abs(after/before-1.02) > 1e-8 {
+	// Soul Siphon rank 1: +4% per other Affliction effect; Improved Drains' flat 7% is in both.
+	if math.Abs(after/before-1.04) > 1e-8 {
 		t.Fatalf("curse did not count as Affliction effect: %f/%f", after, before)
+	}
+	if math.Abs(before-1.07) > 1e-8 {
+		t.Fatalf("Improved Drains rank 1 is a flat 7%%: %f", before)
 	}
 }
 

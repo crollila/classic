@@ -34,9 +34,7 @@ func (mage *Mage) newBlastWaveSpellConfig(rank int, cooldownTimer *core.Timer) c
 	spellId := BlastWaveSpellId[rank]
 	baseDamageLow := BlastWaveBaseDamage[rank][0]
 	baseDamageHigh := BlastWaveBaseDamage[rank][1]
-	if mage.Forever != nil && rank == 1 {
-		baseDamageHigh = 191
-	}
+	// Forever: the client override for 11113 scales this Classic rank to 154-184.
 	manaCost := BlastWaveManaCost[rank]
 	level := BlastWaveLevel[rank]
 

@@ -90,7 +90,14 @@ func (cat *FeralDruid) GetDruid() *druid.Druid {
 
 func (cat *FeralDruid) MissChance() float64 {
 	at := cat.AttackTables[cat.CurrentTarget.UnitIndex][proto.CastType_CastTypeMainHand]
-	miss := at.BaseMissChance - cat.Shred.PhysicalHitChance(at)
+	builder := cat.Shred
+	if builder == nil {
+		builder = cat.Claw // Shred is learned at level 22
+	}
+	if builder == nil {
+		return at.BaseMissChance + at.BaseDodgeChance
+	}
+	miss := at.BaseMissChance - builder.PhysicalHitChance(at)
 	dodge := at.BaseDodgeChance
 	return miss + dodge
 }
@@ -109,4 +116,13 @@ func (cat *FeralDruid) Reset(sim *core.Simulation) {
 	//cat.berserkUsed = false
 	cat.poolingMana = false
 	cat.rotationAction = nil
+}
+
+// furorRank is the Furor rank the rotation plans powershifts with. Forever Furor is a
+// class-new talent, so the Classic talent field stays 0 there.
+func (cat *FeralDruid) furorRank() int32 {
+	if cat.Forever != nil {
+		return cat.ForeverRank("druid.talent.furor")
+	}
+	return cat.Talents.Furor
 }

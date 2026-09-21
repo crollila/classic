@@ -20,7 +20,7 @@ export function mountOptimizer(ui:SimUI,release:Release) {
   const panel=el('section','forever-optimizer'), button=el('button','btn btn-primary','FIND IDEAL ROTATION');
   const cancel=el('button','btn btn-secondary','Cancel'),output=el('div'),status=el('p');
   status.setAttribute('role','status');output.setAttribute('aria-live','polite');cancel.hidden=true;
-  panel.append(button,cancel,el('p','','Uses the STRICT / BEST_GUESS mode selected in Talents. Searches up to 90 candidates, then validates on 2,048 unseen-seed iterations per rotation.'),status,output);ui.simContentContainer.prepend(panel);
+  panel.append(button,cancel,el('p','','Searches up to 90 rotation candidates, then validates the best on 2,048 unseen-seed iterations each.'),status,output);ui.simContentContainer.prepend(panel);
   let controller:AbortController|undefined,pool:WorkerPool|undefined;
   cancel.onclick=()=>controller?.abort();
   ui.addOnDisposeCallback(()=>controller?.abort());

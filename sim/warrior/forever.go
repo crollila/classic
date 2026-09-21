@@ -88,6 +88,9 @@ func (w *Warrior) registerForeverAbilities() {
 	// Bloodthrill uses the existing Overpower window and the caster's own Rend.
 	if n := w.ForeverRank("warrior.talent.bloodthrill"); n > 0 {
 		core.MakePermanent(w.RegisterAura(core.Aura{Label: "Forever Bloodthrill", OnSpellHitDealt: func(a *core.Aura, sim *core.Simulation, s *core.Spell, r *core.SpellResult) {
+			if w.Rend == nil || w.OverpowerAura == nil {
+				return
+			}
 			if r.Landed() && s.ProcMask.Matches(core.ProcMaskMelee) && w.Rend.Dot(r.Target).IsActive() && sim.Proc(.02*float64(n), "Bloodthrill") {
 				w.OverpowerAura.Activate(sim)
 				w.OverpowerAura.UpdateExpires(sim, sim.CurrentTime+6*time.Second)
@@ -136,7 +139,8 @@ func (w *Warrior) registerForeverAbilities() {
 			}
 		})
 		w.RegisterSpell(AnyStance, core.SpellConfig{ActionID: w.ForeverAction("warrior.talent.spearing-strike"), ExtraCastCondition: func(sim *core.Simulation, t *core.Unit) bool {
-			return w.DistanceFromTarget <= core.MaxMeleeAttackDistance
+			// "Requires Two-Handed Axes, Two-Handed Maces, Polearms, Two-Handed Swords, Staves".
+			return w.DistanceFromTarget <= core.MaxMeleeAttackDistance && w.MainHand().HandType == proto.HandType_HandTypeTwoHand
 		}, SpellSchool: core.SpellSchoolPhysical, DefenseType: core.DefenseTypeMelee, ProcMask: core.ProcMaskMeleeMHSpecial, Flags: SpellFlagOffensive | core.SpellFlagAPL | core.SpellFlagMeleeMetrics, RageCost: core.RageCostOptions{Cost: 15, Refund: .8}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, IgnoreHaste: true, CD: core.Cooldown{Timer: w.NewTimer(), Duration: 20 * time.Second}}, DamageMultiplier: 1, ThreatMultiplier: 1, BonusCoefficient: 1, CritDamageBonus: w.impale(), ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
 			mult := .4
 			if t.MobType == proto.MobType_MobTypeGiant || t.MobType == proto.MobType_MobTypeDragonkin || mounted[t] {
@@ -153,20 +157,28 @@ func (w *Warrior) registerForeverAbilities() {
 	}
 	// Charge/Intercept use their Classic spell IDs and rage/cooldown counterparts.
 	for _, charge := range []bool{true, false} {
-		id := core.ActionID{SpellID: 20252}
+		// Charge and Intercept at the rank the warrior knows; not registered before it is learned.
+		family := "Intercept"
+		if charge {
+			family = "Charge"
+		}
+		rank, rankID := w.trainerRank(family)
+		if rank == 0 {
+			continue
+		}
+		id := core.ActionID{SpellID: rankID}
 		stance := BerserkerStance
 		cd := 30*time.Second - time.Duration(w.ForeverValue("warrior.talent.improved-intercept", 0, 0))*time.Second
 		cost := 10.
 		gain := 0.
 		if charge {
-			id = core.ActionID{SpellID: 11578}
 			stance = BattleStance
 			if w.ForeverRank("warrior.talent.vanguard") > 0 {
 				stance |= DefensiveStance
 			}
 			cd = 15 * time.Second
 			cost = 0
-			gain = 15 + w.ForeverValue("warrior.talent.improved-charge", 0, 0)
+			gain = chargeRage[rank-1] + w.ForeverValue("warrior.talent.improved-charge", 0, 0)
 		}
 		metrics := w.NewRageMetrics(id)
 		isCharge := charge
@@ -174,13 +186,29 @@ func (w *Warrior) registerForeverAbilities() {
 		if cd > 0 {
 			timer = w.NewTimer()
 		}
-		w.RegisterSpell(stance, core.SpellConfig{ActionID: id, Flags: core.SpellFlagAPL, RageCost: core.RageCostOptions{Cost: cost}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, IgnoreHaste: true, CD: core.Cooldown{Timer: timer, Duration: cd}}, ExtraCastCondition: func(sim *core.Simulation, t *core.Unit) bool {
+		config := core.SpellConfig{ActionID: id, Flags: core.SpellFlagAPL, RageCost: core.RageCostOptions{Cost: cost}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, IgnoreHaste: true, CD: core.Cooldown{Timer: timer, Duration: cd}}, ExtraCastCondition: func(sim *core.Simulation, t *core.Unit) bool {
 			return (!isCharge || sim.CurrentTime <= 0) && w.DistanceFromTarget >= 8
 		}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
 			w.DistanceFromTarget = 0
 			w.AddRage(sim, gain, metrics)
 			t.ForeverControlAura("Charge/Intercept", id, core.ForeverStun, 3*time.Second).Activate(sim)
-		}})
+		}}
+		if !charge {
+			// Intercept: "Charge an enemy, causing 25/45/65 damage and stunning it for 3 sec."
+			// An offensive ability, so Focused Rage reduces its cost; the stun needs the hit.
+			damage := interceptDamage[rank-1]
+			config.SpellSchool, config.DefenseType, config.ProcMask = core.SpellSchoolPhysical, core.DefenseTypeMelee, core.ProcMaskMeleeMHSpecial
+			config.Flags |= SpellFlagOffensive | core.SpellFlagMeleeMetrics
+			config.DamageMultiplier, config.ThreatMultiplier, config.CritDamageBonus = 1, 1, w.impale()
+			config.ApplyEffects = func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
+				w.DistanceFromTarget = 0
+				result := s.CalcAndDealDamage(sim, t, damage, s.OutcomeMeleeSpecialHitAndCrit)
+				if result.Landed() {
+					t.ForeverControlAura("Charge/Intercept", id, core.ForeverStun, 3*time.Second).Activate(sim)
+				}
+			}
+		}
+		w.RegisterSpell(stance, config)
 	}
 	if w.ForeverRank("warrior.talent.concussion-blow") > 0 {
 		w.foreverControl("warrior.talent.concussion-blow", core.ActionID{SpellID: 12809}, AnyStance, 10, 45*time.Second, 5*time.Second, core.ForeverStun)
@@ -188,16 +216,18 @@ func (w *Warrior) registerForeverAbilities() {
 	if w.ForeverRank("warrior.talent.piercing-howl") > 0 {
 		w.foreverControl("warrior.talent.piercing-howl", core.ActionID{SpellID: 12323}, AnyStance, 10, 0, 6*time.Second, core.ForeverSnare)
 	}
-	w.foreverControl("warrior.talent.improved-disarm", core.ActionID{SpellID: 676}, DefensiveStance, 20, 60*time.Second-time.Duration(w.ForeverValue("warrior.talent.improved-disarm", 0, 0))*time.Second, 10*time.Second, core.ForeverDisarm)
-	if w.ForeverRank("warrior.talent.improved-hamstring") > 0 {
+	if w.Level >= levelDisarm {
+		w.foreverControl("warrior.talent.improved-disarm", core.ActionID{SpellID: 676}, DefensiveStance, 20, 60*time.Second-time.Duration(w.ForeverValue("warrior.talent.improved-disarm", 0, 0))*time.Second, 10*time.Second, core.ForeverDisarm)
+	}
+	if w.ForeverRank("warrior.talent.improved-hamstring") > 0 && w.Hamstring != nil {
 		core.MakePermanent(w.RegisterAura(core.Aura{Label: "Forever Improved Hamstring", OnSpellHitDealt: func(a *core.Aura, sim *core.Simulation, s *core.Spell, r *core.SpellResult) {
 			if w.Hamstring.IsEqual(s) && r.Landed() && sim.Proc(w.ForeverValue("warrior.talent.improved-hamstring", 0, 0)/100, "Improved Hamstring") {
 				r.Target.ForeverControlAura("Improved Hamstring", w.ForeverAction("warrior.talent.improved-hamstring"), core.ForeverRoot, 5*time.Second).Activate(sim)
 			}
 		}}))
 	}
-	if w.ForeverRank("warrior.talent.improved-shield-bash") > 0 {
-		w.foreverControl("warrior.talent.improved-shield-bash", core.ActionID{SpellID: 1672}, BattleStance|DefensiveStance, 10, 12*time.Second, 3*time.Second, core.ForeverSilence)
+	if _, shieldBashID := w.trainerRank("Shield Bash"); w.ForeverRank("warrior.talent.improved-shield-bash") > 0 && shieldBashID != 0 {
+		w.foreverControl("warrior.talent.improved-shield-bash", core.ActionID{SpellID: shieldBashID}, BattleStance|DefensiveStance, 10, 12*time.Second, 3*time.Second, core.ForeverSilence)
 	}
 }
 func (w *Warrior) foreverControl(record string, id core.ActionID, stance Stance, cost float64, cd, duration time.Duration, kind core.ForeverControlKind) {
@@ -261,8 +291,9 @@ func (w *Warrior) registerForeverVictoryRush() {
 	})
 	w.RegisterSpell(AnyStance, core.SpellConfig{ActionID: id, Flags: core.SpellFlagAPL | SpellFlagOffensive, SpellSchool: core.SpellSchoolPhysical, DefenseType: core.DefenseTypeMelee, ProcMask: core.ProcMaskMeleeMHSpecial, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}}, ExtraCastCondition: func(sim *core.Simulation, t *core.Unit) bool {
 		return a.IsActive() && w.DistanceFromTarget <= core.MaxMeleeAttackDistance
-	}, DamageMultiplier: 1, ThreatMultiplier: 1, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
+	}, DamageMultiplier: 1, ThreatMultiplier: 1, CritDamageBonus: w.impale(), ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
 		a.Deactivate(sim)
-		s.CalcAndDealDamage(sim, t, .45*s.MeleeAttackPower(t), s.OutcomeMeleeSpecialHitAndCrit)
+		// Client (402927): "causing 15% of Attack Power damage".
+		s.CalcAndDealDamage(sim, t, .15*s.MeleeAttackPower(t), s.OutcomeMeleeSpecialHitAndCrit)
 	}})
 }

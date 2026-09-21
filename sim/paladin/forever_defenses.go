@@ -8,6 +8,10 @@ import (
 
 func (p *Paladin) registerForeverDefenses() {
 	for _, id := range []int32{4987, 1152} {
+		// Cleanse is learned at 42, Purify at 8.
+		if p.Level < core.TernaryInt32(id == 4987, 42, 8) {
+			continue
+		}
 		p.RegisterSpell(core.SpellConfig{ActionID: core.ActionID{SpellID: id}, SpellSchool: core.SpellSchoolHoly, Flags: core.SpellFlagAPL | core.SpellFlagHelpful, ManaCost: core.ManaCostOptions{BaseCost: .06, Multiplier: 100 - int32(10*p.fr("purifying-power"))}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, sp *core.Spell) {
 			if p.IsOpponent(t) {
 				t = &p.Unit
@@ -25,6 +29,17 @@ func (p *Paladin) registerForeverDefenses() {
 		cost     float64
 		school   core.SpellSchool
 	}{{1020, 12 * time.Second, 110, 0}, {5573, 8 * time.Second, 35, core.SpellSchoolPhysical}} {
+		// Lower ranks: Divine Shield 642 (level 34, 10 sec), Divine Protection 498 (level 6, 6 sec).
+		// Classic rank 1 mana costs: 642 is 75, 498 is 15.
+		if v.id == 1020 && p.Level < 50 {
+			v.id, v.duration, v.cost = 642, 10*time.Second, 75
+		}
+		if v.id == 5573 && p.Level < 18 {
+			v.id, v.duration, v.cost = 498, 6*time.Second, 15
+		}
+		if p.Level < int32(core.SpellLearnedLevel(v.id)) {
+			continue
+		}
 		v := v
 		shield := core.NewForeverAbsorb(&p.Unit, "Forever Divine Defense-"+core.ActionID{SpellID: v.id}.String(), core.ActionID{SpellID: v.id}, v.duration, v.school)
 		// Preserve the verified Classic defensive penalties while Sacred Duty
@@ -74,7 +89,7 @@ func (p *Paladin) registerForeverDefenses() {
 		duration, cd time.Duration
 		kind         core.ForeverControlKind
 		enabled      bool
-	}{{853, "improved-hammer-of-justice", 6 * time.Second, 60*time.Second - time.Duration(5*p.fr("improved-hammer-of-justice"))*time.Second, core.ForeverStun, true}, {20066, "repentance", 6 * time.Second, time.Minute, core.ForeverIncapacitate, p.fr("repentance") > 0}} {
+	}{{853, "improved-hammer-of-justice", 6 * time.Second, 60*time.Second - time.Duration(5*p.fr("improved-hammer-of-justice"))*time.Second, core.ForeverStun, p.Level >= 8}, {20066, "repentance", 6 * time.Second, time.Minute, core.ForeverIncapacitate, p.fr("repentance") > 0}} {
 		if !v.enabled {
 			continue
 		}
@@ -164,7 +179,7 @@ func (p *Paladin) registerForeverDefenses() {
 	// The shield itself lacks a visible numerical tooltip; use a small 60-point
 	// per-swing shield as a PREDICTED scenario. Its known fully-absorbed mana
 	// return and attacker-level scaling use the observed numbers exactly.
-	if p.HasForeverMechanic("paladin.baseline.seal-of-fury") || p.fr("improved-seal-of-fury") > 0 {
+	if (p.HasForeverMechanic("paladin.baseline.seal-of-fury") || p.fr("improved-seal-of-fury") > 0) && p.Level >= 10 {
 		action := p.ForeverAction("paladin.baseline.seal-of-fury")
 		shield := core.NewForeverAbsorb(&p.Unit, "Forever Seal of Fury Shield", action, 10*time.Second, 0)
 		metrics := p.NewManaMetrics(p.fa("improved-seal-of-fury"))

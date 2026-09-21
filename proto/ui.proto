@@ -89,6 +89,11 @@ message UIItem {
 	}
 
 	FactionRestriction faction_restriction = 26;
+
+	// Level required to equip. 0 when unknown.
+	int32 required_level = 31;
+	// Kept in the database only because the engine names it; the gear picker never lists it.
+	bool hidden = 32;
 }
 
 enum Expansion {

@@ -13,7 +13,7 @@ func (warlock *Warlock) getSearingPainBaseConfig(rank int) core.SpellConfig {
 	baseDamage := [SearingPainRanks + 1][]float64{{0}, {38, 47}, {65, 77}, {93, 112}, {131, 155}, {168, 199}, {208, 244}}[rank]
 	spellId := [SearingPainRanks + 1]int32{0, 5676, 17919, 17920, 17921, 17922, 17923}[rank]
 	manaCost := [SearingPainRanks + 1]float64{0, 45, 68, 91, 118, 141, 168}[rank]
-	level := [SearingPainRanks + 1]int{0, 18, 26, 36, 42, 50, 58}[rank]
+	level := [SearingPainRanks + 1]int{0, 18, 26, 34, 42, 50, 58}[rank]
 	castTime := time.Millisecond * 1500
 
 	return core.SpellConfig{

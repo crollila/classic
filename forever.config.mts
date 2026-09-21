@@ -25,9 +25,9 @@ function release() {
   const hash = (file: string) => fs.existsSync(file) ? createHash('sha256').update(fs.readFileSync(file)).digest('hex') : null;
   return {
     ...data,
-		schemaVersion:2,engineMode:'forever-discovery',foreverBuild:null,rulesetId:discovery.ruleset_id,
-		manifestSha256:discovery.manifest_sha256,mechanicsUpdatedAt:'2026-09-13T07:59:08.480Z',
-		notice:'Pre-beta discovery simulator. BEST_GUESS includes provisional mechanics and labeled predictions; STRICT skips predictions. This is not a validated beta-client ruleset.',
+		schemaVersion:2,engineMode:'forever-ruleset',foreverBuild:'1.60.1.69913',rulesetId:discovery.ruleset_id,
+		manifestSha256:discovery.manifest_sha256,mechanicsUpdatedAt:new Date().toISOString(),
+		notice:'Forever beta client data (build 1.60.1.69913): talents, spell ranks, combat ratings; items from foreverchanges.pro.',
 		mechanics:[...discovery.records,...discovery.mechanics].filter(r=>!['blocked','non-sim'].includes(r.mode)).map(r=>({id:r.id,label:r.name||r.id,category:r.tree?'talents':r.kind==='racial'?'race':'encounter',confidence:r.ranks?.some((v: { estimated: boolean })=>v.estimated)||r.adapter?.predicted_components?.length?'PREDICTED':r.confidence||'PROVISIONAL',note:(r.adapter?.scope||'Known effect uses Classic interaction behavior provisionally.')+' See Talents for rank-specific evidence and mode behavior.',evidence:[r.source_url]})),
     simulatorVersion: `${JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8')).version}+forever-v2.${hash(path.join(output,'lib.wasm'))?.slice(0,12)||commit}`,
     upstreamCommit: commit,

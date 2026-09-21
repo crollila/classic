@@ -65,7 +65,7 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				var result *core.SpellResult
-				result = dot.CalcSnapshotDamage(sim, target, dot.OutcomeTick)
+				result = dot.CalcSnapshotDamage(sim, target, warlock.foreverDotOutcome(dot))
 				dot.Spell.DealPeriodicDamage(sim, result)
 			},
 		},

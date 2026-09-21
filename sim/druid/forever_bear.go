@@ -10,7 +10,7 @@ import (
 func (d *Druid) registerForeverBear() {
 	id := core.ActionID{SpellID: 9634}
 	stam := d.NewDynamicMultiplyStat(stats.Stamina, 1.25*(1+.04*d.fr("heart-of-the-wild")))
-	base := stats.Stats{stats.AttackPower: 3 * float64(d.Level), stats.MeleeCrit: 3 * d.fr("sharpened-claws")}
+	base := stats.Stats{stats.AttackPower: 3*float64(d.Level) + d.foreverPredatoryStrikesAP(), stats.MeleeCrit: 3 * d.fr("sharpened-claws")}
 	armor := 0.0
 	d.BearFormAura = d.RegisterAura(core.Aura{Label: "Forever Dire Bear Form", ActionID: id, Duration: core.NeverExpires, OnGain: func(a *core.Aura, sim *core.Simulation) {
 		d.CancelShapeshift(sim)
@@ -56,6 +56,7 @@ func (d *Druid) registerForeverBear() {
 		}
 	}})
 	if d.fr("mangle") > 0 {
+		mangleBonus := foreverMangleBonus(d.Level)
 		mangle := d.RegisterSpell(Bear, core.SpellConfig{ActionID: d.fa("mangle"), SpellCode: foreverMangle, SpellSchool: core.SpellSchoolPhysical, DefenseType: core.DefenseTypeMelee, ProcMask: core.ProcMaskMeleeMHSpecial, Flags: core.SpellFlagAPL | core.SpellFlagMeleeMetrics, RageCost: core.RageCostOptions{Cost: 20 - d.fr("ferocity"), Refund: .8}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, IgnoreHaste: true, CD: core.Cooldown{Timer: d.NewTimer(), Duration: 6 * time.Second}}, DamageMultiplier: 1, ThreatMultiplier: 1, ApplyEffects: func(sim *core.Simulation, t *core.Unit, sp *core.Spell) {
 			targets := []*core.Unit{t}
 			if d.BerserkAura != nil && d.BerserkAura.IsActive() {
@@ -66,7 +67,7 @@ func (d *Druid) registerForeverBear() {
 				}
 			}
 			for _, target := range targets {
-				r := sp.CalcAndDealDamage(sim, target, d.MHWeaponDamage(sim, sp.MeleeAttackPower(target))+26, sp.OutcomeMeleeSpecialHitAndCrit)
+				r := sp.CalcAndDealDamage(sim, target, d.MHWeaponDamage(sim, sp.MeleeAttackPower(target))+mangleBonus, sp.OutcomeMeleeSpecialHitAndCrit)
 				if !r.Landed() && target == t {
 					sp.IssueRefund(sim)
 				}

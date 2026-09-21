@@ -88,9 +88,21 @@ func (w *Warlock) applyForeverPetTalents() {
 				brand := f.brand.Get(r.Target)
 				if s != damage && r.Landed() && brand.IsActive() {
 					brand.RemoveStack(sim)
-					damage.CalcAndDealDamage(sim, r.Target, sim.Roll(39, 42), damage.OutcomeAlwaysHit)
+					// Client tooltip: 65 to 68 at every rank (the demo record had 39-42).
+					damage.CalcAndDealDamage(sim, r.Target, sim.Roll(65, 68), damage.OutcomeAlwaysHit)
 				}
 			}}))
+		}
+	}
+	// Demonic Knowledge's pet half: "your Demon pet's spell damage" rises by the same
+	// 33/67/100% of the warlock's level (core grants the warlock's half).
+	if w.ForeverRank("warlock.talent.demonic-knowledge") > 0 {
+		bonus := val("demonic-knowledge", 0) / 100 * float64(w.Level)
+		for _, p := range w.BasePets {
+			p := p
+			aura := p.NewTemporaryStatsAura("Forever Demonic Knowledge", w.ForeverAction("warlock.talent.demonic-knowledge"), stats.Stats{stats.SpellPower: bonus}, core.NeverExpires)
+			p.ApplyOnPetEnable(func(sim *core.Simulation) { aura.Activate(sim) })
+			p.ApplyOnPetDisable(func(sim *core.Simulation, sac bool) { aura.Deactivate(sim) })
 		}
 	}
 	// Soul Harvest uses actual target deaths, not an assumed recurring proc.
@@ -126,7 +138,7 @@ func (w *Warlock) registerForeverPetUtilities() {
 	f := w.foreverState
 	// Damage/healing magnitudes lacking Forever ranks inherit the closest Classic
 	// pet ability scenario. Every such approximation remains PREDICTED metadata.
-	if w.HasForeverMechanic("warlock.baseline.incubus") {
+	if w.HasForeverMechanic("warlock.baseline.incubus") && w.Level >= summonSuccubusLevel {
 		// Same Sayaad pet/attack table; the alternate summon is separately selectable.
 		s := w.RegisterSpell(core.SpellConfig{ProcMask: core.ProcMaskEmpty, ActionID: w.ForeverAction("warlock.baseline.incubus"), SpellSchool: core.SpellSchoolShadow, Flags: core.SpellFlagAPL, ManaCost: core.ManaCostOptions{FlatCost: w.BaseMana}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault, CastTime: 10 * time.Second}, ModifyCast: func(sim *core.Simulation, s *core.Spell, c *core.Cast) { w.changeActivePet(sim, nil, false) }}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) { w.changeActivePet(sim, w.Succubus, false) }})
 		w.SummonDemonSpells = append(w.SummonDemonSpells, s)

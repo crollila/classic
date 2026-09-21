@@ -106,22 +106,29 @@ dps_results: {
 dps_results: {
  key: "TestP1Feral-Phase1-AllItems-Champion'sRefuge"
  value: {
-  dps: 545.80552
-  tps: 387.52192
+  dps: 551.32609
+  tps: 391.44153
+ }
+}
+dps_results: {
+ key: "TestP1Feral-Phase1-AllItems-FeralheartRaiment"
+ value: {
+  dps: 567.53112
+  tps: 402.9471
  }
 }
 dps_results: {
  key: "TestP1Feral-Phase1-AllItems-FieldMarshal'sSanctuary"
  value: {
-  dps: 583.1272
-  tps: 414.02031
+  dps: 598.2885
+  tps: 424.78484
  }
 }
 dps_results: {
  key: "TestP1Feral-Phase1-AllItems-LieutenantCommander'sRefuge"
  value: {
-  dps: 545.80552
-  tps: 387.52192
+  dps: 551.32609
+  tps: 391.44153
  }
 }
 dps_results: {
@@ -134,15 +141,15 @@ dps_results: {
 dps_results: {
  key: "TestP1Feral-Phase1-AllItems-SymbolsofUnendingLife"
  value: {
-  dps: 521.60819
-  tps: 370.34182
+  dps: 545.88888
+  tps: 387.58111
  }
 }
 dps_results: {
  key: "TestP1Feral-Phase1-AllItems-Warlord'sSanctuary"
  value: {
-  dps: 583.1272
-  tps: 414.02031
+  dps: 598.2885
+  tps: 424.78484
  }
 }
 dps_results: {

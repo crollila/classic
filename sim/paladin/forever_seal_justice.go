@@ -11,7 +11,7 @@ import (
 // as an option and disabled in STRICT. This also supplies Twist of Light's
 // documented Justice payload instead of silently omitting that seal.
 func (p *Paladin) registerForeverJustice() {
-	if foreverdata.IsStrict(p.Forever) || p.fr("twist-of-light") == 0 {
+	if foreverdata.IsStrict(p.Forever) || p.fr("twist-of-light") == 0 || p.Level < 22 {
 		return
 	}
 	action := core.ActionID{SpellID: 20164}

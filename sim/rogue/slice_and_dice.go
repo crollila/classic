@@ -7,19 +7,11 @@ import (
 )
 
 func (rogue *Rogue) registerSliceAndDice() {
-	hasteBonusByRank := map[int32]float64{
-		25: 0.20,
-		40: 0.20,
-		50: 0.30,
-		60: 0.30,
-	}[rogue.Level]
-
-	spellID := map[int32]int32{
-		25: 5171,
-		40: 5171,
-		50: 6774,
-		60: 6774,
-	}[rogue.Level]
+	rank, spellID := rogue.trainerRank("Slice and Dice")
+	if rank == 0 {
+		return
+	}
+	hasteBonusByRank := sliceAndDiceHaste[rank-1]
 
 	actionID := core.ActionID{SpellID: spellID}
 

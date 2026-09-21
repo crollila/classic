@@ -7,7 +7,7 @@ import (
 func (warlock *Warlock) getDarkPactConfig(rank int) core.SpellConfig {
 	spellId := [4]int32{0, 18220, 18937, 18938}[rank]
 	manaRestore := [4]float64{0, 150, 200, 250}[rank]
-	level := [4]int{0, 0, 50, 60}[rank]
+	level := [4]int{0, 40, 50, 60}[rank]
 
 	actionID := core.ActionID{SpellID: spellId}
 	manaMetrics := warlock.NewManaMetrics(actionID)

@@ -41,5 +41,8 @@ func (paladin *Paladin) registerJudgement() {
 // Helper Function For casting Judgement
 func (paladin *Paladin) castSpecificJudgement(sim *core.Simulation, target *core.Unit, judgementSpell *core.Spell, matchingSeal *core.Aura) {
 	judgementSpell.Cast(sim, target)
-	matchingSeal.Deactivate(sim)
+	// Forever's Judgement (20271): "Does not consume the Seal."
+	if paladin.Forever == nil {
+		matchingSeal.Deactivate(sim)
+	}
 }

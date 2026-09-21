@@ -14,7 +14,7 @@ var FrostbrandWeaponBaseDamage = [FrostbrandWeaponRanks + 1]float64{0, 46, 77, 9
 var FrostbrandWeaponLevel = [FrostbrandWeaponRanks + 1]int32{0, 20, 28, 38, 48, 58}
 
 func (shaman *Shaman) FrostbrandDebuffAura(target *core.Unit) *core.Aura {
-	rank := int32(5)
+	rank := max(1, rankAtLevel(FrostbrandWeaponLevel[:], shaman.Level))
 	spellId := FrostbrandWeaponSpellId[rank]
 
 	return target.GetOrRegisterAura(core.Aura{
@@ -25,7 +25,7 @@ func (shaman *Shaman) FrostbrandDebuffAura(target *core.Unit) *core.Aura {
 }
 
 func (shaman *Shaman) newFrostbrandImbueSpell() *core.Spell {
-	rank := int32(5)
+	rank := rankAtLevel(FrostbrandWeaponLevel[:], shaman.Level)
 	spellId := FrostbrandWeaponSpellId[rank]
 	baseDamage := FrostbrandWeaponBaseDamage[rank]
 
@@ -46,11 +46,11 @@ func (shaman *Shaman) newFrostbrandImbueSpell() *core.Spell {
 }
 
 func (shaman *Shaman) RegisterFrostbrandImbue(procMask core.ProcMask) {
-	if procMask == core.ProcMaskUnknown {
+	rank := rankAtLevel(FrostbrandWeaponLevel[:], shaman.Level)
+	if procMask == core.ProcMaskUnknown || rank == 0 {
 		return
 	}
 
-	rank := int32(5)
 	enchantId := FrostbrandWeaponEnchantId[rank]
 
 	if procMask.Matches(core.ProcMaskMeleeMH) {
@@ -103,11 +103,11 @@ func (shaman *Shaman) ApplyFrostbrandImbue(procMask core.ProcMask) {
 }
 
 func (shaman *Shaman) ApplyFrostbrandImbueToItem(item *core.Item) {
-	if item == nil {
+	rank := rankAtLevel(FrostbrandWeaponLevel[:], shaman.Level)
+	if item == nil || rank == 0 {
 		return
 	}
 
-	rank := int32(5)
 	enchantId := FrostbrandWeaponEnchantId[rank]
 
 	item.TempEnchant = enchantId

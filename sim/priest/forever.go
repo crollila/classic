@@ -10,7 +10,8 @@ import (
 type foreverPriestState struct {
 	holyNova         *core.Spell
 	freeNova         *core.Aura
-	weaving, embrace core.AuraArray
+	weaving          *core.Aura
+	embrace          core.AuraArray
 	shields, aegis   map[int32]*core.ForeverAbsorb
 	healsRegistered  bool
 }
@@ -29,9 +30,9 @@ func (p *Priest) applyForeverCasterTalents() {
 	p.WeakenedSouls = p.NewRaidAuraArray(func(t *core.Unit) *core.Aura {
 		return t.GetOrRegisterAura(core.Aura{Label: "Weakened Soul", ActionID: core.ActionID{SpellID: 6788}, Duration: 15 * time.Second})
 	})
-	f.weaving = p.NewEnemyAuraArray(func(t *core.Unit) *core.Aura {
-		return t.GetOrRegisterAura(core.Aura{Label: "Forever Shadow Weaving-" + p.Label, ActionID: p.ForeverAction("priest.talent.shadow-weaving"), Duration: 15 * time.Second, MaxStacks: 5})
-	})
+	// Shadow Weaving: "increase the Shadow damage you deal by 2% for 15 sec, stacking up to
+	// 5 times", a buff on the priest that follows it across targets.
+	f.weaving = p.RegisterAura(core.Aura{Label: "Forever Shadow Weaving", ActionID: p.ForeverAction("priest.talent.shadow-weaving"), Duration: 15 * time.Second, MaxStacks: 5})
 	f.embrace = p.NewEnemyAuraArray(func(t *core.Unit) *core.Aura {
 		kill := func(a *core.Aura, sim *core.Simulation, s *core.Spell, r *core.SpellResult) {
 			if s.Unit != &p.Unit && p.SpiritTapAura != nil && r.Damage > 0 && t.HasHealthBar() && t.CurrentHealth() <= 0 && t.Level >= p.Level-8 && sim.Proc(val("spirit-tap", 0)/100, "Forever Embrace Spirit Tap") {
@@ -56,7 +57,7 @@ func (p *Priest) applyForeverCasterTalents() {
 	p.ForeverDamageMultiplier(func(s *core.Spell, at *core.AttackTable) float64 {
 		mult := 1.0
 		if s.SpellSchool.Matches(core.SpellSchoolShadow) {
-			mult *= 1 + .02*float64(f.weaving.Get(at.Defender).GetStacks())
+			mult *= 1 + .02*float64(f.weaving.GetStacks())
 		}
 		if (s.SpellCode == SpellCode_PriestSmite || s.SpellCode == SpellCode_PriestPenance) && p.ForeverRank("priest.talent.power-in-light") > 0 {
 			for _, hf := range p.HolyFire {
@@ -85,7 +86,8 @@ func (p *Priest) applyForeverCasterTalents() {
 		if s.DefaultCast.CastTime == 0 && !s.Flags.Matches(core.SpellFlagChanneled) {
 			s.DamageMultiplierAdditive += val("twin-disciplines", 0) / 100
 		}
-		if s.Cost != nil && (s.DefaultCast.CastTime == 0 || s.SpellCode == SpellCode_PriestSmite || s.SpellCode == SpellCode_PriestHolyFire) {
+		// Mental Agility: "Smite, Holy Fire, and instant cast spells"; channels are not instant.
+		if s.Cost != nil && ((s.DefaultCast.CastTime == 0 && !s.Flags.Matches(core.SpellFlagChanneled)) || s.SpellCode == SpellCode_PriestSmite || s.SpellCode == SpellCode_PriestHolyFire) {
 			s.Cost.Multiplier -= int32(val("mental-agility", 0))
 		}
 		if s.Flags.Matches(core.SpellFlagHelpful) {
@@ -109,8 +111,8 @@ func (p *Priest) applyForeverCasterTalents() {
 		if s.SpellCode == SpellCode_PriestMindFlay {
 			yards = 20 + val("improved-mind-flay", 1)
 		}
-		if s.SpellCode == SpellCode_PriestPenance && !s.Flags.Matches(core.SpellFlagHelpful) {
-			yards = 36
+		if s.SpellCode == SpellCode_PriestPenance {
+			yards = 40
 		}
 		if s.SpellSchool.Matches(core.SpellSchoolShadow) {
 			yards *= 1 + val("shadow-reach", 0)/100
@@ -172,11 +174,6 @@ func (p *Priest) applyForeverCasterTalents() {
 		if !r.Landed() || !s.SpellSchool.Matches(core.SpellSchoolShadow) {
 			return
 		}
-		if p.ForeverRank("priest.talent.shadow-weaving") > 0 && sim.Proc(min(1, val("shadow-weaving", 0)/100), "Forever Shadow Weaving") {
-			a := f.weaving.Get(r.Target)
-			a.Activate(sim)
-			a.AddStack(sim)
-		}
 		if p.ForeverRank("priest.talent.blackout") > 0 && sim.Proc(val("blackout", 0)/100, "Forever Blackout") {
 			blackouts.Get(r.Target).Activate(sim)
 		}
@@ -189,7 +186,24 @@ func (p *Priest) applyForeverCasterTalents() {
 			}
 		}
 	}
-	core.MakePermanent(p.RegisterAura(core.Aura{Label: "Forever Priest damage triggers", OnSpellHitDealt: damageTrigger, OnPeriodicDamageDealt: func(a *core.Aura, sim *core.Simulation, s *core.Spell, r *core.SpellResult) {
+	// Shadow Weaving rolls once per Shadow damage spell that lands (a direct hit, or a
+	// damage over time or channel being applied), not on every periodic tick.
+	weave := func(sim *core.Simulation, s *core.Spell, r *core.SpellResult) {
+		if !r.Landed() || !s.SpellSchool.Matches(core.SpellSchoolShadow) || !s.ProcMask.Matches(core.ProcMaskSpellDamage) || s.Flags.Matches(core.SpellFlagHelpful) {
+			return
+		}
+		if r.Damage <= 0 && len(s.Dots()) == 0 && s.AOEDot() == nil {
+			return
+		}
+		if p.ForeverRank("priest.talent.shadow-weaving") > 0 && sim.Proc(min(1, val("shadow-weaving", 0)/100), "Forever Shadow Weaving") {
+			f.weaving.Activate(sim)
+			f.weaving.AddStack(sim)
+		}
+	}
+	core.MakePermanent(p.RegisterAura(core.Aura{Label: "Forever Priest damage triggers", OnSpellHitDealt: func(a *core.Aura, sim *core.Simulation, s *core.Spell, r *core.SpellResult) {
+		weave(sim, s, r)
+		damageTrigger(a, sim, s, r)
+	}, OnPeriodicDamageDealt: func(a *core.Aura, sim *core.Simulation, s *core.Spell, r *core.SpellResult) {
 		damageTrigger(a, sim, s, r)
 		if s.SpellCode == SpellCode_PriestHolyFire && p.ForeverRank("priest.talent.searing-light") > 0 && sim.Proc(val("searing-light", 1)/100, "Forever Searing Light") {
 			f.freeNova.Activate(sim)
@@ -224,7 +238,7 @@ func (p *Priest) registerForeverShadowform() {
 			}
 		}
 	}})
-	p.Shadowform = p.RegisterSpell(core.SpellConfig{ProcMask: core.ProcMaskEmpty, ActionID: core.ActionID{SpellID: 15473}, SpellSchool: core.SpellSchoolShadow, Flags: core.SpellFlagAPL, ManaCost: core.ManaCostOptions{FlatCost: 345}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) { p.ShadowformAura.Activate(sim) }})
+	p.Shadowform = p.RegisterSpell(core.SpellConfig{ProcMask: core.ProcMaskEmpty, ActionID: core.ActionID{SpellID: 15473}, SpellSchool: core.SpellSchoolShadow, Flags: core.SpellFlagAPL, ManaCost: core.ManaCostOptions{BaseCost: .40}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) { p.ShadowformAura.Activate(sim) }})
 }
 func (p *Priest) registerForeverSpells() {
 	if p.Forever == nil {

@@ -46,11 +46,18 @@ func (warrior *Warrior) newShoutSpellConfig(actionID core.ActionID, rank int32, 
 }
 
 func (warrior *Warrior) registerBattleShout() {
-	rank := core.TernaryInt32(core.IncludeAQ, 7, 6)
+	known, _ := warrior.trainerRank("Battle Shout")
+	if known == 0 {
+		return
+	}
+	rank := int32(known)
 	actionId := core.BattleShoutSpellId[rank]
 	has3pcWrath := warrior.HasSetBonus(ItemSetBattleGearOfWrath, 3)
 
 	warrior.BattleShout = warrior.newShoutSpellConfig(core.ActionID{SpellID: actionId}, rank, warrior.NewPartyAuraArray(func(unit *core.Unit) *core.Aura {
+		if rank < core.BattleShoutRanks {
+			return battleShoutAuraAtRank(unit, rank, warrior.Talents.ImprovedBattleShout, warrior.Talents.BoomingVoice, has3pcWrath)
+		}
 		return core.BattleShoutAura(unit, warrior.Talents.ImprovedBattleShout, warrior.Talents.BoomingVoice, has3pcWrath)
 	}))
 }

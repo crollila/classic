@@ -15,12 +15,15 @@ var SwipeLevel = [SwipeRanks + 1]int{0, 16, 24, 34, 44, 54}
 const SwipeThreatMultiplier = 2.0
 
 func (druid *Druid) registerSwipeBearSpell() {
-	rank := map[int32]int{
-		25: 2,
-		40: 3,
-		50: 4,
-		60: 6,
-	}[druid.Level]
+	rank := 0
+	for r := 1; r <= SwipeRanks; r++ {
+		if int32(SwipeLevel[r]) <= druid.Level {
+			rank = r
+		}
+	}
+	if rank == 0 {
+		return
+	}
 
 	level := SwipeLevel[rank]
 	spellID := SwipeSpellId[rank]

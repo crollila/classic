@@ -27,7 +27,6 @@ func (d *Druid) applyForeverTalents() {
 		return
 	}
 	d.MultiplyStat(stats.Intellect, 1+.02*d.fr("heart-of-the-wild"))
-	d.AddStat(stats.AttackPower, .5*d.fr("predatory-strikes")*float64(d.Level))
 	d.PseudoStats.DamageDealtMultiplier *= 1 + .01*d.fr("naturalist")
 	d.AddStat(stats.MeleeHit, 2*d.fr("nature-s-reach"))
 	d.AddStat(stats.SpellHit, 2*d.fr("nature-s-reach"))
@@ -159,7 +158,9 @@ func (d *Druid) applyForeverTalents() {
 		}}))
 	}
 	if d.fr("nature-s-grace") > 0 {
-		speed := 1 + d.fr("nature-s-grace")*.1
+		// "increasing your spellcasting speed and reducing your global cooldown by 10%".
+		fraction := d.ForeverValue("druid.talent.nature-s-grace", 0, 10) / 100
+		speed := 1 + fraction
 		var spells []*core.Spell
 		d.OnSpellRegistered(func(sp *core.Spell) {
 			if !sp.ProcMask.Matches(core.ProcMaskMeleeOrRanged) && sp.DefaultCast.GCD > 0 {
@@ -170,7 +171,7 @@ func (d *Druid) applyForeverTalents() {
 		a := d.RegisterAura(core.Aura{Label: "Forever Nature's Grace", ActionID: d.fa("nature-s-grace"), Duration: 3 * time.Second, OnGain: func(_ *core.Aura, sim *core.Simulation) {
 			d.MultiplyCastSpeed(speed)
 			for _, sp := range spells {
-				delta := time.Duration(float64(sp.DefaultCast.GCD) * .01)
+				delta := time.Duration(float64(sp.DefaultCast.GCD) * fraction)
 				deltas[sp] = delta
 				sp.DefaultCast.GCD -= delta
 			}
@@ -187,44 +188,8 @@ func (d *Druid) applyForeverTalents() {
 		}
 		core.MakePermanent(d.RegisterAura(core.Aura{Label: "Forever Nature's Grace Trigger", OnSpellHitDealt: proc, OnHealDealt: proc}))
 	}
-	if d.fr("balance-of-nature") > 0 {
-		var nature, arcane []*core.Spell
-		d.OnSpellRegistered(func(sp *core.Spell) {
-			if sp.ProcMask.Matches(core.ProcMaskSpellDamage) {
-				if sp.SpellSchool.Matches(core.SpellSchoolNature) {
-					nature = append(nature, sp)
-				}
-				if sp.SpellSchool.Matches(core.SpellSchoolArcane) {
-					arcane = append(arcane, sp)
-				}
-			}
-		})
-		makeAura := func(name string, list *[]*core.Spell, school core.SpellSchool) *core.Aura {
-			return d.RegisterAura(core.Aura{Label: name, ActionID: d.fa("balance-of-nature"), Duration: 10 * time.Second, OnGain: func(_ *core.Aura, sim *core.Simulation) {
-				for _, sp := range *list {
-					sp.DamageMultiplier *= 1 + .01*d.fr("balance-of-nature")
-				}
-			}, OnExpire: func(_ *core.Aura, sim *core.Simulation) {
-				for _, sp := range *list {
-					sp.DamageMultiplier /= 1 + .01*d.fr("balance-of-nature")
-				}
-			}, OnCastComplete: func(a *core.Aura, sim *core.Simulation, sp *core.Spell) {
-				if sp.SpellSchool.Matches(school) && sp.ProcMask.Matches(core.ProcMaskSpellDamage) {
-					a.Deactivate(sim)
-				}
-			}})
-		}
-		n := makeAura("Forever Balance Nature", &nature, core.SpellSchoolNature)
-		a := makeAura("Forever Balance Arcane", &arcane, core.SpellSchoolArcane)
-		core.MakePermanent(d.RegisterAura(core.Aura{Label: "Forever Balance Trigger", OnCastComplete: func(_ *core.Aura, sim *core.Simulation, sp *core.Spell) {
-			if sp.SpellSchool.Matches(core.SpellSchoolNature) {
-				a.Activate(sim)
-			}
-			if sp.SpellSchool.Matches(core.SpellSchoolArcane) {
-				n.Activate(sim)
-			}
-		}}))
-	}
+	// Balance of Nature is selectable in trees.json but is not in the Forever client's
+	// talent list (talentsforever.com export of the beta client), so a rank does nothing.
 }
 
 func (d *Druid) registerForeverSpells() {
@@ -272,4 +237,35 @@ func (d *Druid) foreverFormCrit(sim *core.Simulation) {
 			a.Deactivate(sim)
 		}
 	}
+}
+
+// foreverPredatoryStrikesAP is Predatory Strikes' attack power, "in Cat Form, Bear Form,
+// and Dire Bear Form" only: 50/100/150% of the druid's level.
+func (d *Druid) foreverPredatoryStrikesAP() float64 {
+	return d.ForeverValue("druid.talent.predatory-strikes", 0, 0) / 100 * float64(d.Level)
+}
+
+// foreverMangleBonus is the flat bonus of the Bear Mangle rank known at the level
+// (client ranks: 26 at 25, 38 at 36, 59 at 48, 77 at 60). The talent grants rank 1.
+func foreverMangleBonus(level int32) float64 {
+	bonus := 26.0
+	for _, r := range []struct {
+		level int32
+		bonus float64
+	}{{36, 38}, {48, 59}, {60, 77}} {
+		if r.level <= level {
+			bonus = r.bonus
+		}
+	}
+	return bonus
+}
+
+// foreverFurorEnergy is the Energy Furor restores on entering Cat Form: 20/40/60/80/100%
+// of the Energy held when last in Cat Form plus 2/4/6/8/10 per second spent outside
+// Bear, Dire Bear and Cat Form, capped at 20/40/60/80/100.
+func (d *Druid) foreverFurorEnergy(outside time.Duration) float64 {
+	retained := d.ForeverValue("druid.talent.furor", 2, 0) / 100
+	perSecond := d.ForeverValue("druid.talent.furor", 3, 0)
+	limit := d.ForeverValue("druid.talent.furor", 4, 0)
+	return min(limit, d.foreverLastCatEnergy*retained+perSecond*outside.Seconds())
 }

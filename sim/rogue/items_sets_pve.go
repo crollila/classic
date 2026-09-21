@@ -20,7 +20,9 @@ var ItemSetNightslayerArmor = core.NewItemSet(core.ItemSet{
 			c.RegisterAura(core.Aura{
 				Label: "Improved Vanish",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					c.Vanish.CD.Duration -= time.Second * 30
+					if c.Vanish != nil {
+						c.Vanish.CD.Duration -= time.Second * 30
+					}
 				},
 			})
 		},
@@ -155,7 +157,9 @@ var ItemSetMadcapsOutfit = core.NewItemSet(core.ItemSet{
 				Label: "Improved Eviscerate and Rupture",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 					c.Eviscerate.Cost.FlatModifier -= 5
-					c.Rupture.Cost.FlatModifier -= 5
+					if c.Rupture != nil {
+						c.Rupture.Cost.FlatModifier -= 5
+					}
 				},
 			}))
 		},
@@ -175,7 +179,9 @@ var ItemSetEmblemsOfVeiledShadows = core.NewItemSet(core.ItemSet{
 			rogue.RegisterAura(core.Aura{
 				Label: "Emblems of Veiled Shadows 3pc",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					rogue.SliceAndDice.Cost.FlatModifier -= 10
+					if rogue.SliceAndDice != nil {
+						rogue.SliceAndDice.Cost.FlatModifier -= 10
+					}
 				},
 			})
 		},

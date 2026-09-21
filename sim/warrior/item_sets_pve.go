@@ -42,8 +42,10 @@ var ItemSetBattleGearOfMight = core.NewItemSet(core.ItemSet{
 			warrior.RegisterAura(core.Aura{
 				Label: "Enhanced Sunder Armor",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					warrior.SunderArmor.ThreatMultiplier *= 1.15
-					warrior.SunderArmor.FlatThreatBonus *= 1.15
+					if warrior.SunderArmor != nil {
+						warrior.SunderArmor.ThreatMultiplier *= 1.15
+						warrior.SunderArmor.FlatThreatBonus *= 1.15
+					}
 				},
 			})
 		},
@@ -161,7 +163,9 @@ var ItemSetVindicatorsBattlegear = core.NewItemSet(core.ItemSet{
 			warrior.RegisterAura(core.Aura{
 				Label: "Improved Whirlwind",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					warrior.Whirlwind.Cost.FlatModifier -= 3
+					if warrior.Whirlwind != nil {
+						warrior.Whirlwind.Cost.FlatModifier -= 3
+					}
 				},
 			})
 		},
@@ -258,17 +262,21 @@ var ItemSetDreadnaughtsBattlegear = core.NewItemSet(core.ItemSet{
 			core.MakePermanent(warrior.RegisterAura(core.Aura{
 				Label: "Increased Hit Chance",
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					warrior.SunderArmor.BonusHitRating += 5
-					warrior.HeroicStrike.BonusHitRating += 5
-					warrior.Revenge.BonusHitRating += 5
+					for _, s := range []*WarriorSpell{warrior.SunderArmor, warrior.HeroicStrike, warrior.Revenge} {
+						if s != nil {
+							s.BonusHitRating += 5
+						}
+					}
 					if warrior.Talents.ShieldSlam {
 						warrior.ShieldSlam.BonusHitRating += 5
 					}
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					warrior.SunderArmor.BonusHitRating -= 5
-					warrior.HeroicStrike.BonusHitRating -= 5
-					warrior.Revenge.BonusHitRating -= 5
+					for _, s := range []*WarriorSpell{warrior.SunderArmor, warrior.HeroicStrike, warrior.Revenge} {
+						if s != nil {
+							s.BonusHitRating -= 5
+						}
+					}
 					if warrior.Talents.ShieldSlam {
 						warrior.ShieldSlam.BonusHitRating -= 5
 					}
@@ -459,6 +467,9 @@ var ItemSetUnstoppableWrath = core.NewItemSet(core.ItemSet{
 				Label: "S03 - Item - T2 - Warrior - Damage 2P Bonus",
 				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					if spell.SpellCode == SpellCode_WarriorOverpower && result.DidCrit() {
+						if warrior.Rend == nil {
+							return
+						}
 						if dot := warrior.Rend.Dot(result.Target); dot.IsActive() {
 							dot.Refresh(sim)
 						}
@@ -473,7 +484,9 @@ var ItemSetUnstoppableWrath = core.NewItemSet(core.ItemSet{
 				Label: "S03 - Item - T2 - Warrior - Damage 4P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 					warrior.HeroicStrike.DamageMultiplier *= 1.25
-					warrior.Overpower.DamageMultiplier *= 1.25
+					if warrior.Overpower != nil {
+						warrior.Overpower.DamageMultiplier *= 1.25
+					}
 					if warrior.SlamMH != nil {
 						warrior.SlamMH.DamageMultiplier *= 1.25
 					}
@@ -638,13 +651,17 @@ var ItemSetVindicatorsBattlegear = core.NewItemSet(core.ItemSet{
 					oldOnGain := ee.OnGain
 					ee.OnGain = func(ee *core.ExclusiveEffect, sim *core.Simulation) {
 						oldOnGain(ee, sim)
-						warrior.Bloodrage.CD.Duration -= time.Second * 30
+						if warrior.Bloodrage != nil {
+							warrior.Bloodrage.CD.Duration -= time.Second * 30
+						}
 					}
 
 					oldOnExpire := ee.OnExpire
 					ee.OnExpire = func(ee *core.ExclusiveEffect, sim *core.Simulation) {
 						oldOnExpire(ee, sim)
-						warrior.Bloodrage.CD.Duration += time.Second * 30
+						if warrior.Bloodrage != nil {
+							warrior.Bloodrage.CD.Duration += time.Second * 30
+						}
 					}
 				},
 			})
@@ -695,13 +712,13 @@ var ItemSetConquerorsAdvance = core.NewItemSet(core.ItemSet{
 			core.MakePermanent(warrior.RegisterAura(core.Aura{
 				Label: "S03 - Item - TAQ - Warrior - Damage 4P Bonus",
 				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if (spell.SpellCode == SpellCode_WarriorDeepWounds && warrior.Rend.Dot(result.Target).IsActive()) ||
+					if (spell.SpellCode == SpellCode_WarriorDeepWounds && warrior.Rend != nil && warrior.Rend.Dot(result.Target).IsActive()) ||
 						(spell.SpellCode == SpellCode_WarriorRend && warrior.DeepWounds.Dot(result.Target).IsActive()) {
 						buffAura.Activate(sim)
 					}
 				},
 				OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if (spell.SpellCode == SpellCode_WarriorDeepWounds && warrior.Rend.Dot(result.Target).IsActive()) ||
+					if (spell.SpellCode == SpellCode_WarriorDeepWounds && warrior.Rend != nil && warrior.Rend.Dot(result.Target).IsActive()) ||
 						(spell.SpellCode == SpellCode_WarriorRend && warrior.DeepWounds.Dot(result.Target).IsActive()) {
 						buffAura.Activate(sim)
 					}
@@ -721,7 +738,9 @@ var ItemSetConquerorsBulwark = core.NewItemSet(core.ItemSet{
 			warrior.RegisterAura(core.Aura{
 				Label: "S03 - Item - TAQ - Warrior - Tank 2P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					warrior.ThunderClap.CD.Duration = 0
+					if warrior.ThunderClap != nil {
+						warrior.ThunderClap.CD.Duration = 0
+					}
 				},
 			})
 		},

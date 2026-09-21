@@ -46,6 +46,23 @@ func (warlock *Warlock) setDefaultActivePet() {
 	case proto.WarlockOptions_Voidwalker:
 		warlock.ActivePet = warlock.Voidwalker
 	}
+	// A demon the warlock has not learned to summon yet is not out.
+	if warlock.ActivePet != nil && warlock.Level < warlock.ActivePet.summonLevel() {
+		warlock.ActivePet = nil
+	}
+}
+
+// summonLevel is the level the warlock learns to summon this demon.
+func (wp *WarlockPet) summonLevel() int32 {
+	switch wp.Name {
+	case "Voidwalker":
+		return summonVoidwalkerLevel
+	case "Succubus":
+		return summonSuccubusLevel
+	case "Felhunter":
+		return summonFelhunterLevel
+	}
+	return summonImpLevel
 }
 
 func (warlock *Warlock) changeActivePet(sim *core.Simulation, newPet *WarlockPet, isSacrifice bool) {
@@ -105,15 +122,15 @@ func (warlock *Warlock) makePet(cfg PetConfig, enabledOnStart bool) *WarlockPet 
 		}
 
 		// Mage spell crit scaling for imp
-		wp.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[proto.Class_ClassMage]*core.SpellCritRatingPerCritChance)
+		wp.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAt(proto.Class_ClassMage, wp.Level)*core.SpellCritRatingPerCritChance)
 	} else {
 		// Warrior scaling for all other pets
 		wp.AddStat(stats.AttackPower, -20)
 		wp.AddStatDependency(stats.Strength, stats.AttackPower, 2)
 
 		// Warrior crit scaling
-		wp.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[proto.Class_ClassWarrior]*core.CritRatingPerCritChance)
-		wp.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[proto.Class_ClassWarrior]*core.SpellCritRatingPerCritChance)
+		wp.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAt(proto.Class_ClassWarrior, wp.Level)*core.CritRatingPerCritChance)
+		wp.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAt(proto.Class_ClassWarrior, wp.Level)*core.SpellCritRatingPerCritChance)
 
 		// Imps generally don't melee
 		wp.EnableAutoAttacks(wp, cfg.AutoAttacks)

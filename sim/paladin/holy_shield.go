@@ -15,7 +15,7 @@ var HolyShieldValues = []struct {
 	manaCost float64
 	damage   float64
 }{
-	{level: 30, spellID: 20925, procID: 20955, manaCost: 150, damage: 65},
+	{level: 40, spellID: 20925, procID: 20955, manaCost: 150, damage: 65},
 	{level: 50, spellID: 20927, procID: 20956, manaCost: 195, damage: 95},
 	{level: 60, spellID: 20928, procID: 20957, manaCost: 240, damage: 130},
 }

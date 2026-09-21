@@ -43,7 +43,7 @@ func (hunter *Hunter) getMaxHawkRank() int {
 			return i
 		}
 	}
-	return 1
+	return 0
 }
 
 func (hunter *Hunter) getAspectOfTheHawkSpellConfig(rank int) core.SpellConfig {
@@ -113,6 +113,9 @@ func (hunter *Hunter) getAspectOfTheHawkSpellConfig(rank int) core.SpellConfig {
 func (hunter *Hunter) registerAspectOfTheHawkSpell() {
 	hunter.AspectOfTheHawkAPMultiplier = 1.0
 	maxRank := hunter.getMaxHawkRank()
+	if maxRank == 0 {
+		return // Aspect of the Hawk is learned at level 10
+	}
 	config := hunter.getAspectOfTheHawkSpellConfig(maxRank)
 	hunter.GetOrRegisterSpell(config)
 }

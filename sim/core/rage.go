@@ -44,7 +44,7 @@ func GetRageConversion(attacker_level int32) float64 {
 		return 140.5 // Tested
 	} else if attacker_level < 45 {
 		// Poor fit, but better then current formula below 45
-		return 0.0215*float64(attacker_level^2) + 2.66*float64(attacker_level) + 0.89
+		return 0.0215*float64(attacker_level*attacker_level) + 2.66*float64(attacker_level) + 0.89
 	} else {
 		// Rage conversion is adjusted according to target stats (https://web.archive.org/web/20201118213002/https://blue.mmo-champion.com/topic/18325-the-new-rage-formula-by-kalgan/)\
 		// So this is probably only the base value formula and will be slightly wrong for most target

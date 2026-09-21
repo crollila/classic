@@ -252,6 +252,10 @@ func (druid *Druid) applyFuror() {
 }
 
 func (druid *Druid) applyOmenOfClarity() {
+	if druid.Forever != nil {
+		druid.applyForeverOmenOfClarity()
+		return
+	}
 	if !druid.Talents.OmenOfClarity {
 		return
 	}
@@ -365,7 +369,12 @@ func (druid *Druid) applyImprovedMoonfire() {
 			)
 
 			for _, spell := range damageAffectedSpells {
-				spell.BaseDamageMultiplierAdditive += damageMultiplier
+				if druid.Forever != nil {
+					// "Increases the damage ... of your Moonfire spell": base and spell power alike.
+					spell.DamageMultiplierAdditive += damageMultiplier
+				} else {
+					spell.BaseDamageMultiplierAdditive += damageMultiplier
+				}
 			}
 
 			for _, spell := range critAffectedSpells {
@@ -381,6 +390,16 @@ func (druid *Druid) applyVengeance() {
 	}
 
 	critDamageBonus := 0.20 * float64(druid.Talents.Vengeance)
+	if druid.Forever != nil {
+		// "the critical strike damage bonus of your Arcane and Nature spells".
+		critDamageBonus = druid.ForeverValue("druid.talent.vengeance", 0, 20*float64(druid.Talents.Vengeance)) / 100
+		druid.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.ProcMask.Matches(core.ProcMaskSpellDamage) && spell.SpellSchool.Matches(core.SpellSchoolArcane|core.SpellSchoolNature) {
+				spell.CritDamageBonus += critDamageBonus
+			}
+		})
+		return
+	}
 
 	druid.RegisterAura(core.Aura{
 		Label: "Vengeance",
@@ -429,4 +448,95 @@ func (druid *Druid) applyMoonglow() {
 			}
 		},
 	})
+}
+
+// applyForeverOmenOfClarity is Forever's baseline Omen of Clarity (Balance spellbook,
+// learned at 20): "Your spells and attacks have a chance to grant you Clearcasting,
+// reducing the Mana, Rage, or Energy cost of your next damage or healing spell or
+// offensive ability by 100%. Clearcasting is not consumed by Wrath or by spells or
+// abilities that cost no resources." Moonkin Form: "Omen of Clarity gains 100% increased
+// chance to trigger".
+//
+// BEST_GUESS proc model: the client gives no rate. Attacks keep the Classic model above
+// (2 procs per minute, 10 sec cooldown); spells use the same 2 per minute scaled by the
+// cast time (at least a global cooldown) and share the cooldown.
+func (druid *Druid) applyForeverOmenOfClarity() {
+	if druid.Level < 20 {
+		return
+	}
+	const ppm = 2.0
+	affected := func(spell *core.Spell) bool {
+		if spell.Cost == nil || spell.SpellCode == SpellCode_DruidWrath {
+			return false
+		}
+		switch spell.SpellCode {
+		case foreverMangle, foreverMaul, foreverSwipe:
+			return true
+		}
+		return spell.Flags.Matches(SpellFlagOmen) || spell.ProcMask.Matches(core.ProcMaskSpellHealing)
+	}
+	var affectedSpells []*core.Spell
+	druid.ClearcastingAura = druid.RegisterAura(core.Aura{
+		Label:    "Clearcasting",
+		ActionID: core.ActionID{SpellID: 16870},
+		Duration: time.Second * 15,
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			affectedSpells = core.FilterSlice(druid.Spellbook, affected)
+		},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			for _, spell := range affectedSpells {
+				spell.Cost.Multiplier -= 100
+			}
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			for _, spell := range affectedSpells {
+				spell.Cost.Multiplier += 100
+			}
+		},
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			// Not consumed by the cast that triggered it.
+			if aura.RemainingDuration(sim) == aura.Duration {
+				return
+			}
+			if affected(spell) && spell.DefaultCast.Cost > 0 {
+				aura.Deactivate(sim)
+			}
+		},
+	})
+
+	ppmm := druid.AutoAttacks.NewPPMManager(ppm, core.ProcMaskMelee)
+	icd := core.Cooldown{Timer: druid.NewTimer(), Duration: time.Second * 10}
+	moonkinFactor := func() float64 {
+		if druid.InForm(Moonkin) && druid.fr("moonkin-form") > 0 {
+			return 2
+		}
+		return 1
+	}
+	core.MakePermanent(druid.RegisterAura(core.Aura{
+		Label: "Omen of Clarity",
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !result.Landed() || !icd.IsReady(sim) || !spell.ProcMask.Matches(core.ProcMaskMelee) {
+				return
+			}
+			procced := ppmm.ProcWithWeaponSpecials(sim, spell.ProcMask, "Omen of Clarity")
+			if !procced && moonkinFactor() > 1 {
+				procced = ppmm.ProcWithWeaponSpecials(sim, spell.ProcMask, "Omen of Clarity")
+			}
+			if procced {
+				icd.Use(sim)
+				druid.ClearcastingAura.Activate(sim)
+			}
+		},
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if !icd.IsReady(sim) || !spell.ProcMask.Matches(core.ProcMaskSpellDamage|core.ProcMaskSpellHealing) {
+				return
+			}
+			castTime := max(spell.CurCast.CastTime, core.GCDDefault)
+			chance := castTime.Minutes() * ppm * moonkinFactor()
+			if sim.Proc(chance, "Omen of Clarity") {
+				icd.Use(sim)
+				druid.ClearcastingAura.Activate(sim)
+			}
+		},
+	}))
 }

@@ -111,6 +111,18 @@ export const InFrontOfTarget = {
 	},
 };
 
+export const CharacterLevel = {
+	id: 'character-level',
+	type: 'number' as const,
+	label: 'Character Level',
+	labelTooltip: 'Your level. Base stats, crit scaling, spell ranks and talent points follow it.',
+	changedEvent: (player: Player<any>) => player.levelChangeEmitter,
+	getValue: (player: Player<any>) => player.getLevel(),
+	setValue: (eventID: EventID, player: Player<any>, newValue: number) => {
+		player.setLevel(eventID, newValue);
+	},
+};
+
 export const DistanceFromTarget = {
 	id: 'distance-from-target',
 	type: 'number' as const,

@@ -247,6 +247,8 @@ export class Player<SpecType extends Spec> {
 	private channelClipDelay = 0;
 	private inFrontOfTarget = false;
 	private distanceFromTarget = 0;
+	// Forever players are levelling; Classic is always the level cap.
+	private level = import.meta.env.VITE_FOREVER === 'true' ? 20 : 60;
 	private healingModel: HealingModel = HealingModel.create();
 	private healingEnabled = false;
 
@@ -288,6 +290,7 @@ export class Player<SpecType extends Spec> {
 	readonly specOptionsChangeEmitter = new TypedEvent<void>('PlayerSpecOptions');
 	readonly inFrontOfTargetChangeEmitter = new TypedEvent<void>('PlayerInFrontOfTarget');
 	readonly distanceFromTargetChangeEmitter = new TypedEvent<void>('PlayerDistanceFromTarget');
+	readonly levelChangeEmitter = new TypedEvent<void>('PlayerLevel');
 	readonly healingModelChangeEmitter = new TypedEvent<void>('PlayerHealingModel');
 	readonly epWeightsChangeEmitter = new TypedEvent<void>('PlayerEpWeights');
 	readonly miscOptionsChangeEmitter = new TypedEvent<void>('PlayerMiscOptions');
@@ -342,6 +345,7 @@ export class Player<SpecType extends Spec> {
 				this.miscOptionsChangeEmitter,
 				this.inFrontOfTargetChangeEmitter,
 				this.distanceFromTargetChangeEmitter,
+				this.levelChangeEmitter,
 				this.healingModelChangeEmitter,
 				this.epWeightsChangeEmitter,
 				this.epRatiosChangeEmitter,
@@ -964,6 +968,17 @@ export class Player<SpecType extends Spec> {
 		this.inFrontOfTargetChangeEmitter.emit(eventID);
 	}
 
+	getLevel(): number {
+		return this.level;
+	}
+
+	setLevel(eventID: EventID, newLevel: number) {
+		newLevel = Math.max(1, Math.min(60, Math.round(newLevel) || 60));
+		if (newLevel === this.level) return;
+		this.level = newLevel;
+		this.levelChangeEmitter.emit(eventID);
+	}
+
 	getDistanceFromTarget(): number {
 		return this.distanceFromTarget;
 	}
@@ -1418,6 +1433,7 @@ export class Player<SpecType extends Spec> {
 				channelClipDelayMs: this.getChannelClipDelay(),
 				inFrontOfTarget: this.getInFrontOfTarget(),
 				distanceFromTarget: this.getDistanceFromTarget(),
+				level: this.getLevel(),
 				healingModel: this.getHealingModel(),
 				isbSbFrequency: this.getIsbSbFrequency(),
 				isbCrit: this.getIsbCrit(),
@@ -1479,6 +1495,7 @@ export class Player<SpecType extends Spec> {
 				this.setChannelClipDelay(eventID, proto.channelClipDelayMs);
 				this.setInFrontOfTarget(eventID, proto.inFrontOfTarget);
 				this.setDistanceFromTarget(eventID, proto.distanceFromTarget);
+				this.setLevel(eventID, proto.level || (import.meta.env.VITE_FOREVER === 'true' ? 20 : 60));
 				this.setHealingModel(eventID, proto.healingModel || HealingModel.create());
 				this.setIsbSbFrequency(eventID, proto.isbSbFrequency);
 				this.setIsbCrit(eventID, proto.isbCrit);

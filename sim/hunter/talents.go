@@ -179,6 +179,16 @@ func (hunter *Hunter) mortalShots() float64 {
 	return 0.06 * float64(hunter.Talents.MortalShots)
 }
 
+// meleeMortalShots is Mortal Shots on the melee abilities that inherited it from
+// Classic/SoD code. Forever Mortal Shots names "all ranged abilities" only; melee crit
+// damage is Predator's Edge there.
+func (hunter *Hunter) meleeMortalShots() float64 {
+	if hunter.Forever != nil {
+		return 0
+	}
+	return hunter.mortalShots()
+}
+
 func (hunter *Hunter) applyTrapMastery() {
 	if hunter.Talents.TrapMastery == 0 {
 		return

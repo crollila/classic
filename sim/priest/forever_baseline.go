@@ -111,18 +111,23 @@ func (p *Priest) registerForeverBaseline() {
 	for _, t := range p.Env.Encounter.Targets {
 		t.ForeverEnableManaPool(max(t.GetStat(stats.Mana), p.ForeverParameter("scenario.enemy_mana", 0)))
 	}
-	if p.HasForeverMechanic("priest.baseline.shadow-word-death") {
-		p.RegisterSpell(core.SpellConfig{ActionID: p.ForeverAction("priest.baseline.shadow-word-death"), SpellCode: SpellCode_PriestShadowWordDeath, SpellSchool: core.SpellSchoolShadow, DefenseType: core.DefenseTypeMagic, ProcMask: core.ProcMaskSpellDamage, Flags: SpellFlagPriest | core.SpellFlagAPL, ManaCost: core.ManaCostOptions{FlatCost: 350}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, CD: core.Cooldown{Timer: p.NewTimer(), Duration: 12 * time.Second}}, DamageMultiplier: 1, ThreatMultiplier: 1, BonusCoefficient: .429,
+	// Baseline spells below cannot be used before their first rank is learned: Shadow Word:
+	// Death 32, Psychic Scream 14, Fade 8, Mana Burn 24, Inner Fire 12. Shadow Word: Death
+	// uses the rank the level has learned (client tooltips); the others stay the top rank's.
+	if swd, ok := foreverPriestRankAt(p.Level, foreverShadowWordDeathRanks); ok && p.HasForeverMechanic("priest.baseline.shadow-word-death") {
+		p.RegisterSpell(core.SpellConfig{ActionID: p.ForeverAction("priest.baseline.shadow-word-death"), SpellCode: SpellCode_PriestShadowWordDeath, SpellSchool: core.SpellSchoolShadow, DefenseType: core.DefenseTypeMagic, ProcMask: core.ProcMaskSpellDamage, Flags: SpellFlagPriest | core.SpellFlagAPL, ManaCost: core.ManaCostOptions{FlatCost: swd.mana}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, CD: core.Cooldown{Timer: p.NewTimer(), Duration: 15 * time.Second}}, DamageMultiplier: 1, ThreatMultiplier: 1, BonusCoefficient: .429,
 			ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
 				crit := 0.0
 				if sim.IsExecutePhase20() || (t.HasHealthBar() && t.CurrentHealthPercent() <= .2) {
 					crit = val("early-demise", 1) * core.SpellCritRatingPerCritChance
 				}
 				s.BonusCritRating += crit
-				r := s.CalcAndDealDamage(sim, t, sim.Roll(503, 531), s.OutcomeMagicHitAndCrit)
+				s.CalcAndDealDamage(sim, t, sim.Roll(swd.low, swd.high), s.OutcomeMagicHitAndCrit)
 				s.BonusCritRating -= crit
+				// "If your target is not killed ... backlash damage equal to 10% of your
+				// maximum health."
 				if !t.HasHealthBar() || t.CurrentHealth() > 0 {
-					p.RemoveHealth(sim, min(r.Damage, p.CurrentHealth()))
+					p.RemoveHealth(sim, min(.1*p.MaxHealth(), p.CurrentHealth()))
 				}
 			},
 		})
@@ -149,7 +154,7 @@ func (p *Priest) registerForeverBaseline() {
 	fears := p.NewEnemyAuraArray(func(t *core.Unit) *core.Aura {
 		return t.ForeverControlAura("Forever Psychic Scream-"+p.Label, core.ActionID{SpellID: 10890}, core.ForeverFear, 8*time.Second)
 	})
-	p.RegisterSpell(core.SpellConfig{ProcMask: core.ProcMaskEmpty, ActionID: core.ActionID{SpellID: 10890}, SpellSchool: core.SpellSchoolShadow, Flags: SpellFlagPriest | core.SpellFlagAPL, ManaCost: core.ManaCostOptions{FlatCost: 210}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, CD: core.Cooldown{Timer: p.NewTimer(), Duration: 30*time.Second - time.Duration(val("improved-psychic-scream", 0)*float64(time.Second))}}, ExtraCastCondition: func(sim *core.Simulation, t *core.Unit) bool { return p.DistanceFromTarget <= 8 }, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
+	p.RegisterSpell(core.SpellConfig{ProcMask: core.ProcMaskEmpty, ActionID: core.ActionID{SpellID: 10890}, SpellSchool: core.SpellSchoolShadow, Flags: SpellFlagPriest | core.SpellFlagAPL, ManaCost: core.ManaCostOptions{FlatCost: 210}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, CD: core.Cooldown{Timer: p.NewTimer(), Duration: 30*time.Second - time.Duration(val("improved-psychic-scream", 0)*float64(time.Second))}}, ExtraCastCondition: func(sim *core.Simulation, t *core.Unit) bool { return p.Level >= 14 && p.DistanceFromTarget <= 8 }, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
 		for i, t := range sim.Encounter.TargetUnits {
 			if i == 5 {
 				break
@@ -170,14 +175,14 @@ func (p *Priest) registerForeverBaseline() {
 			}
 		}
 	}})
-	p.RegisterSpell(core.SpellConfig{ProcMask: core.ProcMaskEmpty, ActionID: core.ActionID{SpellID: 10942}, SpellSchool: core.SpellSchoolShadow, Flags: core.SpellFlagAPL, ManaCost: core.ManaCostOptions{FlatCost: 250}, Cast: core.CastConfig{CD: core.Cooldown{Timer: p.NewTimer(), Duration: 30*time.Second - time.Duration(val("improved-fade", 0)*float64(time.Second))}}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) { fade.Activate(sim) }})
+	p.RegisterSpell(core.SpellConfig{ProcMask: core.ProcMaskEmpty, ActionID: core.ActionID{SpellID: 10942}, SpellSchool: core.SpellSchoolShadow, Flags: core.SpellFlagAPL, ManaCost: core.ManaCostOptions{FlatCost: 250}, Cast: core.CastConfig{CD: core.Cooldown{Timer: p.NewTimer(), Duration: 30*time.Second - time.Duration(val("improved-fade", 0)*float64(time.Second))}}, ExtraCastCondition: func(sim *core.Simulation, t *core.Unit) bool { return p.Level >= 8 }, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) { fade.Activate(sim) }})
 	burnMetrics := map[int32]*core.ResourceMetrics{}
 	for _, target := range p.Env.Encounter.Targets {
 		if target.HasManaBar() {
 			burnMetrics[target.UnitIndex] = target.NewManaMetrics(core.ActionID{SpellID: 10876})
 		}
 	}
-	p.RegisterSpell(core.SpellConfig{ActionID: core.ActionID{SpellID: 10876}, SpellSchool: core.SpellSchoolShadow, DefenseType: core.DefenseTypeMagic, Flags: SpellFlagPriest | core.SpellFlagAPL, ProcMask: core.ProcMaskSpellDamage, ManaCost: core.ManaCostOptions{FlatCost: 165}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault, CastTime: 3*time.Second - time.Duration(val("improved-mana-burn", 0)*float64(time.Second))}}, DamageMultiplier: 1, ThreatMultiplier: 1, ExtraCastCondition: func(sim *core.Simulation, t *core.Unit) bool { return t.HasManaBar() }, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
+	p.RegisterSpell(core.SpellConfig{ActionID: core.ActionID{SpellID: 10876}, SpellSchool: core.SpellSchoolShadow, DefenseType: core.DefenseTypeMagic, Flags: SpellFlagPriest | core.SpellFlagAPL, ProcMask: core.ProcMaskSpellDamage, ManaCost: core.ManaCostOptions{FlatCost: 165}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault, CastTime: 3*time.Second - time.Duration(val("improved-mana-burn", 0)*float64(time.Second))}}, DamageMultiplier: 1, ThreatMultiplier: 1, ExtraCastCondition: func(sim *core.Simulation, t *core.Unit) bool { return p.Level >= 24 && t.HasManaBar() }, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
 		amount := min(t.CurrentMana(), 600.0)
 		result := s.CalcDamage(sim, t, amount*.5, s.OutcomeMagicHitAndCrit)
 		if result.Landed() {
@@ -192,7 +197,7 @@ func (p *Priest) registerForeverBaseline() {
 			a.RemoveStack(sim)
 		}
 	}})
-	p.RegisterSpell(core.SpellConfig{ProcMask: core.ProcMaskEmpty, ActionID: core.ActionID{SpellID: 10952}, SpellSchool: core.SpellSchoolHoly, Flags: core.SpellFlagAPL | core.SpellFlagHelpful, ManaCost: core.ManaCostOptions{FlatCost: 315}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
+	p.RegisterSpell(core.SpellConfig{ProcMask: core.ProcMaskEmpty, ActionID: core.ActionID{SpellID: 10952}, SpellSchool: core.SpellSchoolHoly, Flags: core.SpellFlagAPL | core.SpellFlagHelpful, ManaCost: core.ManaCostOptions{FlatCost: 315}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}}, ExtraCastCondition: func(sim *core.Simulation, t *core.Unit) bool { return p.Level >= 12 }, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
 		inner.Activate(sim)
 		inner.SetStacks(sim, inner.MaxStacks)
 	}})

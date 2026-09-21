@@ -364,19 +364,6 @@
     ],
     "scope": "Existing Forever adapter or audited Classic bridge."
   },
-  "warrior.talent.vitality": {
-    "confidence": "PROVISIONAL",
-    "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
-    "remaining_unknowns": [
-      "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
-    ],
-    "mode": "replace",
-    "files": [
-      "sim/warrior/",
-      "sim/core/forever.go"
-    ],
-    "scope": "Existing Forever adapter or audited Classic bridge."
-  },
   "warrior.talent.bastion": {
     "confidence": "PROVISIONAL",
     "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
@@ -1196,7 +1183,7 @@
     "files": [
       "sim/warrior/forever.go"
     ],
-    "scope": "421\u2013439 plus BlockValue damage, Classic threat fallback,50%chance to dispel one explicitly tagged beneficial magic effect."
+    "scope": "421–439 plus BlockValue damage, Classic threat fallback,50%chance to dispel one explicitly tagged beneficial magic effect."
   },
   "warrior.talent.improved-berserker-rage": {
     "confidence": "PROVISIONAL",
@@ -2385,7 +2372,7 @@
     ],
     "scope": "Kick uses Classic80damage and five-second interrupted-school lockout; talent adds50%/rank chance of a separate two-second silence."
   },
-  "rogue.talent.restless-blades": {
+  "rogue.talent.flawless-execution": {
     "confidence": "PROVISIONAL",
     "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
     "remaining_unknowns": [

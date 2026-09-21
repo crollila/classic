@@ -671,12 +671,6 @@
         "text": "Gives your Shield Bash ability a 50% chance to silence the target for 3 sec."
       }
     },
-    "warrior.talent.vitality": {
-      "icon": "ability_warrior_strengthofarms",
-      "classic": {
-        "status": "new"
-      }
-    },
     "warrior.talent.focused-rage": {
       "icon": "ability_warrior_focusedrage",
       "classic": {
@@ -1970,7 +1964,7 @@
         "text": "Gives your Kick ability a 50% chance to silence the target for 2 sec."
       }
     },
-    "rogue.talent.restless-blades": {
+    "rogue.talent.flawless-execution": {
       "icon": "ability_rogue_restlessblades",
       "classic": {
         "status": "new"

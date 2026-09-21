@@ -44,6 +44,7 @@ type Rogue struct {
 	Options *proto.RogueOptions
 
 	sliceAndDiceDurations [6]time.Duration
+	ruptureTickDamage     [2]float64 // {base, per combo point} of the known Rupture rank
 
 	AdrenalineRush *core.Spell
 	Backstab       *core.Spell
@@ -88,6 +89,7 @@ type Rogue struct {
 	ForeverHemorrhage      core.AuraArray
 	ForeverSprint          *core.Spell
 	foreverPoisonCharges   [2]int32
+	foreverVenomAura       *core.Aura
 }
 
 func (rogue *Rogue) GetCharacter() *core.Character {
@@ -175,8 +177,8 @@ func NewRogue(character *core.Character, options *proto.Player, rogueOptions *pr
 	rogue.AddStatDependency(stats.Strength, stats.AttackPower, core.APPerStrength[character.Class])
 	rogue.AddStatDependency(stats.Agility, stats.AttackPower, 1)
 	rogue.AddStatDependency(stats.Agility, stats.RangedAttackPower, 1)
-	rogue.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[character.Class]*core.CritRatingPerCritChance)
-	rogue.AddStatDependency(stats.Agility, stats.Dodge, core.DodgePerAgiAtLevel[character.Class]*core.DodgeRatingPerDodgeChance)
+	rogue.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAt(character.Class, rogue.Level)*core.CritRatingPerCritChance)
+	rogue.AddStatDependency(stats.Agility, stats.Dodge, core.DodgePerAgiAt(character.Class, rogue.Level)*core.DodgeRatingPerDodgeChance)
 	rogue.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 
 	guardians.ConstructGuardians(&rogue.Character)

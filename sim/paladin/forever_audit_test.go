@@ -23,39 +23,20 @@ func TestForeverAuditDamageBonusesExcludeHealing(t *testing.T) {
 	for _, mode := range []proto.ForeverMode{proto.ForeverMode_STRICT, proto.ForeverMode_BEST_GUESS} {
 		t.Run(mode.String(), func(t *testing.T) {
 			talents := hybridTalents(t, "druid.talent.moonfury", 1)
-			talents["druid.talent.balance-of-nature"] = max(talents["druid.talent.balance-of-nature"], 1)
-			sim, c := hybridSim(t, "DRUID", talents, mode)
+			_, c := hybridSim(t, "DRUID", talents, mode)
 			heal := c.GetSpell(core.ActionID{SpellID: 25297})
-			var wrath, moonfire *core.Spell
+			var wrath *core.Spell
 			for _, sp := range c.Spellbook {
 				if sp.SpellCode == druid.SpellCode_DruidWrath {
 					wrath = sp
-				}
-				if sp.SpellCode == druid.SpellCode_DruidMoonfire {
-					moonfire = sp
 				}
 			}
 			hybridNear(t, heal.DamageMultiplierAdditive, 1)
 			if wrath.DamageMultiplierAdditive <= 1 {
 				t.Fatal("Moonfury failed to boost damage")
 			}
-			healingMultiplier := heal.CasterHealingMultiplier()
-			damageMultiplier := wrath.DamageMultiplier
-			c.OnCastComplete(sim, moonfire)
-			aura := c.GetAura("Forever Balance Nature")
-			if !aura.IsActive() {
-				t.Fatal("Arcane cast did not create Nature damage charge")
-			}
-			hybridNear(t, heal.CasterHealingMultiplier(), healingMultiplier)
-			hybridNear(t, wrath.DamageMultiplier, damageMultiplier*(1+.01*float64(c.ForeverRank("druid.talent.balance-of-nature"))))
-			heal.ApplyEffects(sim, &c.Unit, heal)
-			c.OnCastComplete(sim, heal)
-			if !aura.IsActive() {
-				t.Fatal("Healing Touch consumed damage-only charge")
-			}
-			c.OnCastComplete(sim, wrath)
-			if aura.IsActive() {
-				t.Fatal("Wrath did not consume damage charge")
+			if c.GetAura("Forever Balance Nature") != nil {
+				t.Fatal("Balance of Nature is not a Forever client talent")
 			}
 		})
 	}
@@ -141,7 +122,7 @@ func TestForeverAuditVigilAttributionAndIllumination(t *testing.T) {
 				effect.ApplyEffects(sim, &c.Unit, effect)
 				delta := c.CurrentMana() - before
 				if delta > 0 {
-					hybridNear(t, delta, 365)
+					hybridNear(t, delta, 670) // level-60 rank 3: 1,340 Mana x 50%
 					refunds++
 				}
 			}

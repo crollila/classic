@@ -179,7 +179,7 @@ func (warlock *Warlock) applyNightfall() {
 	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label: "Nightfall Hidden Aura",
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if (spell.SpellCode == SpellCode_WarlockCorruption || spell.SpellCode == SpellCode_WarlockDrainLife || (warlock.Forever != nil && spell.SpellCode == SpellCode_WarlockDrainSoul)) && sim.Proc(procChance, "Nightfall") {
+			if (spell.SpellCode == SpellCode_WarlockCorruption || spell.SpellCode == SpellCode_WarlockDrainLife || (warlock.Forever != nil && (spell.SpellCode == SpellCode_WarlockDrainSoul || spell.SpellCode == SpellCode_WarlockDrainHope))) && sim.Proc(procChance, "Nightfall") {
 				shadowTranceAura.Activate(sim)
 			}
 		},

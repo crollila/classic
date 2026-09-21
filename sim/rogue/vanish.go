@@ -7,6 +7,10 @@ import (
 )
 
 func (rogue *Rogue) registerVanishSpell() {
+	spellID := rogue.trainerSpellID("Vanish")
+	if spellID == 0 {
+		return
+	}
 	rogue.VanishAura = rogue.RegisterAura(core.Aura{
 		Label:    "Vanish",
 		ActionID: core.ActionID{SpellID: 457437},
@@ -19,7 +23,7 @@ func (rogue *Rogue) registerVanishSpell() {
 
 	rogue.Vanish = rogue.RegisterSpell(core.SpellConfig{
 		SpellCode:   SpellCode_RogueVanish,
-		ActionID:    core.ActionID{SpellID: 1856},
+		ActionID:    core.ActionID{SpellID: spellID},
 		SpellSchool: core.SpellSchoolPhysical,
 		Flags:       core.SpellFlagAPL,
 

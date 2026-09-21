@@ -4946,111 +4946,6 @@
       "action_tag": 125
     },
     {
-      "id": "warrior.talent.vitality",
-      "class": "WARRIOR",
-      "tree": "Protection",
-      "name": "Vitality",
-      "max_rank": 5,
-      "row": 5,
-      "column": 4,
-      "required_points": 20,
-      "prerequisites": [],
-      "source_url": "https://forevertalents.up.railway.app/",
-      "classification": {
-        "source_status": "new",
-        "new_in_forever": true,
-        "changed_from_classic": false,
-        "moved": false,
-        "removed_from_classic": false,
-        "unchanged": false,
-        "renamed": false,
-        "rank_count_changed": false,
-        "local_tooltip_comparison": "new_talent"
-      },
-      "classic_field": "",
-      "classic_max_rank": 0,
-      "classic_spell_ids": [],
-      "mode": "replace",
-      "confidence": "PROVISIONAL",
-      "adapter": {
-        "confidence": "PROVISIONAL",
-        "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
-        "remaining_unknowns": [
-          "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
-        ],
-        "mode": "replace",
-        "files": [
-          "sim/warrior/",
-          "sim/core/forever.go"
-        ],
-        "scope": "Existing Forever adapter or audited Classic bridge."
-      },
-      "activation_text": "",
-      "ranks": [
-        {
-          "rank": 1,
-          "effect": "Increases your Stamina and Strength by 2%.",
-          "estimated": false,
-          "confidence": "PROVISIONAL",
-          "confidence_value": 0.8,
-          "prediction_reason": null,
-          "source_url": "https://forevertalents.up.railway.app/",
-          "values": [
-            2
-          ]
-        },
-        {
-          "rank": 2,
-          "effect": "Increases your Stamina and Strength by 4%.",
-          "estimated": true,
-          "confidence": "PREDICTED",
-          "confidence_value": 0.5,
-          "prediction_reason": "Calculator estimated progression from observed ranks; enabled only in BEST_GUESS. Fixed durations and trigger counts retain source values.",
-          "source_url": "https://forevertalents.up.railway.app/",
-          "values": [
-            4
-          ]
-        },
-        {
-          "rank": 3,
-          "effect": "Increases your Stamina and Strength by 6%.",
-          "estimated": true,
-          "confidence": "PREDICTED",
-          "confidence_value": 0.5,
-          "prediction_reason": "Calculator estimated progression from observed ranks; enabled only in BEST_GUESS. Fixed durations and trigger counts retain source values.",
-          "source_url": "https://forevertalents.up.railway.app/",
-          "values": [
-            6
-          ]
-        },
-        {
-          "rank": 4,
-          "effect": "Increases your Stamina and Strength by 8%.",
-          "estimated": true,
-          "confidence": "PREDICTED",
-          "confidence_value": 0.5,
-          "prediction_reason": "Calculator estimated progression from observed ranks; enabled only in BEST_GUESS. Fixed durations and trigger counts retain source values.",
-          "source_url": "https://forevertalents.up.railway.app/",
-          "values": [
-            8
-          ]
-        },
-        {
-          "rank": 5,
-          "effect": "Increases your Stamina and Strength by 10%.",
-          "estimated": true,
-          "confidence": "PREDICTED",
-          "confidence_value": 0.5,
-          "prediction_reason": "Calculator estimated progression from observed ranks; enabled only in BEST_GUESS. Fixed durations and trigger counts retain source values.",
-          "source_url": "https://forevertalents.up.railway.app/",
-          "values": [
-            10
-          ]
-        }
-      ],
-      "action_tag": 126
-    },
-    {
       "id": "warrior.talent.focused-rage",
       "class": "WARRIOR",
       "tree": "Protection",
@@ -14781,7 +14676,7 @@
           "source_url": "https://forevertalents.up.railway.app/",
           "values": [
             10,
-            1,
+            2,
             5
           ]
         }
@@ -14844,18 +14739,30 @@
       "ranks": [
         {
           "rank": 1,
-          "effect": "Increases the critical strike damage bonus of your Sinister Strike, Gouge, Backstab, Mutilate, Ghostly Strike, and Hemorrhage abilities by 6%.",
+          "effect": "Increases the critical strike damage bonus of your Sinister Strike, Gouge, Backstab, Mutilate, Ghostly Strike, and Hemorrhage abilities by 4%.",
           "estimated": false,
           "confidence": "PROVISIONAL",
           "confidence_value": 0.8,
           "prediction_reason": null,
           "source_url": "https://forevertalents.up.railway.app/",
           "values": [
-            6
+            4
           ]
         },
         {
           "rank": 2,
+          "effect": "Increases the critical strike damage bonus of your Sinister Strike, Gouge, Backstab, Mutilate, Ghostly Strike, and Hemorrhage abilities by 8%.",
+          "estimated": true,
+          "confidence": "PREDICTED",
+          "confidence_value": 0.5,
+          "prediction_reason": "Calculator estimated progression from observed ranks; enabled only in BEST_GUESS. Fixed durations and trigger counts retain source values.",
+          "source_url": "https://forevertalents.up.railway.app/",
+          "values": [
+            8
+          ]
+        },
+        {
+          "rank": 3,
           "effect": "Increases the critical strike damage bonus of your Sinister Strike, Gouge, Backstab, Mutilate, Ghostly Strike, and Hemorrhage abilities by 12%.",
           "estimated": true,
           "confidence": "PREDICTED",
@@ -14867,39 +14774,27 @@
           ]
         },
         {
-          "rank": 3,
-          "effect": "Increases the critical strike damage bonus of your Sinister Strike, Gouge, Backstab, Mutilate, Ghostly Strike, and Hemorrhage abilities by 18%.",
-          "estimated": true,
-          "confidence": "PREDICTED",
-          "confidence_value": 0.5,
-          "prediction_reason": "Calculator estimated progression from observed ranks; enabled only in BEST_GUESS. Fixed durations and trigger counts retain source values.",
-          "source_url": "https://forevertalents.up.railway.app/",
-          "values": [
-            18
-          ]
-        },
-        {
           "rank": 4,
-          "effect": "Increases the critical strike damage bonus of your Sinister Strike, Gouge, Backstab, Mutilate, Ghostly Strike, and Hemorrhage abilities by 24%.",
+          "effect": "Increases the critical strike damage bonus of your Sinister Strike, Gouge, Backstab, Mutilate, Ghostly Strike, and Hemorrhage abilities by 16%.",
           "estimated": true,
           "confidence": "PREDICTED",
           "confidence_value": 0.5,
           "prediction_reason": "Calculator estimated progression from observed ranks; enabled only in BEST_GUESS. Fixed durations and trigger counts retain source values.",
           "source_url": "https://forevertalents.up.railway.app/",
           "values": [
-            24
+            16
           ]
         },
         {
           "rank": 5,
-          "effect": "Increases the critical strike damage bonus of your Sinister Strike, Gouge, Backstab, Mutilate, Ghostly Strike, and Hemorrhage abilities by 30%.",
+          "effect": "Increases the critical strike damage bonus of your Sinister Strike, Gouge, Backstab, Mutilate, Ghostly Strike, and Hemorrhage abilities by 20%.",
           "estimated": true,
           "confidence": "PREDICTED",
           "confidence_value": 0.5,
           "prediction_reason": "Calculator estimated progression from observed ranks; enabled only in BEST_GUESS. Fixed durations and trigger counts retain source values.",
           "source_url": "https://forevertalents.up.railway.app/",
           "values": [
-            30
+            20
           ]
         }
       ],
@@ -16456,10 +16351,10 @@
       "action_tag": 293
     },
     {
-      "id": "rogue.talent.restless-blades",
+      "id": "rogue.talent.flawless-execution",
       "class": "ROGUE",
       "tree": "Combat",
-      "name": "Restless Blades",
+      "name": "Flawless Execution",
       "max_rank": 1,
       "row": 4,
       "column": 2,
@@ -16498,14 +16393,14 @@
       "ranks": [
         {
           "rank": 1,
-          "effect": "Your damaging finishing moves reduce the remaining cooldown of your Adrenaline Rush, Blade Flurry, Evasion, Sprint, and Vanish abilities by 2 sec per combo point.",
+          "effect": "Reduces the Energy cost of your Eviscerate ability by 10.",
           "estimated": false,
           "confidence": "PROVISIONAL",
           "confidence_value": 0.8,
           "prediction_reason": null,
           "source_url": "https://forevertalents.up.railway.app/",
           "values": [
-            2
+            10
           ]
         }
       ],
@@ -17397,7 +17292,7 @@
           "prediction_reason": "Calculator estimated progression from observed ranks; enabled only in BEST_GUESS. Fixed durations and trigger counts retain source values.",
           "source_url": "https://forevertalents.up.railway.app/",
           "values": [
-            66
+            67
           ]
         },
         {
@@ -17409,7 +17304,7 @@
           "prediction_reason": "Calculator estimated progression from observed ranks; enabled only in BEST_GUESS. Fixed durations and trigger counts retain source values.",
           "source_url": "https://forevertalents.up.railway.app/",
           "values": [
-            99
+            100
           ]
         }
       ],
@@ -33935,7 +33830,7 @@
       "id": "warlock.talent.drain-hope",
       "class": "WARLOCK",
       "tree": "Affliction",
-      "name": "Drain Hope",
+      "name": "Wrack",
       "max_rank": 1,
       "row": 7,
       "column": 2,

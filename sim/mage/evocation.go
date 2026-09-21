@@ -7,6 +7,10 @@ import (
 )
 
 func (mage *Mage) registerEvocationCD() {
+	// Evocation is learned at level 20.
+	if mage.Level < 20 {
+		return
+	}
 	actionID := core.ActionID{SpellID: 12051}
 	channelTime := time.Second * 8
 	cooldown := time.Minute * 8

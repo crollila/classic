@@ -39,6 +39,20 @@ func (paladin *Paladin) registerSealOfTheCrusader() {
 		libramBonus = 33
 	}
 
+	// Every rank shares one Judgement of the Crusader debuff per target (core registers it
+	// by label), so it carries the highest known rank's bonus. Core models the top rank's
+	// 140 Holy damage taken; scale it to the known rank.
+	knownBonus := 0.0
+	for _, rank := range ranks {
+		if paladin.Level >= rank.level {
+			knownBonus = rank.judge.bonus
+		}
+	}
+	jotcMultiplier := improvedSotC
+	if topBonus := ranks[len(ranks)-1].judge.bonus; knownBonus != topBonus {
+		jotcMultiplier *= knownBonus / topBonus
+	}
+
 	for i, rank := range ranks {
 		rank := rank
 		if paladin.Level < rank.level {
@@ -46,7 +60,7 @@ func (paladin *Paladin) registerSealOfTheCrusader() {
 		}
 
 		debuffs := paladin.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
-			return core.JudgementOfTheCrusaderAura(&paladin.Unit, target, improvedSotC, libramBonus)
+			return core.JudgementOfTheCrusaderAura(&paladin.Unit, target, jotcMultiplier, libramBonus)
 		})
 
 		judgeSpell := paladin.RegisterSpell(core.SpellConfig{

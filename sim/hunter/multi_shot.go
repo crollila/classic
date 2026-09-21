@@ -16,6 +16,15 @@ func (hunter *Hunter) getMultiShotConfig(rank int, timer *core.Timer) core.Spell
 	numHits := min(3, hunter.Env.GetNumTargets())
 	results := make([]*core.SpellResult, numHits)
 
+	// Forever beta client: a single rank (2643) with no flat bonus, 13.9% of base mana,
+	// 0.5 sec cast and a 6 sec cooldown shared with Aimed Shot.
+	cooldown := time.Second * 10
+	manaCostOptions := core.ManaCostOptions{FlatCost: manaCost}
+	if hunter.Forever != nil {
+		cooldown = time.Second * 6
+		manaCostOptions = core.ManaCostOptions{BaseCost: .139}
+	}
+
 	return core.SpellConfig{
 		SpellCode:     SpellCode_HunterMultiShot,
 		ActionID:      core.ActionID{SpellID: spellId},
@@ -28,9 +37,7 @@ func (hunter *Hunter) getMultiShotConfig(rank int, timer *core.Timer) core.Spell
 		RequiredLevel: level,
 		MissileSpeed:  24,
 
-		ManaCost: core.ManaCostOptions{
-			FlatCost: manaCost,
-		},
+		ManaCost: manaCostOptions,
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
@@ -43,7 +50,7 @@ func (hunter *Hunter) getMultiShotConfig(rank int, timer *core.Timer) core.Spell
 			IgnoreHaste: true, // Hunter GCD is locked at 1.5s
 			CD: core.Cooldown{
 				Timer:    timer,
-				Duration: time.Second * 10,
+				Duration: cooldown,
 			},
 			CastTime: func(spell *core.Spell) time.Duration {
 				return time.Duration(float64(spell.DefaultCast.CastTime) / hunter.RangedSwingSpeed())
@@ -86,6 +93,9 @@ func (hunter *Hunter) getMultiShotConfig(rank int, timer *core.Timer) core.Spell
 
 func (hunter *Hunter) registerMultiShotSpell(timer *core.Timer) {
 	maxRank := core.TernaryInt(core.IncludeAQ, 5, 4)
+	if hunter.Forever != nil {
+		maxRank = 1
+	}
 	for rank := 1; rank <= maxRank; rank++ {
 		config := hunter.getMultiShotConfig(rank, timer)
 

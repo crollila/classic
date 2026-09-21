@@ -4,13 +4,13 @@
   "manifest_sha256": "c5a8742a1f33415ab45df28f541e83bd51e7cb90c4e58b35f7e58809c9c5d11f",
   "definition": "ACTIVE means an executable effect, constraint, removed bonus, or explicitly retained Classic behavior when applicable. It does not mean enabled in every build. Confidence is separate. Record confidence is PREDICTED if any supported rank/adapter is predicted; observed subsets may still execute in STRICT. Non-combat records do not count as active. Tests are separate execution evidence.",
   "summary": {
-    "TOTAL": 701,
-    "ACTIVE": 645,
+    "TOTAL": 700,
+    "ACTIVE": 644,
     "BLOCKED": 14,
     "NON-SIM-RELEVANT": 42,
     "CONFIRMED": 5,
     "PROVISIONAL": 302,
-    "PREDICTED": 338,
+    "PREDICTED": 337,
     "completion_percent": 92,
     "active_sim_relevant_percent": 97.9
   },
@@ -4559,39 +4559,6 @@
         "classic_analogue_considered": true,
         "prediction_considered": true
       }
-    },
-    {
-      "id": "warrior.talent.vitality",
-      "category": "WARRIOR",
-      "name": "Vitality",
-      "implementation_state": "ACTIVE",
-      "confidence": "PREDICTED",
-      "source_confidence": "PROVISIONAL",
-      "adapter_mode": "replace",
-      "scope": "Existing Forever adapter or audited Classic bridge.",
-      "reason": "Sourced tooltip implemented using Classic event, rounding, and stacking conventions where Forever interactions are unobserved.",
-      "implementation_files": [
-        "sim/warrior/",
-        "sim/core/forever.go"
-      ],
-      "source_url": "https://forevertalents.up.railway.app/",
-      "observed_ranks": [
-        1
-      ],
-      "predicted_ranks": [
-        2,
-        3,
-        4,
-        5
-      ],
-      "predicted_components": [],
-      "strict_policy": "Use highest observed rank at or below selection; predicted secondary components are also suppressed.",
-      "remaining_unknowns": [
-        "Ranks 2, 3, 4, 5 are calculator estimates; exclude from confirmed mechanics and expose only as explicit provisional assumptions if needed.",
-        "Any unreported stacking, rounding, snapshot and order-of-operations rules initially preserve equivalent local Classic behavior, labeled PROVISIONAL. A new effect without an equivalent must use an explicit scenario parameter, not an invented constant.",
-        "Beta proc recursion, stacking, rounding, and level-specific rank tables remain provisional."
-      ],
-      "previous_state": "PROVISIONAL"
     },
     {
       "id": "warrior.talent.focused-rage",
@@ -10357,7 +10324,7 @@
       }
     },
     {
-      "id": "rogue.talent.restless-blades",
+      "id": "rogue.talent.flawless-execution",
       "category": "ROGUE",
       "name": "Restless Blades",
       "implementation_state": "ACTIVE",

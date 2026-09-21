@@ -80,22 +80,27 @@ func (p *Priest) registerForeverHealing() {
 		})
 	}
 	if p.ForeverRank("priest.talent.holy-nova") > 0 {
+		nova := foreverPriestTalentRankAt(p.Level, foreverHolyNovaRanks)
 		heal := p.RegisterSpell(core.SpellConfig{DefenseType: core.DefenseTypeMagic, ActionID: p.ForeverAction("priest.talent.holy-nova").WithTag(-p.ForeverAction("priest.talent.holy-nova").Tag), SpellCode: SpellCode_PriestHolyNova, SpellSchool: core.SpellSchoolHoly, ProcMask: core.ProcMaskSpellHealing, Flags: SpellFlagPriest | core.SpellFlagHelpful | core.SpellFlagPassiveSpell, DamageMultiplier: 1, ThreatMultiplier: 0, BonusCoefficient: .107})
-		f.holyNova = p.RegisterSpell(core.SpellConfig{ActionID: p.ForeverAction("priest.talent.holy-nova"), SpellCode: SpellCode_PriestHolyNova, SpellSchool: core.SpellSchoolHoly, DefenseType: core.DefenseTypeMagic, ProcMask: core.ProcMaskSpellDamage, Flags: SpellFlagPriest | core.SpellFlagAPL, ManaCost: core.ManaCostOptions{FlatCost: 185}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}}, DamageMultiplier: 1, ThreatMultiplier: 0, BonusCoefficient: .107,
+		f.holyNova = p.RegisterSpell(core.SpellConfig{ActionID: p.ForeverAction("priest.talent.holy-nova"), SpellCode: SpellCode_PriestHolyNova, SpellSchool: core.SpellSchoolHoly, DefenseType: core.DefenseTypeMagic, ProcMask: core.ProcMaskSpellDamage, Flags: SpellFlagPriest | core.SpellFlagAPL, ManaCost: core.ManaCostOptions{FlatCost: nova.mana}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}}, DamageMultiplier: 1, ThreatMultiplier: 0, BonusCoefficient: .107,
 			ExtraCastCondition: func(sim *core.Simulation, t *core.Unit) bool {
 				return p.DistanceFromTarget <= 10*(1+val("holy-reach", 0)/100) && (p.ShadowformAura == nil || !p.ShadowformAura.IsActive())
 			},
 			ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
 				for _, t := range sim.Encounter.TargetUnits {
-					s.CalcAndDealDamage(sim, t, sim.Roll(31, 36), s.OutcomeMagicHitAndCrit)
+					s.CalcAndDealDamage(sim, t, sim.Roll(nova.low, nova.high), s.OutcomeMagicHitAndCrit)
 				}
 				for _, member := range p.Party.Players {
-					heal.CalcAndDealHealing(sim, &member.GetCharacter().Unit, sim.Roll(68, 77), heal.OutcomeHealingCrit)
+					heal.CalcAndDealHealing(sim, &member.GetCharacter().Unit, sim.Roll(nova.healLow, nova.healHigh), heal.OutcomeHealingCrit)
 				}
 			},
 		})
 	}
 	if p.ForeverRank("priest.talent.penance") > 0 {
+		// Rank by level from the client tooltips. Rank 4's bolt (131) is smaller than rank
+		// 3's (180) in the beta client while its heal keeps rising; ElliotWood/Forever reads
+		// the same 131 from the client DB2, so it is used as the client states.
+		pen := foreverPriestTalentRankAt(p.Level, foreverPenanceRanks)
 		penanceTimer := p.NewTimer()
 		for _, helpful := range []bool{false, true} {
 			helpful := helpful
@@ -107,12 +112,12 @@ func (p *Priest) registerForeverHealing() {
 				flags |= core.SpellFlagHelpful
 				mask = core.ProcMaskSpellHealing
 			}
-			cfg := core.SpellConfig{ActionID: action, SpellCode: SpellCode_PriestPenance, SpellSchool: core.SpellSchoolHoly, DefenseType: core.DefenseTypeMagic, ProcMask: mask, Flags: flags, ManaCost: core.ManaCostOptions{FlatCost: 85}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, CD: core.Cooldown{Timer: penanceTimer, Duration: 12 * time.Second}}, DamageMultiplier: 1, ThreatMultiplier: 1, BonusCoefficient: 1.0 / 3.5}
+			cfg := core.SpellConfig{ActionID: action, SpellCode: SpellCode_PriestPenance, SpellSchool: core.SpellSchoolHoly, DefenseType: core.DefenseTypeMagic, ProcMask: mask, Flags: flags, ManaCost: core.ManaCostOptions{FlatCost: pen.mana}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, CD: core.Cooldown{Timer: penanceTimer, Duration: 12 * time.Second}}, DamageMultiplier: 1, ThreatMultiplier: 1, BonusCoefficient: 1.0 / 3.5}
 			dc := core.DotConfig{Aura: core.Aura{Label: "Forever Penance-" + p.Label}, NumberOfTicks: 2, TickLength: time.Second, OnTick: func(sim *core.Simulation, t *core.Unit, d *core.Dot) {
 				if helpful {
-					p.foreverRenewedHopeHeal(sim, t, d.Spell, 98)
+					p.foreverRenewedHopeHeal(sim, t, d.Spell, pen.healLow)
 				} else {
-					d.Spell.CalcAndDealDamage(sim, t, 19, d.Spell.OutcomeMagicHitAndCrit)
+					d.Spell.CalcAndDealDamage(sim, t, pen.low, d.Spell.OutcomeMagicHitAndCrit)
 				}
 			}}
 			if helpful {
@@ -123,10 +128,10 @@ func (p *Priest) registerForeverHealing() {
 			cfg.ApplyEffects = func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
 				if helpful {
 					s.Hot(t).Apply(sim)
-					p.foreverRenewedHopeHeal(sim, t, s, 98)
+					p.foreverRenewedHopeHeal(sim, t, s, pen.healLow)
 				} else {
 					s.Dot(t).Apply(sim)
-					s.CalcAndDealDamage(sim, t, 19, s.OutcomeMagicHitAndCrit)
+					s.CalcAndDealDamage(sim, t, pen.low, s.OutcomeMagicHitAndCrit)
 				}
 			}
 			p.RegisterSpell(cfg)
@@ -145,7 +150,7 @@ func (p *Priest) registerForeverHealing() {
 				t.PseudoStats.SchoolDamageDealtMultiplier.MultiplyMagicSchools(1 / 1.2)
 			}})
 		})
-		s := p.RegisterSpell(core.SpellConfig{ProcMask: core.ProcMaskEmpty, ActionID: p.ForeverAction("priest.talent.power-infusion"), SpellSchool: core.SpellSchoolHoly, Flags: core.SpellFlagAPL | core.SpellFlagHelpful, ManaCost: core.ManaCostOptions{FlatCost: 173}, Cast: core.CastConfig{CD: core.Cooldown{Timer: p.NewTimer(), Duration: 3 * time.Minute}}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
+		s := p.RegisterSpell(core.SpellConfig{ProcMask: core.ProcMaskEmpty, ActionID: p.ForeverAction("priest.talent.power-infusion"), SpellSchool: core.SpellSchoolHoly, Flags: core.SpellFlagAPL | core.SpellFlagHelpful, ManaCost: core.ManaCostOptions{BaseCost: .20}, Cast: core.CastConfig{CD: core.Cooldown{Timer: p.NewTimer(), Duration: 3 * time.Minute}}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
 			if p.IsOpponent(t) {
 				t = &p.Unit
 			}
@@ -201,4 +206,51 @@ func (p *Priest) registerForeverPrayerOfMending() {
 		auras.Get(t).Activate(sim)
 	}})
 	core.MakePermanent(p.RegisterAura(core.Aura{Label: "Forever Prayer of Mending state", OnReset: func(a *core.Aura, sim *core.Simulation) { current = nil; charges = 0; busy = false }}))
+}
+
+// foreverPriestRank is one rank of a Forever priest spell from the beta client tooltips
+// (1.60.1.69876): spell id, learned level, mana, damage and healing ranges.
+type foreverPriestRank struct {
+	id                int32
+	level             int32
+	mana              float64
+	low, high         float64
+	healLow, healHigh float64
+}
+
+var foreverHolyNovaRanks = []foreverPriestRank{
+	{15237, 20, 185, 26, 30, 49, 57}, {15430, 28, 290, 47, 55, 80, 90}, {15431, 36, 400, 73, 83, 111, 127},
+	{27799, 44, 520, 103, 117, 151, 175}, {27800, 52, 635, 139, 159, 225, 259}, {27801, 60, 750, 174, 200, 288, 334},
+}
+
+// Penance damage and healing are per bolt (three bolts: instantly and every 1 sec for 2 sec).
+var foreverPenanceRanks = []foreverPriestRank{
+	{402174, 30, 100, 81, 81, 184, 184}, {1240720, 40, 185, 113, 113, 291, 291},
+	{1240721, 50, 270, 180, 180, 482, 482}, {1316995, 60, 355, 131, 131, 673, 673},
+}
+
+var foreverShadowWordDeathRanks = []foreverPriestRank{
+	{1309595, 32, 175, 293, 311, 0, 0}, {1309633, 40, 205, 368, 390, 0, 0},
+	{1309635, 48, 250, 402, 426, 0, 0}, {1309636, 56, 340, 444, 472, 0, 0},
+}
+
+// foreverPriestRankAt is the highest rank learned by the given level; false when none is.
+func foreverPriestRankAt(level int32, ranks []foreverPriestRank) (foreverPriestRank, bool) {
+	var best foreverPriestRank
+	ok := false
+	for _, r := range ranks {
+		if r.level <= level {
+			best, ok = r, true
+		}
+	}
+	return best, ok
+}
+
+// foreverPriestTalentRankAt is the rank a talent-taught spell uses: rank 1 when the talent
+// is taken before rank 1's listed level.
+func foreverPriestTalentRankAt(level int32, ranks []foreverPriestRank) foreverPriestRank {
+	if r, ok := foreverPriestRankAt(level, ranks); ok {
+		return r
+	}
+	return ranks[0]
 }

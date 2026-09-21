@@ -106,9 +106,6 @@ func (c *Character) applyForeverTalents() {
 			c.AddStat(stats.Defense, v)
 		case "warrior.talent.precision", "paladin.talent.precision", "rogue.talent.precision":
 			c.foreverAllHit(v)
-		case "warrior.talent.vitality":
-			c.MultiplyStat(stats.Strength, 1+p)
-			c.MultiplyStat(stats.Stamina, 1+p)
 		case "warrior.talent.bastion":
 			c.foreverTargetMultiplier(func(s *Spell) float64 {
 				if c.OffHand().WeaponType == proto.WeaponType_WeaponTypeShield {
@@ -317,7 +314,7 @@ func (c *Character) applyForeverTalents() {
 			c.MultiplyStat(stats.Spirit, 1+p)
 		case "druid.talent.moonglow":
 			c.OnSpellRegistered(func(s *Spell) {
-				if s.Cost != nil && s.Cost.CostType() == CostTypeMana {
+				if s.Cost != nil && s.Cost.CostType() == CostTypeMana && s.ProcMask.Matches(ProcMaskSpellDamage) {
 					s.Cost.Multiplier -= int32(v)
 				}
 			})

@@ -244,7 +244,7 @@ func TestForeverGougeDamageUsesLethalityBeforeIncapacitate(t *testing.T) {
 	c.AddStatDynamic(sim, stats.Expertise, 100)
 	gouge := physicalID(t, c, 11286)
 	gouge.BonusHitRating, gouge.BonusCritRating = 100, 100
-	if math.Abs(gouge.CritDamageBonus-1.3) > 1e-8 {
+	if math.Abs(gouge.CritDamageBonus-1.2) > 1e-8 { // Forever Lethality 5/5: +20%
 		t.Fatal("Lethality omitted Gouge", gouge.CritDamageBonus)
 	}
 	if !gouge.Cast(sim, c.CurrentTarget) {

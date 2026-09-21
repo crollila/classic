@@ -8,19 +8,11 @@ import (
 
 func (rogue *Rogue) registerSinisterStrikeSpell() {
 
-	flatDamageBonus := map[int32]float64{
-		25: 15,
-		40: 33,
-		50: 52,
-		60: 68,
-	}[rogue.Level]
-
-	spellID := map[int32]int32{
-		25: 1759,
-		40: 8621,
-		50: 11293,
-		60: 11294,
-	}[rogue.Level]
+	rank, spellID := rogue.trainerRank("Sinister Strike")
+	if rank == 0 {
+		return
+	}
+	flatDamageBonus := sinisterStrikeBonus[rank-1]
 
 	rogue.SinisterStrike = rogue.RegisterSpell(core.SpellConfig{
 		SpellCode:   SpellCode_RogueSinisterStrike,

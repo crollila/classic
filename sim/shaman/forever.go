@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"github.com/wowsims/classic/sim/core"
-	"github.com/wowsims/classic/sim/core/foreverdata"
 	"github.com/wowsims/classic/sim/core/proto"
 	"github.com/wowsims/classic/sim/core/stats"
 )
@@ -27,7 +26,7 @@ func (s *Shaman) applyForeverTalents() {
 	}
 	s.MultiplyStat(stats.Health, 1+.02*s.fr("improved-reincarnation"))
 	for _, school := range []stats.SchoolIndex{stats.SchoolIndexFire, stats.SchoolIndexFrost, stats.SchoolIndexNature} {
-		s.PseudoStats.SchoolDamageTakenMultiplier[school] *= 1 - .03*s.fr("elemental-warding")
+		s.PseudoStats.SchoolDamageTakenMultiplier[school] *= 1 - s.ForeverValue("shaman.talent.elemental-warding", 0, 0)/100
 	}
 	if s.fr("spirit-weapons") > 0 {
 		s.PseudoStats.CanParry = true
@@ -50,25 +49,25 @@ func (s *Shaman) applyForeverTalents() {
 			sp.CritDamageBonus += .2 * s.fr("elemental-fury")
 		}
 		if sp.ProcMask.Matches(core.ProcMaskSpellHealing) {
-			sp.PushbackReduction += s.fr("healing-focus") * .23
+			sp.PushbackReduction += s.ForeverValue("shaman.talent.healing-focus", 0, 0) / 100
 			// Tidal Mastery's Classic hook also affects lightning; replace its
 			// bridge for Forever and apply the healing-only wording here.
 			sp.BonusCritRating += s.fr("tidal-mastery") * core.SpellCritRatingPerCritChance
 			sp.DamageMultiplier *= 1 + .02*s.fr("purification")
 			if sp.SpellCode == SpellCode_ShamanHealingWave {
-				sp.DamageMultiplier *= 1 + .08*s.fr("healing-way")
+				sp.DamageMultiplier *= 1 + s.ForeverValue("shaman.talent.healing-way", 0, 0)/100
 				sp.DefaultCast.CastTime -= time.Duration(s.fr("improved-healing-wave")*100) * time.Millisecond
 			}
 		}
 		if sp.SpellCode == SpellCode_ShamanLightningBolt || sp.SpellCode == SpellCode_ShamanChainLightning {
 			sp.BonusCritRating += 3 * s.fr("call-of-thunder") * core.SpellCritRatingPerCritChance
 			sp.DefaultCast.CastTime -= time.Duration(s.ForeverValue("shaman.talent.elemental-alacrity", 0, 0)*1000) * time.Millisecond
-			sp.PushbackReduction += s.fr("eye-of-the-storm") * .23
-			s.ForeverSpellRange(sp, 30+3*s.fr("elemental-reach"))
+			sp.PushbackReduction += s.ForeverValue("shaman.talent.eye-of-the-storm", 0, 0) / 100
+			s.ForeverSpellRange(sp, 30+s.ForeverValue("shaman.talent.elemental-reach", 0, 0))
 		}
 		if sp.SpellCode == SpellCode_ShamanFlameShock {
 			sp.DamageMultiplier *= 1 + .05*s.fr("call-of-flame")
-			s.ForeverSpellRange(sp, 20+8*s.fr("elemental-reach"))
+			s.ForeverSpellRange(sp, 20+s.ForeverValue("shaman.talent.elemental-reach", 1, 0))
 		}
 		if sp.SpellCode == SpellCode_ShamanLightningShield || sp.SpellCode == SpellCode_ShamanEarthShock || sp.SpellCode == SpellCode_ShamanFlameShock || sp.SpellCode == SpellCode_ShamanFrostShock {
 			if sp.Cost != nil {
@@ -135,7 +134,7 @@ func (s *Shaman) applyForeverTalents() {
 			if sp.SpellCode == SpellCode_ShamanChainLightning && r.Target != primaryTargets[sp] {
 				return
 			}
-			if sim.Proc(.03*s.fr("lightning-overload"), "Forever Lightning Overload") {
+			if sim.Proc(s.ForeverValue("shaman.talent.lightning-overload", 0, 0)/100, "Forever Lightning Overload") {
 				extra.Cast(sim, r.Target)
 			}
 		}}))
@@ -143,11 +142,12 @@ func (s *Shaman) applyForeverTalents() {
 	if s.fr("maelstrom-weapon") > 0 {
 		var affected []*core.Spell
 		s.OnSpellRegistered(func(sp *core.Spell) {
-			if sp.SpellCode == SpellCode_ShamanLightningBolt {
+			// Only castable bolts: Lightning Overload's copies (Tag 1) carry no mana cost.
+			if sp.SpellCode == SpellCode_ShamanLightningBolt && sp.Tag == 0 && sp.Cost != nil {
 				affected = append(affected, sp)
 			}
 		})
-		amount := .04 * s.fr("maelstrom-weapon")
+		amount := s.ForeverValue("shaman.talent.maelstrom-weapon", 0, 0) / 100
 		a := s.RegisterAura(core.Aura{Label: "Forever Maelstrom Weapon", ActionID: s.fa("maelstrom-weapon"), Duration: 30 * time.Second, MaxStacks: 5, OnStacksChange: func(_ *core.Aura, sim *core.Simulation, old, new int32) {
 			for _, sp := range affected {
 				sp.CastTimeMultiplier -= float64(new-old) * amount
@@ -176,7 +176,7 @@ func (s *Shaman) registerForeverSpells() {
 	s.registerForeverUtility()
 	s.registerForeverTotems()
 
-	if s.fr("improved-reincarnation") > 0 {
+	if s.fr("improved-reincarnation") > 0 && s.Level >= 30 {
 		// Classic Reincarnation's 20% health/Mana restoration and 60-minute
 		// cooldown, modified by the observed Forever talent. Death occurrence
 		// remains recorded in metrics even when the player resurrects.
@@ -195,8 +195,12 @@ func (s *Shaman) registerForeverSpells() {
 		}})
 	}
 	if s.fr("lava-burst") > 0 {
-		sp := s.RegisterSpell(core.SpellConfig{ForeverSingleTargetHarmful: true, ActionID: s.fa("lava-burst"), SpellSchool: core.SpellSchoolFire, DefenseType: core.DefenseTypeMagic, ProcMask: core.ProcMaskSpellDamage, Flags: SpellFlagShaman | core.SpellFlagAPL,
-			ManaCost: core.ManaCostOptions{FlatCost: 165, Multiplier: 100 - 2*s.Talents.Convection}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault, CastTime: 2500*time.Millisecond - time.Duration(s.ForeverValue("shaman.talent.elemental-alacrity", 0, 0)*1000)*time.Millisecond}, CD: core.Cooldown{Timer: s.NewTimer(), Duration: 10 * time.Second}}, PushbackReduction: s.fr("eye-of-the-storm") * .23,
+		// The talent grants rank 1 (level 40); ranks 2 and 3 are trained at 50 and 60.
+		// Client tooltips: 106-134 / 165, 164-210 / 230, 192-248 / 265 Mana, 71.4% spell power.
+		rankNum, _ := core.TrainerRankAt("Shaman|Lava Burst", s.Level)
+		rank := foreverLavaBurstRanks[max(0, rankNum-1)]
+		sp := s.RegisterSpell(core.SpellConfig{ForeverSingleTargetHarmful: true, ActionID: s.fa("lava-burst"), SpellSchool: core.SpellSchoolFire, DefenseType: core.DefenseTypeMagic, ProcMask: core.ProcMaskSpellDamage, Flags: SpellFlagShaman | core.SpellFlagAPL, Rank: max(1, rankNum),
+			ManaCost: core.ManaCostOptions{FlatCost: rank.mana, Multiplier: 100 - 2*s.Talents.Convection}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault, CastTime: 2500*time.Millisecond - time.Duration(s.ForeverValue("shaman.talent.elemental-alacrity", 0, 0)*1000)*time.Millisecond}, CD: core.Cooldown{Timer: s.NewTimer(), Duration: 10 * time.Second}}, PushbackReduction: s.ForeverValue("shaman.talent.eye-of-the-storm", 0, 0) / 100,
 			DamageMultiplier: 1 + .05*s.fr("call-of-flame"), ThreatMultiplier: 1, BonusCoefficient: 2.5 / 3.5,
 			ApplyEffects: func(sim *core.Simulation, t *core.Unit, sp *core.Spell) {
 				mult := sp.DamageMultiplier
@@ -206,21 +210,34 @@ func (s *Shaman) registerForeverSpells() {
 						break
 					}
 				}
-				sp.CalcAndDealDamage(sim, t, sim.Roll(158, 187), sp.OutcomeMagicHitAndCrit)
+				sp.CalcAndDealDamage(sim, t, sim.Roll(rank.low, rank.high), sp.OutcomeMagicHitAndCrit)
 				sp.DamageMultiplier = mult
 			}})
-		s.ForeverSpellRange(sp, 30+3*s.fr("elemental-reach"))
+		s.ForeverSpellRange(sp, 30+s.ForeverValue("shaman.talent.elemental-reach", 0, 0))
 	}
-	// Fire Nova is evidenced as a baseline replacement for Fire Nova Totem.
-	if !foreverdata.IsStrict(s.Forever) && (s.HasForeverMechanic("shaman.baseline.fire-nova") || s.fr("improved-fire-nova") > 0 || s.fr("call-of-flame") > 0) {
+	// Fire Nova is a Forever trainer spell (5 ranks from level 12) replacing Fire Nova Totem.
+	// Client tooltips: learned level, mana, damage range; 10 sec cooldown at every rank.
+	// Every Forever shaman of the level knows it, in STRICT mode too.
+	fireNova := [...]struct {
+		level          int32
+		mana, low, high float64
+	}{{12, 95, 53, 61}, {22, 170, 110, 124}, {32, 280, 195, 219}, {42, 395, 294, 330}, {52, 520, 413, 459}}
+	fireNovaRank := -1
+	for i, r := range fireNova {
+		if r.level <= s.Level {
+			fireNovaRank = i
+		}
+	}
+	if fireNovaRank >= 0 {
+		novaRank := fireNova[fireNovaRank]
 		sp := s.RegisterSpell(core.SpellConfig{ActionID: s.ForeverAction("shaman.baseline.fire-nova"), SpellSchool: core.SpellSchoolFire, DefenseType: core.DefenseTypeMagic, ProcMask: core.ProcMaskSpellDamage, Flags: SpellFlagShaman | core.SpellFlagAPL,
-			ManaCost: core.ManaCostOptions{FlatCost: 520}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, CD: core.Cooldown{Timer: s.NewTimer(), Duration: 15*time.Second - time.Duration(s.fr("improved-fire-nova")*2)*time.Second}}, DamageMultiplier: 1 + .10*s.fr("improved-fire-nova") + .05*s.fr("call-of-flame"), ThreatMultiplier: 1, BonusCoefficient: .214,
+			ManaCost: core.ManaCostOptions{FlatCost: novaRank.mana}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, CD: core.Cooldown{Timer: s.NewTimer(), Duration: 10*time.Second - time.Duration(s.ForeverValue("shaman.talent.improved-fire-nova", 1, 0))*time.Second}}, DamageMultiplier: 1 + s.ForeverValue("shaman.talent.improved-fire-nova", 0, 0)/100 + .05*s.fr("call-of-flame"), ThreatMultiplier: 1, BonusCoefficient: .214,
 			ApplyEffects: func(sim *core.Simulation, t *core.Unit, sp *core.Spell) {
 				for _, target := range s.Env.Encounter.Targets {
-					sp.CalcAndDealDamage(sim, &target.Unit, sim.Roll(413, 459), sp.OutcomeMagicHitAndCrit)
+					sp.CalcAndDealDamage(sim, &target.Unit, sim.Roll(novaRank.low, novaRank.high), sp.OutcomeMagicHitAndCrit)
 				}
 			}})
-		s.ForeverSpellRange(sp, 10+3*s.fr("elemental-reach"))
+		s.ForeverSpellRange(sp, 10+s.ForeverValue("shaman.talent.elemental-reach", 0, 0))
 	}
 	if s.fr("water-shield") > 0 {
 		metrics := s.NewManaMetrics(s.fa("water-shield"))
@@ -287,16 +304,20 @@ func (s *Shaman) registerForeverSpells() {
 }
 
 func (s *Shaman) registerForeverHealing() {
-	// Classic level-60 counterparts are an explicit provisional baseline; their
-	// IDs identify those Classic ranks, not alleged new Forever client ranks.
+	// Classic ranks are an explicit provisional baseline (the level-60 rank at the cap);
+	// Forever spell overrides rescale them by spell id. Only the highest rank the
+	// character has learned is registered.
 	for _, v := range []struct {
 		id              int32
 		code            int32
 		mana, low, high float64
 		cast            time.Duration
-	}{{25357, SpellCode_ShamanHealingWave, 620, 1620, 1850, 3 * time.Second}, {10468, SpellCode_ShamanLesserHealingWave, 380, 832, 928, 1500 * time.Millisecond}, {10623, SpellCode_ShamanChainHeal, 405, 567, 646, 2500 * time.Millisecond}} {
+	}{foreverHealRank(healingWaveRanks, s.Level), foreverHealRank(lesserHealingWaveRanks, s.Level), foreverHealRank(chainHealRanks, s.Level)} {
 		v := v
-		sp := s.RegisterSpell(core.SpellConfig{ActionID: core.ActionID{SpellID: v.id}, SpellCode: v.code, SpellSchool: core.SpellSchoolNature, DefenseType: core.DefenseTypeMagic, ProcMask: core.ProcMaskSpellHealing, Flags: SpellFlagShaman | core.SpellFlagHelpful | core.SpellFlagAPL, ManaCost: core.ManaCostOptions{FlatCost: v.mana, Multiplier: 100 - int32(s.fr("tidal-focus"))}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault, CastTime: v.cast}}, DamageMultiplier: 1, ThreatMultiplier: .5, BonusCoefficient: v.cast.Seconds() / 3.5,
+		if v.id == 0 {
+			continue
+		}
+		sp := s.RegisterSpell(core.SpellConfig{ActionID: core.ActionID{SpellID: v.id}, SpellCode: v.code, SpellSchool: core.SpellSchoolNature, DefenseType: core.DefenseTypeMagic, ProcMask: core.ProcMaskSpellHealing, Flags: SpellFlagShaman | core.SpellFlagHelpful | core.SpellFlagAPL, ManaCost: core.ManaCostOptions{FlatCost: v.mana, Multiplier: 100 - int32(s.fr("tidal-focus"))}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault, CastTime: v.cast}}, DamageMultiplier: 1, ThreatMultiplier: .5, BonusCoefficient: v.cast.Seconds() / 3.5 * LowLevelCoefficientPenalty(core.SpellLearnedLevel(v.id)),
 			ApplyEffects: func(sim *core.Simulation, t *core.Unit, sp *core.Spell) {
 				if s.IsOpponent(t) {
 					t = &s.Unit

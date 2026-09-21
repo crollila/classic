@@ -194,15 +194,29 @@ func (mage *Mage) applyArcaneConcentration() {
 		},
 	})
 
+	// Forever: "after any damage spell hits" is one roll per cast, so an Arcane Missiles
+	// channel rolls once, on its first missile that lands, not once per missile.
+	missilesRolled := true
 	mage.RegisterAura(core.Aura{
 		Label:    "Arcane Concentration",
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
 		},
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if spell.SpellCode == SpellCode_MageArcaneMissiles {
+				missilesRolled = false
+			}
+		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if !result.Landed() || !spell.Flags.Matches(SpellFlagMage) || spell.SpellCode == SpellCode_MageArcaneMissiles {
 				return
+			}
+			if mage.Forever != nil && spell.SpellCode == SpellCode_MageArcaneMissilesTick {
+				if missilesRolled {
+					return
+				}
+				missilesRolled = true
 			}
 
 			// TODO: Classic verify arcane missile proc chance
@@ -300,9 +314,15 @@ func (mage *Mage) registerArcanePowerCD() {
 		Label:    "Arcane Power",
 		ActionID: actionID,
 		Duration: time.Second * 15,
+		// Forever: "your spells deal 30% more damage", a multiplier of its own rather than
+		// a term added to Fire Power, Arcane Instability and Arcane Blast.
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range affectedSpells {
-				spell.DamageMultiplierAdditive += 0.3
+				if mage.Forever != nil {
+					spell.DamageMultiplier *= 1.3
+				} else {
+					spell.DamageMultiplierAdditive += 0.3
+				}
 				if spell.Cost != nil {
 					spell.Cost.Multiplier += 30
 				}
@@ -310,7 +330,11 @@ func (mage *Mage) registerArcanePowerCD() {
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range affectedSpells {
-				spell.DamageMultiplierAdditive -= 0.3
+				if mage.Forever != nil {
+					spell.DamageMultiplier /= 1.3
+				} else {
+					spell.DamageMultiplierAdditive -= 0.3
+				}
 				if spell.Cost != nil {
 					spell.Cost.Multiplier -= 30
 				}
@@ -365,6 +389,10 @@ func (mage *Mage) applyMasterOfElements() {
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged) {
+				return
+			}
+			// Forever: "Your Fire and Frost critical strikes" (Frostfire Bolt is both).
+			if mage.Forever != nil && !spell.SpellSchool.Matches(core.SpellSchoolFire|core.SpellSchoolFrost) {
 				return
 			}
 			if spell.CurCast.Cost == 0 {

@@ -7,33 +7,15 @@ import (
 )
 
 func (rogue *Rogue) registerEviscerate() {
-	flatDamage := map[int32]float64{
-		25: 10,
-		40: 22,
-		50: 34,
-		60: core.TernaryFloat64(core.IncludeAQ, 54, 48),
-	}[rogue.Level]
-
-	comboDamageBonus := map[int32]float64{
-		25: 31,
-		40: 77,
-		50: 110,
-		60: core.TernaryFloat64(core.IncludeAQ, 170, 151),
-	}[rogue.Level]
-
-	damageVariance := map[int32]float64{
-		25: 20,
-		40: 44,
-		50: 68,
-		60: core.TernaryFloat64(core.IncludeAQ, 108, 96),
-	}[rogue.Level]
-
-	spellID := map[int32]int32{
-		25: 6762,
-		40: 8624,
-		50: 11299,
-		60: core.TernaryInt32(core.IncludeAQ, 31016, 11300),
-	}[rogue.Level]
+	rank, spellID := rogue.trainerRank("Eviscerate")
+	if rank == 0 {
+		return
+	}
+	values := eviscerateValues[rank-1]
+	if rogue.Forever != nil {
+		values = eviscerateValuesForever[rank-1]
+	}
+	flatDamage, comboDamageBonus, damageVariance := values[0], values[1], values[2]
 
 	rogue.Eviscerate = rogue.RegisterSpell(core.SpellConfig{
 		SpellCode:    SpellCode_RogueEviscerate,
@@ -45,7 +27,7 @@ func (rogue *Rogue) registerEviscerate() {
 		MetricSplits: 6,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   35,
+			Cost:   35 - 10*float64(rogue.flawlessExecutionRank()),
 			Refund: 0,
 		},
 		Cast: core.CastConfig{

@@ -7,19 +7,12 @@ import (
 )
 
 func (rogue *Rogue) registerAmbushSpell() {
-	flatDamageBonus := map[int32]float64{
-		25: 28,
-		40: 50,
-		50: 92,
-		60: 116,
-	}[rogue.Level]
-
-	spellID := map[int32]int32{
-		25: 8676,
-		40: 8725,
-		50: 11268,
-		60: 11269,
-	}[rogue.Level]
+	rank, spellID := rogue.trainerRank("Ambush")
+	if rank == 0 {
+		return
+	}
+	// The tooltip bonus is applied through the 250% multiplier, so the table holds bonus/2.5.
+	flatDamageBonus := ambushBonus[rank-1]
 
 	damageMultiplier := 2.5 * []float64{1, 1.04, 1.08, 1.12, 1.16, 1.2}[rogue.Talents.Opportunity]
 
@@ -45,10 +38,11 @@ func (rogue *Rogue) registerAmbushSpell() {
 			if !rogue.HasDagger(core.MainHand) {
 				return false
 			}
-			if rogue.IsStealthed() || (rogue.ForeverCutthroat != nil && rogue.ForeverCutthroat.IsActive()) {
-				return true
+			// "Must be stealthed and behind the target"; Cutthroat lifts only the stealth requirement.
+			if rogue.PseudoStats.InFrontOfTarget {
+				return false
 			}
-			return !rogue.PseudoStats.InFrontOfTarget && rogue.IsStealthed()
+			return rogue.IsStealthed() || (rogue.ForeverCutthroat != nil && rogue.ForeverCutthroat.IsActive())
 		},
 
 		BonusCritRating:  15 * core.CritRatingPerCritChance * float64(rogue.Talents.ImprovedAmbush),

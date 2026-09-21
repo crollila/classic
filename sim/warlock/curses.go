@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/wowsims/classic/sim/core"
+	"github.com/wowsims/classic/sim/core/stats"
 )
 
 const CurseOfAgonyRanks = 6
@@ -106,30 +107,35 @@ func (warlock *Warlock) registerCurseOfAgonySpell() {
 }
 
 func (warlock *Warlock) registerCurseOfRecklessnessSpell() {
-	playerLevel := warlock.Level
+	rank := rankAtLevel([]int{0, 14, 28, 42, 56}, warlock.Level)
+	if rank == 0 {
+		return
+	}
+	spellID := [5]int32{0, 704, 7658, 7659, 11717}[rank]
+	manaCost := [5]float64{0, 35, 60, 90, 115}[rank]
+	armor := [5]float64{0, 140, 290, 465, 640}[rank]
+	ap := [5]float64{0, 20, 45, 65, 90}[rank]
 
-	warlock.CurseOfRecklessnessAuras = warlock.NewEnemyAuraArray(core.CurseOfRecklessnessAura)
-
-	spellID := map[int32]int32{
-		25: 704,
-		40: 7658,
-		50: 7659,
-		60: 11717,
-	}[playerLevel]
-
-	rank := map[int32]int{
-		25: 1,
-		40: 2,
-		50: 3,
-		60: 4,
-	}[playerLevel]
-
-	manaCost := map[int32]float64{
-		25: 35.0,
-		40: 60.0,
-		50: 90.0,
-		60: 115.0,
-	}[playerLevel]
+	if rank == 4 {
+		warlock.CurseOfRecklessnessAuras = warlock.NewEnemyAuraArray(core.CurseOfRecklessnessAura)
+	} else {
+		// Lower ranks: the same debuff with the rank's armor and attack power.
+		warlock.CurseOfRecklessnessAuras = warlock.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
+			return target.GetOrRegisterAura(core.Aura{
+				Label:    "Curse of Recklessness",
+				ActionID: core.ActionID{SpellID: spellID},
+				Duration: time.Minute * 2,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					aura.Unit.AddStatDynamic(sim, stats.Armor, -armor)
+					aura.Unit.AddStatDynamic(sim, stats.AttackPower, ap)
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					aura.Unit.AddStatDynamic(sim, stats.Armor, armor)
+					aura.Unit.AddStatDynamic(sim, stats.AttackPower, -ap)
+				},
+			})
+		})
+	}
 
 	warlock.CurseOfRecklessness = warlock.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
@@ -168,30 +174,22 @@ func (warlock *Warlock) registerCurseOfRecklessnessSpell() {
 }
 
 func (warlock *Warlock) registerCurseOfElementsSpell() {
-	playerLevel := warlock.Level
-	if playerLevel < 40 {
+	rank := rankAtLevel([]int{0, 32, 46, 60}, warlock.Level)
+	if rank == 0 {
 		return
 	}
+	spellID := [4]int32{0, 1490, 11721, 11722}[rank]
+	manaCost := [4]float64{0, 100, 150, 200}[rank]
 
-	warlock.CurseOfElementsAuras = warlock.NewEnemyAuraArray(core.CurseOfElementsAura)
-
-	spellID := map[int32]int32{
-		40: 1490,
-		50: 11721,
-		60: 11722,
-	}[playerLevel]
-
-	rank := map[int32]int{
-		40: 1,
-		50: 2,
-		60: 3,
-	}[playerLevel]
-
-	manaCost := map[int32]float64{
-		40: 100.0,
-		50: 150.0,
-		60: 200.0,
-	}[playerLevel]
+	if rank == 3 {
+		warlock.CurseOfElementsAuras = warlock.NewEnemyAuraArray(core.CurseOfElementsAura)
+	} else {
+		resistance := [4]float64{0, 45, 60, 75}[rank]
+		dmgMod := [4]float64{0, 1.06, 1.08, 1.1}[rank]
+		warlock.CurseOfElementsAuras = warlock.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
+			return schoolCurseAura(target, "Curse of Elements", spellID, resistance, dmgMod, stats.SchoolIndexFire, stats.SchoolIndexFrost)
+		})
+	}
 
 	warlock.CurseOfElements = warlock.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
@@ -230,27 +228,20 @@ func (warlock *Warlock) registerCurseOfElementsSpell() {
 }
 
 func (warlock *Warlock) registerCurseOfShadowSpell() {
-	playerLevel := warlock.Level
-	if playerLevel < 50 {
+	rank := rankAtLevel([]int{0, 44, 56}, warlock.Level)
+	if rank == 0 {
 		return
 	}
+	spellID := [3]int32{0, 17862, 17937}[rank]
+	manaCost := [3]float64{0, 150, 200}[rank]
 
-	warlock.CurseOfShadowAuras = warlock.NewEnemyAuraArray(core.CurseOfShadowAura)
-
-	spellID := map[int32]int32{
-		50: 17862,
-		60: 17937,
-	}[playerLevel]
-
-	rank := map[int32]int{
-		50: 1,
-		60: 2,
-	}[playerLevel]
-
-	manaCost := map[int32]float64{
-		50: 150.0,
-		60: 200.0,
-	}[playerLevel]
+	if rank == 2 {
+		warlock.CurseOfShadowAuras = warlock.NewEnemyAuraArray(core.CurseOfShadowAura)
+	} else {
+		warlock.CurseOfShadowAuras = warlock.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
+			return schoolCurseAura(target, "Curse of Shadow", spellID, 60, 1.08, stats.SchoolIndexArcane, stats.SchoolIndexShadow)
+		})
+	}
 
 	warlock.CurseOfShadow = warlock.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
@@ -286,6 +277,39 @@ func (warlock *Warlock) registerCurseOfShadowSpell() {
 
 		RelatedAuras: []core.AuraArray{warlock.CurseOfShadowAuras},
 	})
+}
+
+// schoolCurseAura is a lower rank of Curse of the Elements or Curse of Shadow, built with
+// the same exclusive effects as the core's max-rank debuff so the strongest one applies.
+func schoolCurseAura(target *core.Unit, label string, spellID int32, resistance float64, dmgMod float64, schools ...stats.SchoolIndex) *core.Aura {
+	aura := target.GetOrRegisterAura(core.Aura{
+		Label:    label,
+		ActionID: core.ActionID{SpellID: spellID},
+		Duration: time.Minute * 5,
+	})
+	for _, school := range schools {
+		aura.NewExclusiveEffect("spellDamage"+strconv.Itoa(int(school)), false, core.ExclusiveEffect{
+			Priority: dmgMod,
+			OnGain: func(ee *core.ExclusiveEffect, sim *core.Simulation) {
+				ee.Aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[school] *= dmgMod
+			},
+			OnExpire: func(ee *core.ExclusiveEffect, sim *core.Simulation) {
+				ee.Aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[school] /= dmgMod
+			},
+		})
+	}
+	for _, school := range schools {
+		aura.NewExclusiveEffect("resistance"+strconv.Itoa(int(school)), false, core.ExclusiveEffect{
+			Priority: resistance,
+			OnGain: func(ee *core.ExclusiveEffect, sim *core.Simulation) {
+				aura.Unit.AddResistancesDynamic(sim, -resistance)
+			},
+			OnExpire: func(ee *core.ExclusiveEffect, sim *core.Simulation) {
+				aura.Unit.AddResistancesDynamic(sim, resistance)
+			},
+		})
+	}
+	return aura
 }
 
 func (warlock *Warlock) registerAmplifyCurseSpell() {

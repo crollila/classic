@@ -9,22 +9,9 @@ import (
 )
 
 /**
-Instant Poison: 20% proc chance
-25: 22 +/- 3 damage, 8679 ID, 40 charges
-40: 50 +/- 6 damage, 8688 ID, 70 charges
-50: 76 +/- 9 damage, 11338 ID, 85 charges
-60: 130 =/- 18 damage, 11340 ID, 115 charges
-
-Deadly Poison: 30% proc chance, 5 stacks
-40: 52 damage, 2824 ID, 75 charges
-50: 80 damage, 11355 ID, 90 charges
-60: 108 damage, 11356 ID, 105 charges (Rank 4, Rank 5 is by book)
-
-Wound Poison: 30% proc chance, 5 stacks
-25: x damage, x ID (none, first rank is level 32)
-40: -75 healing, 11325 ID, 75 charges (Rank 2)
-50: -105 healing, 13226 ID, 90 charges (Rank 3)
-60: -135 healing, 13227 ID, 105 charges (Rank 4)
+Instant Poison: 20% proc chance. Deadly Poison: 30% proc chance, 5 stacks.
+Wound Poison: 30% proc chance, 5 stacks. Per-rank values and the levels each
+rank becomes available are in ranks.go.
 */
 
 // TODO: Add charges to poisons
@@ -68,7 +55,7 @@ func (rogue *Rogue) applyPoisons() {
 // Apply Instant Poison to weapon and enable procs
 func (rogue *Rogue) applyInstantPoison() {
 	procMask := rogue.getImbueProcMask(proto.WeaponImbue_InstantPoison)
-	if procMask == core.ProcMaskUnknown {
+	if procMask == core.ProcMaskUnknown || rogue.poisonRank("Instant Poison") < 0 {
 		return
 	}
 
@@ -93,7 +80,7 @@ func (rogue *Rogue) applyInstantPoison() {
 // Apply Deadly Poison to weapon and enable procs
 func (rogue *Rogue) applyDeadlyPoison() {
 	procMask := rogue.getImbueProcMask(proto.WeaponImbue_DeadlyPoison)
-	if procMask == core.ProcMaskUnknown {
+	if procMask == core.ProcMaskUnknown || rogue.poisonRank("Deadly Poison") < 0 {
 		return
 	}
 
@@ -117,7 +104,7 @@ func (rogue *Rogue) applyDeadlyPoison() {
 // Apply Wound Poison to weapon and enable procs
 func (rogue *Rogue) applyWoundPoison() {
 	procMask := rogue.getImbueProcMask(proto.WeaponImbue_WoundPoison)
-	if procMask == core.ProcMaskUnknown {
+	if procMask == core.ProcMaskUnknown || rogue.poisonRank("Wound Poison") < 0 {
 		return
 	}
 
@@ -148,18 +135,14 @@ func (rogue *Rogue) registerInstantPoisonSpell() {
 }
 
 func (rogue *Rogue) registerDeadlyPoisonSpell() {
-	baseDamageTick := map[int32]float64{
-		25: 9,
-		40: 13,
-		50: 20,
-		60: core.TernaryFloat64(core.IncludeAQ, 34, 27),
-	}[rogue.Level]
-	spellID := map[int32]int32{
-		25: 2823,
-		40: 2824,
-		50: 11355,
-		60: core.TernaryInt32(core.IncludeAQ, 25347, 11356),
-	}[rogue.Level]
+	// Below the level Deadly Poison is learned the imbue never procs (applyDeadlyPoison),
+	// but the spells stay registered at rank 1 for the code that inspects the dot.
+	rank := max(0, rogue.poisonRank("Deadly Poison"))
+	baseDamageTick := deadlyPoisonTickDamage[rank]
+	if rogue.Forever != nil {
+		baseDamageTick = deadlyPoisonTickDamageForever[rank]
+	}
+	spellID := deadlyPoisonIDs[rank]
 
 	rogue.deadlyPoisonTick = rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID, Tag: 100},
@@ -196,6 +179,16 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 			},
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+				// Venom raises poison damage while it is up. The stack snapshots its multiplier
+				// only on the first application, so Venom is read at tick time instead of being
+				// folded into that snapshot (which would miss a running stack, or outlive Venom).
+				if venom := rogue.foreverVenomAura; venom != nil && venom.IsActive() {
+					snapshot := dot.SnapshotAttackerMultiplier
+					dot.SnapshotAttackerMultiplier *= foreverVenomPoisonMultiplier
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+					dot.SnapshotAttackerMultiplier = snapshot
+					return
+				}
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 			},
 		},
@@ -230,26 +223,15 @@ func (rogue *Rogue) registerWoundPoisonSpell() {
 
 // Make a source based variant of Instant Poison
 func (rogue *Rogue) makeInstantPoison() *core.Spell {
-	baseDamageByLevel := map[int32]float64{
-		25: 19,
-		40: 44,
-		50: 67,
-		60: 112,
-	}[rogue.Level]
-
-	damageVariance := map[int32]float64{
-		25: 6,
-		40: 12,
-		50: 18,
-		60: 36,
-	}[rogue.Level]
-
-	spellID := map[int32]int32{
-		25: 8679,
-		40: 8688,
-		50: 11338,
-		60: 11340,
-	}[rogue.Level]
+	// Below the level Instant Poison is learned the imbue never procs (applyInstantPoison).
+	rank := max(0, rogue.poisonRank("Instant Poison"))
+	damage := instantPoisonDamage[rank]
+	if rogue.Forever != nil {
+		damage = instantPoisonDamageForever[rank]
+	}
+	baseDamageByLevel := damage[0]
+	damageVariance := damage[1]
+	spellID := instantPoisonIDs[rank]
 
 	return rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},

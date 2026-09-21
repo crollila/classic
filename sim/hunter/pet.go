@@ -2,6 +2,7 @@ package hunter
 
 import (
 	"fmt"
+	"math"
 	"time"
 
 	"github.com/wowsims/classic/sim/core"
@@ -29,6 +30,9 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 	}
 	if hunter.Options.PetUptime <= 0 {
 		return nil
+	}
+	if hunter.Level < 10 {
+		return nil // Tame Beast is learned at level 10
 	}
 	petConfig := PetConfigs[hunter.Options.PetType]
 
@@ -61,15 +65,16 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 		attackSpeed = 2.5
 	}
 
-	baseMinDamage = 18.17 * attackSpeed
-	baseMaxDamage = 27.66 * attackSpeed
+	minScale, maxScale, statScale := hunterPetLevelScaling(hunter.Level)
+	baseMinDamage = 18.17 * attackSpeed * minScale
+	baseMaxDamage = 27.66 * attackSpeed * maxScale
 
 	hunterPetBaseStats = stats.Stats{
-		stats.Strength:  136,
-		stats.Agility:   100,
-		stats.Stamina:   274,
-		stats.Intellect: 50,
-		stats.Spirit:    80,
+		stats.Strength:  statScale(22, 136),
+		stats.Agility:   statScale(20, 100),
+		stats.Stamina:   statScale(22, 274),
+		stats.Intellect: statScale(20, 50),
+		stats.Spirit:    statScale(20, 80),
 
 		stats.AttackPower: -20,
 	}
@@ -104,14 +109,34 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 	hp.AddStatDependency(stats.Strength, stats.AttackPower, 2)
 
 	// Warrior crit scaling
-	hp.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[proto.Class_ClassWarrior]*core.CritRatingPerCritChance)
-	hp.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[proto.Class_ClassWarrior]*core.SpellCritRatingPerCritChance)
+	hp.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAt(proto.Class_ClassWarrior, hp.Level)*core.CritRatingPerCritChance)
+	hp.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAt(proto.Class_ClassWarrior, hp.Level)*core.SpellCritRatingPerCritChance)
 
 	core.ApplyPetConsumeEffects(&hp.Character, hunter.Consumes)
 
 	hunter.AddPet(hp)
 
 	return hp
+}
+
+// hunterPetLevelScaling scales the level-60 pet baseline to a pet of the given level
+// (pets are always the hunter's level). Weapon damage follows the CMaNGOS Classic
+// hunter-pet formula (min = L - L/4, max = L + L/4, integer division), normalized so
+// level 60 keeps the simulator's existing numbers. Base stats interpolate linearly
+// from the level-1 hunter-pet row of pet_levelstats (Str 22, Agi 20, Sta 22, Int 20,
+// Spi 20) to the level-60 values; both are approximations, not client data.
+func hunterPetLevelScaling(level int32) (minScale, maxScale float64, statScale func(at1, at60 float64) float64) {
+	if level >= 60 {
+		return 1, 1, func(_, at60 float64) float64 { return at60 }
+	}
+	l := max(level, 1)
+	minScale = float64(l-l/4) / 45
+	maxScale = float64(l+l/4) / 75
+	frac := float64(l-1) / 59
+	statScale = func(at1, at60 float64) float64 {
+		return math.Round(at1 + (at60-at1)*frac)
+	}
+	return minScale, maxScale, statScale
 }
 
 func (hp *HunterPet) GetPet() *core.Pet {

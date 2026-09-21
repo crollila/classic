@@ -7,25 +7,24 @@ import (
 )
 
 func (rogue *Rogue) registerExposeArmorSpell() {
+	rank, spellID := rogue.trainerRank("Expose Armor")
+	if rank == 0 {
+		return
+	}
+
 	rogue.ExposeArmorAuras = rogue.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
 		return core.ExposeArmorAura(target, rogue.Talents.ImprovedExposeArmor)
 	})
 
-	spellID := map[int32]int32{
-		25: 8647,
-		40: 8650,
-		50: 11197,
-		60: 11198,
-	}[rogue.Level]
-
-	arpenPerCombo := map[int32]float64{
-		25: 80,
-		40: 210,
-		50: 275,
-		60: 340,
-	}[rogue.Level]
+	arpenPerCombo := exposeArmorPerCombo[rank-1]
 
 	arpenPerCombo *= []float64{1, 1.25, 1.5}[rogue.Talents.ImprovedExposeArmor]
+	if rogue.Forever != nil {
+		// Forever: the spell itself carries the armor; Improved Expose Armor no longer scales it.
+		arpenPerCombo = exposeArmorPerComboForever[rank-1]
+	}
+	// Improved Expose Armor (Forever) refunds 1/2 combo points when cast with 5.
+	refund := rogue.ForeverRank("rogue.talent.improved-expose-armor")
 
 	// share ExtraCastCondition() state with ApplyEffects()
 	var arpen float64
@@ -78,8 +77,8 @@ func (rogue *Rogue) registerExposeArmorSpell() {
 				eaAura.Activate(sim)
 				spent := rogue.ComboPoints()
 				rogue.SpendComboPoints(sim, spell)
-				if spent == 5 && rogue.ForeverRank("rogue.talent.improved-expose-armor") > 0 {
-					rogue.AddComboPoints(sim, 1, target, spell.ComboPointMetrics())
+				if spent == 5 && refund > 0 {
+					rogue.AddComboPoints(sim, refund, target, spell.ComboPointMetrics())
 				}
 			} else {
 				spell.IssueRefund(sim)

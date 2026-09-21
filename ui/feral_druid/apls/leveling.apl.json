@@ -1,0 +1,141 @@
+{
+ "type": "TypeAPL",
+ "priorityList": [
+  {
+   "action": {
+    "autocastOtherCooldowns": {}
+   }
+  },
+  {
+   "action": {
+    "condition": {
+     "and": {
+      "vals": [
+       {
+        "cmp": {
+         "op": "OpGe",
+         "lhs": {
+          "currentComboPoints": {}
+         },
+         "rhs": {
+          "const": {
+           "val": "5"
+          }
+         }
+        }
+       },
+       {
+        "not": {
+         "val": {
+          "dotIsActive": {
+           "spellId": {
+            "spellId": 9896
+           }
+          }
+         }
+        }
+       },
+       {
+        "cmp": {
+         "op": "OpGt",
+         "lhs": {
+          "remainingTime": {}
+         },
+         "rhs": {
+          "const": {
+           "val": "10"
+          }
+         }
+        }
+       }
+      ]
+     }
+    },
+    "castSpell": {
+     "spellId": {
+      "spellId": 9896
+     }
+    }
+   }
+  },
+  {
+   "action": {
+    "condition": {
+     "cmp": {
+      "op": "OpGe",
+      "lhs": {
+       "currentComboPoints": {}
+      },
+      "rhs": {
+       "const": {
+        "val": "5"
+       }
+      }
+     }
+    },
+    "castSpell": {
+     "spellId": {
+      "spellId": 31018
+     }
+    }
+   }
+  },
+  {
+   "action": {
+    "condition": {
+     "and": {
+      "vals": [
+       {
+        "not": {
+         "val": {
+          "dotIsActive": {
+           "spellId": {
+            "spellId": 9904
+           }
+          }
+         }
+        }
+       },
+       {
+        "cmp": {
+         "op": "OpGt",
+         "lhs": {
+          "remainingTime": {}
+         },
+         "rhs": {
+          "const": {
+           "val": "6"
+          }
+         }
+        }
+       }
+      ]
+     }
+    },
+    "castSpell": {
+     "spellId": {
+      "spellId": 9904
+     }
+    }
+   }
+  },
+  {
+   "action": {
+    "castSpell": {
+     "spellId": {
+      "spellId": 9830
+     }
+    }
+   }
+  },
+  {
+   "action": {
+    "castSpell": {
+     "spellId": {
+      "spellId": 9850
+     }
+    }
+   }
+  }
+ ]
+}

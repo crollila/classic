@@ -132,7 +132,9 @@ func init() {
 		mage.RegisterAura(core.Aura{
 			Label: "Improved Counterspell",
 			OnInit: func(aura *core.Aura, sim *core.Simulation) {
-				mage.Counterspell.CD.Duration -= time.Second * 2
+				if mage.Counterspell != nil {
+					mage.Counterspell.CD.Duration -= time.Second * 2
+				}
 			},
 		})
 	})

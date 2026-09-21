@@ -7,6 +7,9 @@ import (
 )
 
 func (warrior *Warrior) registerWhirlwindSpell() {
+	if warrior.Level < levelWhirlwind {
+		return
+	}
 	results := make([]*core.SpellResult, min(4, warrior.Env.GetNumTargets()))
 
 	warrior.Whirlwind = warrior.RegisterSpell(BerserkerStance, core.SpellConfig{

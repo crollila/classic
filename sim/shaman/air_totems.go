@@ -116,7 +116,16 @@ func (shaman *Shaman) newGraceOfAirTotemSpellConfig(rank int) core.SpellConfig {
 
 	multiplier := []float64{1, 1.08, 1.15}[shaman.Talents.EnhancingTotems]
 
-	buffAura := core.GraceOfAirTotemAura(&shaman.Unit, multiplier)
+	var buffAura *core.Aura
+	if known := rankAtLevel(GraceOfAirTotemLevel[:], shaman.Level); known >= GraceOfAirTotemRanks {
+		buffAura = core.GraceOfAirTotemAura(&shaman.Unit, multiplier)
+	} else {
+		buffAura = shaman.GetAura("Grace of Air Totem (Shaman)")
+		if buffAura == nil {
+			buffAura = shaman.lowRankStatTotemAura("Grace of Air Totem (Shaman)", GraceOfAirTotemSpellId[known], core.GraceOfAir,
+				GraceOfAirTotemAgility[known]/GraceOfAirTotemAgility[GraceOfAirTotemRanks], multiplier)
+		}
+	}
 
 	spell := shaman.newTotemSpellConfig(manaCost, spellId)
 	spell.RequiredLevel = level

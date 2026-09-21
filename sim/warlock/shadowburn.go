@@ -11,11 +11,10 @@ const ShadowburnRanks = 6
 func (warlock *Warlock) registerShadowBurnBaseConfig(rank int) core.SpellConfig {
 	spellId := [ShadowburnRanks + 1]int32{0, 17877, 18867, 18868, 18869, 18870, 18871}[rank]
 	baseDamage := [ShadowburnRanks + 1][]float64{{0}, {91, 104}, {123, 140}, {196, 221}, {274, 307}, {365, 408}, {462, 514}}[rank]
-	if warlock.Forever != nil && rank == 1 {
-		baseDamage = []float64{102, 111}
-	}
+	// Forever needs no rank 1 special case: the client overrides for all six ranks scale
+	// this Classic table at registration (rank 1 to 65-73, rank 6 to 258-288).
 	manaCost := [ShadowburnRanks + 1]float64{0, 105, 130, 190, 245, 305, 365}[rank]
-	level := [ShadowburnRanks + 1]int{0, 15, 24, 32, 40, 48, 56}[rank]
+	level := [ShadowburnRanks + 1]int{0, 20, 24, 32, 40, 48, 56}[rank]
 
 	spellCoeff := 0.429
 

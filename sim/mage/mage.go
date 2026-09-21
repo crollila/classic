@@ -139,7 +139,7 @@ func NewMage(character *core.Character, options *proto.Player) *Mage {
 	mage.EnableManaBar()
 
 	mage.AddStatDependency(stats.Strength, stats.AttackPower, core.APPerStrength[character.Class])
-	mage.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[mage.Class]*core.SpellCritRatingPerCritChance)
+	mage.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAt(mage.Class, mage.Level)*core.SpellCritRatingPerCritChance)
 
 	switch mage.Options.Armor {
 	case proto.Mage_Options_IceArmor:

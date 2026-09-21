@@ -78,7 +78,7 @@ func (hunter *Hunter) newRaptorStrikeHitSpell(rank int) *core.Spell {
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
 
 		BonusCritRating:  float64(hunter.Talents.SavageStrikes) * 10 * core.CritRatingPerCritChance,
-		CritDamageBonus:  hunter.mortalShots(),
+		CritDamageBonus:  hunter.meleeMortalShots(),
 		DamageMultiplier: 1,
 		BonusCoefficient: 1,
 
@@ -132,12 +132,10 @@ func (hunter *Hunter) makeQueueSpellsAndAura() *core.Spell {
 }
 
 func (hunter *Hunter) registerRaptorStrikeSpell() {
-	rank := map[int32]int{
-		25: 4,
-		40: 6,
-		50: 7,
-		60: 8,
-	}[hunter.Level]
+	rank := rankForLevel(RaptorStrikeLevel[:], hunter.Level)
+	if rank == 0 {
+		return
+	}
 
 	config := hunter.getRaptorStrikeConfig(rank)
 	hunter.RaptorStrike = hunter.GetOrRegisterSpell(config)

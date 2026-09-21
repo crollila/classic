@@ -88,7 +88,7 @@ func (cat *FeralDruid) numShiftsRemaining() int32 {
 func (cat *FeralDruid) timeToCast(numSpecials int32) time.Duration {
 	// Rough calculation, won't be exact! Intended to skew conservatively.
 	totalCasts := float64(numSpecials)
-	numPowershiftedSpecials := min(totalCasts, float64(cat.numShiftsRemaining()*2*cat.Talents.Furor)/5.0)
+	numPowershiftedSpecials := min(totalCasts, float64(cat.numShiftsRemaining()*2*cat.furorRank())/5.0)
 	numOomSpecials := totalCasts - numPowershiftedSpecials
 	return core.DurationFromSeconds(numPowershiftedSpecials*2.0 + numOomSpecials*4.0)
 }
@@ -175,7 +175,7 @@ func (cat *FeralDruid) postRotation(sim *core.Simulation, nextAction time.Durati
 func (cat *FeralDruid) shouldPoolMana(sim *core.Simulation, numShiftsToOom int32) bool {
 	maxShiftsPossible := cat.maxShifts()
 
-	if (maxShiftsPossible == 0) || (cat.Talents.Furor == 0) {
+	if (maxShiftsPossible == 0) || (cat.furorRank() == 0) {
 		return true
 	}
 
@@ -402,11 +402,11 @@ func (cat *FeralDruid) doRotation(sim *core.Simulation) (bool, time.Duration) {
 
 	latencySecs := cat.latency.Seconds()
 	// Allow for bearweaving if the next pending action is >= 4.5s away
-	furorCap := min(20.0*float64(cat.Talents.Furor), 85)
+	furorCap := min(20.0*float64(cat.furorRank()), 85)
 	weaveEnergy := furorCap - 30 - 20*latencySecs
 
 	// With 4/5 or 5/5 Furor, force 2-GCD bearweaves whenever possible
-	if cat.Talents.Furor > 3 {
+	if cat.furorRank() > 3 {
 		weaveEnergy -= 15.0
 
 		// Force a 3-GCD weave when stacking Lacerates for the first time

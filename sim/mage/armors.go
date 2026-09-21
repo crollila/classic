@@ -5,27 +5,42 @@ import (
 	"github.com/wowsims/classic/sim/core/stats"
 )
 
+type mageArmorRank struct {
+	spellID         int32
+	level           int32
+	armor, frostRes float64
+	resistance      float64
+}
+
+// Frost Armor ranks 1-3 then Ice Armor ranks 1-4, as learned from the trainer.
+var frostIceArmorRanks = []mageArmorRank{
+	{spellID: 168, level: 1, armor: 30},
+	{spellID: 7300, level: 10, armor: 110},
+	{spellID: 7301, level: 20, armor: 200},
+	{spellID: 7302, level: 30, armor: 290, frostRes: 6},
+	{spellID: 7320, level: 40, armor: 380, frostRes: 9},
+	{spellID: 10219, level: 50, armor: 470, frostRes: 12},
+	{spellID: 10220, level: 60, armor: 560, frostRes: 15},
+}
+
+var mageArmorRanks = []mageArmorRank{
+	{spellID: 6117, level: 34, resistance: 5},
+	{spellID: 22782, level: 46, resistance: 10},
+	{spellID: 22783, level: 58, resistance: 15},
+}
+
 func (mage *Mage) applyFrostIceArmor() {
-	spellID := map[int32]int32{
-		25: 7301,
-		40: 7320,
-		50: 10219,
-		60: 10220,
-	}[mage.Level]
-
-	armor := map[int32]float64{
-		25: 200,
-		40: 380,
-		50: 470,
-		60: 560,
-	}[mage.Level]
-
-	frostRes := map[int32]float64{
-		25: 0,
-		40: 9,
-		50: 12,
-		60: 15,
-	}[mage.Level]
+	// Frost Armor (ranks 1-3) until Ice Armor is learned at 30; both share one aura.
+	var spellID int32
+	var armor, frostRes float64
+	for _, r := range frostIceArmorRanks {
+		if r.level <= mage.Level {
+			spellID, armor, frostRes = r.spellID, r.armor, r.frostRes
+		}
+	}
+	if spellID == 0 {
+		return
+	}
 
 	armor *= 1 + mage.ForeverValue("mage.talent.frost-warding", 0, 0)/100
 	frostRes *= 1 + mage.ForeverValue("mage.talent.frost-warding", 0, 0)/100
@@ -55,21 +70,16 @@ func (mage *Mage) applyFrostIceArmor() {
 }
 
 func (mage *Mage) applyMageArmor() {
-	if mage.Level < 40 {
+	var spellID int32
+	var spellRes float64
+	for _, r := range mageArmorRanks {
+		if r.level <= mage.Level {
+			spellID, spellRes = r.spellID, r.resistance
+		}
+	}
+	if spellID == 0 {
 		return
 	}
-
-	spellID := map[int32]int32{
-		40: 6117,
-		50: 22782,
-		60: 22783,
-	}[mage.Level]
-
-	spellRes := map[int32]float64{
-		40: 5,
-		50: 10,
-		60: 15,
-	}[mage.Level]
 
 	spellRes *= 1 + mage.ForeverValue("mage.talent.arcane-shielding", 1, 0)/100
 	mage.MageArmorAura = core.MakePermanent(mage.RegisterAura(core.Aura{

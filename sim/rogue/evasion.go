@@ -8,6 +8,9 @@ import (
 )
 
 func (rogue *Rogue) RegisterEvasionSpell() {
+	if rogue.Level < 8 { // Evasion is learned at level 8.
+		return
+	}
 	rogue.EvasionAura = rogue.RegisterAura(core.Aura{
 		Label:    "Evasion",
 		ActionID: core.ActionID{SpellID: 5277},

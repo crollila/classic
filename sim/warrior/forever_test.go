@@ -185,7 +185,8 @@ func TestForeverVenomAndMutilateAreRealSpells(t *testing.T) {
 func TestForeverHawkCastAndCap(t *testing.T) {
 	sim, h := physicalSim(t, "Hunter", "hunter", physicalBuild(t, "hunter.talent.summon-hawk"))
 	s := physicalSpell(t, h, "hunter.talent.summon-hawk")
-	if s.DefaultCast.Cost != 80 || !s.Cast(sim, h.CurrentTarget) {
+	// Level 60 knows client rank 4 of Summon Hawk: 108 damage for 190 mana.
+	if s.DefaultCast.Cost != 190 || !s.Cast(sim, h.CurrentTarget) {
 		t.Fatal("Hawk was not a payable cast")
 	}
 	if !h.GetAura("Hawk 1").IsActive() {
@@ -194,7 +195,7 @@ func TestForeverHawkCastAndCap(t *testing.T) {
 	for i := 0; i < 3; i++ {
 		h.GCD.Reset()
 		s.CD.Reset()
-		h.AddMana(sim, 100, h.NewManaMetrics(s.ActionID))
+		h.AddMana(sim, 200, h.NewManaMetrics(s.ActionID))
 		if !s.Cast(sim, h.CurrentTarget) {
 			t.Fatal("Hawk repeat")
 		}
@@ -457,7 +458,7 @@ func TestForeverTrueshotDoesNotStackPerHunter(t *testing.T) {
 		}
 	}
 	for i, p := range players {
-		expected := 30.
+		expected := 50. // client rank 5 (level 60) of Trueshot Aura
 		if i == 2 {
 			expected = 0
 		}

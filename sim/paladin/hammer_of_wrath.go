@@ -31,6 +31,9 @@ func (paladin *Paladin) registerHammerOfWrath() {
 		if paladin.Level < rank.level {
 			break
 		}
+		if paladin.Forever != nil {
+			rank.minDamage, rank.maxDamage = foreverHammerOfWrathDamage[i][0], foreverHammerOfWrathDamage[i][1]
+		}
 
 		paladin.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: rank.spellID},

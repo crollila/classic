@@ -23,10 +23,13 @@ func (h *Hunter) applyForeverTalents() {
 		}
 		if s.ProcMask.Matches(core.ProcMaskMeleeSpecial) {
 			s.BonusCritRating += 2 * float64(h.ForeverRank("hunter.talent.savage-strikes"))
-			s.CritDamageBonus += .06 * float64(h.ForeverRank("hunter.talent.predator-s-edge"))
+		}
+		// Predator's Edge: "melee critical strike damage", white swings included.
+		if s.ProcMask.Matches(core.ProcMaskMelee) {
+			s.CritDamageBonus += h.ForeverValue("hunter.talent.predator-s-edge", 0, 0) / 100
 		}
 		if s.ProcMask.Matches(core.ProcMaskMeleeOH) {
-			s.DamageMultiplier *= 1 + .1*float64(h.ForeverRank("hunter.talent.predator-s-edge"))
+			s.DamageMultiplier *= 1 + h.ForeverValue("hunter.talent.predator-s-edge", 1, 0)/100
 		}
 		if s.Cost != nil && (s.Flags.Matches(SpellFlagTrap) || s.ProcMask.Matches(core.ProcMaskMeleeSpecial)) {
 			s.Cost.Multiplier -= 30 * h.ForeverRank("hunter.talent.resourcefulness")
@@ -35,13 +38,20 @@ func (h *Hunter) applyForeverTalents() {
 			s.BonusHitRating += 5 * float64(h.ForeverRank("hunter.talent.survival-tactics"))
 			s.CD.Duration = time.Duration(float64(s.CD.Duration) * (1 - .2*float64(h.ForeverRank("hunter.talent.survivalist-s-discipline"))))
 		}
+		// Client values: Improved Stings 6/13/20%, Barrage 3/7/10% (not linear per rank).
 		if s.SpellCode == SpellCode_HunterSerpentSting {
-			s.DamageMultiplier *= 1 + .06*float64(h.ForeverRank("hunter.talent.improved-stings"))
+			s.DamageMultiplier *= 1 + h.ForeverValue("hunter.talent.improved-stings", 0, 0)/100
 		}
+		// Barrage names Multi-Shot, Aimed Shot and Volley; Sniper Shot has its own code.
 		if s.SpellCode == SpellCode_HunterMultiShot || s.SpellCode == SpellCode_HunterAimedShot || s.SpellCode == SpellCode_HunterVolley {
-			s.DamageMultiplier *= 1 + .03*float64(h.ForeverRank("hunter.talent.barrage"))
+			s.DamageMultiplier *= 1 + h.ForeverValue("hunter.talent.barrage", 0, 0)/100
 		}
 	})
+	// Focused Fire: "all damage you and your pet deal". The hunter half is the core
+	// target multiplier; the pet only deals damage while it is active.
+	if h.pet != nil && h.ForeverRank("hunter.talent.focused-fire") > 0 {
+		h.pet.PseudoStats.DamageDealtMultiplier *= 1 + h.ForeverValue("hunter.talent.focused-fire", 0, 0)/100
+	}
 	if n := h.ForeverRank("hunter.talent.improved-tracking"); n > 0 {
 		// BEST_GUESS assumes the player selects the appropriate trackable type before combat.
 		h.Env.RegisterPostFinalizeEffect(func() {
@@ -99,7 +109,9 @@ func (h *Hunter) registerForeverAbilities(arcaneTimer *core.Timer) {
 		return
 	}
 	h.registerForeverRapidKilling()
-	h.RapidFire.CD.Duration -= time.Duration(h.ForeverRank("hunter.talent.rapid-killing")) * time.Minute
+	if h.RapidFire != nil {
+		h.RapidFire.CD.Duration -= time.Duration(h.ForeverRank("hunter.talent.rapid-killing")) * time.Minute
+	}
 	if n := h.ForeverRank("hunter.talent.resourcefulness"); n > 0 {
 		a := h.foreverRegen("Resourcefulness", .5, 30*time.Second)
 		core.MakePermanent(h.RegisterAura(core.Aura{Label: "Resourcefulness Trigger", OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, s *core.Spell, r *core.SpellResult) {
@@ -134,13 +146,15 @@ func (h *Hunter) registerForeverAbilities(arcaneTimer *core.Timer) {
 		}}))
 	}
 	if h.ForeverRank("hunter.talent.lacerating-strikes") > 0 {
-		bleed := h.RegisterSpell(core.SpellConfig{ActionID: h.ForeverAction("hunter.talent.lacerating-strikes"), ProcMask: core.ProcMaskEmpty, SpellSchool: core.SpellSchoolPhysical, Flags: core.SpellFlagIgnoreResists | core.SpellFlagIgnoreAttackerModifiers, DamageMultiplier: 1, ThreatMultiplier: 1, Dot: core.DotConfig{Aura: core.Aura{Label: "Lacerating Strikes"}, NumberOfTicks: 7, TickLength: 3 * time.Second, OnTick: func(sim *core.Simulation, t *core.Unit, d *core.Dot) {
+		bleed := h.RegisterSpell(core.SpellConfig{ActionID: h.ForeverAction("hunter.talent.lacerating-strikes"), ProcMask: core.ProcMaskEmpty, SpellSchool: core.SpellSchoolPhysical, Flags: core.SpellFlagIgnoreResists | core.SpellFlagIgnoreModifiers, DamageMultiplier: 1, ThreatMultiplier: 1, Dot: core.DotConfig{Aura: core.Aura{Label: "Lacerating Strikes"}, NumberOfTicks: 7, TickLength: 3 * time.Second, OnTick: func(sim *core.Simulation, t *core.Unit, d *core.Dot) {
 			d.CalcAndDealPeriodicSnapshotDamage(sim, t, d.OutcomeTick)
 		}}})
 		core.MakePermanent(h.RegisterAura(core.Aura{Label: "Lacerating Strikes Trigger", OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, s *core.Spell, r *core.SpellResult) {
+			// 40% of the damage Mongoose Bite did, over 7 ticks. r.Damage already carries
+			// every attacker and target modifier, so the bleed ignores both.
 			if s.SpellCode == SpellCode_HunterMongooseBite && r.Damage > 0 {
 				d := bleed.Dot(r.Target)
-				d.SnapshotBaseDamage = r.Damage * .4 / 7
+				d.SnapshotBaseDamage = r.Damage * h.ForeverValue("hunter.talent.lacerating-strikes", 1, 40) / 100 / 7
 				d.SnapshotAttackerMultiplier = 1
 				d.Apply(sim)
 			}
@@ -154,6 +168,9 @@ func (h *Hunter) registerForeverAbilities(arcaneTimer *core.Timer) {
 	}
 	// Aspect selection is real and mutually exclusive with Classic Hawk.
 	for _, kind := range []string{"Beast", "Monkey", "Cheetah", "Pack"} {
+		if h.Level < map[string]int32{"Beast": 30, "Monkey": 4, "Cheetah": 20, "Pack": 40}[kind] {
+			continue // not learned yet (Forever client trainer levels)
+		}
 		id := core.ActionID{SpellID: 13161}
 		mana := 50.0
 		switch kind {
@@ -209,11 +226,12 @@ func (h *Hunter) registerForeverAbilities(arcaneTimer *core.Timer) {
 				ready.Activate(sim)
 			}
 		}}))
-		h.RegisterSpell(core.SpellConfig{ActionID: h.ForeverAction("hunter.talent.counterattack"), SpellSchool: core.SpellSchoolPhysical, DefenseType: core.DefenseTypeMelee, ProcMask: core.ProcMaskMeleeMHSpecial, Flags: core.SpellFlagAPL | SpellFlagStrike, ManaCost: core.ManaCostOptions{FlatCost: 30}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, CD: core.Cooldown{Timer: h.NewTimer(), Duration: 5 * time.Second}}, ExtraCastCondition: func(sim *core.Simulation, t *core.Unit) bool {
+		bonus, mana := counterattackRank(h.Level)
+		h.RegisterSpell(core.SpellConfig{ActionID: h.ForeverAction("hunter.talent.counterattack"), SpellSchool: core.SpellSchoolPhysical, DefenseType: core.DefenseTypeMelee, ProcMask: core.ProcMaskMeleeMHSpecial, Flags: core.SpellFlagAPL | SpellFlagStrike, ManaCost: core.ManaCostOptions{FlatCost: mana}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, CD: core.Cooldown{Timer: h.NewTimer(), Duration: 5 * time.Second}}, ExtraCastCondition: func(sim *core.Simulation, t *core.Unit) bool {
 			return ready.IsActive() && h.DistanceFromTarget <= core.MaxMeleeAttackDistance
 		}, DamageMultiplier: 1, ThreatMultiplier: 1, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
 			ready.Deactivate(sim)
-			r := s.CalcAndDealDamage(sim, t, 13+.5*h.MHWeaponDamage(sim, s.MeleeAttackPower(t)), s.OutcomeMeleeSpecialNoBlockDodgeParry)
+			r := s.CalcAndDealDamage(sim, t, bonus+.5*h.MHWeaponDamage(sim, s.MeleeAttackPower(t)), s.OutcomeMeleeSpecialNoBlockDodgeParry)
 			if r.Landed() {
 				t.ForeverControlAura("Counterattack", s.ActionID, core.ForeverRoot, 5*time.Second).Activate(sim)
 			}
@@ -222,12 +240,66 @@ func (h *Hunter) registerForeverAbilities(arcaneTimer *core.Timer) {
 	h.registerForeverPetUtility()
 	h.registerForeverControls()
 	h.registerForeverStings()
-	h.registerForeverFeignDeath()
+	if h.Level >= 30 {
+		h.registerForeverFeignDeath()
+	}
 }
 
-// PREDICTED repeated hawk attacks use a standard pet's 2s swing; 53 damage,
-// 18s duration, two-hawk cap, cooldown sharing and pet-talent scaling are sourced.
+// Forever client Summon Hawk ranks: learned level, damage per hit, mana.
+var summonHawkRanks = []struct {
+	level        int32
+	damage, mana float64
+}{{25, 32, 80}, {36, 47, 105}, {48, 85, 135}, {60, 108, 190}}
+
+// summonHawkRank is the highest Summon Hawk rank known at the level; the talent grants
+// rank 1 whenever it is taken.
+func summonHawkRank(level int32) (damage, mana float64) {
+	damage, mana = summonHawkRanks[0].damage, summonHawkRanks[0].mana
+	for _, r := range summonHawkRanks {
+		if r.level <= level {
+			damage, mana = r.damage, r.mana
+		}
+	}
+	return damage, mana
+}
+
+// Forever client Trueshot Aura ranks: learned level, ranged attack power, mana. The
+// client's rank 5 (level 60) really reads 50, below rank 4's 75.
+var trueshotAuraRanks = []struct {
+	level     int32
+	rap, mana float64
+}{{25, 30, 180}, {32, 40, 245}, {40, 50, 325}, {50, 75, 425}, {60, 50, 525}}
+
+func trueshotAuraRank(level int32) (rap, mana float64) {
+	rap, mana = trueshotAuraRanks[0].rap, trueshotAuraRanks[0].mana
+	for _, r := range trueshotAuraRanks {
+		if r.level <= level {
+			rap, mana = r.rap, r.mana
+		}
+	}
+	return rap, mana
+}
+
+// Forever client Counterattack ranks: learned level, flat bonus on 50% weapon damage, mana.
+var counterattackRanks = []struct {
+	level       int32
+	bonus, mana float64
+}{{30, 13, 30}, {30, 20, 45}, {42, 35, 65}, {54, 55, 85}}
+
+func counterattackRank(level int32) (bonus, mana float64) {
+	bonus, mana = counterattackRanks[0].bonus, counterattackRanks[0].mana
+	for _, r := range counterattackRanks {
+		if r.level <= level {
+			bonus, mana = r.bonus, r.mana
+		}
+	}
+	return bonus, mana
+}
+
+// PREDICTED repeated hawk attacks use a standard pet's 2s swing. Per-rank damage and
+// mana, 18s duration, two-hawk cap, cooldown sharing and pet-talent scaling are sourced.
 func (h *Hunter) registerForeverHawks(timer *core.Timer) {
+	hawkDamage, hawkMana := summonHawkRank(h.Level)
 	attacks := make([]*core.Spell, 2)
 	active := make([]*core.Aura, 2)
 	targets := make([]*core.Unit, 2)
@@ -238,7 +310,7 @@ func (h *Hunter) registerForeverHawks(timer *core.Timer) {
 		childID := id
 		childID.Tag = -id.Tag*10 - int32(i)
 		attacks[i] = h.RegisterSpell(core.SpellConfig{ActionID: childID, SpellSchool: core.SpellSchoolPhysical, DefenseType: core.DefenseTypeMelee, ProcMask: core.ProcMaskEmpty, Flags: core.SpellFlagIgnoreAttackerModifiers, DamageMultiplier: 1 + .03*float64(h.ForeverRank("hunter.talent.unleashed-fury")), BonusCritRating: 5 + 2*float64(h.ForeverRank("hunter.talent.ferocity")), ThreatMultiplier: 1, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
-			s.CalcAndDealDamage(sim, t, 53, s.OutcomeMeleeSpecialHitAndCrit)
+			s.CalcAndDealDamage(sim, t, hawkDamage, s.OutcomeMeleeSpecialHitAndCrit)
 		}})
 		h.RegisterResetEffect(func(sim *core.Simulation) {
 			targets[slot] = nil
@@ -249,7 +321,7 @@ func (h *Hunter) registerForeverHawks(timer *core.Timer) {
 			}})
 		})
 	}
-	h.RegisterSpell(core.SpellConfig{ActionID: h.ForeverAction("hunter.talent.summon-hawk"), Flags: core.SpellFlagAPL, ExtraCastCondition: func(sim *core.Simulation, t *core.Unit) bool { return h.DistanceFromTarget <= 35 }, ManaCost: core.ManaCostOptions{FlatCost: 80}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, CD: core.Cooldown{Timer: timer, Duration: 6 * time.Second}}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
+	h.RegisterSpell(core.SpellConfig{ActionID: h.ForeverAction("hunter.talent.summon-hawk"), Flags: core.SpellFlagAPL, ExtraCastCondition: func(sim *core.Simulation, t *core.Unit) bool { return h.DistanceFromTarget <= 35 }, ManaCost: core.ManaCostOptions{FlatCost: hawkMana}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, CD: core.Cooldown{Timer: timer, Duration: 6 * time.Second}}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
 		slot := 0
 		if active[0].IsActive() && (!active[1].IsActive() || active[0].RemainingDuration(sim) > active[1].RemainingDuration(sim)) {
 			slot = 1
@@ -261,16 +333,17 @@ func (h *Hunter) registerForeverHawks(timer *core.Timer) {
 }
 func (h *Hunter) registerForeverTrueshot() {
 	id := h.ForeverAction("hunter.talent.trueshot-aura")
+	rap, mana := trueshotAuraRank(h.Level)
 	auras := []*core.Aura{}
 	for _, a := range h.Party.Players {
 		c := a.GetCharacter()
 		aura := c.GetAura("Forever Trueshot Aura")
 		if aura == nil {
-			aura = c.RegisterAura(core.Aura{Label: "Forever Trueshot Aura", ActionID: id, Duration: 30 * time.Minute}).AttachStatsBuff(stats.Stats{stats.RangedAttackPower: 30})
+			aura = c.RegisterAura(core.Aura{Label: "Forever Trueshot Aura", ActionID: id, Duration: 30 * time.Minute}).AttachStatsBuff(stats.Stats{stats.RangedAttackPower: rap})
 		}
 		auras = append(auras, aura)
 	}
-	h.RegisterSpell(core.SpellConfig{ActionID: id, Flags: core.SpellFlagAPL, ManaCost: core.ManaCostOptions{FlatCost: 180}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
+	h.RegisterSpell(core.SpellConfig{ActionID: id, Flags: core.SpellFlagAPL, ManaCost: core.ManaCostOptions{FlatCost: mana}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
 		for _, a := range auras {
 			if a.Unit.DistanceFromTarget-h.DistanceFromTarget <= 45 && h.DistanceFromTarget-a.Unit.DistanceFromTarget <= 45 {
 				a.Activate(sim)
@@ -283,6 +356,9 @@ func (h *Hunter) registerForeverPetUtility() {
 		return
 	}
 	id := core.ActionID{SpellID: 982}
+	if h.Level < 10 {
+		return
+	}
 	h.RegisterSpell(core.SpellConfig{ActionID: id, Flags: core.SpellFlagAPL, ManaCost: core.ManaCostOptions{FlatCost: 1367, Multiplier: 100 - 20*h.ForeverRank("hunter.talent.improved-revive-pet")}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault, CastTime: 10*time.Second - time.Duration(3*h.ForeverRank("hunter.talent.improved-revive-pet"))*time.Second}}, ExtraCastCondition: func(sim *core.Simulation, t *core.Unit) bool { return !h.pet.IsEnabled() }, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
 		h.pet.Enable(sim, h.pet)
 		h.pet.RemoveHealth(sim, h.pet.CurrentHealth())
@@ -303,7 +379,9 @@ func (h *Hunter) registerForeverPetUtility() {
 		}})
 		h.RegisterSpell(core.SpellConfig{ActionID: id, Flags: core.SpellFlagAPL, ManaCost: core.ManaCostOptions{FlatCost: 84}, Cast: core.CastConfig{CD: core.Cooldown{Timer: h.NewTimer(), Duration: time.Minute}}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) { a.Activate(sim) }})
 	}
-	h.registerForeverMendPet()
+	if h.Level >= 12 {
+		h.registerForeverMendPet()
+	}
 }
 
 func (h *Hunter) registerForeverControls() {
@@ -322,6 +400,9 @@ func (h *Hunter) registerForeverControls() {
 		if scatter && h.ForeverRank("hunter.talent.scatter-shot") == 0 {
 			continue
 		}
+		if !scatter && h.Level < 8 {
+			continue // Concussive Shot is learned at level 8
+		}
 		id := core.ActionID{SpellID: 5116}
 		cost := 84.
 		cd := 12 * time.Second
@@ -334,7 +415,7 @@ func (h *Hunter) registerForeverControls() {
 				return h.DistanceFromTarget <= 15
 			}
 			return h.DistanceFromTarget >= 8
-		}, ManaCost: core.ManaCostOptions{FlatCost: cost}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, CD: core.Cooldown{Timer: h.NewTimer(), Duration: cd}}, DamageMultiplier: 1, ThreatMultiplier: 1, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
+		}, ManaCost: core.ManaCostOptions{FlatCost: cost}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, CD: core.Cooldown{Timer: h.NewTimer(), Duration: cd}}, CritDamageBonus: core.TernaryFloat64(scatter, h.mortalShots(), 0), DamageMultiplier: 1, ThreatMultiplier: 1, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
 			if scatter {
 				result := s.CalcAndDealDamage(sim, t, .5*h.RangedWeaponDamage(sim, s.RangedAttackPower(t, false)), s.OutcomeRangedHitAndCrit)
 				h.AutoAttacks.CancelAutoSwing(sim)
@@ -373,7 +454,9 @@ func (h *Hunter) registerForeverRapidKilling() {
 			s.DamageMultiplier /= mult
 		}
 	}, OnSpellHitDealt: func(a *core.Aura, sim *core.Simulation, s *core.Spell, r *core.SpellResult) {
-		if s.Flags.Matches(SpellFlagShot) {
+		// "the damage of your next Shot": a Shot that deals no damage (Concussive Shot)
+		// does not use it up.
+		if s.Flags.Matches(SpellFlagShot) && s.SpellID != 5116 {
 			a.Deactivate(sim)
 			if h.ForeverRank("hunter.talent.rapid-recuperation") > 0 {
 				regen.Activate(sim)
@@ -383,7 +466,7 @@ func (h *Hunter) registerForeverRapidKilling() {
 	for _, target := range h.Env.Encounter.TargetUnits {
 		kill := func(_ *core.Aura, sim *core.Simulation, s *core.Spell, result *core.SpellResult) {
 			if result.Damage > 0 && result.Target.ForeverEnemyDead() &&
-				(s.Unit == &h.Unit || (h.pet != nil && s.Unit == &h.pet.Unit) || h.SerpentSting.Dot(result.Target).IsActive()) {
+				(s.Unit == &h.Unit || (h.pet != nil && s.Unit == &h.pet.Unit) || (h.SerpentSting != nil && h.SerpentSting.Dot(result.Target).IsActive())) {
 				a.Activate(sim)
 			}
 		}

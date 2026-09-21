@@ -65,7 +65,7 @@ func (r *Rogue) applyForeverTalents() {
 			// a full binary resistance as OutcomeMiss. This provisional analogue
 			// excludes landed zero-damage debuffs and fully absorbed hits.
 			fullResist := s.DefenseType == core.DefenseTypeMagic && result.Outcome.Matches(core.OutcomeMiss)
-			if (result.DidDodge() || fullResist) && sim.Proc(min(1, .33*float64(n)), "Setup") {
+			if (result.DidDodge() || fullResist) && sim.Proc(foreverSetupChance[min(n, 3)], "Setup") {
 				r.AddComboPoints(sim, 1, r.CurrentTarget, m)
 			}
 		}}))
@@ -79,6 +79,12 @@ func (r *Rogue) applyForeverTalents() {
 		}}))
 	}
 }
+// foreverSetupChance is Setup's combo point chance by rank: 33/67/100% in the client.
+var foreverSetupChance = []float64{0, .33, .67, 1}
+
+// foreverVenomPoisonMultiplier is Venom's "increases the damage of your Poisons by 30%".
+const foreverVenomPoisonMultiplier = 1.3
+
 func (r *Rogue) registerForeverAbilities() {
 	if r.Forever == nil {
 		return
@@ -86,7 +92,8 @@ func (r *Rogue) registerForeverAbilities() {
 	if r.Evasion == nil {
 		r.RegisterEvasionSpell()
 	}
-	if r.ForeverRank("rogue.talent.mutilate") > 0 {
+	if r.ForeverRank("rogue.talent.mutilate") > 0 && r.Level >= 30 { // Mutilate rank 1 is learned at 30
+
 		r.registerForeverMutilate()
 	}
 	if r.ForeverRank("rogue.talent.venom") > 0 {
@@ -142,18 +149,8 @@ func (r *Rogue) registerForeverAbilities() {
 			})
 		})
 	}
-	if r.ForeverRank("rogue.talent.restless-blades") > 0 {
-		r.OnComboPointsSpent(func(sim *core.Simulation, s *core.Spell, cp int32) {
-			if s != r.Eviscerate && s != r.Rupture {
-				return
-			}
-			for _, cd := range []*core.Spell{r.AdrenalineRush, r.BladeFlurry, r.Evasion, r.ForeverSprint, r.Vanish} {
-				if cd != nil && cd.CD.Timer != nil {
-					cd.CD.Set(max(sim.CurrentTime, cd.CD.ReadyAt()-time.Duration(2*cp)*time.Second))
-				}
-			}
-		})
-	}
+	// Restless Blades is not a client talent: its slot (Combat row 4, column 2) is Flawless
+	// Execution, applied to Eviscerate's cost (flawlessExecutionRank).
 	if n := r.ForeverRank("rogue.talent.vile-poisons"); n > 0 {
 		for _, dot := range r.deadlyPoisonTick.Dots() {
 			if dot != nil {
@@ -180,7 +177,7 @@ func (r *Rogue) registerForeverAbilities() {
 			}
 		}
 	})
-	id := core.ActionID{SpellID: 1787}
+	id := core.ActionID{SpellID: r.StealthAura.ActionID.SpellID}
 	var timer *core.Timer
 	cd := 10*time.Second - time.Duration(2*r.ForeverRank("rogue.talent.camouflage"))*time.Second
 	if cd > 0 {
@@ -191,6 +188,11 @@ func (r *Rogue) registerForeverAbilities() {
 
 func (r *Rogue) registerForeverMutilate() {
 	id := r.ForeverAction("rogue.talent.mutilate")
+	// The learned rank's "additional N with each weapon" (13/19/27/38 at 30/40/50/60).
+	bonus := mutilateBonusForever[0]
+	if rank, _ := core.TrainerRankAt("Rogue|Mutilate", r.Level); rank > 0 {
+		bonus = mutilateBonusForever[rank-1]
+	}
 	attacks := make([]*core.Spell, 2)
 	landed := false
 	for i := 0; i < 2; i++ {
@@ -206,7 +208,7 @@ func (r *Rogue) registerForeverMutilate() {
 			if offhand {
 				d = r.OHNormalizedWeaponDamage(sim, s.MeleeAttackPower(t)) * r.dwsMultiplier()
 			}
-			d = .75*d + 13
+			d = .75*d + bonus
 			poisoned := r.deadlyPoisonTick.Dot(t).IsActive() || r.woundPoisonDebuffAuras.Get(t).IsActive()
 			for _, a := range t.GetAurasWithTag("forever-debuff-poison") {
 				poisoned = poisoned || a.IsActive()
@@ -239,21 +241,27 @@ func (r *Rogue) registerForeverMutilate() {
 }
 func (r *Rogue) registerForeverVenom() {
 	id := r.ForeverAction("rogue.talent.venom")
+	// Deadly Poison's ticks read Venom at tick time (registerDeadlyPoisonSpell), so its dot
+	// spell is left out here: a stack snapshots its multiplier only on the first application.
+	venomed := func(s *core.Spell) bool {
+		return s.Flags.Matches(SpellFlagRoguePoison) && s != r.deadlyPoisonTick
+	}
 	a := r.RegisterAura(core.Aura{Label: "Venom", ActionID: id, Duration: 21 * time.Second, OnGain: func(a *core.Aura, sim *core.Simulation) {
 		r.additivePoisonBonusChance += .1
 		for _, s := range r.Spellbook {
-			if s.Flags.Matches(SpellFlagRoguePoison) {
-				s.DamageMultiplier *= 1.3
+			if venomed(s) {
+				s.DamageMultiplier *= foreverVenomPoisonMultiplier
 			}
 		}
 	}, OnExpire: func(a *core.Aura, sim *core.Simulation) {
 		r.additivePoisonBonusChance -= .1
 		for _, s := range r.Spellbook {
-			if s.Flags.Matches(SpellFlagRoguePoison) {
-				s.DamageMultiplier /= 1.3
+			if venomed(s) {
+				s.DamageMultiplier /= foreverVenomPoisonMultiplier
 			}
 		}
 	}})
+	r.foreverVenomAura = a
 	spell := r.RegisterSpell(core.SpellConfig{ActionID: id, Flags: core.SpellFlagAPL, EnergyCost: core.EnergyCostOptions{Cost: 25}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: time.Second}, IgnoreHaste: true}, ExtraCastCondition: func(sim *core.Simulation, t *core.Unit) bool { return r.ComboPoints() > 0 }, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
 		a.Duration = time.Duration(6+3*r.ComboPoints()) * time.Second
 		r.SpendComboPoints(sim, s)
@@ -263,9 +271,38 @@ func (r *Rogue) registerForeverVenom() {
 }
 
 func (r *Rogue) registerForeverUtility() {
-	id := core.ActionID{SpellID: 11305}
+	if sprintRank, sprintID := r.trainerRank("Sprint"); sprintRank > 0 {
+		r.registerForeverSprint(sprintID, []float64{1.5, 1.6, 1.7}[sprintRank-1])
+	}
+	for _, kind := range []string{"Gouge", "Blind", "Sap", "Kick", "Cheap Shot", "Kidney Shot"} {
+		r.registerForeverControl(kind)
+	}
+	if n := r.ForeverRank("rogue.talent.improved-kidney-shot"); n > 0 && r.trainerSpellID("Kidney Shot") != 0 {
+		r.Env.RegisterPostFinalizeEffect(func() {
+			for _, t := range r.Env.Encounter.Targets {
+				for _, at := range r.AttackTables[t.UnitIndex] {
+					old := at.DamageDoneByCasterMultiplier
+					at.DamageDoneByCasterMultiplier = func(s *core.Spell, table *core.AttackTable) float64 {
+						m := 1.
+						if old != nil {
+							m = old(s, table)
+						}
+						a := t.GetAura("Improved Kidney Shot-" + r.Label)
+						if a != nil && a.IsActive() {
+							m *= 1 + .05*float64(n)
+						}
+						return m
+					}
+				}
+			}
+		})
+	}
+}
+
+func (r *Rogue) registerForeverSprint(spellID int32, speed float64) {
+	id := core.ActionID{SpellID: spellID}
 	sprint := r.RegisterAura(core.Aura{Label: "Sprint", ActionID: id, Duration: 15 * time.Second, OnGain: func(a *core.Aura, sim *core.Simulation) {
-		r.AddMoveSpeedModifier(&id, 1.7)
+		r.AddMoveSpeedModifier(&id, speed)
 		if sim.Proc(.5*float64(r.ForeverRank("rogue.talent.improved-sprint")), "Improved Sprint") {
 			for _, kind := range []core.ForeverControlKind{core.ForeverRoot, core.ForeverSnare} {
 				for _, a := range r.GetAurasWithTag("forever-control-" + string(kind)) {
@@ -275,7 +312,12 @@ func (r *Rogue) registerForeverUtility() {
 		}
 	}, OnExpire: func(a *core.Aura, sim *core.Simulation) { r.RemoveMoveSpeedModifier(&id) }})
 	r.ForeverSprint = r.RegisterSpell(core.SpellConfig{ActionID: id, Flags: core.SpellFlagAPL, Cast: core.CastConfig{CD: core.Cooldown{Timer: r.NewTimer(), Duration: time.Duration(float64(5*time.Minute) * (1 - .3*float64(r.ForeverRank("rogue.talent.endurance"))))}}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) { sprint.Activate(sim) }})
-	for _, kind := range []string{"Gouge", "Blind", "Sap", "Kick", "Cheap Shot", "Kidney Shot"} {
+}
+
+// registerForeverControl registers one rogue control ability at the rank the rogue knows;
+// nothing when it is not learned yet.
+func (r *Rogue) registerForeverControl(kind string) {
+	{
 		id := core.ActionID{}
 		cost := 0.
 		cd := time.Duration(0)
@@ -284,36 +326,52 @@ func (r *Rogue) registerForeverUtility() {
 		switch kind {
 		case "Gouge":
 			control = core.ForeverIncapacitate
-			id.SpellID = 11286
+			id.SpellID = r.trainerSpellID("Gouge")
 			cost = 45
 			cd = 10 * time.Second
 			duration = 4*time.Second + time.Duration(.5*float64(r.ForeverRank("rogue.talent.improved-gouge"))*float64(time.Second))
 		case "Blind":
 			control = core.ForeverIncapacitate
-			id.SpellID = 2094
+			if r.Level >= 34 { // Blind is learned at 34
+				id.SpellID = 2094
+			}
 			cost = 30 * (1 - .25*float64(r.ForeverRank("rogue.talent.dirty-tricks")))
 			cd = 5*time.Minute - time.Duration(45*r.ForeverRank("rogue.talent.elusiveness"))*time.Second
 			duration = 10 * time.Second
 		case "Sap":
 			control = core.ForeverIncapacitate
-			id.SpellID = 11297
+			sapRank, sapID := r.trainerRank("Sap")
+			id.SpellID = sapID
 			cost = 65 * (1 - .25*float64(r.ForeverRank("rogue.talent.dirty-tricks")))
-			duration = 45 * time.Second
+			if sapRank > 0 {
+				duration = []time.Duration{25, 35, 45}[sapRank-1] * time.Second
+			}
 		case "Kick":
-			id.SpellID = 1769
+			id.SpellID = r.trainerSpellID("Kick")
 			cost = 25
 			cd = 10 * time.Second
 			duration = 2 * time.Second
 			control = core.ForeverSilence
 		case "Cheap Shot":
-			id.SpellID = 1833
+			if r.Level >= 26 { // Cheap Shot is learned at 26
+				id.SpellID = 1833
+			}
 			cost = 60 - 10*float64(r.ForeverRank("rogue.talent.dirty-deeds"))
 			duration = 4 * time.Second
 		case "Kidney Shot":
-			id.SpellID = 8643
+			id.SpellID = r.trainerSpellID("Kidney Shot")
 			cost = 25
 			cd = 20 * time.Second
 			duration = 6 * time.Second
+		}
+		if id.SpellID == 0 {
+			return
+		}
+		rank := 0
+		for i, rk := range core.TrainerRanks("Rogue|" + kind) {
+			if rk[0] == id.SpellID {
+				rank = i + 1
+			}
 		}
 		var kidneyAuras core.AuraArray
 		if kind == "Kidney Shot" && r.ForeverRank("rogue.talent.improved-kidney-shot") > 0 {
@@ -330,7 +388,6 @@ func (r *Rogue) registerForeverUtility() {
 			mask = core.ProcMaskMeleeMHSpecial
 			flags |= core.SpellFlagMeleeMetrics
 			if kind == "Gouge" {
-				id.SpellID = 11286 // Cached Classic level-60 rank: 75 damage.
 				flags |= SpellFlagBuilder
 				critBonus = r.lethality()
 			}
@@ -353,13 +410,16 @@ func (r *Rogue) registerForeverUtility() {
 			r.BreakStealth(sim)
 			d := duration
 			if kind == "Kidney Shot" {
-				d = time.Duration(r.ComboPoints()+1) * time.Second
+				// Rank 1 stuns 1 sec per combo point, rank 2 one second longer.
+				d = time.Duration(r.ComboPoints()+int32(rank)-1) * time.Second
 				r.SpendComboPoints(sim, s)
 			}
 			if kind == "Gouge" || kind == "Kick" {
-				damage := 80.0 // Cached Classic Kick rank 4, spell 1769.
+				var damage float64
 				if kind == "Gouge" {
-					damage = 75
+					damage = []float64{10, 20, 32, 55, 75}[rank-1] // Gouge ranks 1-5 (1776-11286)
+				} else {
+					damage = []float64{15, 30, 45, 80}[rank-1] // Kick ranks 1-4 (1766-1769)
 				}
 				result := s.CalcAndDealDamage(sim, t, damage, s.OutcomeMeleeSpecialHitAndCrit)
 				if !result.Landed() {
@@ -394,26 +454,6 @@ func (r *Rogue) registerForeverUtility() {
 		if kind == "Kidney Shot" {
 			r.Finishers = append(r.Finishers, spell)
 		}
-	}
-	if n := r.ForeverRank("rogue.talent.improved-kidney-shot"); n > 0 {
-		r.Env.RegisterPostFinalizeEffect(func() {
-			for _, t := range r.Env.Encounter.Targets {
-				for _, at := range r.AttackTables[t.UnitIndex] {
-					old := at.DamageDoneByCasterMultiplier
-					at.DamageDoneByCasterMultiplier = func(s *core.Spell, table *core.AttackTable) float64 {
-						m := 1.
-						if old != nil {
-							m = old(s, table)
-						}
-						a := t.GetAura("Improved Kidney Shot-" + r.Label)
-						if a != nil && a.IsActive() {
-							m *= 1 + .05*float64(n)
-						}
-						return m
-					}
-				}
-			}
-		})
 	}
 }
 

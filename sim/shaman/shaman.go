@@ -28,9 +28,9 @@ func NewShaman(character *core.Character, talents string) *Shaman {
 
 	// Add Shaman stat dependencies
 	shaman.AddStatDependency(stats.Strength, stats.AttackPower, core.APPerStrength[character.Class])
-	shaman.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[character.Class]*core.CritRatingPerCritChance)
-	shaman.AddStatDependency(stats.Agility, stats.Dodge, core.DodgePerAgiAtLevel[character.Class]*core.DodgeRatingPerDodgeChance)
-	shaman.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[character.Class]*core.SpellCritRatingPerCritChance)
+	shaman.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAt(character.Class, shaman.Level)*core.CritRatingPerCritChance)
+	shaman.AddStatDependency(stats.Agility, stats.Dodge, core.DodgePerAgiAt(character.Class, shaman.Level)*core.DodgeRatingPerDodgeChance)
+	shaman.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAt(character.Class, shaman.Level)*core.SpellCritRatingPerCritChance)
 	shaman.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 	shaman.PseudoStats.BlockValuePerStrength = .05 // 20 str = 1 block
 
@@ -40,7 +40,7 @@ func NewShaman(character *core.Character, talents string) *Shaman {
 	shaman.ApplyWindfuryImbue(shaman.getImbueProcMask(proto.WeaponImbue_WindfuryWeapon))
 
 	guardians.ConstructGuardians(&shaman.Character)
-	if shaman.Forever != nil && shaman.fr("earth-s-grasp") > 0 {
+	if _, known := foreverStoneclawRankAt(shaman.Level); shaman.Forever != nil && shaman.fr("earth-s-grasp") > 0 && known {
 		shaman.foreverStoneclaw = newForeverStoneclaw(shaman)
 		shaman.AddPet(shaman.foreverStoneclaw)
 	}

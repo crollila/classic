@@ -11,10 +11,14 @@ func (warrior *Warrior) registerShieldSlamSpell() {
 		return
 	}
 
-	spellID := int32(23925)
-	damageLow := 342.0
-	damageHigh := 358.0
-	threat := 254.0
+	rank, spellID := warrior.trainerRank("Shield Slam")
+	if rank == 0 {
+		return
+	}
+	damageLow := shieldSlamDamage[rank-1][0]
+	damageHigh := shieldSlamDamage[rank-1][1]
+	foreverLow, foreverHigh := shieldSlamDamageForever[rank-1][0], shieldSlamDamageForever[rank-1][1]
+	threat := shieldSlamThreat[rank-1]
 
 	apCoef := 0.15
 
@@ -53,8 +57,8 @@ func (warrior *Warrior) registerShieldSlamSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			damage := sim.Roll(damageLow, damageHigh) + warrior.BlockValue()*2 + apCoef*spell.MeleeAttackPower(target)
-			if warrior.ForeverRank("warrior.talent.shield-slam") > 0 {
-				damage = sim.Roll(421, 439) + warrior.BlockValue()
+			if warrior.Forever != nil {
+				damage = sim.Roll(foreverLow, foreverHigh) + warrior.BlockValue()
 			}
 			result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMeleeSpecialHitAndCrit)
 

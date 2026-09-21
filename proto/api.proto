@@ -36,6 +36,8 @@ message Player {
 	string talents_string = 9;
 	// Opt-in discovery rules. Absent means the unchanged Classic ruleset.
 	ForeverOptions forever = 49;
+	// Character level. 0 means the level cap (60).
+	int32 level = 50;
 	Profession profession1 = 10;
 	Profession profession2 = 11;
 	Cooldowns cooldowns = 12;

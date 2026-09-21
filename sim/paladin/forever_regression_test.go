@@ -137,9 +137,9 @@ func TestForeverHolyShockVigilAndBulwark(t *testing.T) {
 	}
 	vigil.ApplyEffects(sim, target, vigil)
 	mana := c.CurrentMana()
-	c.SpendMana(sim, 1000, c.NewManaMetrics(vigil.ActionID))
+	c.SpendMana(sim, 2000, c.NewManaMetrics(vigil.ActionID))
 	shock.ApplyEffects(sim, target, shock)
-	if math.Abs(c.CurrentMana()-(mana-1000+547.5)) > .001 {
+	if math.Abs(c.CurrentMana()-(mana-2000+1005)) > .001 {
 		t.Fatal("Vigil mana refund", c.CurrentMana())
 	}
 	if !shock.CD.IsReady(sim) {
@@ -236,8 +236,9 @@ func TestForeverHybridStrictAndBestGuessHealing(t *testing.T) {
 				if c.CurrentHealth() <= before || c.CurrentMana() >= mana {
 					t.Fatalf("cast did not heal/spend mana: health %v -> %v", before, c.CurrentHealth())
 				}
-				if mode == proto.ForeverMode_STRICT && v.class == "PALADIN" && c.GetSpell(c.ForeverAction("paladin.baseline.holy-strike")) != nil {
-					t.Fatal("prediction enabled in STRICT")
+				// Holy Strike is a trainer spell with client-read ranks now, not a prediction.
+				if v.class == "PALADIN" && c.GetSpell(c.ForeverAction("paladin.baseline.holy-strike")) == nil {
+					t.Fatal("Holy Strike missing")
 				}
 			})
 		}

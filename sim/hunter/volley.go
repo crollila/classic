@@ -10,7 +10,7 @@ import (
 func (hunter *Hunter) registerVolleySpell() {
 	ranks := 3
 
-	for i := ranks; i >= 0; i-- {
+	for i := ranks; i >= 1; i-- {
 		config := hunter.getVolleyConfig(i)
 
 		if config.RequiredLevel <= int(hunter.Level) {
@@ -27,6 +27,12 @@ func (hunter *Hunter) getVolleyConfig(rank int) core.SpellConfig {
 	level := [4]int{0, 40, 50, 58}[rank]
 
 	manaCostModifer := 100 - 2*hunter.Talents.Efficiency
+	if hunter.Forever != nil {
+		// Forever client: 70/91/112 Arcane damage per second. Forever Efficiency names
+		// Shots, Stings and melee abilities, which Volley is not.
+		baseDamage = [4]float64{0, 70, 91, 112}[rank]
+		manaCostModifer = 100
+	}
 
 	return core.SpellConfig{
 		SpellCode:   SpellCode_HunterVolley,

@@ -60,7 +60,16 @@ var ferociousBiteRanks = []FerociousBiteRankInfo{
 
 func (druid *Druid) registerFerociousBiteSpell() {
 	// Ferocious Bite Rank V is not available until AQ release
-	rank := core.TernaryInt(core.IncludeAQ, 4, 3)
+	maxRank := core.TernaryInt(core.IncludeAQ, 4, 3)
+	rank := -1
+	for i := 0; i <= maxRank; i++ {
+		if ferociousBiteRanks[i].level <= druid.Level {
+			rank = i
+		}
+	}
+	if rank < 0 {
+		return // learned at level 32
+	}
 	config := druid.newFerociousBiteSpellConfig(ferociousBiteRanks[rank])
 	druid.FerociousBite = druid.RegisterSpell(Cat, config)
 }

@@ -13,18 +13,18 @@ var WindfuryWeaponEnchantId = [WindfuryWeaponRanks + 1]int32{0, 283, 284, 525, 1
 var WindfuryWeaponBonusAP = [WindfuryWeaponRanks + 1]float64{0, 104, 119, 249, 333}
 var WindfuryWeaponLevel = [WindfuryWeaponRanks + 1]int32{0, 30, 40, 50, 60}
 
-var WindfuryWeaponRankByLevel = map[int32]int32{
-	25: 0,
-	40: 2,
-	50: 3,
-	60: 4,
-}
 
 func (shaman *Shaman) newWindfuryImbueSpell(isMH bool) *core.Spell {
-	rank := WindfuryWeaponRankByLevel[shaman.Level]
+	rank := rankAtLevel(WindfuryWeaponLevel[:], shaman.Level)
 
 	ewMultiplier := []float64{1, 1.13, 1.27, 1.4}[shaman.Talents.ElementalWeapons]
 	bonusAP := WindfuryWeaponBonusAP[rank]
+	// Classic deliberately double-dips Elemental Weapons (the in-game Era bug). Forever's
+	// tooltip is a single +13/27/40% to the Windfury effect.
+	ewApplied := ewMultiplier * ewMultiplier
+	if shaman.Forever != nil {
+		ewApplied = ewMultiplier
+	}
 
 	actionID := core.ActionID{SpellID: WindfuryWeaponSpellId[rank]}.WithTag(core.TernaryInt32(isMH, 1, 2))
 	procMask := core.ProcMaskMeleeMHSpecial
@@ -47,7 +47,7 @@ func (shaman *Shaman) newWindfuryImbueSpell(isMH bool) *core.Spell {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			mAP := spell.MeleeAttackPower(target) + bonusAP*ewMultiplier*ewMultiplier
+			mAP := spell.MeleeAttackPower(target) + bonusAP*ewApplied
 			baseDamage := weaponDamageFunc(sim, mAP)
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 		},
@@ -57,11 +57,11 @@ func (shaman *Shaman) newWindfuryImbueSpell(isMH bool) *core.Spell {
 }
 
 func (shaman *Shaman) RegisterWindfuryImbue(procMask core.ProcMask) {
-	if procMask == core.ProcMaskUnknown {
+	rank := rankAtLevel(WindfuryWeaponLevel[:], shaman.Level)
+	if procMask == core.ProcMaskUnknown || rank == 0 {
 		return
 	}
 
-	rank := WindfuryWeaponRankByLevel[shaman.Level]
 	enchantId := WindfuryWeaponEnchantId[rank]
 
 	icdDuration := time.Millisecond * 1500
@@ -125,11 +125,11 @@ func (shaman *Shaman) ApplyWindfuryImbue(procMask core.ProcMask) {
 }
 
 func (shaman *Shaman) ApplyWindfuryImbueToItem(item *core.Item) {
-	if item == nil {
+	rank := rankAtLevel(WindfuryWeaponLevel[:], shaman.Level)
+	if item == nil || rank == 0 {
 		return
 	}
 
-	rank := WindfuryWeaponRankByLevel[shaman.Level]
 	enchantId := WindfuryWeaponEnchantId[rank]
 
 	item.TempEnchant = enchantId

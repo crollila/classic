@@ -235,7 +235,7 @@ export class SimTitleDropdown extends Component {
 	}
 
 	private launchStatusLabel(data: SpecOptions | RaidOptions): Element {
-		if(import.meta.env.VITE_FOREVER === 'true')return <span className="launch-status-label text-brand">Forever · Pre-beta</span>;
+		if(import.meta.env.VITE_FOREVER === 'true')return <span className="launch-status-label text-brand">Forever · Beta</span>;
 		const status = data.type == 'Raid' ? raidSimStatus.status : simLaunchStatuses[data.index].status;
 		const phase = data.type == 'Raid' ? raidSimStatus.phase : simLaunchStatuses[data.index].phase;
 

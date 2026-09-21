@@ -13,7 +13,12 @@ func (warlock *Warlock) getSiphonLifeBaseConfig(rank int) core.SpellConfig {
 	spellId := [SiphonLifeRanks + 1]int32{0, 18265, 18879, 18880, 18881}[rank]
 	baseDamage := [SiphonLifeRanks + 1]float64{0, 15, 22, 33, 45}[rank]
 	manaCost := [SiphonLifeRanks + 1]float64{0, 150, 205, 285, 365}[rank]
-	level := [SiphonLifeRanks + 1]int{0, 0, 38, 48, 58}[rank]
+	level := [SiphonLifeRanks + 1]int{0, 30, 38, 48, 58}[rank]
+	if warlock.Forever != nil {
+		// Forever beta client tooltips; the client overrides are apply_aura effects the
+		// registration pass does not apply.
+		baseDamage = [SiphonLifeRanks + 1]float64{0, 11, 19, 29, 41}[rank]
+	}
 
 	spellCoeff := 0.05
 	actionID := core.ActionID{SpellID: spellId}

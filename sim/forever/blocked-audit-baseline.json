@@ -626,11 +626,6 @@
       "scope": "No reviewed executable adapter in this batch."
     },
     {
-      "id": "warrior.talent.vitality",
-      "status": "PROVISIONAL",
-      "scope": "Known numerical effect implemented; Classic-equivalent interactions remain provisional."
-    },
-    {
       "id": "warrior.talent.focused-rage",
       "status": "BLOCKED",
       "scope": "No reviewed executable adapter in this batch."
@@ -1466,7 +1461,7 @@
       "scope": "No reviewed executable adapter in this batch."
     },
     {
-      "id": "rogue.talent.restless-blades",
+      "id": "rogue.talent.flawless-execution",
       "status": "BLOCKED",
       "scope": "No reviewed executable adapter in this batch."
     },

@@ -174,7 +174,7 @@ func TestAbort(t *testing.T) {
 			BaseSettings: rsr,
 			BulkSettings: &proto.BulkSettings{
 				Combinations:       true,
-				Items:              []*proto.ItemSpec{{Id: 19168}, {Id: 10761}},
+				Items:              []*proto.ItemSpec{{Id: 1482}, {Id: 10761}}, // Forever items (Classic 19168 is not in the Forever pool)
 				IterationsPerCombo: 9999,
 				FastMode:           false,
 			},
