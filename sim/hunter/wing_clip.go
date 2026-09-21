@@ -8,7 +8,8 @@ var wingClipLevel = [4]int{0, 12, 38, 60}
 
 func (hunter *Hunter) getWingClipConfig(rank int) core.SpellConfig {
 	spellId := [4]int32{0, 2974, 14267, 14268}[rank]
-	baseDamage := [4]float64{0, 5, 25, 50}[rank]
+	// Effect 1 (school damage) is the hit's damage; effect 0 is the snare.
+	baseDamage := hunter.ClientEffectValue(spellId, 1, [4]float64{0, 5, 25, 50}[rank])
 	manaCost := [4]float64{0, 40, 60, 80}[rank]
 	level := wingClipLevel[rank]
 
@@ -48,6 +49,9 @@ func (hunter *Hunter) getWingClipConfig(rank int) core.SpellConfig {
 
 func (hunter *Hunter) registerWingClipSpell() {
 	rank := rankForLevel(wingClipLevel[:], hunter.Level)
+	if hunter.Forever != nil {
+		rank = clientRank(&hunter.Character, []int32{2974, 14267, 14268}, []int32{12, 38, 60}, hunter.Level) + 1
+	}
 	if rank == 0 {
 		return
 	}

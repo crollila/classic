@@ -75,3 +75,21 @@ func (character *Character) ClientTalentValue(recordID string, effect int, class
 	return gamedata.Use("talent "+recordID, fmt.Sprintf("effect %d", effect), classic, "UNKNOWN",
 		"no client talent value for this record; value from the talent's research record used")
 }
+
+// provenance records what a result was computed from: the client game data of the first Forever
+// player, the seed actually used, and every non-client value the process has used.
+func (sim *Simulation) provenance() *proto.SimProvenance {
+	out := &proto.SimProvenance{RandomSeed: sim.rseed}
+	for _, party := range sim.Raid.Parties {
+		for _, agent := range party.Players {
+			if data := agent.GetCharacter().GameData; data != nil {
+				out.GameDataBuild, out.GameDataSha256, out.ClassicReferenceBuild = data.Build, data.SnapshotSHA256, data.ClassicBuild
+				for _, f := range gamedata.Fallbacks() {
+					out.NonClientValues = append(out.NonClientValues, fmt.Sprintf("%s | %s = %g (%s)", f.Owner, f.What, f.Value, f.Confidence))
+				}
+				return out
+			}
+		}
+	}
+	return out
+}

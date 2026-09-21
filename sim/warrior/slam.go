@@ -12,12 +12,14 @@ func (warrior *Warrior) registerSlamSpell() {
 		return
 	}
 	requiredLevel := int(core.SpellLearnedLevel(spellID))
-	flatDamageBonus := slamBonus[rank-1]
+	// Effect 0 (weapon_damage, type 17): the flat bonus added to the weapon damage.
+	flatDamageBonus := clientRankValue(&warrior.Character, spellID, 0, slamBonus[rank-1])
 
 	castTime := time.Millisecond*1500 - time.Millisecond*100*time.Duration(warrior.Talents.ImprovedSlam)
 	gcd := core.GCDDefault
 	if warrior.ForeverRank("warrior.talent.improved-slam") > 0 {
-		reduction := time.Duration(warrior.ForeverValue("warrior.talent.improved-slam", 0, 0) * float64(time.Second))
+		// Client effect 0: cast time modifier in milliseconds (-250/-500).
+		reduction := time.Duration(clientTalent(&warrior.Character, "warrior.talent.improved-slam", 0, -0.001, warrior.ForeverValue("warrior.talent.improved-slam", 0, 0)) * float64(time.Second))
 		castTime = 1500*time.Millisecond - reduction
 		gcd -= reduction
 	}

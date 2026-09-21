@@ -13,14 +13,14 @@ func (warrior *Warrior) registerSunderArmorSpell() {
 		warrior.SunderArmorAuras = warrior.NewEnemyAuraArray(core.SunderArmorAura)
 	} else {
 		warrior.SunderArmorAuras = warrior.NewEnemyAuraArray(func(target *core.Unit) *core.Aura {
-			return sunderArmorAuraAtRank(target, rank, spellID)
+			// Effect 0 (mod_resistance): the armor removed per stack, stored negative.
+			return sunderArmorAuraAtRank(target, rank, spellID, -clientRankValue(&warrior.Character, spellID, 0, -sunderArmorPerStack[rank-1]))
 		})
 	}
 
 	spell_level := core.SpellLearnedLevel(spellID)
 
 	var canApplySunder bool
-
 
 	warrior.SunderArmor = warrior.RegisterSpell(AnyStance, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},

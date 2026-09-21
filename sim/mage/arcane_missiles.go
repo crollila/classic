@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/wowsims/classic/sim/core"
+	"github.com/wowsims/classic/sim/core/gamedata"
 )
 
 const ArcaneMissilesRanks = 8
@@ -39,7 +40,18 @@ func (mage *Mage) registerArcaneMissilesSpell() {
 // client's per-rank values.
 func (mage *Mage) arcaneMissilesTick(rank int) (float64, float64) {
 	if mage.Forever != nil {
-		return foreverArcaneMissilesTick[rank], foreverArcaneMissilesCoeff
+		// The channel's periodic effect (0) triggers the missile spell, whose damage effect
+		// (0) holds the per-missile value and coefficient; the table is the fallback.
+		tick, coeff := foreverArcaneMissilesTick[rank], foreverArcaneMissilesCoeff
+		if missile := mage.ClientSpell(ArcaneMissilesSpellId[rank]).Effect(0); missile != nil && missile.TriggerSpell != 0 {
+			tick, _ = foreverClientRange(mage.GetCharacter(), missile.TriggerSpell, 0, tick, tick)
+			if c := mage.ClientSpell(missile.TriggerSpell).Effect(0).Coefficient(); c > 0 {
+				coeff = c
+			}
+		} else {
+			gamedata.Use("mage: Arcane Missiles rank "+itoa(int32(rank)), "missile damage", tick, "UNKNOWN", "client build has no missile trigger for this rank; tooltip value used")
+		}
+		return tick, coeff
 	}
 	return ArcaneMissilesBaseTickDamage[rank], ArcaneMissilesSpellCoeff[rank]
 }
@@ -53,6 +65,12 @@ func (mage *Mage) getArcaneMissilesSpellConfig(rank int) core.SpellConfig {
 
 	numTicks := castTime
 	tickLength := time.Second
+	// Forever: the channel's duration and missile period come from the client.
+	if client := mage.ClientSpell(spellId); client != nil && client.DurationMs > 0 {
+		if e := client.Effect(0); e != nil && e.PeriodMs > 0 {
+			numTicks, tickLength = int32(client.DurationMs/e.PeriodMs), time.Duration(e.PeriodMs)*time.Millisecond
+		}
+	}
 
 	tickSpell := mage.getArcaneMissilesTickSpell(rank)
 	mage.ArcaneMissilesTickSpell[rank] = tickSpell

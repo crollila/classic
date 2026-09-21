@@ -10,7 +10,14 @@ func (warrior *Warrior) registerWhirlwindSpell() {
 	if warrior.Level < levelWhirlwind {
 		return
 	}
-	results := make([]*core.SpellResult, min(4, warrior.Env.GetNumTargets()))
+	// Effect 0 (normalized_weapon_damage) carries the flat bonus (0 in every build so far); the
+	// spell's max targets bounds the hits.
+	bonus := clientRankValue(&warrior.Character, 1680, 0, 0)
+	maxTargets := int32(4)
+	if client := warrior.ClientSpell(1680); client != nil && client.MaxTargets > 0 {
+		maxTargets = int32(client.MaxTargets)
+	}
+	results := make([]*core.SpellResult, min(maxTargets, warrior.Env.GetNumTargets()))
 
 	warrior.Whirlwind = warrior.RegisterSpell(BerserkerStance, core.SpellConfig{
 		SpellCode:   SpellCode_WarriorWhirlwind,
@@ -41,7 +48,7 @@ func (warrior *Warrior) registerWhirlwindSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for idx := range results {
-				baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower(target))
+				baseDamage := bonus + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower(target))
 				results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 				target = sim.Environment.NextTargetUnit(target)
 			}

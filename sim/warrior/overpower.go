@@ -11,7 +11,11 @@ func (warrior *Warrior) registerOverpowerSpell(cdTimer *core.Timer) {
 	if rank == 0 {
 		return
 	}
-	bonusDamage := overpowerBonus[rank-1]
+	// Effect 0 (normalized_weapon_damage, type 121): the flat bonus added to the weapon damage.
+	bonusDamage := clientRankValue(&warrior.Character, spellID, 0, overpowerBonus[rank-1])
+	// The dodge window is not a client spell value (the Overpower spells state no duration).
+	window := time.Duration(codeValue(&warrior.Character, "warrior: Overpower", "dodge window_s", 5, "PROVISIONAL",
+		"the window the dodge opens is not stored on the Overpower spells; the Classic 5 sec is used") * float64(time.Second))
 
 	warrior.RegisterAura(core.Aura{
 		Label:    "Overpower Trigger",
@@ -29,7 +33,7 @@ func (warrior *Warrior) registerOverpowerSpell(cdTimer *core.Timer) {
 	warrior.OverpowerAura = warrior.RegisterAura(core.Aura{
 		Label:    "Overpower Aura",
 		ActionID: core.ActionID{SpellID: spellID},
-		Duration: time.Second * 5,
+		Duration: window,
 	})
 
 	warrior.Overpower = warrior.RegisterSpell(BattleStance, core.SpellConfig{
@@ -58,7 +62,8 @@ func (warrior *Warrior) registerOverpowerSpell(cdTimer *core.Timer) {
 			return warrior.OverpowerAura.IsActive()
 		},
 
-		BonusCritRating: 25 * core.CritRatingPerCritChance * float64(warrior.Talents.ImprovedOverpower),
+		// Improved Overpower: client effect 0 is the crit chance (25/50%).
+		BonusCritRating: core.CritRatingPerCritChance * clientTalent(&warrior.Character, "warrior.talent.improved-overpower", 0, 1, 25*float64(warrior.Talents.ImprovedOverpower)),
 
 		CritDamageBonus: warrior.impale(),
 

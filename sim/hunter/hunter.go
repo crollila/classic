@@ -117,6 +117,11 @@ type Hunter struct {
 
 	RapidFireAura       *core.Aura
 	BestialWrathPetAura *core.Aura
+
+	// Client spell ids of the rank a Forever talent-granted ability was registered with (its
+	// ActionID is the talent's Forever action, not the rank): the rank whose client values the
+	// ability uses.
+	sniperShotID, summonHawkID, trueshotAuraID, counterattackID int32
 }
 
 func (hunter *Hunter) GetCharacter() *core.Character {

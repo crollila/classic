@@ -22,11 +22,19 @@ import (
 
 var dbDir = flag.String("dbDir", "assets/database", "Directory holding db.json and db.bin")
 var name = flag.String("name", "db", "Database base name: db or leftover_db")
+var jsonPathFlag = flag.String("jsonPath", "", "Explicit input JSON path (overrides dbDir/name)")
+var binPathFlag = flag.String("binPath", "", "Explicit output binary path (overrides dbDir/name)")
 
 func main() {
 	flag.Parse()
-	jsonPath := fmt.Sprintf("%s/%s.json", *dbDir, *name)
-	binPath := fmt.Sprintf("%s/%s.bin", *dbDir, *name)
+	jsonPath := *jsonPathFlag
+	if jsonPath == "" {
+		jsonPath = fmt.Sprintf("%s/%s.json", *dbDir, *name)
+	}
+	binPath := *binPathFlag
+	if binPath == "" {
+		binPath = fmt.Sprintf("%s/%s.bin", *dbDir, *name)
+	}
 
 	raw, err := os.ReadFile(jsonPath)
 	if err != nil {

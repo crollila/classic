@@ -215,9 +215,11 @@ func (hunter *Hunter) applyCleverTraps() {
 
 func (hunter *Hunter) applyEfficiency() {
 	if hunter.ForeverRank("hunter.talent.efficiency") > 0 {
+		// Client effect 0: mana cost change of Shots, Stings and melee abilities (-3..-15%).
+		efficiency := -int32(hunter.clientTalent("hunter.talent.efficiency", 0, -hunter.ForeverValue("hunter.talent.efficiency", 0, 0)))
 		hunter.OnSpellRegistered(func(s *core.Spell) {
 			if s.Cost != nil && (s.Flags.Matches(SpellFlagSting|SpellFlagShot) || s.ProcMask.Matches(core.ProcMaskMeleeSpecial)) {
-				s.Cost.Multiplier -= int32(hunter.ForeverValue("hunter.talent.efficiency", 0, 0))
+				s.Cost.Multiplier -= efficiency
 			}
 		})
 		return

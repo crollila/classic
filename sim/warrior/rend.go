@@ -17,12 +17,22 @@ func (warrior *Warrior) registerRendSpell() {
 		damage  float64
 		spellID int32
 	}{spellID: spellID, damage: rendTick[rank-1], ticks: rendTicks[rank-1]}
+	// Tick count: the client spell's duration over its effect 0 period. The tick damage stays the
+	// rank table's Classic value on purpose: Rend is not a melee-defense spell, so the client-data
+	// layer (core/forever_clientdata.go) already scales it by the client's Forever/Classic effect 0
+	// ratio; reading the client tick here as well would apply a client change twice.
+	tickLength := time.Second * 3
+	if client := warrior.ClientSpell(spellID); client != nil && client.DurationMs > 0 && client.Effect(0) != nil && client.Effect(0).PeriodMs > 0 {
+		rend.ticks = int32(client.DurationMs / client.Effect(0).PeriodMs)
+		tickLength = time.Duration(client.Effect(0).PeriodMs) * time.Millisecond
+	}
 
 	baseDamage := rend.damage
 
 	damageMultiplier := []float64{1, 1.15, 1.25, 1.35}[warrior.Talents.ImprovedRend]
 	if warrior.ForeverRank("warrior.talent.improved-rend") > 0 {
-		damageMultiplier = 1 + warrior.ForeverValue("warrior.talent.improved-rend", 0, 0)/100
+		// Client effect 0: bleed damage percent (12/23/35).
+		damageMultiplier = 1 + clientTalent(&warrior.Character, "warrior.talent.improved-rend", 0, 1, warrior.ForeverValue("warrior.talent.improved-rend", 0, 0))/100
 	}
 
 	warrior.Rend = warrior.RegisterSpell(BattleStance|DefensiveStance, core.SpellConfig{
@@ -51,7 +61,7 @@ func (warrior *Warrior) registerRendSpell() {
 				Tag:   "Rend",
 			},
 			NumberOfTicks: rend.ticks,
-			TickLength:    time.Second * 3,
+			TickLength:    tickLength,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.Snapshot(target, baseDamage, isRollover)
 			},

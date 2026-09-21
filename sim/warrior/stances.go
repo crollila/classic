@@ -50,7 +50,13 @@ func (warrior *Warrior) makeStanceSpell(stance Stance, aura *core.Aura, stanceCD
 	actionID := aura.ActionID
 	maxRetainedRage := 5 * float64(warrior.Talents.TacticalMastery)
 	if warrior.Forever != nil { // PREDICTED baseline Tactical Mastery: TBC analogue retains 10, plus observed 3/rank.
-		maxRetainedRage = core.TernaryFloat64(warrior.Forever.Mode != proto.ForeverMode_STRICT, 10, 0) + warrior.ForeverValue("warrior.talent.improved-tactical-mastery", 0, 0)
+		baseline := 0.0
+		if warrior.Forever.Mode != proto.ForeverMode_STRICT {
+			baseline = codeValue(&warrior.Character, "warrior: stance change", "baseline retained rage", 10, "PREDICTED",
+				"no client value; the TBC Tactical Mastery analogue")
+		}
+		// Improved Tactical Mastery: client effect 0 is the rage retained (3/6/9/12/15).
+		maxRetainedRage = baseline + clientTalent(&warrior.Character, "warrior.talent.improved-tactical-mastery", 0, 1, warrior.ForeverValue("warrior.talent.improved-tactical-mastery", 0, 0))
 	}
 	rageMetrics := warrior.NewRageMetrics(actionID)
 
@@ -117,7 +123,8 @@ func (warrior *Warrior) registerDefensiveStanceAura() {
 	if warrior.Forever != nil {
 		warrior.defensiveStanceThreatMultiplier = 1.3
 		if warrior.PseudoStats.CanBlock {
-			warrior.defensiveStanceThreatMultiplier *= 1 + warrior.ForeverValue("warrior.talent.defiance", 0, 0)/100
+			// Defiance: client effect 0 is the threat percent (5/10/15).
+			warrior.defensiveStanceThreatMultiplier *= 1 + clientTalent(&warrior.Character, "warrior.talent.defiance", 0, 1, warrior.ForeverValue("warrior.talent.defiance", 0, 0))/100
 		}
 	}
 	warrior.DefensiveStanceAura = warrior.RegisterAura(core.Aura{
@@ -164,6 +171,15 @@ func (warrior *Warrior) registerBerserkerStanceAura() {
 }
 
 func (warrior *Warrior) registerStances() {
+	if warrior.Forever != nil {
+		// The client's stance spells are shapeshifts only; their passive modifiers live in spells
+		// the build does not ship, so the Classic values are used.
+		const why = "the client stance spells state no modifiers; the Classic value is used"
+		codeValue(&warrior.Character, "warrior: Berserker Stance", "melee crit percent", 3, "PROVISIONAL", why)
+		codeValue(&warrior.Character, "warrior: Berserker Stance", "damage taken multiplier", 1.1, "PROVISIONAL", why)
+		codeValue(&warrior.Character, "warrior: Defensive Stance", "damage dealt/taken multiplier", 0.9, "PROVISIONAL", why)
+		codeValue(&warrior.Character, "warrior: Defensive Stance", "threat multiplier", 1.3, "PROVISIONAL", why)
+	}
 	warrior.Stances = make([]*WarriorSpell, 0)
 	stanceCD := warrior.NewTimer()
 	warrior.registerBattleStanceAura()

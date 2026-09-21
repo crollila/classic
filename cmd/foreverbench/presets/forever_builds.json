@@ -4,7 +4,7 @@
   {
    "spec": "warrior-fury",
    "name": "optimized forever P1 (Arms 17 / Fury 34 / Protection 0)",
-   "talents": "F1:WARRIOR:30305013002000000-550500005151010051-0000000000000000000",
+   "talents": "F1:WARRIOR:30305013002000000-550500005151010051-000000000000000000",
    "source": "optimize-talents",
    "game": "forever",
    "phase": "P1",
@@ -44,7 +44,7 @@
    ],
    "baseline": {
     "kind": "repair",
-    "talents": "F1:WARRIOR:30305013002000000-550500005052010051-0000000000000000000",
+    "talents": "F1:WARRIOR:30305013002000000-550500005052010051-000000000000000000",
     "dps": 1184.65,
     "stderr": 1.01
    },
@@ -55,7 +55,7 @@
   {
    "spec": "warrior-arms",
    "name": "optimized forever P1 (Arms 36 / Fury 13 / Protection 0)",
-   "talents": "F1:WARRIOR:15325213132115001-050500030000000000-0000000000000000000",
+   "talents": "F1:WARRIOR:15325213132115001-050500030000000000-000000000000000000",
    "source": "optimize-talents",
    "game": "forever",
    "phase": "P1",
@@ -95,7 +95,7 @@
    ],
    "baseline": {
     "kind": "repair",
-    "talents": "F1:WARRIOR:35325213032010231-050200000000000000-5000300000000000000",
+    "talents": "F1:WARRIOR:35325213032010231-050200000000000000-500030000000000000",
     "dps": 725.57,
     "stderr": 0.98
    },

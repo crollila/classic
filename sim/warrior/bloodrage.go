@@ -15,10 +15,17 @@ func (warrior *Warrior) registerBloodrageCD() {
 
 	instantRage := 10.0 + []float64{0, 2, 5}[warrior.Talents.ImprovedBloodrage]
 	ragePerSec := 1.0
+	if warrior.Forever != nil {
+		// Bloodrage's client rage is in tenths: 2687 effect 0 (energize) the instant rage, and
+		// its triggered 29131 effect 0 (periodic energize) the rage a second.
+		instantRage = clientRankValue(&warrior.Character, 2687, 0, 100) / 10
+		ragePerSec = clientRankValue(&warrior.Character, 29131, 0, 10) / 10
+	}
 	if warrior.ForeverRank("warrior.talent.improved-bloodrage") > 0 {
-		multiplier := 1 + warrior.ForeverValue("warrior.talent.improved-bloodrage", 0, 0)/100
-		instantRage = 10 * multiplier
-		ragePerSec = multiplier
+		// Client effect 0: rage generated percent (25/50).
+		multiplier := 1 + clientTalent(&warrior.Character, "warrior.talent.improved-bloodrage", 0, 1, warrior.ForeverValue("warrior.talent.improved-bloodrage", 0, 0))/100
+		instantRage *= multiplier
+		ragePerSec *= multiplier
 	}
 
 	warrior.BloodrageAura = warrior.RegisterAura(core.Aura{

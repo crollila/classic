@@ -17,8 +17,17 @@ func (warrior *Warrior) registerShieldSlamSpell() {
 	}
 	damageLow := shieldSlamDamage[rank-1][0]
 	damageHigh := shieldSlamDamage[rank-1][1]
-	foreverLow, foreverHigh := shieldSlamDamageForever[rank-1][0], shieldSlamDamageForever[rank-1][1]
+	// Forever: effect 1 (school_damage) is the rank's damage range, plus Block Value once.
+	foreverLow, foreverHigh := warrior.ClientEffectRange(spellID, 1, shieldSlamDamageForever[rank-1][0], shieldSlamDamageForever[rank-1][1])
 	threat := shieldSlamThreat[rank-1]
+	// Forever: the chance to dispel a magic effect is the talent research value (the client
+	// states the dispel as an effect without a chance).
+	dispelChance := 0.5
+	if warrior.Forever != nil {
+		threat = codeValue(&warrior.Character, "warrior: Shield Slam", "bonus threat", threat, "PROVISIONAL", "threat is not client data; the Classic value is used")
+		dispelChance = codeValue(&warrior.Character, "warrior: Shield Slam", "dispel chance", warrior.ForeverValue("warrior.talent.shield-slam", 2, 50)/100, "PROVISIONAL",
+			"the client dispel effect (type 38) states no chance; the talent research value is used")
+	}
 
 	apCoef := 0.15
 
@@ -62,7 +71,7 @@ func (warrior *Warrior) registerShieldSlamSpell() {
 			}
 			result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMeleeSpecialHitAndCrit)
 
-			if warrior.Forever != nil && result.Landed() && sim.Proc(.5, "Forever Shield Slam Dispel") {
+			if warrior.Forever != nil && result.Landed() && sim.Proc(dispelChance, "Forever Shield Slam Dispel") {
 				target.ForeverDispelOne(sim, "magic-buff")
 			}
 			if !result.Landed() {

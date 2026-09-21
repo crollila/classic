@@ -12,6 +12,7 @@ import (
 
 func init() {
 	db := database.Load()
+	foreverDB := database.LoadForever()
 	WITH_DB = true
 
 	simDB := &proto.SimDatabase{
@@ -57,4 +58,17 @@ func init() {
 	}
 
 	addToDatabase(simDB)
+	for _, item := range foreverDB.Items {
+		ForeverItemsByID[item.Id] = ItemFromProto(&proto.SimItem{
+			Id: item.Id, ClassAllowlist: item.ClassAllowlist, Name: item.Name, Type: item.Type, ArmorType: item.ArmorType,
+			WeaponType: item.WeaponType, HandType: item.HandType, RangedWeaponType: item.RangedWeaponType, Stats: item.Stats,
+			BonusPhysicalDamage: item.BonusPhysicalDamage, WeaponDamageMin: item.WeaponDamageMin, WeaponDamageMax: item.WeaponDamageMax,
+			WeaponSpeed: item.WeaponSpeed, SetName: item.SetName, SetId: item.SetId, WeaponSkills: item.WeaponSkills,
+		})
+	}
+	for _, enchant := range foreverDB.Enchants {
+		if _, ok := ForeverEnchantsByEffectID[enchant.EffectId]; !ok {
+			ForeverEnchantsByEffectID[enchant.EffectId] = EnchantFromProto(&proto.SimEnchant{EffectId: enchant.EffectId, Stats: enchant.Stats})
+		}
+	}
 }

@@ -55,7 +55,7 @@ func (mage *Mage) getFrostboltConfig(rank int) core.SpellConfig {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Millisecond*time.Duration(castTime) - time.Millisecond*100*time.Duration(mage.Talents.ImprovedFrostbolt),
+				CastTime: time.Millisecond*time.Duration(castTime) + time.Millisecond*time.Duration(mage.clientTalent("improved-frostbolt", 0, -100*float64(mage.Talents.ImprovedFrostbolt))),
 			},
 		},
 

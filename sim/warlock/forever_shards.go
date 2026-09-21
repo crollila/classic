@@ -18,6 +18,7 @@ func (w *Warlock) registerForeverSoulShards() {
 		a.SetStacks(sim, int32(min(100, max(0, w.ForeverParameter("warlock.soul_shards", 20)))))
 	}})
 	add := func(sim *core.Simulation) { shards.Activate(sim); shards.AddStack(sim) }
+	refund := w.talentValue("shadow-and-flame", 1, 1, 4) / 100
 	costs := map[*core.Spell]bool{}
 	for _, s := range w.Spellbook {
 		costs[s] = s.SpellCode == SpellCode_WarlockSoulFire || s.SpellCode == SpellCode_WarlockShadowburn || s.SpellID == 691 || s.SpellID == 697 || s.SpellID == 712 || s.ActionID.SameAction(w.ForeverAction("warlock.baseline.incubus"))
@@ -37,7 +38,7 @@ func (w *Warlock) registerForeverSoulShards() {
 				add(sim)
 			}
 		}
-		return t.GetOrRegisterAura(core.Aura{Label: "Forever Shadowburn refund-" + w.Label, ActionID: action, Duration: 8 * time.Second, OnSpellHitTaken: kill, OnPeriodicDamageTaken: kill})
+		return t.GetOrRegisterAura(core.Aura{Label: "Forever Shadowburn refund-" + w.Label, ActionID: action, Duration: foreverDuration(&w.Character, 17877, 8*time.Second, "Shadowburn"), OnSpellHitTaken: kill, OnPeriodicDamageTaken: kill})
 	})
 	core.MakePermanent(w.RegisterAura(core.Aura{Label: "Forever Soul Shard Rules", OnCastComplete: func(a *core.Aura, sim *core.Simulation, s *core.Spell) {
 		if costs[s] && !(s.SpellCode == SpellCode_WarlockSoulFire && w.foreverState.decimation.IsActive()) {
@@ -50,7 +51,7 @@ func (w *Warlock) registerForeverSoulShards() {
 			} else {
 				debuffs.Get(r.Target).Activate(sim)
 			}
-			if w.ForeverRank("warlock.talent.shadow-and-flame") > 0 && sim.Proc(w.ForeverValue("warlock.talent.shadow-and-flame", 4, 0)/100, "Forever Shadowburn refund") {
+			if w.ForeverRank("warlock.talent.shadow-and-flame") > 0 && sim.Proc(refund, "Forever Shadowburn refund") {
 				add(sim)
 			}
 		}

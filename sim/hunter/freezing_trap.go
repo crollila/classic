@@ -7,6 +7,10 @@ import (
 )
 
 func (hunter *Hunter) getFreezingTrapConfig(timer *core.Timer) core.SpellConfig {
+	cooldown := time.Second * 15
+	if hunter.Forever != nil {
+		cooldown = clientCooldown(&hunter.Character, 14311, cooldown) // Forever registers the client's rank 14311
+	}
 
 	return core.SpellConfig{
 		SpellCode:     SpellCode_HunterFreezingTrap,
@@ -24,7 +28,7 @@ func (hunter *Hunter) getFreezingTrapConfig(timer *core.Timer) core.SpellConfig 
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    timer,
-				Duration: time.Second * 15,
+				Duration: cooldown,
 			},
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
@@ -44,13 +48,13 @@ func (hunter *Hunter) registerFreezingTrapSpell(timer *core.Timer) {
 	config := hunter.getFreezingTrapConfig(timer)
 	if hunter.Forever != nil {
 		config.ActionID = core.ActionID{SpellID: 14311}
-		config.ManaCost.FlatCost = 100
+		config.ManaCost.FlatCost = clientManaCost(&hunter.Character, 14311, 100)
 		config.RequiredLevel = 60
 		config.ApplyEffects = func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
 			r := s.CalcOutcome(sim, t, s.OutcomeMagicHit)
 			s.DealOutcome(sim, r)
 			if r.Landed() {
-				t.ForeverControlAura("Freezing Trap", s.ActionID, core.ForeverIncapacitate, time.Duration(float64(20*time.Second)*(1+.15*float64(hunter.ForeverRank("hunter.talent.clever-traps"))))).Activate(sim)
+				t.ForeverControlAura("Freezing Trap", s.ActionID, core.ForeverIncapacitate, time.Duration(float64(20*time.Second)*(1+hunter.clientTalent("hunter.talent.clever-traps", 0, 15*float64(hunter.ForeverRank("hunter.talent.clever-traps")))/100))).Activate(sim)
 			}
 		}
 	}

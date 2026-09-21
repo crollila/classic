@@ -16,13 +16,22 @@ func (hunter *Hunter) getMultiShotConfig(rank int, timer *core.Timer) core.Spell
 	numHits := min(3, hunter.Env.GetNumTargets())
 	results := make([]*core.SpellResult, numHits)
 
-	// Forever beta client: a single rank (2643) with no flat bonus, 13.9% of base mana,
-	// 0.5 sec cast and a 6 sec cooldown shared with Aimed Shot.
+	// Forever: one rank (2643) in the client (1.60.1: no flat bonus, 13.9% of base mana, 0.5 sec
+	// cast, 6 sec category cooldown shared with Aimed Shot), all read from it.
 	cooldown := time.Second * 10
 	manaCostOptions := core.ManaCostOptions{FlatCost: manaCost}
 	if hunter.Forever != nil {
-		cooldown = time.Second * 6
-		manaCostOptions = core.ManaCostOptions{BaseCost: .139}
+		baseDamage = hunter.ClientEffectValue(spellId, 0, baseDamage)
+		cooldown = clientCooldown(&hunter.Character, spellId, 6*time.Second)
+		pct := .139
+		if hunter.GameData != nil {
+			if cost := hunter.GameData.Spell(spellId).Cost("mana"); cost != nil && cost.CostPct > 0 {
+				pct = cost.CostPct / 100
+			} else {
+				pct = clientMissing(spellId, "mana cost percent", pct)
+			}
+		}
+		manaCostOptions = core.ManaCostOptions{BaseCost: pct}
 	}
 
 	return core.SpellConfig{
@@ -86,7 +95,7 @@ func (hunter *Hunter) getMultiShotConfig(rank int, timer *core.Timer) core.Spell
 					curTarget = sim.Environment.NextTargetUnit(curTarget)
 				}
 			})
-			
+
 		},
 	}
 }
@@ -94,7 +103,13 @@ func (hunter *Hunter) getMultiShotConfig(rank int, timer *core.Timer) core.Spell
 func (hunter *Hunter) registerMultiShotSpell(timer *core.Timer) {
 	maxRank := core.TernaryInt(core.IncludeAQ, 5, 4)
 	if hunter.Forever != nil {
-		maxRank = 1
+		// The ranks the client build has decide: 1.60.1 has only rank 1.
+		ids := []int32{2643, 14288, 14289, 14290, 25294}
+		levels := []int32{18, 30, 42, 54, 60}
+		if rank := clientRank(&hunter.Character, ids, levels, hunter.Level); rank >= 0 {
+			hunter.MultiShot = hunter.GetOrRegisterSpell(hunter.getMultiShotConfig(rank+1, timer))
+		}
+		return
 	}
 	for rank := 1; rank <= maxRank; rank++ {
 		config := hunter.getMultiShotConfig(rank, timer)

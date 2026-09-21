@@ -13,17 +13,24 @@ func (hunter *Hunter) registerRapidFire() {
 
 	actionID := core.ActionID{SpellID: 3045}
 	cooldown := time.Minute * 5
+	haste, duration := 1.4, time.Second*15
+	if hunter.Forever != nil {
+		// Forever: effect 0 is the ranged haste percent; duration and cooldown are the client's.
+		haste = 1 + hunter.ClientEffectValue(actionID.SpellID, 0, 40)/100
+		duration = clientAuraDuration(&hunter.Character, actionID.SpellID, duration)
+		cooldown = clientCooldown(&hunter.Character, actionID.SpellID, cooldown)
+	}
 
 	hunter.RapidFireAura = hunter.RegisterAura(core.Aura{
 		Label:    "Rapid Fire",
 		ActionID: actionID,
-		Duration: time.Second * 15,
+		Duration: duration,
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.MultiplyRangedSpeed(sim, 1.4)
+			aura.Unit.MultiplyRangedSpeed(sim, haste)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.MultiplyRangedSpeed(sim, 1/1.4)
+			aura.Unit.MultiplyRangedSpeed(sim, 1/haste)
 		},
 	})
 

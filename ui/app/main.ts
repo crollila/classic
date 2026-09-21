@@ -466,6 +466,7 @@ function renderTalents() {
 // ---------------------------------------------------------------- results + rotation tabs
 
 let lastResult: RaidSimResult | null = null;
+let lastRequest: RaidSimRequest | null = null;
 let lastIterations = 1;
 // proto OtherAction, in enum order.
 const OTHER = ['', 'Wait', 'Mana regen', 'Energy regen', 'Focus regen', 'Mana gain', 'Rage gain', 'Melee', 'Auto shot', 'Pet', 'Refund',
@@ -505,8 +506,33 @@ function renderResults() {
 	table.append(tbody);
 	const summary = el('div', 'fa-summary');
 	summary.append(el('strong', '', `${fmt(unit?.dps?.avg || 0, 2)} DPS`), el('span', '', ` ± ${fmt(unit?.dps?.stdev || 0, 2)} · ${lastResult.raidMetrics?.dps ? '' : ''}${state.iterations} iterations · ${state.duration}s vs level ${state.targetLevel}`));
-	panel.replaceChildren(summary, table, el('p', 'fa-note', 'Each ability\'s share of the average DPS; casts are per fight.'));
+	panel.replaceChildren(summary, table, el('p', 'fa-note', 'Each ability\'s share of the average DPS; casts are per fight.'), provenanceBlock());
 }
+// What the result was computed from, and a copy button that captures everything needed to rerun it.
+function provenanceBlock() {
+	const p = lastResult?.provenance;
+	const box = el('div', 'fa-note');
+	const data = p?.gameDataBuild ? `Forever client data ${p.gameDataBuild} (${(p.gameDataSha256 || '').slice(0, 12)})` : 'Classic data';
+	box.append(el('span', '', `${data} · engine ${String(import.meta.env.VITE_ENGINE_VERSION || 'dev')} · seed ${p?.randomSeed ?? '?'}`));
+	if (p?.nonClientValues?.length) box.append(el('span', '', ` · ${p.nonClientValues.length} non-client values used`));
+	const copy = el('button', 'fa-link', ' · Copy reproducible run');
+	copy.addEventListener('click', async () => {
+		if (!lastRequest || !lastResult) return;
+		const replay = RaidSimRequest.clone(lastRequest);
+		if (replay.simOptions && p) replay.simOptions.randomSeed = BigInt(p.randomSeed);
+		for (const party of replay.raid?.parties || []) for (const player of party.players) if (player.forever && p?.gameDataBuild) player.forever.gameDataBuild = p.gameDataBuild;
+		const text = JSON.stringify({ engine: import.meta.env.VITE_ENGINE_VERSION, provenance: lastResult.provenance, request: RaidSimRequest.toJson(replay) }, null, 1);
+		try { await navigator.clipboard.writeText(text); copy.textContent = ' · Copied'; } catch { copy.textContent = ' · Copy failed'; }
+	});
+	box.append(copy);
+	if (p?.nonClientValues?.length) {
+		const details = el('details');
+		details.append(el('summary', '', 'Values not from the client (assumptions)'), ...p.nonClientValues.map(v => el('div', '', v)));
+		box.append(details);
+	}
+	return box;
+}
+
 function renderRotation() {
 	const apl = rotation(def, state.rotation);
 	const list = el('ol', 'fa-rotation');
@@ -535,7 +561,9 @@ function renderPanel() {
 dpsButton.addEventListener('click', async () => {
 	dpsButton.disabled = true; dpsBox.textContent = 'Simulating…';
 	try {
-		const result = await pool.raidSimAsync(request(state.iterations), p => { dpsBox.textContent = `Simulating… ${p.completedIterations}/${p.totalIterations}`; }, signals());
+		const req = request(state.iterations);
+		lastRequest = req;
+		const result = await pool.raidSimAsync(req, p => { dpsBox.textContent = `Simulating… ${p.completedIterations}/${p.totalIterations}`; }, signals());
 		if (result.error) { dpsBox.textContent = result.error.message; return; }
 		lastResult = result; lastIterations = state.iterations;
 		const unit = result.raidMetrics?.parties[0]?.players[0];

@@ -63,7 +63,7 @@ func (mage *Mage) newFireballSpellConfig(rank int) core.SpellConfig {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD:      core.GCDDefault,
-				CastTime: time.Millisecond*time.Duration(castTime) - time.Millisecond*100*time.Duration(mage.Talents.ImprovedFireball),
+				CastTime: time.Millisecond*time.Duration(castTime) + time.Millisecond*time.Duration(mage.clientTalent("improved-fireball", 0, -100*float64(mage.Talents.ImprovedFireball))),
 			},
 		},
 

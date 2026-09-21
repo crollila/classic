@@ -15,10 +15,15 @@ func (warrior *Warrior) registerBloodthirstSpell(cdTimer *core.Timer) {
 		return
 	}
 	var movement *core.Aura
-	bonusDamage := bloodthirstBonusForever[rank-1]
+	// Forever Bloodthirst, per rank: effect 0 (school_damage) is the flat damage, effect 1 (dummy)
+	// the percent of attack power added to it, effect 2 (mod_increase_speed) the movement bonus for
+	// the spell's duration. Classic's single effect 0 is 45 = 45% of attack power.
+	bonusDamage := clientRankValue(&warrior.Character, spellID, 0, bloodthirstBonusForever[rank-1])
+	apPercent := clientRankValue(&warrior.Character, spellID, 1, 35) / 100
 	if warrior.ForeverRank("warrior.talent.bloodthirst") > 0 {
-		movement = warrior.RegisterAura(core.Aura{Label: "Forever Bloodthirst", ActionID: core.ActionID{SpellID: spellID}, Duration: 10 * time.Second,
-			OnGain:   func(a *core.Aura, sim *core.Simulation) { warrior.AddMoveSpeedModifier(&a.ActionID, 1.1) },
+		speed := 1 + clientRankValue(&warrior.Character, spellID, 2, 10)/100
+		movement = warrior.RegisterAura(core.Aura{Label: "Forever Bloodthirst", ActionID: core.ActionID{SpellID: spellID}, Duration: clientDuration(&warrior.Character, spellID, "warrior: Bloodthirst", 10*time.Second),
+			OnGain:   func(a *core.Aura, sim *core.Simulation) { warrior.AddMoveSpeedModifier(&a.ActionID, speed) },
 			OnExpire: func(a *core.Aura, sim *core.Simulation) { warrior.RemoveMoveSpeedModifier(&a.ActionID) }})
 	}
 
@@ -54,7 +59,7 @@ func (warrior *Warrior) registerBloodthirstSpell(cdTimer *core.Timer) {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := 0.45 * spell.MeleeAttackPower(target)
 			if movement != nil {
-				baseDamage = 0.35*spell.MeleeAttackPower(target) + bonusDamage
+				baseDamage = apPercent*spell.MeleeAttackPower(target) + bonusDamage
 			}
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 			if !result.Landed() {

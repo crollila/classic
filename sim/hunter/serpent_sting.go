@@ -15,6 +15,16 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 	manaCost := [10]float64{0, 15, 30, 50, 80, 115, 150, 190, 230, 250}[rank]
 	level := [10]int{0, 4, 10, 18, 26, 34, 42, 50, 58, 60}[rank]
 
+	numTicks, tickLength := int32(5), time.Second*3
+	if hunter.Forever != nil {
+		// Forever: effect 0 (periodic damage) gives the tick damage and spell power coefficient,
+		// and the duration over its period the ticks (1.60.1: rank 1 2 per tick where Classic
+		// has 4, rank 9 111; coefficient 0). Ranged spells are outside the generic layer.
+		baseDamage = hunter.ClientEffectValue(spellId, 0, baseDamage)
+		spellCoeff = clientCoefficient(&hunter.Character, spellId, 0, spellCoeff)
+		numTicks, tickLength = clientTicks(&hunter.Character, spellId, 0, numTicks, tickLength)
+	}
+
 	return core.SpellConfig{
 		SpellCode:     SpellCode_HunterSerpentSting,
 		ActionID:      core.ActionID{SpellID: spellId},
@@ -48,8 +58,8 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 				Label: "SerpentSting" + hunter.Label + strconv.Itoa(rank),
 				Tag:   "SerpentSting",
 			},
-			NumberOfTicks:    5,
-			TickLength:       time.Second * 3,
+			NumberOfTicks:    numTicks,
+			TickLength:       tickLength,
 			BonusCoefficient: spellCoeff,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {

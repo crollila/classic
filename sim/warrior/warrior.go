@@ -50,6 +50,10 @@ type Warrior struct {
 
 	Talents *proto.WarriorTalents
 
+	// deepWoundsFraction is Forever Deep Wounds' share of the average weapon hit (client data);
+	// 0 in Classic, where the talent's Classic formula applies.
+	deepWoundsFraction float64
+
 	WarriorInputs
 
 	// Current state
@@ -296,4 +300,10 @@ func (ws *WarriorSpell) GetStanceMask() Stance {
 	}
 
 	return ws.StanceMask
+}
+
+// boomingVoiceFraction is Booming Voice's shout range bonus as a fraction (Forever: client
+// effect 0, 10-50%).
+func (warrior *Warrior) boomingVoiceFraction() float64 {
+	return clientTalent(&warrior.Character, "warrior.talent.booming-voice", 0, 0.01, .1*float64(warrior.ForeverRank("warrior.talent.booming-voice")))
 }

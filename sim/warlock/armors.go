@@ -34,14 +34,30 @@ func (warlock *Warlock) applyDemonArmor() {
 	if spellID == 0 {
 		return
 	}
+	if sp := warlock.ClientSpell(spellID); sp != nil {
+		// Forever: the rank's client effects. Demon Skin: armor, regeneration; Demon Armor:
+		// armor, Shadow resistance, regeneration (aura 22 is a resistance, 161 health regen).
+		armor, shadowRes, regen = 0, 0, 0
+		for _, e := range sp.Effects {
+			switch {
+			case e.Aura == 22 && e.Index == 0:
+				armor = e.Base
+			case e.Aura == 22:
+				shadowRes = e.Base
+			case e.Aura == 161:
+				regen = e.Base
+			}
+		}
+	}
 
-	armor *= 1 + warlock.ForeverValue("warlock.talent.demonic-aegis", 0, 0)/100
-	shadowRes *= 1 + warlock.ForeverValue("warlock.talent.demonic-aegis", 0, 0)/100
+	aegis := warlock.talentValue("demonic-aegis", 0, 1, 0) / 100
+	armor *= 1 + aegis
+	shadowRes *= 1 + aegis
 	warlock.AddStat(stats.Armor, armor)
 	warlock.AddStat(stats.ShadowResistance, shadowRes)
 
 	if warlock.Forever != nil {
-		health := regen * (1 + warlock.ForeverValue("warlock.talent.demonic-aegis", 0, 0)/100)
+		health := regen * (1 + aegis)
 		metrics := warlock.NewHealthMetrics(core.ActionID{SpellID: spellID})
 		core.MakePermanent(warlock.RegisterAura(core.Aura{Label: "Forever Demon Armor regeneration", OnReset: func(a *core.Aura, sim *core.Simulation) {
 			core.StartPeriodicAction(sim, core.PeriodicActionOptions{Period: 5 * time.Second, OnAction: func(sim *core.Simulation) { warlock.GainHealth(sim, health, metrics) }})

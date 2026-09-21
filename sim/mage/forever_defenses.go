@@ -31,11 +31,14 @@ var foreverFrostWardRanks = []foreverMageRank{
 var foreverManaShieldRanks = []foreverMageRank{
 	{1463, 20, 40, 120, 0}, {8494, 28, 60, 210, 0}, {8495, 36, 80, 300, 0}, {10191, 44, 100, 390, 0}, {10192, 52, 120, 480, 0}, {10193, 60, 180, 570, 0},
 }
-// Frostfire Bolt, Arcane Blast and Ice Lance come from the Forever beta client tooltips
-// (1.60.1.69876). The top Frostfire Bolt rank keeps the Forever action (id 0) so the
-// rotations that name it keep working; its values are rank 3 (1237313).
+
+// Frostfire Bolt, Arcane Blast and Ice Lance rank ids and learned levels. In Forever mode
+// every number is read from the client spell of the rank (forever_client.go); the values
+// typed here (client tooltips of 1.60.1.69876 at the rank's top level) are the fallback
+// used only when a build lacks the spell. The top Frostfire Bolt rank (1237313) keeps the
+// Forever action so the rotations that name it keep working.
 var foreverFrostfireBoltRanks = []foreverMageRank{
-	{401502, 40, 205, 102, 118}, {1237312, 50, 285, 181, 209}, {0, 60, 370, 270, 314},
+	{401502, 40, 205, 102, 118}, {1237312, 50, 285, 181, 209}, {1237313, 60, 370, 270, 314},
 }
 
 // foreverFrostfireBoltDot is each Frostfire Bolt rank's periodic damage in total over
@@ -85,9 +88,16 @@ func (m *Mage) registerForeverDefenses() {
 		return
 	}
 	f := m.foreverState
-	val := func(id string, index int) float64 { return m.ForeverValue("mage.talent."+id, index, 0) }
-	// The rank table is Classic; the observed first-rank barrier overrides it.
+	// Talent values by client effect index (signs and units are the client's).
+	val := func(id string, index int) float64 { return m.clientTalent(id, index, 0) }
+	// Ice Barrier absorbs: the client rank's absorb effect (0) at the character's level;
+	// the typed amounts are the fallback.
 	amounts := []float64{0, 431, 549, 678, 818}
+	for i, s := range m.IceBarrier {
+		if s != nil && i < len(amounts) {
+			amounts[i], _ = foreverClientRange(m.GetCharacter(), s.SpellID, 0, amounts[i], amounts[i])
+		}
+	}
 	if m.ForeverRank("mage.talent.ice-barrier") > 0 {
 		shield := core.NewForeverAbsorb(&m.Unit, "Forever Ice Barrier", m.ForeverAction("mage.talent.ice-barrier"), time.Minute, 0)
 		for i, s := range m.IceBarrier {
@@ -150,7 +160,7 @@ func (m *Mage) registerForeverDefenses() {
 			return t.ForeverControlAura("Forever Frost Nova-"+m.Label, core.ActionID{SpellID: 10230}, core.ForeverRoot, 8*time.Second)
 		})
 		m.RegisterSpell(core.SpellConfig{ActionID: core.ActionID{SpellID: nr.id}, SpellSchool: core.SpellSchoolFrost, DefenseType: core.DefenseTypeMagic, ProcMask: core.ProcMaskSpellDamage, Flags: SpellFlagMage | SpellFlagChillSpell | core.SpellFlagAPL,
-			ManaCost: core.ManaCostOptions{FlatCost: nr.mana}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, CD: core.Cooldown{Timer: m.NewTimer(), Duration: 25*time.Second - time.Duration(val("improved-frost-nova", 0)*float64(time.Second))}}, DamageMultiplier: 1, ThreatMultiplier: 1, BonusCoefficient: .135,
+			ManaCost: core.ManaCostOptions{FlatCost: nr.mana}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, CD: core.Cooldown{Timer: m.NewTimer(), Duration: 25*time.Second + time.Duration(val("improved-frost-nova", 0))*time.Millisecond}}, DamageMultiplier: 1, ThreatMultiplier: 1, BonusCoefficient: .135,
 			ExtraCastCondition: func(sim *core.Simulation, t *core.Unit) bool {
 				return m.DistanceFromTarget <= 10*(1+val("arctic-reach", 0)/100)
 			},
@@ -184,7 +194,7 @@ func (m *Mage) registerForeverDefenses() {
 	}
 	// Counterspell's Classic interruption now operates on encounter spellcasts.
 	silences := m.NewEnemyAuraArray(func(t *core.Unit) *core.Aura {
-		return t.ForeverControlAura("Forever Improved Counterspell-"+m.Label, m.ForeverAction("mage.talent.improved-counterspell"), core.ForeverSilence, time.Duration(val("improved-counterspell", 0)*float64(time.Second)))
+		return t.ForeverControlAura("Forever Improved Counterspell-"+m.Label, m.ForeverAction("mage.talent.improved-counterspell"), core.ForeverSilence, time.Duration(val("improved-counterspell", 0))*time.Millisecond)
 	})
 	if m.Counterspell != nil {
 		oldCounter := m.Counterspell.ApplyEffects
@@ -211,6 +221,8 @@ func (m *Mage) registerForeverDefenses() {
 			continue
 		}
 		action := core.ActionID{SpellID: wr.id}
+		// The absorb amount is the client rank's effect 0 at the character's level.
+		absorb, _ := foreverClientRange(m.GetCharacter(), wr.id, 0, wr.low, wr.low)
 		var shield *core.ForeverAbsorb
 		reflect := m.RegisterSpell(core.SpellConfig{ProcMask: core.ProcMaskEmpty, ActionID: action.WithTag(1), SpellSchool: ward.school, Flags: core.SpellFlagPassiveSpell, DamageMultiplier: 1, ThreatMultiplier: 1})
 		m.AddDynamicDamageTakenModifier(func(sim *core.Simulation, s *core.Spell, r *core.SpellResult) {
@@ -225,10 +237,16 @@ func (m *Mage) registerForeverDefenses() {
 			}
 		})
 		shield = core.NewForeverAbsorb(&m.Unit, "Forever "+ward.name, action, 30*time.Second, ward.school)
-		m.RegisterSpell(core.SpellConfig{ProcMask: core.ProcMaskEmpty, ActionID: action, SpellSchool: ward.school, Flags: SpellFlagMage | core.SpellFlagAPL | core.SpellFlagHelpful, ManaCost: core.ManaCostOptions{FlatCost: wr.mana}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, CD: core.Cooldown{Timer: m.NewTimer(), Duration: 30 * time.Second}}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) { shield.Apply(sim, wr.low, false) }})
+		m.RegisterSpell(core.SpellConfig{ProcMask: core.ProcMaskEmpty, ActionID: action, SpellSchool: ward.school, Flags: SpellFlagMage | core.SpellFlagAPL | core.SpellFlagHelpful, ManaCost: core.ManaCostOptions{FlatCost: wr.mana}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, CD: core.Cooldown{Timer: m.NewTimer(), Duration: 30 * time.Second}}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) { shield.Apply(sim, absorb, false) }})
 	}
 	// Mana Shield converts absorbed Physical damage into mana spending.
 	if msr, ok := foreverRankAt(m.Level, foreverManaShieldRanks); ok {
+		shieldAmount, _ := foreverClientRange(m.GetCharacter(), msr.id, 0, msr.low, msr.low)
+		// "Drains $e mana per damage absorbed": the absorb effect's amplitude.
+		manaPerDamage := 2.0
+		if e := m.ClientSpell(msr.id).Effect(0); e != nil && e.Amplitude > 0 {
+			manaPerDamage = e.Amplitude
+		}
 		manaShield := m.RegisterAura(core.Aura{Label: "Forever Mana Shield", ActionID: core.ActionID{SpellID: msr.id}, Duration: time.Minute})
 		remaining := 0.0
 		manaMetrics := m.NewManaMetrics(core.ActionID{SpellID: msr.id})
@@ -236,7 +254,7 @@ func (m *Mage) registerForeverDefenses() {
 			if !manaShield.IsActive() || !s.SpellSchool.Matches(core.SpellSchoolPhysical) {
 				return
 			}
-			ratio := 2 * (1 - val("arcane-shielding", 0)/100)
+			ratio := manaPerDamage * (1 + val("arcane-shielding", 0)/100)
 			absorb := min(r.Damage, min(remaining, m.CurrentMana()/ratio))
 			r.Damage -= absorb
 			remaining -= absorb
@@ -245,20 +263,23 @@ func (m *Mage) registerForeverDefenses() {
 				manaShield.Deactivate(sim)
 			}
 		})
-		m.RegisterSpell(core.SpellConfig{ProcMask: core.ProcMaskEmpty, ActionID: core.ActionID{SpellID: msr.id}, SpellSchool: core.SpellSchoolArcane, Flags: SpellFlagMage | core.SpellFlagAPL | core.SpellFlagHelpful, ManaCost: core.ManaCostOptions{FlatCost: msr.mana}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) { remaining = msr.low; manaShield.Activate(sim) }})
+		m.RegisterSpell(core.SpellConfig{ProcMask: core.ProcMaskEmpty, ActionID: core.ActionID{SpellID: msr.id}, SpellSchool: core.SpellSchoolArcane, Flags: SpellFlagMage | core.SpellFlagAPL | core.SpellFlagHelpful, ManaCost: core.ManaCostOptions{FlatCost: msr.mana}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}}, ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
+			remaining = shieldAmount
+			manaShield.Activate(sim)
+		}})
 	}
 	// A kill is detected only with health-backed targets; fixed-duration bosses do
 	// not fabricate kills. The next Fire Blast consumes its own 20-second buff.
 	wake := m.RegisterAura(core.Aura{Label: "Forever Wake of Fire", ActionID: m.ForeverAction("mage.talent.wake-of-fire"), Duration: 20 * time.Second, OnGain: func(a *core.Aura, sim *core.Simulation) {
 		for _, s := range m.FireBlast {
 			if s != nil {
-				s.BonusCritRating += val("wake-of-fire", 2) * core.SpellCritRatingPerCritChance
+				s.BonusCritRating += val("wake-of-fire", 1) * core.SpellCritRatingPerCritChance
 			}
 		}
 	}, OnExpire: func(a *core.Aura, sim *core.Simulation) {
 		for _, s := range m.FireBlast {
 			if s != nil {
-				s.BonusCritRating -= val("wake-of-fire", 2) * core.SpellCritRatingPerCritChance
+				s.BonusCritRating -= val("wake-of-fire", 1) * core.SpellCritRatingPerCritChance
 			}
 		}
 	}, OnCastComplete: func(a *core.Aura, sim *core.Simulation, s *core.Spell) {

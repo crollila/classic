@@ -9,9 +9,11 @@ func (warrior *Warrior) registerHeroicStrikeSpell(realismICD *core.Cooldown) {
 	if rank == 0 {
 		return
 	}
-	flatDamageBonus := heroicStrikeBonus[rank-1]
-	// No known equation
-	threat := heroicStrikeThreat[rank-1]
+	// Effect 0 (weapon_damage, type 17): the flat bonus added to the swing's weapon damage.
+	flatDamageBonus := clientRankValue(&warrior.Character, spellID, 0, heroicStrikeBonus[rank-1])
+	// No known equation; the client does not store threat.
+	threat := codeValue(&warrior.Character, "warrior: Heroic Strike", "bonus threat", heroicStrikeThreat[rank-1], "PROVISIONAL",
+		"threat is not client data; the Classic value is used")
 
 	warrior.HeroicStrike = warrior.RegisterSpell(AnyStance, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
@@ -21,7 +23,8 @@ func (warrior *Warrior) registerHeroicStrikeSpell(realismICD *core.Cooldown) {
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | SpellFlagOffensive,
 
 		RageCost: core.RageCostOptions{
-			Cost:   15 - float64(warrior.Talents.ImprovedHeroicStrike),
+			// Improved Heroic Strike: client effect 0 is the rage cost modifier in tenths.
+			Cost:   15 - clientTalent(&warrior.Character, "warrior.talent.improved-heroic-strike", 0, -0.1, float64(warrior.Talents.ImprovedHeroicStrike)),
 			Refund: 0.8,
 		},
 
@@ -54,9 +57,11 @@ func (warrior *Warrior) registerCleaveSpell(realismICD *core.Cooldown) {
 	if rank == 0 {
 		return
 	}
-	rankBonus := cleaveBonus[rank-1]
+	// Effect 0 (weapon_damage, type 17): the flat bonus added to each hit's weapon damage.
+	rankBonus := clientRankValue(&warrior.Character, spellID, 0, cleaveBonus[rank-1])
 	flatDamageBonus := rankBonus
-	threat := cleaveThreat[rank-1]
+	threat := codeValue(&warrior.Character, "warrior: Cleave", "bonus threat", cleaveThreat[rank-1], "PROVISIONAL",
+		"threat is not client data; the Classic value is used")
 
 	flatDamageBonus *= []float64{1, 1.4, 1.8, 2.2}[warrior.Talents.ImprovedCleave]
 	if warrior.ForeverRank("warrior.talent.improved-cleave") > 0 {
@@ -73,7 +78,9 @@ func (warrior *Warrior) registerCleaveSpell(realismICD *core.Cooldown) {
 		Flags:       core.SpellFlagMeleeMetrics | SpellFlagOffensive,
 
 		RageCost: core.RageCostOptions{
-			Cost: 20 - 2*float64(warrior.ForeverRank("warrior.talent.raging-blows")) - warrior.ForeverValue("warrior.talent.improved-cleave", 0, 0),
+			// Raging Blows effect 1 and Improved Cleave effect 0 are rage cost modifiers in tenths.
+			Cost: 20 - clientTalent(&warrior.Character, "warrior.talent.raging-blows", 1, -0.1, 2*float64(warrior.ForeverRank("warrior.talent.raging-blows"))) -
+				clientTalent(&warrior.Character, "warrior.talent.improved-cleave", 0, -0.1, warrior.ForeverValue("warrior.talent.improved-cleave", 0, 0)),
 		},
 
 		CritDamageBonus: warrior.impale(),

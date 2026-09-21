@@ -15,14 +15,18 @@ func (warrior *Warrior) registerMortalStrikeSpell(cdTimer *core.Timer) {
 	if rank == 0 {
 		return
 	}
-	// The learned rank's bonus. The Forever talent record's value is the talent tooltip,
-	// i.e. rank 1 (85), not the rank the warrior has learned (rank 4: 160).
-	bonusDamage := mortalStrikeBonus[rank-1]
+	// The learned rank's bonus: effect 1 (normalized_weapon_damage, type 121) of the rank's
+	// client spell. The talent record's value is the talent tooltip, i.e. rank 1 (85), not the
+	// rank the warrior has learned (rank 4: 160).
+	bonusDamage := clientRankValue(&warrior.Character, spellID, 1, mortalStrikeBonus[rank-1])
 
 	var mortalAuras core.AuraArray
 	if warrior.Forever != nil {
+		// Effect 0: healing taken modifier (-50%), for the spell's duration.
+		healing := 1 + clientRankValue(&warrior.Character, spellID, 0, -50)/100
+		duration := clientDuration(&warrior.Character, spellID, "warrior: Mortal Strike", 10*time.Second)
 		mortalAuras = warrior.NewEnemyAuraArray(func(t *core.Unit) *core.Aura {
-			return t.GetOrRegisterAura(core.Aura{Label: "Forever Mortal Strike", ActionID: core.ActionID{SpellID: spellID}, Duration: 10 * time.Second, OnGain: func(a *core.Aura, sim *core.Simulation) { t.PseudoStats.HealingTakenMultiplier *= .5 }, OnExpire: func(a *core.Aura, sim *core.Simulation) { t.PseudoStats.HealingTakenMultiplier /= .5 }})
+			return t.GetOrRegisterAura(core.Aura{Label: "Forever Mortal Strike", ActionID: core.ActionID{SpellID: spellID}, Duration: duration, OnGain: func(a *core.Aura, sim *core.Simulation) { t.PseudoStats.HealingTakenMultiplier *= healing }, OnExpire: func(a *core.Aura, sim *core.Simulation) { t.PseudoStats.HealingTakenMultiplier /= healing }})
 		})
 	}
 	warrior.MortalStrike = warrior.RegisterSpell(AnyStance, core.SpellConfig{

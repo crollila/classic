@@ -7,21 +7,24 @@ import (
 	"github.com/wowsims/classic/sim/core/proto"
 )
 
-// Forever beta client (1.60.1) Aimed Shot: baseline, learned at the Classic levels,
-// 2 sec cast, 6 sec cooldown shared with Multi-Shot, "increases ranged damage by"
-// 20/34/55/89/125/166. Mana costs are unchanged from Classic.
+// Forever Aimed Shot is baseline, learned at the Classic levels, and shares its cooldown with
+// Multi-Shot. Its values come from the client (client 1.60.1: "increases ranged damage by"
+// 20/34/55/89/125/166, 2 sec cast, 6 sec category cooldown); this table is the fallback when a
+// build lacks a rank.
 var foreverAimedShotBonus = [7]float64{0, 20, 34, 55, 89, 125, 166}
 
-// Forever Sniper Shot (talent): ranks learned at 40/48/58, +160/225/295, 365 mana,
-// 4 sec cast, 15 sec cooldown of its own.
+// Forever Sniper Shot (talent) ranks: client spell id and the level the fallback assumes. The
+// client's base level decides which rank a hunter knows; the bonus (effect 0), mana, cast time
+// and cooldown are read from the rank's client spell (1.60.1: +160/225/295, 365 mana, 4 sec
+// cast, 15 sec cooldown).
 var sniperShotRanks = []struct {
 	id    int32
 	level int32
 	bonus float64
 }{{1310687, 40, 160}, {1310785, 48, 225}, {1310786, 58, 295}}
 
-// sniperShotRank returns the Sniper Shot rank a hunter of the given level knows. The
-// talent itself grants rank 1, so a talented hunter always has at least that.
+// sniperShotRank returns the Sniper Shot rank a hunter of the given level knows, from the
+// fallback table. The talent itself grants rank 1, so a talented hunter always has at least that.
 func sniperShotRank(level int32) (id int32, bonus float64) {
 	id, bonus = sniperShotRanks[0].id, sniperShotRanks[0].bonus
 	for _, r := range sniperShotRanks {
@@ -30,6 +33,17 @@ func sniperShotRank(level int32) (id int32, bonus float64) {
 		}
 	}
 	return id, bonus
+}
+
+// sniperShotClientRank is the Sniper Shot rank the hunter knows, with its client bonus.
+func (hunter *Hunter) sniperShotClientRank() (id int32, bonus float64) {
+	ids := make([]int32, len(sniperShotRanks))
+	levels := make([]int32, len(sniperShotRanks))
+	for i, r := range sniperShotRanks {
+		ids[i], levels[i] = r.id, r.level
+	}
+	r := sniperShotRanks[talentRank(&hunter.Character, ids, levels, hunter.Level)]
+	return r.id, hunter.ClientEffectValue(r.id, 0, r.bonus)
 }
 
 func (hunter *Hunter) getAimedShotConfig(rank int, timer *core.Timer) core.SpellConfig {
@@ -41,8 +55,10 @@ func (hunter *Hunter) getAimedShotConfig(rank int, timer *core.Timer) core.Spell
 	castTime := 3500 * time.Millisecond
 	cooldown := 6 * time.Second
 	if hunter.Forever != nil {
-		baseDamage = foreverAimedShotBonus[rank]
-		castTime = 2 * time.Second
+		// Effect 0 (normalized weapon damage) carries the flat bonus.
+		baseDamage = hunter.ClientEffectValue(spellId, 0, foreverAimedShotBonus[rank])
+		castTime = clientCastTime(&hunter.Character, spellId, 2*time.Second)
+		cooldown = clientCooldown(&hunter.Character, spellId, cooldown)
 	}
 	return core.SpellConfig{
 		SpellCode:     SpellCode_HunterAimedShot,
@@ -108,14 +124,15 @@ func (hunter *Hunter) getAimedShotConfig(rank int, timer *core.Timer) core.Spell
 // own spell code (Barrage names Aimed Shot, not Sniper Shot), timer and per-rank bonus.
 func (hunter *Hunter) getSniperShotConfig() core.SpellConfig {
 	config := hunter.getAimedShotConfig(1, hunter.NewTimer())
-	_, bonus := sniperShotRank(hunter.Level)
+	id, bonus := hunter.sniperShotClientRank()
+	hunter.sniperShotID = id
 	config.SpellCode = SpellCode_HunterSniperShot
 	config.ActionID = hunter.ForeverAction("hunter.talent.sniper-shot")
 	config.Rank = 0
 	config.RequiredLevel = 0
-	config.ManaCost.FlatCost = 365
-	config.Cast.DefaultCast.CastTime = 4 * time.Second
-	config.Cast.CD.Duration = 15 * time.Second
+	config.ManaCost.FlatCost = clientManaCost(&hunter.Character, id, 365)
+	config.Cast.DefaultCast.CastTime = clientCastTime(&hunter.Character, id, 4*time.Second)
+	config.Cast.CD.Duration = clientCooldown(&hunter.Character, id, 15*time.Second)
 	config.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		baseDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target, false)) +
 			hunter.AmmoDamageBonus + bonus

@@ -1,9 +1,11 @@
 package warrior
 
 import (
+	"math"
+	"time"
+
 	"github.com/wowsims/classic/sim/core"
 	"github.com/wowsims/classic/sim/core/proto"
-	"time"
 )
 
 // Every ID is a record in forever_changes.json. Secondary interactions retain
@@ -13,15 +15,24 @@ func (w *Warrior) applyForeverTalents() {
 		return
 	}
 	w.registerForeverRageDecayScenario()
-	w.ForeverControlReduction(core.ForeverStun, w.ForeverValue("warrior.talent.iron-will", 0, 0)/100)
-	w.ForeverControlReduction(core.ForeverFear, w.ForeverValue("warrior.talent.iron-will", 0, 0)/100)
+	// Iron Will: client effects 0 (stun) and 1 (fear) are duration modifiers (-3..-15%).
+	w.ForeverControlReduction(core.ForeverStun, clientTalent(&w.Character, "warrior.talent.iron-will", 0, -1, w.ForeverValue("warrior.talent.iron-will", 0, 0))/100)
+	w.ForeverControlReduction(core.ForeverFear, clientTalent(&w.Character, "warrior.talent.iron-will", 1, -1, w.ForeverValue("warrior.talent.iron-will", 0, 0))/100)
+	// Focused Rage: client effect 0 is the rage cost modifier in tenths (-10/-20/-30).
+	focusedRage := int32(math.Round(clientTalent(&w.Character, "warrior.talent.focused-rage", 0, -0.1, float64(w.ForeverRank("warrior.talent.focused-rage")))))
 	w.OnSpellRegistered(func(s *core.Spell) {
 		if s.Cost != nil && s.Flags.Matches(SpellFlagOffensive) {
-			s.Cost.FlatModifier -= w.ForeverRank("warrior.talent.focused-rage")
+			s.Cost.FlatModifier -= focusedRage
 		}
 	})
 	if n := w.ForeverRank("warrior.talent.weaponmaster"); n > 0 {
-		chance := float64(n) * .01
+		// Weaponmaster, client per rank: effect 0 the crit chance with axes and polearms, effect 1
+		// the armor ignored with maces and staves, effect 2 the extra-attack chance with swords.
+		crit := clientTalent(&w.Character, "warrior.talent.weaponmaster", 0, 1, float64(n))
+		armorPen := clientTalent(&w.Character, "warrior.talent.weaponmaster", 1, 0.01, .03*float64(n))
+		chance := clientTalent(&w.Character, "warrior.talent.weaponmaster", 2, 0.01, float64(n)*.01)
+		icdDuration := time.Duration(codeValue(&w.Character, "warrior: Weaponmaster", "extra attack icd_ms", 200, "PREDICTED",
+			"the client talent states no internal cooldown; Sword Specialization's 200 ms is used") * float64(time.Millisecond))
 		w.OnSpellRegistered(func(s *core.Spell) {
 			if !s.ProcMask.Matches(core.ProcMaskMelee) {
 				return
@@ -32,12 +43,12 @@ func (w *Warrior) applyForeverTalents() {
 			}
 			switch weapon {
 			case proto.WeaponType_WeaponTypeAxe, proto.WeaponType_WeaponTypePolearm:
-				s.BonusCritRating += float64(n)
+				s.BonusCritRating += crit * core.CritRatingPerCritChance
 			case proto.WeaponType_WeaponTypeMace, proto.WeaponType_WeaponTypeStaff:
-				s.BonusArmorPenetration += .03 * float64(n)
+				s.BonusArmorPenetration += armorPen
 			}
 		})
-		icd := core.Cooldown{Timer: w.NewTimer(), Duration: 200 * time.Millisecond}
+		icd := core.Cooldown{Timer: w.NewTimer(), Duration: icdDuration}
 		core.MakePermanent(w.RegisterAura(core.Aura{Label: "Forever Weaponmaster", OnSpellHitDealt: func(a *core.Aura, sim *core.Simulation, s *core.Spell, r *core.SpellResult) {
 			weapon := w.MainHand().WeaponType
 			if s.ProcMask.Matches(core.ProcMaskMeleeOH) {
@@ -87,19 +98,27 @@ func (w *Warrior) registerForeverAbilities() {
 	w.registerForeverVictoryRush()
 	// Bloodthrill uses the existing Overpower window and the caster's own Rend.
 	if n := w.ForeverRank("warrior.talent.bloodthrill"); n > 0 {
+		// Client effect 0: the proc chance (2-10%). The Overpower window it opens is research data.
+		chance := clientTalent(&w.Character, "warrior.talent.bloodthrill", 0, 0.01, .02*float64(n))
+		window := time.Duration(codeValue(&w.Character, "warrior: Bloodthrill", "overpower window_s", w.ForeverValue("warrior.talent.bloodthrill", 2, 6), "PROVISIONAL",
+			"the client talent states no window; the research value is used") * float64(time.Second))
 		core.MakePermanent(w.RegisterAura(core.Aura{Label: "Forever Bloodthrill", OnSpellHitDealt: func(a *core.Aura, sim *core.Simulation, s *core.Spell, r *core.SpellResult) {
 			if w.Rend == nil || w.OverpowerAura == nil {
 				return
 			}
-			if r.Landed() && s.ProcMask.Matches(core.ProcMaskMelee) && w.Rend.Dot(r.Target).IsActive() && sim.Proc(.02*float64(n), "Bloodthrill") {
+			if r.Landed() && s.ProcMask.Matches(core.ProcMaskMelee) && w.Rend.Dot(r.Target).IsActive() && sim.Proc(chance, "Bloodthrill") {
 				w.OverpowerAura.Activate(sim)
-				w.OverpowerAura.UpdateExpires(sim, sim.CurrentTime+6*time.Second)
+				w.OverpowerAura.UpdateExpires(sim, sim.CurrentTime+window)
 			}
 		}}))
 	}
 	if n := w.ForeverRank("warrior.talent.blood-craze"); n > 0 {
 		metric := w.NewHealthMetrics(w.ForeverAction("warrior.talent.blood-craze"))
-		hot := w.RegisterAura(core.Aura{Label: "Forever Blood Craze", Duration: 6 * time.Second})
+		// Client: talent effect 0 the health healed (1-3%), talent spell 16487 effect 1 the hit
+		// size that triggers it (20% of health), and the heal 16488's duration.
+		healed := clientTalent(&w.Character, "warrior.talent.blood-craze", 0, 0.01, .01*float64(n))
+		threshold := clientRankValue(&w.Character, 16487, 1, 20) / 100
+		hot := w.RegisterAura(core.Aura{Label: "Forever Blood Craze", Duration: clientDuration(&w.Character, 16488, "warrior: Blood Craze", 6*time.Second)})
 		generation := 0
 		apply := func(sim *core.Simulation) {
 			generation++
@@ -107,12 +126,12 @@ func (w *Warrior) registerForeverAbilities() {
 			hot.Activate(sim)
 			core.StartPeriodicAction(sim, core.PeriodicActionOptions{Period: 2 * time.Second, NumTicks: 3, OnAction: func(sim *core.Simulation) {
 				if generation == current {
-					w.GainHealth(sim, w.MaxHealth()*.01*float64(n)/3, metric)
+					w.GainHealth(sim, w.MaxHealth()*healed/3, metric)
 				}
 			}})
 		}
 		core.MakePermanent(w.RegisterAura(core.Aura{Label: "Forever Blood Craze Trigger", OnSpellHitTaken: func(a *core.Aura, sim *core.Simulation, s *core.Spell, r *core.SpellResult) {
-			if r.DidCrit() || r.Damage > w.MaxHealth()*.2 {
+			if r.DidCrit() || r.Damage > w.MaxHealth()*threshold {
 				apply(sim)
 			}
 		}, OnSpellHitDealt: func(a *core.Aura, sim *core.Simulation, s *core.Spell, r *core.SpellResult) {

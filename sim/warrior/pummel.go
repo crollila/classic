@@ -11,7 +11,7 @@ func (warrior *Warrior) registerPummelSpell() {
 	if rank == 0 {
 		return
 	}
-	damage := pummelDamage[rank-1]
+	damage := clientRankValue(&warrior.Character, spellID, 0, pummelDamage[rank-1]) // effect 0: school_damage
 
 	warrior.RegisterSpell(BerserkerStance, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},

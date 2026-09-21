@@ -310,6 +310,8 @@ func (rsrc *raidSimResultCombiner) SetBaseResult(baseRsr *proto.RaidSimResult) {
 			Targets: make([]*proto.UnitMetrics, len(baseRsr.EncounterMetrics.Targets)),
 		},
 		FirstIterationDuration: baseRsr.FirstIterationDuration,
+		// Split runs share one request, so they share its game data; the base run's seed is recorded.
+		Provenance: baseRsr.Provenance,
 	}
 
 	if !rsrc.Debug {

@@ -8,11 +8,13 @@ import (
 
 const ConflagrateRanks = 4
 
-// foreverConflagrateRank is one Forever Conflagrate rank. The beta client adds two ranks
-// below Classic's four (1293817 at 25, 1293818 at 32, values from their tooltips; no
-// override exists for them). Classic's four ranks keep Classic-scale values here because
-// the client overrides for 17962-18932 scale them at registration (to 134-170, 178-222,
-// 219-273 and 251-313); 18930 uses Era's 326-407 so that ratio lands on the tooltip.
+// foreverConflagrateRank is one Forever Conflagrate rank. The client adds two ranks below
+// Classic's four (1293817 at 25, 1293818 at 32): Forever-only spells, so their damage (with
+// per-level growth), mana and learned level are read from the client rank spell here; the
+// numbers below are only the fallback for a build without them. Classic's four ranks keep
+// Classic-scale values because the client-data layer scales them at registration by the
+// client/Classic ratio (to 134-170, 178-222, 219-273 and 251-313); 18930 uses Era's 326-407
+// so that ratio lands on the tooltip.
 type foreverConflagrateRank struct {
 	id       int32
 	min, max float64
@@ -32,6 +34,13 @@ func (warlock *Warlock) getConflagrateConfig(rank int) core.SpellConfig {
 	if warlock.Forever != nil {
 		r := foreverConflagrateRanks[rank-1]
 		spellId, baseDamageMin, baseDamageMax, manaCost, level = r.id, r.min, r.max, r.mana, r.level
+		if warlock.GameData != nil && warlock.GameData.ClassicSpell(r.id) == nil {
+			baseDamageMin, baseDamageMax = foreverClientRange(&warlock.Character, r.id, 0, r.min, r.max)
+			manaCost = foreverManaCost(&warlock.Character, r.id, r.mana, "Conflagrate").FlatCost
+			if sp := warlock.ClientSpell(r.id); sp != nil && sp.SpellLevel > 0 {
+				level = int(sp.SpellLevel)
+			}
+		}
 	} else {
 		spellId = [ConflagrateRanks + 1]int32{0, 17962, 18930, 18931, 18932}[rank]
 		baseDamageMin = [ConflagrateRanks + 1]float64{0, 249, 319, 395, 447}[rank]
@@ -41,6 +50,10 @@ func (warlock *Warlock) getConflagrateConfig(rank int) core.SpellConfig {
 	}
 
 	spCoeff := 0.429
+	if warlock.Forever != nil && warlock.GameData != nil && warlock.GameData.ClassicSpell(spellId) == nil {
+		spCoeff = foreverCoefficient(&warlock.Character, spellId, 0, spCoeff, "Conflagrate")
+	}
+	keepImmolate := warlock.talentValue("shadow-and-flame", 1, 1, 4) / 100
 
 	return core.SpellConfig{
 		SpellCode:     SpellCode_WarlockConflagrate,
@@ -78,7 +91,7 @@ func (warlock *Warlock) getConflagrateConfig(rank int) core.SpellConfig {
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			immoSpell := warlock.getActiveImmolateSpell(target)
-			if immoSpell != nil && !(warlock.ForeverRank("warlock.talent.shadow-and-flame") > 0 && sim.Proc(warlock.ForeverValue("warlock.talent.shadow-and-flame", 4, 0)/100, "Forever Shadow and Flame")) {
+			if immoSpell != nil && !(warlock.ForeverRank("warlock.talent.shadow-and-flame") > 0 && sim.Proc(keepImmolate, "Forever Shadow and Flame")) {
 				immoSpell.Dot(target).Deactivate(sim)
 			}
 		},

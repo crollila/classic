@@ -671,6 +671,11 @@ func (character *Character) foreverEquipment(es *proto.EquipmentSpec) Equipment 
 		if item.ID == 0 {
 			continue
 		}
+		// The versioned client item catalog is authoritative for items it contains. Oracle item
+		// deltas remain the fallback for IDs absent from that catalog.
+		if _, clientItem := ForeverItemsByID[item.ID]; clientItem {
+			continue
+		}
 		override, ok := st.overrides.Item(item.ID)
 		if !ok {
 			continue
@@ -725,8 +730,25 @@ func (character *Character) foreverEquipment(es *proto.EquipmentSpec) Equipment 
 	return equipment
 }
 
-// foreverNewItem resolves an item for a Forever player. Classic database items always win.
+// foreverNewItem resolves an item from the isolated client-derived Forever catalog, falling back
+// to the Classic database and finally an explicit Oracle new_item definition.
 func (character *Character) foreverNewItem(spec ItemSpec) Item {
+	if found, ok := ForeverItemsByID[spec.ID]; ok {
+		item := found
+		if spec.RandomSuffix != 0 {
+			if suffix, exists := RandomSuffixesByID[spec.RandomSuffix]; exists {
+				item.RandomSuffix = suffix
+			} else {
+				panic(fmt.Sprintf("No random suffix with id: %d", spec.RandomSuffix))
+			}
+		}
+		if spec.Enchant != 0 {
+			if enchant, exists := ForeverEnchantsByEffectID[spec.Enchant]; exists {
+				item.Enchant = enchant
+			}
+		}
+		return item
+	}
 	if _, ok := ItemsByID[spec.ID]; ok {
 		return NewItem(spec)
 	}

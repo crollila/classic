@@ -37,7 +37,7 @@ func (h *Hunter) foreverMovementAspect(aspect *core.Aura, id core.ActionID, pack
 		benefits = append(benefits, unit.RegisterAura(core.Aura{
 			Label: fmt.Sprintf("%s benefit-%s", aspect.Label, h.Label), ActionID: id, Duration: core.NeverExpires,
 			OnGain: func(a *core.Aura, sim *core.Simulation) {
-				unit.AddMoveSpeedModifier(&key, 1.3+.03*float64(h.ForeverRank("hunter.talent.pathfinding")))
+				unit.AddMoveSpeedModifier(&key, 1.3+h.clientTalent("hunter.talent.pathfinding", 0, 3*float64(h.ForeverRank("hunter.talent.pathfinding")))/100)
 			},
 			OnExpire:        func(a *core.Aura, sim *core.Simulation) { unit.RemoveMoveSpeedModifier(&key) },
 			OnSpellHitTaken: onDamage, OnPeriodicDamageTaken: onDamage,
@@ -84,7 +84,12 @@ func (h *Hunter) foreverMovementAspect(aspect *core.Aura, id core.ActionID, pack
 // https://www.wowhead.com/tbc/spell=14280/viper-sting
 func (h *Hunter) registerForeverStings() {
 	category := "Forever Hunter Sting-" + h.Label
-	duration := time.Duration(20+15*h.ForeverRank("hunter.talent.improved-stings")) * time.Second
+	// Improved Stings effect 2: Scorpid Sting duration change (ms); effect 1: Viper Sting cooldown
+	// change (ms).
+	stings := float64(h.ForeverRank("hunter.talent.improved-stings"))
+	duration := 20*time.Second + time.Duration(h.clientTalent("hunter.talent.improved-stings", 2, 15000*stings))*time.Millisecond
+	viperCooldown := 15*time.Second + time.Duration(h.clientTalent("hunter.talent.improved-stings", 1, -2000*stings))*time.Millisecond
+	hawkEye := h.clientTalent("hunter.talent.hawk-eye", 0, 2*float64(h.ForeverRank("hunter.talent.hawk-eye")))
 	debuffs := h.NewEnemyAuraArray(func(t *core.Unit) *core.Aura {
 		delta := stats.Stats{stats.Strength: -68, stats.Agility: -68}
 		// BEST_GUESS uses the Classic warrior NPC analogue for derived offensive
@@ -101,7 +106,7 @@ func (h *Hunter) registerForeverStings() {
 		return a
 	})
 	castRange := func(sim *core.Simulation, t *core.Unit) bool {
-		return h.DistanceFromTarget >= 8 && h.DistanceFromTarget <= 35+2*float64(h.ForeverRank("hunter.talent.hawk-eye"))
+		return h.DistanceFromTarget >= 8 && h.DistanceFromTarget <= 35+hawkEye
 	}
 	h.ScorpidSting = h.RegisterSpell(core.SpellConfig{ActionID: core.ActionID{SpellID: 14277}, Flags: core.SpellFlagAPL | core.SpellFlagPoison | SpellFlagSting, SpellSchool: core.SpellSchoolNature, DefenseType: core.DefenseTypeRanged, ProcMask: core.ProcMaskRangedSpecial, ManaCost: core.ManaCostOptions{FlatCost: 165}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, IgnoreHaste: true}, ExtraCastCondition: castRange,
 		ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
@@ -125,7 +130,7 @@ func (h *Hunter) registerForeverStings() {
 		t.ForeverEnableManaPool(pool)
 		manaMetrics[t] = t.NewManaMetrics(core.ActionID{SpellID: 14280})
 	}
-	viper := h.RegisterSpell(core.SpellConfig{ActionID: core.ActionID{SpellID: 14280}, Flags: core.SpellFlagAPL | core.SpellFlagPoison | SpellFlagSting, SpellSchool: core.SpellSchoolNature, DefenseType: core.DefenseTypeRanged, ProcMask: core.ProcMaskRangedSpecial, ManaCost: core.ManaCostOptions{FlatCost: 215}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, IgnoreHaste: true, CD: core.Cooldown{Timer: h.NewTimer(), Duration: time.Duration(15-2*h.ForeverRank("hunter.talent.improved-stings")) * time.Second}},
+	viper := h.RegisterSpell(core.SpellConfig{ActionID: core.ActionID{SpellID: 14280}, Flags: core.SpellFlagAPL | core.SpellFlagPoison | SpellFlagSting, SpellSchool: core.SpellSchoolNature, DefenseType: core.DefenseTypeRanged, ProcMask: core.ProcMaskRangedSpecial, ManaCost: core.ManaCostOptions{FlatCost: 215}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, IgnoreHaste: true, CD: core.Cooldown{Timer: h.NewTimer(), Duration: viperCooldown}},
 		ExtraCastCondition: func(sim *core.Simulation, t *core.Unit) bool {
 			return castRange(sim, t) && t.HasManaBar() && t.CurrentMana() > 0
 		},
@@ -171,7 +176,7 @@ func (h *Hunter) registerForeverFeignDeath() {
 		},
 	})
 	h.RegisterResetEffect(func(sim *core.Simulation) { clear(paused) })
-	h.RegisterSpell(core.SpellConfig{ActionID: id, Flags: core.SpellFlagAPL, SpellSchool: core.SpellSchoolPhysical, DefenseType: core.DefenseTypeMagic, ProcMask: core.ProcMaskEmpty, BonusHitRating: 5 * float64(h.ForeverRank("hunter.talent.survival-tactics")), ManaCost: core.ManaCostOptions{FlatCost: 80}, Cast: core.CastConfig{CD: core.Cooldown{Timer: h.NewTimer(), Duration: 30 * time.Second}}, ExtraCastCondition: func(sim *core.Simulation, t *core.Unit) bool { return !h.IsMoving() },
+	h.RegisterSpell(core.SpellConfig{ActionID: id, Flags: core.SpellFlagAPL, SpellSchool: core.SpellSchoolPhysical, DefenseType: core.DefenseTypeMagic, ProcMask: core.ProcMaskEmpty, BonusHitRating: h.clientTalent("hunter.talent.survival-tactics", 0, 5*float64(h.ForeverRank("hunter.talent.survival-tactics"))), ManaCost: core.ManaCostOptions{FlatCost: 80}, Cast: core.CastConfig{CD: core.Cooldown{Timer: h.NewTimer(), Duration: 30 * time.Second}}, ExtraCastCondition: func(sim *core.Simulation, t *core.Unit) bool { return !h.IsMoving() },
 		ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
 			a.Activate(sim)
 			for _, enemy := range h.Env.Encounter.TargetUnits {
@@ -199,7 +204,9 @@ func (h *Hunter) registerForeverFeignDeath() {
 // slow numbers retain Classic baselines plus the observed Forever talent values.
 // https://www.wowhead.com/classic/spell=13809/frost-trap
 func (h *Hunter) registerForeverFrostTrap(timer *core.Timer) {
-	h.RegisterSpell(core.SpellConfig{ActionID: core.ActionID{SpellID: 13809}, SpellSchool: core.SpellSchoolFrost, DefenseType: core.DefenseTypeMagic, ProcMask: core.ProcMaskSpellDamage, Flags: core.SpellFlagAPL | SpellFlagTrap, ManaCost: core.ManaCostOptions{FlatCost: 60}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, IgnoreHaste: true, CD: core.Cooldown{Timer: timer, Duration: 15 * time.Second}},
+	// Clever Traps effect 0: Freezing and Frost trap effect duration change (%).
+	cleverTraps := h.clientTalent("hunter.talent.clever-traps", 0, 15*float64(h.ForeverRank("hunter.talent.clever-traps"))) / 100
+	h.RegisterSpell(core.SpellConfig{ActionID: core.ActionID{SpellID: 13809}, SpellSchool: core.SpellSchoolFrost, DefenseType: core.DefenseTypeMagic, ProcMask: core.ProcMaskSpellDamage, Flags: core.SpellFlagAPL | SpellFlagTrap, ManaCost: core.ManaCostOptions{FlatCost: 60}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, IgnoreHaste: true, CD: core.Cooldown{Timer: timer, Duration: clientCooldown(&h.Character, 13809, 15*time.Second)}},
 		ApplyEffects: func(sim *core.Simulation, t *core.Unit, s *core.Spell) {
 			for _, enemy := range h.Env.Encounter.TargetUnits {
 				if enemy.DistanceFromTarget > 10 {
@@ -208,7 +215,7 @@ func (h *Hunter) registerForeverFrostTrap(timer *core.Timer) {
 				result := s.CalcOutcome(sim, enemy, s.OutcomeMagicHit)
 				s.DealOutcome(sim, result)
 				if result.Landed() {
-					enemy.ForeverSnareAura("Frost Trap", s.ActionID, time.Duration(float64(30*time.Second)*(1+.15*float64(h.ForeverRank("hunter.talent.clever-traps")))), .6).Activate(sim)
+					enemy.ForeverSnareAura("Frost Trap", s.ActionID, time.Duration(float64(30*time.Second)*(1+cleverTraps)), .6).Activate(sim)
 				}
 			}
 		},
@@ -219,7 +226,11 @@ func (h *Hunter) registerForeverFrostTrap(timer *core.Timer) {
 func (h *Hunter) registerForeverMendPet() {
 	id := core.ActionID{SpellID: 13544}
 	metrics := h.pet.NewHealthMetrics(id)
-	h.RegisterSpell(core.SpellConfig{ActionID: id, SpellSchool: core.SpellSchoolNature, Flags: core.SpellFlagAPL | core.SpellFlagHelpful | core.SpellFlagChanneled, ManaCost: core.ManaCostOptions{FlatCost: 480, Multiplier: 100 - 10*h.ForeverRank("hunter.talent.improved-mend-pet")}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, IgnoreHaste: true}, ExtraCastCondition: func(sim *core.Simulation, t *core.Unit) bool { return h.pet.IsEnabled() },
+	// Improved Mend Pet: effect 0 cleanse chance per heal (15/50%), effect 1 mana cost change (10/20%).
+	mendRank := float64(h.ForeverRank("hunter.talent.improved-mend-pet"))
+	cleanse := h.clientTalent("hunter.talent.improved-mend-pet", 0, []float64{0, 15, 50}[int(mendRank)]) / 100
+	mendCost := int32(h.clientTalent("hunter.talent.improved-mend-pet", 1, 10*mendRank))
+	h.RegisterSpell(core.SpellConfig{ActionID: id, SpellSchool: core.SpellSchoolNature, Flags: core.SpellFlagAPL | core.SpellFlagHelpful | core.SpellFlagChanneled, ManaCost: core.ManaCostOptions{FlatCost: 480, Multiplier: 100 - mendCost}, Cast: core.CastConfig{DefaultCast: core.Cast{GCD: core.GCDDefault}, IgnoreHaste: true}, ExtraCastCondition: func(sim *core.Simulation, t *core.Unit) bool { return h.pet.IsEnabled() },
 		Dot: core.DotConfig{SelfOnly: true, Aura: core.Aura{Label: "Mend Pet", OnExpire: func(a *core.Aura, sim *core.Simulation) {
 			if !h.IsMoving() {
 				h.AutoAttacks.EnableAutoSwing(sim)
@@ -231,7 +242,7 @@ func (h *Hunter) registerForeverMendPet() {
 					return
 				}
 				h.pet.GainHealth(sim, 245, metrics)
-				if sim.Proc([]float64{0, .15, .5}[h.ForeverRank("hunter.talent.improved-mend-pet")], "Improved Mend Pet") { // client: 15%/50%
+				if sim.Proc(cleanse, "Improved Mend Pet") {
 					h.pet.ForeverDispelOne(sim, "curse", "disease", "magic", "poison")
 				}
 			},

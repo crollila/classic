@@ -15,6 +15,8 @@ func (mage *Mage) applyIgnite() {
 		return
 	}
 	newIgniteDamage := 0.0
+	// Forever: the share is the client's Ignite effect 0 at the chosen rank.
+	igniteShare := mage.talentPct("ignite", 0, 0.08*float64(mage.Talents.Ignite))
 
 	mage.RegisterAura(core.Aura{
 		Label:    "Ignite Talent",
@@ -27,7 +29,7 @@ func (mage *Mage) applyIgnite() {
 				return
 			}
 			if spell.SpellSchool.Matches(core.SpellSchoolFire) && result.DidCrit() {
-				newIgniteDamage = result.Damage * 0.08 * float64(mage.Talents.Ignite) / IgniteTicks
+				newIgniteDamage = result.Damage * igniteShare / IgniteTicks
 				mage.Ignite.Cast(sim, result.Target)
 			}
 		},

@@ -14,6 +14,13 @@ func (warrior *Warrior) registerBerserkerRageSpell() {
 	actionID := core.ActionID{SpellID: 18499}
 	rageMetrics := warrior.NewRageMetrics(actionID)
 	instantRage := 5 * float64(warrior.Talents.ImprovedBerserkerRage)
+	improvedChance := 0.0
+	if warrior.Forever != nil {
+		// Improved Berserker Rage, client per rank: effect 0 the rage (tenths: 50/100), effect 1
+		// the chance to break roots and snares (50/100%).
+		improvedChance = clientTalent(&warrior.Character, "warrior.talent.improved-berserker-rage", 1, 0.01, .5*float64(warrior.ForeverRank("warrior.talent.improved-berserker-rage")))
+		instantRage = clientTalent(&warrior.Character, "warrior.talent.improved-berserker-rage", 0, 0.1, instantRage)
+	}
 
 	var fearImmunity *core.Aura
 	if warrior.Forever != nil {
@@ -64,7 +71,7 @@ func (warrior *Warrior) registerBerserkerRageSpell() {
 			if fearImmunity != nil {
 				fearImmunity.Activate(sim)
 			}
-			if warrior.Forever != nil && sim.Proc(.5*float64(warrior.ForeverRank("warrior.talent.improved-berserker-rage")), "Improved Berserker Rage") {
+			if warrior.Forever != nil && sim.Proc(improvedChance, "Improved Berserker Rage") {
 				for _, kind := range []core.ForeverControlKind{core.ForeverRoot, core.ForeverSnare} {
 					for _, a := range warrior.GetAurasWithTag("forever-control-" + string(kind)) {
 						a.Deactivate(sim)

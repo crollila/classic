@@ -1,10 +1,12 @@
 package mage
 
 import (
+	"math"
 	"slices"
 	"time"
 
 	"github.com/wowsims/classic/sim/core"
+	"github.com/wowsims/classic/sim/core/gamedata"
 	"github.com/wowsims/classic/sim/core/stats"
 )
 
@@ -55,8 +57,8 @@ func (mage *Mage) applyArcaneTalents() {
 
 	// Arcane Instability
 	if mage.Talents.ArcaneInstability > 0 {
-		bonusDamageMultiplierAdditive := .01 * float64(mage.Talents.ArcaneInstability)
-		bonusCritRating := 1 * float64(mage.Talents.ArcaneInstability) * core.SpellCritRatingPerCritChance
+		bonusDamageMultiplierAdditive := mage.talentPct("arcane-instability", 0, .01*float64(mage.Talents.ArcaneInstability))
+		bonusCritRating := mage.clientTalent("arcane-instability", 1, float64(mage.Talents.ArcaneInstability)) * core.SpellCritRatingPerCritChance
 
 		mage.OnSpellRegistered(func(spell *core.Spell) {
 			if spell.Flags.Matches(SpellFlagMage) {
@@ -86,7 +88,7 @@ func (mage *Mage) applyFireTalents() {
 
 	// Critical Mass
 	if mage.Talents.CriticalMass > 0 {
-		bonusCrit := 2 * float64(mage.Talents.CriticalMass) * core.SpellCritRatingPerCritChance
+		bonusCrit := mage.clientTalent("critical-mass", 0, 2*float64(mage.Talents.CriticalMass)) * core.SpellCritRatingPerCritChance
 		mage.OnSpellRegistered(func(spell *core.Spell) {
 			if spell.SpellSchool.Matches(core.SpellSchoolFire) && spell.Flags.Matches(SpellFlagMage) {
 				spell.BonusCritRating += bonusCrit
@@ -96,7 +98,7 @@ func (mage *Mage) applyFireTalents() {
 
 	// Fire Power
 	if mage.Talents.FirePower > 0 {
-		bonusDamageMultiplierAdditive := 0.02 * float64(mage.Talents.FirePower)
+		bonusDamageMultiplierAdditive := mage.talentPct("fire-power", 0, 0.02*float64(mage.Talents.FirePower))
 		mage.OnSpellRegistered(func(spell *core.Spell) {
 			// Fire Power buffs pretty much all mage fire spells EXCEPT ignite
 			if spell.SpellSchool.Matches(core.SpellSchoolFire) && spell.Flags.Matches(SpellFlagMage) && spell.SpellCode != SpellCode_MageIgnite {
@@ -124,7 +126,7 @@ func (mage *Mage) applyFrostTalents() {
 
 	// Ice Shards
 	if mage.Talents.IceShards > 0 {
-		critBonus := .20 * float64(mage.Talents.IceShards)
+		critBonus := mage.talentPct("ice-shards", 0, .20*float64(mage.Talents.IceShards))
 
 		mage.OnSpellRegistered(func(spell *core.Spell) {
 			if spell.SpellSchool.Matches(core.SpellSchoolFrost) && spell.Flags.Matches(SpellFlagMage) {
@@ -135,7 +137,7 @@ func (mage *Mage) applyFrostTalents() {
 
 	// Piercing Ice
 	if mage.Talents.PiercingIce > 0 {
-		bonusDamageMultiplierAdditive := 0.02 * float64(mage.Talents.PiercingIce)
+		bonusDamageMultiplierAdditive := mage.talentPct("piercing-ice", 0, 0.02*float64(mage.Talents.PiercingIce))
 
 		mage.OnSpellRegistered(func(spell *core.Spell) {
 			if spell.SpellSchool.Matches(core.SpellSchoolFrost) && spell.Flags.Matches(SpellFlagMage) {
@@ -146,8 +148,8 @@ func (mage *Mage) applyFrostTalents() {
 
 	// Frost Channeling
 	if mage.Talents.FrostChanneling > 0 {
-		manaCostMultiplier := 5 * mage.Talents.FrostChanneling
-		threatMultiplier := 1 - .10*float64(mage.Talents.FrostChanneling)
+		manaCostMultiplier := int32(-mage.clientTalent("frost-channeling", 0, -5*float64(mage.Talents.FrostChanneling)))
+		threatMultiplier := 1 - math.Abs(mage.talentPct("frost-channeling", 1, .10*float64(mage.Talents.FrostChanneling)))
 		mage.OnSpellRegistered(func(spell *core.Spell) {
 			if spell.SpellSchool.Matches(core.SpellSchoolFrost) && spell.Flags.Matches(SpellFlagMage) {
 				spell.Cost.Multiplier -= manaCostMultiplier
@@ -162,12 +164,16 @@ func (mage *Mage) applyArcaneConcentration() {
 		return
 	}
 
-	procChance := 0.02 * float64(mage.Talents.ArcaneConcentration)
+	procChance := mage.talentPct("arcane-concentration", 0, 0.02*float64(mage.Talents.ArcaneConcentration))
+	var icd core.Cooldown
+	if s := mage.ClientSpell(11213); s != nil && s.ProcICDMs > 0 {
+		icd = core.Cooldown{Timer: mage.NewTimer(), Duration: time.Duration(s.ProcICDMs) * time.Millisecond}
+	}
 
 	mage.ClearcastingAura = mage.RegisterAura(core.Aura{
 		Label:    "Clearcasting",
 		ActionID: core.ActionID{SpellID: 12577},
-		Duration: time.Second * 15,
+		Duration: mage.clientDuration(12536, time.Second*15),
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.PseudoStats.SchoolCostMultiplier.AddToMagicSchools(-100)
 		},
@@ -225,8 +231,14 @@ func (mage *Mage) applyArcaneConcentration() {
 			// 	procChance *= 0.15
 			// }
 
+			if icd.Timer != nil && !icd.IsReady(sim) {
+				return
+			}
 			if sim.Proc(procChance, "Arcane Concentration") {
 				mage.ClearcastingAura.Activate(sim)
+				if icd.Timer != nil {
+					icd.Use(sim)
+				}
 			}
 		},
 	})
@@ -309,39 +321,43 @@ func (mage *Mage) registerArcanePowerCD() {
 			affectedSpells = append(affectedSpells, spell)
 		}
 	})
+	damage, cost := 1.3, int32(30)
+	if mage.Forever != nil {
+		damage, cost = 1+mage.clientEffect(12042, 0, 30)/100, int32(mage.clientEffect(12042, 1, 30))
+	}
 
 	mage.ArcanePowerAura = mage.RegisterAura(core.Aura{
 		Label:    "Arcane Power",
 		ActionID: actionID,
-		Duration: time.Second * 15,
+		Duration: mage.clientDuration(12042, time.Second*15),
 		// Forever: "your spells deal 30% more damage", a multiplier of its own rather than
 		// a term added to Fire Power, Arcane Instability and Arcane Blast.
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range affectedSpells {
 				if mage.Forever != nil {
-					spell.DamageMultiplier *= 1.3
+					spell.DamageMultiplier *= damage
 				} else {
 					spell.DamageMultiplierAdditive += 0.3
 				}
 				if spell.Cost != nil {
-					spell.Cost.Multiplier += 30
+					spell.Cost.Multiplier += cost
 				}
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range affectedSpells {
 				if mage.Forever != nil {
-					spell.DamageMultiplier /= 1.3
+					spell.DamageMultiplier /= damage
 				} else {
 					spell.DamageMultiplierAdditive -= 0.3
 				}
 				if spell.Cost != nil {
-					spell.Cost.Multiplier -= 30
+					spell.Cost.Multiplier -= cost
 				}
 			}
 		},
 	})
-	core.RegisterPercentDamageModifierEffect(mage.ArcanePowerAura, 1.3)
+	core.RegisterPercentDamageModifierEffect(mage.ArcanePowerAura, damage)
 
 	spell := mage.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
@@ -378,7 +394,7 @@ func (mage *Mage) applyMasterOfElements() {
 		return
 	}
 
-	refundCoeff := 0.1 * float64(mage.Talents.MasterOfElements)
+	refundCoeff := mage.talentPct("master-of-elements", 0, 0.1*float64(mage.Talents.MasterOfElements))
 	manaMetrics := mage.NewManaMetrics(core.ActionID{SpellID: 29076})
 
 	mage.RegisterAura(core.Aura{
@@ -425,10 +441,16 @@ func (mage *Mage) registerCombustionCD() {
 
 	numCrits := 0
 	critLimit := 3
+	critPerStack := 10.0 * core.SpellCritRatingPerCritChance
 	if mage.ForeverRank("mage.talent.combustion") > 0 {
 		critLimit = 4
+		if s := mage.ClientSpell(11129); s != nil && s.ProcCharges > 0 {
+			critLimit = s.ProcCharges
+		} else {
+			gamedata.Use("mage: Combustion", "critical strike limit", 4, "UNKNOWN", "client build has no charges for 11129")
+		}
+		critPerStack = mage.clientEffect(28682, 0, 10) * core.SpellCritRatingPerCritChance
 	}
-	critPerStack := 10.0 * core.SpellCritRatingPerCritChance
 
 	mage.CombustionAura = mage.RegisterAura(core.Aura{
 		Label:     "Combustion",

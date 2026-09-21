@@ -105,3 +105,26 @@ func TestLevel20SpecsForever(t *testing.T) {
 		})
 	}
 }
+
+// Verification 8 (reproducibility): a result names the game data and seed it came from, and the
+// same request with that seed and build reproduces it exactly.
+func TestResultProvenanceReproduces(t *testing.T) {
+	player := foreverPlayer(caseNamed(t, "Rogue"), 20, "", nil)
+	request := func(seed int64) *proto.RaidSimRequest {
+		return &proto.RaidSimRequest{
+			Raid:       &proto.Raid{Parties: []*proto.Party{{Players: []*proto.Player{player}}}, Buffs: &proto.RaidBuffs{}, Debuffs: &proto.Debuffs{}},
+			Encounter:  &proto.Encounter{Duration: 60, Targets: []*proto.Target{{Level: 22, MobType: proto.MobType_MobTypeHumanoid, Stats: stats.Stats{stats.Armor: 850}.ToFloatArray()}}},
+			SimOptions: &proto.SimOptions{Iterations: 200, RandomSeed: seed},
+		}
+	}
+	first := core.RunRaidSim(request(0))
+	p := first.Provenance
+	if p == nil || p.GameDataBuild != gamedata.Current().Build || p.GameDataSha256 == "" || p.RandomSeed == 0 {
+		t.Fatalf("provenance incomplete: %+v", p)
+	}
+	player.Forever.GameDataBuild = p.GameDataBuild
+	again := core.RunRaidSim(request(p.RandomSeed))
+	if again.RaidMetrics.Dps.Avg != first.RaidMetrics.Dps.Avg {
+		t.Fatalf("same build + seed gave %.6f then %.6f", first.RaidMetrics.Dps.Avg, again.RaidMetrics.Dps.Avg)
+	}
+}

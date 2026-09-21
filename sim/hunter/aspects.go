@@ -48,7 +48,8 @@ func (hunter *Hunter) getMaxHawkRank() int {
 
 func (hunter *Hunter) getAspectOfTheHawkSpellConfig(rank int) core.SpellConfig {
 	var impHawkAura *core.Aura
-	improvedHawkProcChance := hunter.ForeverValue("hunter.talent.deadly-aspects", 0, float64(hunter.Talents.ImprovedAspectOfTheHawk)) / 100
+	// Forever Deadly Aspects effect 0: the Aspect of the Hawk proc chance (2..10%).
+	improvedHawkProcChance := hunter.clientTalent("hunter.talent.deadly-aspects", 0, hunter.ForeverValue("hunter.talent.deadly-aspects", 0, float64(hunter.Talents.ImprovedAspectOfTheHawk))) / 100
 
 	spellIds := [8]int32{0, 13165, 14318, 14319, 14320, 14321, 14322, 25296}
 	levels := [8]int{0, 10, 18, 28, 38, 48, 58, 60}
@@ -56,7 +57,7 @@ func (hunter *Hunter) getAspectOfTheHawkSpellConfig(rank int) core.SpellConfig {
 	spellId := spellIds[rank]
 	level := levels[rank]
 
-	if hunter.Talents.ImprovedAspectOfTheHawk > 0 {
+	if hunter.Talents.ImprovedAspectOfTheHawk > 0 || hunter.ForeverRank("hunter.talent.deadly-aspects") > 0 {
 		impHawkAura = hunter.createImprovedHawkAura(
 			"Quick Shots",
 			core.ActionID{SpellID: 6150},
@@ -64,6 +65,10 @@ func (hunter *Hunter) getAspectOfTheHawkSpellConfig(rank int) core.SpellConfig {
 	}
 	// Use utility function to get the attack power based on rank
 	rap := hunter.getMaxAspectOfTheHawkAttackPower(rank)
+	if hunter.Forever != nil {
+		// Forever: effect 0 is the ranged attack power (1.60.1 rank 6 reads 55, below rank 5's 90).
+		rap = hunter.ClientEffectValue(spellId, 0, rap)
+	}
 
 	actionID := core.ActionID{SpellID: spellId}
 	aspectOfTheHawkAura := hunter.GetOrRegisterAura(core.Aura{

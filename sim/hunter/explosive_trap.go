@@ -18,6 +18,21 @@ func (hunter *Hunter) getExplosiveTrapConfig(rank int, timer *core.Timer) core.S
 
 	numHits := hunter.Env.GetNumTargets()
 
+	numTicks, tickLength := int32(10), time.Second*2
+	cooldown := time.Second * 15
+	if hunter.Forever != nil {
+		// Forever: the trap spell (13813/14316/14317) holds the cooldown; its effect spell
+		// (13812/14314/14315) the damage: effect 0 the explosion's range, effect 1 the periodic
+		// damage per tick, and the duration over effect 1's period the ticks (1.60.1 rank 3:
+		// 201-257 then 33 every 2 sec for 20 sec; 30 sec category cooldown).
+		trapID := [4]int32{0, 13813, 14316, 14317}[rank]
+		effectID := [4]int32{0, 13812, 14314, 14315}[rank]
+		minDamage, maxDamage = hunter.ClientEffectRange(effectID, 0, minDamage, maxDamage)
+		dotDamage = hunter.ClientEffectValue(effectID, 1, dotDamage)
+		numTicks, tickLength = clientTicks(&hunter.Character, effectID, 1, numTicks, tickLength)
+		cooldown = clientCooldown(&hunter.Character, trapID, cooldown)
+	}
+
 	return core.SpellConfig{
 		SpellCode:     SpellCode_HunterExplosiveTrap,
 		ActionID:      core.ActionID{SpellID: spellId},
@@ -35,7 +50,7 @@ func (hunter *Hunter) getExplosiveTrapConfig(rank int, timer *core.Timer) core.S
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    timer,
-				Duration: time.Second * 15,
+				Duration: cooldown,
 			},
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
@@ -52,8 +67,8 @@ func (hunter *Hunter) getExplosiveTrapConfig(rank int, timer *core.Timer) core.S
 				Label: "ExplosiveTrap" + hunter.Label + strconv.Itoa(rank),
 				Tag:   "ExplosiveTrap",
 			},
-			NumberOfTicks: 10,
-			TickLength:    time.Second * 2,
+			NumberOfTicks: numTicks,
+			TickLength:    tickLength,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.Snapshot(target, dotDamage, isRollover)

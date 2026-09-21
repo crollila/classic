@@ -17,6 +17,11 @@ var ItemsByID = map[int32]Item{}
 var RandomSuffixesByID = map[int32]RandomSuffix{}
 var EnchantsByEffectID = map[int32]Enchant{}
 
+// ForeverItemsByID/ForeverEnchantsByEffectID are isolated from the Classic database. They are
+// consulted only when Player.Forever is present, so client item changes cannot alter Classic sims.
+var ForeverItemsByID = map[int32]Item{}
+var ForeverEnchantsByEffectID = map[int32]Enchant{}
+
 func addToDatabase(newDB *proto.SimDatabase) {
 	for _, v := range newDB.Items {
 		rwMutex.Lock()

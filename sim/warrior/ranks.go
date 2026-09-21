@@ -144,8 +144,7 @@ func demoralizingShoutAuraAtRank(target *core.Unit, rank int32, boomingVoicePts 
 	return aura
 }
 
-func sunderArmorAuraAtRank(target *core.Unit, rank int, spellID int32) *core.Aura {
-	arpen := sunderArmorPerStack[rank-1]
+func sunderArmorAuraAtRank(target *core.Unit, rank int, spellID int32, arpen float64) *core.Aura {
 	var effect *core.ExclusiveEffect
 	aura := target.GetOrRegisterAura(core.Aura{
 		Label:     "Sunder Armor-rank" + strconv.Itoa(rank),

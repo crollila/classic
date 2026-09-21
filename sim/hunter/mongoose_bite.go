@@ -13,9 +13,9 @@ func (hunter *Hunter) getMongooseBiteConfig(rank int) core.SpellConfig {
 	baseDamage := [5]float64{0, 25, 45, 75, 115}[rank]
 	manaCost := [5]float64{0, 30, 40, 50, 65}[rank]
 	level := mongooseBiteLevel[rank]
-	// Forever client: "melee weapon damage plus 15/22/37/57".
+	// Forever: weapon damage plus effect 0's flat bonus (1.60.1: 15/22/37/57), from the client.
 	forever := hunter.Forever != nil
-	foreverBonus := [5]float64{0, 15, 22, 37, 57}[rank]
+	foreverBonus := hunter.ClientEffectValue(spellId, 0, [5]float64{0, 15, 22, 37, 57}[rank])
 
 	spellConfig := core.SpellConfig{
 		SpellCode:     SpellCode_HunterMongooseBite,
@@ -79,6 +79,9 @@ func (hunter *Hunter) registerMongooseBiteSpell() {
 	})
 
 	rank := rankForLevel(mongooseBiteLevel[:], hunter.Level)
+	if hunter.Forever != nil {
+		rank = clientRank(&hunter.Character, []int32{1495, 14269, 14270, 14271}, []int32{16, 30, 44, 58}, hunter.Level) + 1
+	}
 	if rank == 0 {
 		return
 	}

@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/wowsims/classic/sim/core"
+	"github.com/wowsims/classic/sim/core/gamedata"
 	"github.com/wowsims/classic/sim/core/proto"
 	"github.com/wowsims/classic/sim/core/stats"
 	"github.com/wowsims/classic/sim/rogue"
@@ -65,6 +66,30 @@ func TestForeverWarriorLearnedRankDamage(t *testing.T) {
 		if got := dealtBase(t, sim, c, revenge, func() { revenge.ApplyEffects(sim, c.CurrentTarget, revenge) }); got < 138-1e-6 || got > 168+1e-6 {
 			t.Fatalf("Revenge rank 6 base %v, want 138-168", got)
 		}
+	}
+}
+
+// A physical ability's ordinary numeric value is build data: changing only Mortal Strike's
+// client effect changes the registered strike, without changing Warrior code.
+func TestForeverMortalStrikeFollowsSelectedBuild(t *testing.T) {
+	gamedata.RegisterVariant("test-mortal-strike-bonus", func(s *gamedata.Snapshot) {
+		e := s.Spell(21553).Effect(1)
+		e.Base, e.Min, e.Max = 260, 260, 260
+	})
+	build := physicalBuild(t, "warrior.talent.mortal-strike")
+	baseSim, baseChar := physicalSim(t, "Warrior", "warrior", build)
+	baseSpell := physicalID(t, baseChar, 21553)
+	base := dealtBase(t, baseSim, baseChar, baseSpell, func() { baseSpell.ApplyEffects(baseSim, baseChar.CurrentTarget, baseSpell) })
+
+	changedSim, changedChar := physicalSim(t, "Warrior", "warrior", build, func(p *proto.Player) {
+		p.Forever.GameDataBuild = "test-mortal-strike-bonus"
+	})
+	changedSpell := physicalID(t, changedChar, 21553)
+	changed := dealtBase(t, changedSim, changedChar, changedSpell, func() {
+		changedSpell.ApplyEffects(changedSim, changedChar.CurrentTarget, changedSpell)
+	})
+	if !near(changed-base, 100) {
+		t.Fatalf("data-only Mortal Strike bonus change moved base damage %.2f -> %.2f, want +100", base, changed)
 	}
 }
 
@@ -242,7 +267,6 @@ func TestForeverAmbushRequiresBehind(t *testing.T) {
 		t.Fatal("Ambush castable in front of the target")
 	}
 }
-
 
 func TestForeverMutilateUsesLearnedRank(t *testing.T) {
 	for _, tc := range []struct {

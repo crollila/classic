@@ -21,7 +21,9 @@ func (warrior *Warrior) registerRevengeSpell(cdTimer *core.Timer) {
 	has2pcDreadnaught := warrior.HasSetBonus(ItemSetDreadnaughtsBattlegear, 2)
 	baseDamage := RevengeBaseDamage[rank]
 	if warrior.Forever != nil {
-		baseDamage = revengeDamageForever[rank-1][:]
+		// Effect 0 (school_damage): the rank's damage range; the table is the fallback.
+		low, high := warrior.ClientEffectRange(actionID.SpellID, 0, revengeDamageForever[rank-1][0], revengeDamageForever[rank-1][1])
+		baseDamage = []float64{low, high}
 	}
 	basedamageLow := baseDamage[0] + core.TernaryFloat64(has2pcDreadnaught, 75, 0)
 	basedamageHigh := baseDamage[1] + core.TernaryFloat64(has2pcDreadnaught, 75, 0)
@@ -74,7 +76,8 @@ func (warrior *Warrior) registerRevengeSpell(cdTimer *core.Timer) {
 
 		CritDamageBonus: warrior.impale(),
 
-		DamageMultiplier: 1 + warrior.ForeverValue("warrior.talent.improved-revenge", 0, 0)/100,
+		// Improved Revenge: client effect 0 is the damage percent (20/40/60).
+		DamageMultiplier: 1 + clientTalent(&warrior.Character, "warrior.talent.improved-revenge", 0, 1, warrior.ForeverValue("warrior.talent.improved-revenge", 0, 0))/100,
 		ThreatMultiplier: 2.25,
 		FlatThreatBonus:  2.25 * 2 * revengeLevel,
 		BonusCoefficient: 1,

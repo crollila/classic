@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	googleProto "google.golang.org/protobuf/proto"
 	"log"
 	"math"
 	"math/rand"
@@ -199,6 +200,11 @@ func newSimWithEnv(env *Environment, simOptions *proto.SimOptions, signals simsi
 	rseed := simOptions.RandomSeed
 	if rseed == 0 {
 		rseed = time.Now().UnixNano()
+		// Iterations reseed from Options.RandomSeed; carry the chosen seed there (on a copy, so the
+		// caller's request is untouched) so a random run really is random and replaying the seed
+		// recorded in the result's provenance reproduces it.
+		simOptions = googleProto.Clone(simOptions).(*proto.SimOptions)
+		simOptions.RandomSeed = rseed
 	}
 
 	return &Simulation{
@@ -355,6 +361,7 @@ func (sim *Simulation) run() *proto.RaidSimResult {
 		FirstIterationDuration: firstIterationDuration.Seconds(),
 		AvgIterationDuration:   totalDuration.Seconds() / float64(sim.Options.Iterations),
 		IterationsDone:         sim.Options.Iterations,
+		Provenance:             sim.provenance(),
 	}
 
 	// Final progress report

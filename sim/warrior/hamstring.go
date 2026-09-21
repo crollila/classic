@@ -9,7 +9,7 @@ func (warrior *Warrior) registerHamstringSpell() {
 	if rank == 0 {
 		return
 	}
-	damage := hamstringDamage[rank-1]
+	damage := clientRankValue(&warrior.Character, spellID, 0, hamstringDamage[rank-1]) // effect 0: school_damage
 	spell_level := float64(core.SpellLearnedLevel(spellID))
 
 	warrior.Hamstring = warrior.RegisterSpell(BattleStance|BerserkerStance, core.SpellConfig{

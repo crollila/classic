@@ -40,12 +40,14 @@ func (mage *Mage) newBlizzardSpellConfig(rank int) core.SpellConfig {
 	var foreverChill core.AuraArray
 	if mage.ForeverRank("mage.talent.improved-blizzard") > 0 {
 		foreverChill = mage.NewEnemyAuraArray(func(t *core.Unit) *core.Aura {
-			return t.ForeverSnareAura("Forever Blizzard chill-"+mage.Label, mage.ForeverAction("mage.talent.improved-blizzard"), time.Duration(1.5*float64(time.Second)*(1+mage.ForeverValue("mage.talent.permafrost", 0, 0)/100)), (mage.ForeverValue("mage.talent.improved-blizzard", 0, 0)+mage.ForeverValue("mage.talent.permafrost", 1, 0))/100)
+			// Client: Improved Blizzard effect 0 and Permafrost effect 1 are negative slow
+			// points; Permafrost effect 0 lengthens the chill (%).
+			return t.ForeverSnareAura("Forever Blizzard chill-"+mage.Label, mage.ForeverAction("mage.talent.improved-blizzard"), time.Duration(1.5*float64(time.Second)*(1+mage.clientTalent("permafrost", 0, 0)/100)), -(mage.clientTalent("improved-blizzard", 0, 0)+mage.clientTalent("permafrost", 1, 0))/100)
 		})
 	}
 	winterChance := 0.0
 	if mage.ForeverRank("mage.talent.winter-s-chill") > 0 {
-		winterChance = min(1, mage.ForeverValue("mage.talent.winter-s-chill", 0, 0)/100)
+		winterChance = min(1, mage.clientTalent("winter-s-chill", 1, 0)/100)
 	}
 	var improvedBlizzardProcApplication *core.Spell
 	if mage.Talents.ImprovedBlizzard > 0 {
@@ -107,10 +109,10 @@ func (mage *Mage) newBlizzardSpellConfig(rank int) core.SpellConfig {
 					}
 					if foreverChill != nil {
 						foreverChill.Get(aoeTarget).Activate(sim)
-						if sim.Proc(mage.ForeverValue("mage.talent.frostbite", 0, 0)/100, "Forever Blizzard Frostbite") {
+						if sim.Proc(mage.clientTalent("frostbite", 0, 0)/100, "Forever Blizzard Frostbite") {
 							mage.foreverState.frozen.Get(aoeTarget).Activate(sim)
 						}
-						if sim.Proc(mage.ForeverValue("mage.talent.fingers-of-frost", 0, 0)/100, "Forever Blizzard Fingers of Frost") {
+						if sim.Proc(mage.clientTalent("fingers-of-frost", 1, 0)/100, "Forever Blizzard Fingers of Frost") {
 							a := mage.foreverState.fingers
 							a.Activate(sim)
 							a.SetStacks(sim, a.MaxStacks)

@@ -10,8 +10,11 @@ func (warrior *Warrior) registerExecuteSpell() {
 	if rank == 0 {
 		return
 	}
-	flatDamage := executeValues[rank-1][0]
-	convertedRageDamage := executeValues[rank-1][1]
+	// Effect 0 (dummy): the flat damage. The damage per extra rage point is not stored on the
+	// client spell (it is the tooltip's formula), so the Classic value is used and recorded.
+	flatDamage := clientRankValue(&warrior.Character, spellID, 0, executeValues[rank-1][0])
+	convertedRageDamage := codeValue(&warrior.Character, "warrior: Execute", "damage per extra rage", executeValues[rank-1][1], "PROVISIONAL",
+		"not stored on the client spell; the Classic per-rank value is used")
 
 	var rageMetrics *core.ResourceMetrics
 	warrior.Execute = warrior.RegisterSpell(BattleStance|BerserkerStance, core.SpellConfig{
@@ -23,7 +26,8 @@ func (warrior *Warrior) registerExecuteSpell() {
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagPassiveSpell | SpellFlagOffensive,
 
 		RageCost: core.RageCostOptions{
-			Cost:   15 - warrior.ForeverValue("warrior.talent.improved-execute", 0, []float64{0, 2, 5}[warrior.Talents.ImprovedExecute]),
+			// Improved Execute: client effect 0 is the rage cost modifier in tenths (-30/-50).
+			Cost:   15 - clientTalent(&warrior.Character, "warrior.talent.improved-execute", 0, -0.1, warrior.ForeverValue("warrior.talent.improved-execute", 0, []float64{0, 2, 5}[warrior.Talents.ImprovedExecute])),
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{

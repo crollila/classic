@@ -18,6 +18,7 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 	spellId := [ImmolateRanks + 1]int32{0, 348, 707, 1094, 2941, 11665, 11667, 11668, 25309}[rank]
 	manaCost := [ImmolateRanks + 1]float64{0, 25, 45, 90, 155, 220, 295, 370, 380}[rank]
 	level := [ImmolateRanks + 1]int{0, 1, 10, 20, 30, 40, 50, 60, 60}[rank]
+	immolateBonus := warlock.improvedImmolateBonus()
 
 	return core.SpellConfig{
 		SpellCode:   SpellCode_WarlockImmolate,
@@ -72,7 +73,7 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			oldMultiplier := spell.DamageMultiplier
-			spell.DamageMultiplier *= 1 + warlock.improvedImmolateBonus()
+			spell.DamageMultiplier *= 1 + immolateBonus
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.DamageMultiplier = oldMultiplier
 

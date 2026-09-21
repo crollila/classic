@@ -16,6 +16,17 @@ func (warlock *Warlock) getLifeTapBaseConfig(rank int) core.SpellConfig {
 	spellCoef := [LifeTapRanks + 1]float64{0, 0.68, 0.8, 0.8, 0.8, 0.8, 0.8}[rank]
 
 	level := [LifeTapRanks + 1]int{0, 6, 16, 26, 36, 46, 56}[rank]
+	damageMultiplier := 1 + 0.1*float64(warlock.Talents.ImprovedLifeTap)
+	demonicEnergies := 0.0
+	if warlock.Forever != nil {
+		// The rank's client value at the warlock's level (per-level growth included).
+		baseDamage = foreverClientValue(&warlock.Character, spellId, 0, baseDamage)
+		// The client's coefficient is 0 (Classic Era's too); the simulator's Classic value stays.
+		spellCoef = warlock.foreverProvisional("Life Tap", "sp coefficient", spellCoef, "PROVISIONAL",
+			"client sp_coefficient is 0 for Life Tap (as in Classic Era); the simulator's Classic coefficient is kept")
+		damageMultiplier = 1 + warlock.talentValue("improved-life-tap", 0, 1, 0)/100
+		demonicEnergies = warlock.talentValue("demonic-energies", 1, 1, 1) / 100
+	}
 
 	actionID := core.ActionID{SpellID: spellId}
 
@@ -42,7 +53,7 @@ func (warlock *Warlock) getLifeTapBaseConfig(rank int) core.SpellConfig {
 
 		BonusCoefficient: spellCoef,
 
-		DamageMultiplier: 1 + 0.1*float64(warlock.Talents.ImprovedLifeTap),
+		DamageMultiplier: damageMultiplier,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -54,8 +65,8 @@ func (warlock *Warlock) getLifeTapBaseConfig(rank int) core.SpellConfig {
 			}
 
 			warlock.AddMana(sim, restore, manaMetrics)
-			if warlock.ForeverRank("warlock.talent.demonic-energies") > 0 && warlock.ActivePet != nil {
-				warlock.ActivePet.AddMana(sim, restore*warlock.ForeverValue("warlock.talent.demonic-energies", 1, 0)/100, warlock.ActivePet.LifeTapManaMetrics)
+			if demonicEnergies > 0 && warlock.ActivePet != nil {
+				warlock.ActivePet.AddMana(sim, restore*demonicEnergies, warlock.ActivePet.LifeTapManaMetrics)
 			}
 		},
 	}

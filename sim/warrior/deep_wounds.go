@@ -12,6 +12,11 @@ func (warrior *Warrior) applyDeepWounds() {
 		return
 	}
 
+	if warrior.ForeverRank("warrior.talent.deep-wounds") > 0 {
+		// Forever: the client's per-rank percent of the average weapon hit (effect 0: 20/40/60).
+		warrior.deepWoundsFraction = clientTalent(&warrior.Character, "warrior.talent.deep-wounds", 0, 0.01, 0.2*float64(warrior.Talents.DeepWounds))
+	}
+
 	spellID := map[int32]int32{
 		1: 12834,
 		2: 12849,
@@ -83,6 +88,9 @@ func (warrior *Warrior) procDeepWounds(sim *core.Simulation, target *core.Unit, 
 	}
 
 	newDamage := awd * 0.2 * float64(warrior.Talents.DeepWounds) // 60% of average attackers damage
+	if warrior.deepWoundsFraction > 0 {
+		newDamage = awd * warrior.deepWoundsFraction
+	}
 
 	dot.SnapshotBaseDamage = newDamage / 4.0 // spread over 4 ticks of the dot
 	dot.SnapshotAttackerMultiplier = 1

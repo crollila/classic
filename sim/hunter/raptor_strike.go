@@ -67,7 +67,9 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 
 func (hunter *Hunter) newRaptorStrikeHitSpell(rank int) *core.Spell {
 	spellID := RaptorStrikeSpellId[rank]
-	baseDamage := RaptorStrikeBaseDamage[rank]
+	// Forever: effect 0 (weapon damage) is the flat bonus (1.60.1: 5/11/21/30/35/40/55/70, where
+	// Classic has 5..140).
+	baseDamage := hunter.ClientEffectValue(spellID, 0, RaptorStrikeBaseDamage[rank])
 
 	return hunter.RegisterSpell(core.SpellConfig{
 		SpellCode:   SpellCode_HunterRaptorStrikeHit,
@@ -133,6 +135,13 @@ func (hunter *Hunter) makeQueueSpellsAndAura() *core.Spell {
 
 func (hunter *Hunter) registerRaptorStrikeSpell() {
 	rank := rankForLevel(RaptorStrikeLevel[:], hunter.Level)
+	if hunter.Forever != nil {
+		levels := make([]int32, RaptorStrikeRanks)
+		for i := range levels {
+			levels[i] = int32(RaptorStrikeLevel[i+1])
+		}
+		rank = clientRank(&hunter.Character, RaptorStrikeSpellId[1:], levels, hunter.Level) + 1
+	}
 	if rank == 0 {
 		return
 	}

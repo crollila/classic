@@ -413,6 +413,20 @@ message RaidSimResult {
 	ErrorOutcome error = 5;
 
 	int32 iterations_done = 7;
+
+	// What this result was computed from, so it can be reproduced later.
+	SimProvenance provenance = 8;
+}
+
+message SimProvenance {
+	// Forever client game data (build label and content hash); empty in Classic mode.
+	string game_data_build = 1;
+	string game_data_sha256 = 2;
+	string classic_reference_build = 3;
+	// The seed actually used (a request seed of 0 means "random"; this records which).
+	int64 random_seed = 4;
+	// Values the simulation used that are not client data, as "owner | what = value (CONFIDENCE)".
+	repeated string non_client_values = 5;
 }
 
 message RaidSimRequestSplitRequest {

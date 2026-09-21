@@ -1,6 +1,7 @@
 package warlock
 
 import (
+	"math"
 	"slices"
 	"time"
 
@@ -155,7 +156,7 @@ func (warlock *Warlock) applyNightfall() {
 	shadowTranceAura := warlock.RegisterAura(core.Aura{
 		Label:    "Nightfall Shadow Trance",
 		ActionID: core.ActionID{SpellID: 17941},
-		Duration: time.Second * 10,
+		Duration: foreverDuration(&warlock.Character, 17941, time.Second*10, "Shadow Trance"),
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range warlock.ShadowBolt {
 				spell.CastTimeMultiplier -= 1
@@ -175,6 +176,10 @@ func (warlock *Warlock) applyNightfall() {
 	})
 
 	procChance := 0.02 * float64(warlock.Talents.Nightfall)
+	if warlock.Forever != nil {
+		// Client Nightfall effect 0: 2/4% a rank.
+		procChance = warlock.talentValue("nightfall", 0, 1, 0) / 100
+	}
 
 	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label: "Nightfall Hidden Aura",
@@ -250,6 +255,11 @@ func (warlock *Warlock) applyMasterSummoner() {
 
 	castTimeReduction := time.Second * 2 * time.Duration(warlock.Talents.MasterSummoner)
 	costReduction := 20 * warlock.Talents.MasterSummoner
+	if warlock.Forever != nil {
+		// Client Master Summoner: effect 0 -2000/-4000 ms, effect 1 -20/-40%.
+		castTimeReduction = time.Duration(warlock.talentValueOr("master-summoner", 0, -1, float64(castTimeReduction/time.Millisecond))) * time.Millisecond
+		costReduction = int32(math.Round(warlock.talentValue("master-summoner", 1, -1, 1)))
+	}
 
 	// Use an aura because the summon spells aren't registered by this point
 	warlock.RegisterAura(core.Aura{
@@ -665,7 +675,9 @@ func (warlock *Warlock) applyDevastation() {
 
 func (warlock *Warlock) improvedImmolateBonus() float64 {
 	if warlock.Forever != nil {
-		return warlock.ForeverValue("warlock.talent.aftermath", 0, 0) / 100
+		// Client Aftermath effect 1 ("initial damage of your Immolate by $m2%"); the research
+		// record lists it first.
+		return warlock.talentValue("aftermath", 1, 1, 0) / 100
 	}
 	return 0.05 * float64(warlock.Talents.ImprovedImmolate)
 }

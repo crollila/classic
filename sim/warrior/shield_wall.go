@@ -32,7 +32,8 @@ func (warrior *Warrior) RegisterShieldWallCD() {
 	if warrior.Forever != nil {
 		duration = 10 * time.Second
 		swAura.Duration = duration
-		cooldownDur -= time.Duration(warrior.ForeverValue("warrior.talent.improved-shield-wall", 0, 0) * float64(time.Minute))
+		// Improved Shield Wall: client effect 0 is the cooldown modifier in milliseconds.
+		cooldownDur -= time.Duration(clientTalent(&warrior.Character, "warrior.talent.improved-shield-wall", 0, -1.0/60000, warrior.ForeverValue("warrior.talent.improved-shield-wall", 0, 0)) * float64(time.Minute))
 	}
 
 	swSpell := warrior.RegisterSpell(DefensiveStance, core.SpellConfig{
