@@ -1,6 +1,6 @@
 {
   "version": "forever-sim-database-1",
-  "built_at": "2026-09-21T08:48:08.145222+00:00",
+  "built_at": "2026-09-21T09:02:36.060746+00:00",
   "dry_run": false,
   "sources": {
     "values": {
@@ -4157,8 +4157,8 @@
         "weaponSkills": "previous database entry"
       },
       "unrepresented_stats": {
-        "stat_127": 21,
-        "stat_46": 6
+        "stat_46": 6,
+        "stat_127": 21
       }
     },
     "10696": {
@@ -4771,6 +4771,13 @@
         "sources": "Forever sources: crafted"
       },
       "converted_ratings": {
+        "parry rating": [
+          {
+            "stat": "parry",
+            "rating_per_percent": 15.0,
+            "evidence": "client_data"
+          }
+        ],
         "crit rating": [
           {
             "stat": "melee_crit",
@@ -4780,13 +4787,6 @@
           {
             "stat": "spell_crit",
             "rating_per_percent": 14.0,
-            "evidence": "client_data"
-          }
-        ],
-        "parry rating": [
-          {
-            "stat": "parry",
-            "rating_per_percent": 15.0,
             "evidence": "client_data"
           }
         ]
@@ -5275,6 +5275,13 @@
         "stat_101": 1
       },
       "converted_ratings": {
+        "parry rating": [
+          {
+            "stat": "parry",
+            "rating_per_percent": 15.0,
+            "evidence": "client_data"
+          }
+        ],
         "hit rating": [
           {
             "stat": "melee_hit",
@@ -5284,13 +5291,6 @@
           {
             "stat": "spell_hit",
             "rating_per_percent": 10.0,
-            "evidence": "client_data"
-          }
-        ],
-        "parry rating": [
-          {
-            "stat": "parry",
-            "rating_per_percent": 15.0,
             "evidence": "client_data"
           }
         ]
@@ -6634,18 +6634,6 @@
         "requiredLevel": "previous database entry"
       },
       "converted_ratings": {
-        "crit rating": [
-          {
-            "stat": "melee_crit",
-            "rating_per_percent": 14.0,
-            "evidence": "client_data"
-          },
-          {
-            "stat": "spell_crit",
-            "rating_per_percent": 14.0,
-            "evidence": "client_data"
-          }
-        ],
         "haste rating": [
           {
             "stat": "melee_haste",
@@ -6655,6 +6643,18 @@
           {
             "stat": "spell_haste",
             "rating_per_percent": 10.0,
+            "evidence": "client_data"
+          }
+        ],
+        "crit rating": [
+          {
+            "stat": "melee_crit",
+            "rating_per_percent": 14.0,
+            "evidence": "client_data"
+          },
+          {
+            "stat": "spell_crit",
+            "rating_per_percent": 14.0,
             "evidence": "client_data"
           }
         ]
@@ -7542,18 +7542,6 @@
         "requiredLevel": "previous database entry"
       },
       "converted_ratings": {
-        "haste rating": [
-          {
-            "stat": "melee_haste",
-            "rating_per_percent": 10.0,
-            "evidence": "client_data"
-          },
-          {
-            "stat": "spell_haste",
-            "rating_per_percent": 10.0,
-            "evidence": "client_data"
-          }
-        ],
         "hit rating": [
           {
             "stat": "melee_hit",
@@ -7562,6 +7550,18 @@
           },
           {
             "stat": "spell_hit",
+            "rating_per_percent": 10.0,
+            "evidence": "client_data"
+          }
+        ],
+        "haste rating": [
+          {
+            "stat": "melee_haste",
+            "rating_per_percent": 10.0,
+            "evidence": "client_data"
+          },
+          {
+            "stat": "spell_haste",
             "rating_per_percent": 10.0,
             "evidence": "client_data"
           }
@@ -8769,17 +8769,17 @@
         "setId": "previous database entry"
       },
       "converted_ratings": {
-        "block rating": [
-          {
-            "stat": "block",
-            "rating_per_percent": 5.0,
-            "evidence": "client_data"
-          }
-        ],
         "defense rating": [
           {
             "stat": "defense",
             "rating_per_percent": 1.0,
+            "evidence": "client_data"
+          }
+        ],
+        "block rating": [
+          {
+            "stat": "block",
+            "rating_per_percent": 5.0,
             "evidence": "client_data"
           }
         ]
@@ -17201,18 +17201,6 @@
         "stat_39": "ItemModType 39 is ranged attack power; only guns, bows and crossbows carry it"
       },
       "converted_ratings": {
-        "crit rating": [
-          {
-            "stat": "melee_crit",
-            "rating_per_percent": 14.0,
-            "evidence": "client_data"
-          },
-          {
-            "stat": "spell_crit",
-            "rating_per_percent": 14.0,
-            "evidence": "client_data"
-          }
-        ],
         "haste rating": [
           {
             "stat": "melee_haste",
@@ -17222,6 +17210,18 @@
           {
             "stat": "spell_haste",
             "rating_per_percent": 10.0,
+            "evidence": "client_data"
+          }
+        ],
+        "crit rating": [
+          {
+            "stat": "melee_crit",
+            "rating_per_percent": 14.0,
+            "evidence": "client_data"
+          },
+          {
+            "stat": "spell_crit",
+            "rating_per_percent": 14.0,
             "evidence": "client_data"
           }
         ]
@@ -17687,13 +17687,6 @@
         "stat_83": 3
       },
       "converted_ratings": {
-        "expertise rating": [
-          {
-            "stat": "expertise",
-            "rating_per_percent": 10.0,
-            "evidence": "client_data"
-          }
-        ],
         "hit rating": [
           {
             "stat": "melee_hit",
@@ -17702,6 +17695,13 @@
           },
           {
             "stat": "spell_hit",
+            "rating_per_percent": 10.0,
+            "evidence": "client_data"
+          }
+        ],
+        "expertise rating": [
+          {
+            "stat": "expertise",
             "rating_per_percent": 10.0,
             "evidence": "client_data"
           }
@@ -21833,9 +21833,9 @@
         "sources": "Forever sources: crafted"
       },
       "provisional_stat_units": {
-        "stat_85": "only Cindercloth (fire) items carry it; ids 84-89 follow the client school order holy, fire, nature, frost, shadow, arcane",
         "stat_86": "school order 84-89 (nature)",
-        "stat_89": "school order 84-89 (arcane); Nether Force Wand, Starfaller"
+        "stat_89": "school order 84-89 (arcane); Nether Force Wand, Starfaller",
+        "stat_85": "only Cindercloth (fire) items carry it; ids 84-89 follow the client school order holy, fire, nature, frost, shadow, arcane"
       }
     },
     "279273": {

@@ -1,0 +1,172 @@
+{
+ "build": "1.60.1.69913+f17ec5ea",
+ "previous": "1.60.1.69913+54e9f6c8",
+ "status": "failed",
+ "reason": "'charmap' codec can't encode character '\\u2714' in position 4: character maps to <undefined>",
+ "created_at": "2026-09-21T08:57:36.268833+00:00",
+ "changes": {
+  "spells": {
+   "added": [],
+   "removed": [],
+   "changed": {}
+  },
+  "talents": {
+   "added": [],
+   "removed": [],
+   "changed": {}
+  },
+  "legacy_perks": {
+   "added": [],
+   "removed": [],
+   "changed": {}
+  },
+  "classic_talents": {
+   "added": [],
+   "removed": [],
+   "changed": {}
+  },
+  "items": {
+   "added": [],
+   "removed": [],
+   "changed": {}
+  },
+  "item_sets": {
+   "added": [],
+   "removed": [],
+   "changed": {}
+  },
+  "enchants": {
+   "added": [],
+   "removed": [],
+   "changed": {}
+  },
+  "gametables": {
+   "added": [],
+   "removed": [],
+   "changed": {}
+  }
+ },
+ "affected": {},
+ "reference": {
+  "balance_druid L20": {
+   "old": 8.493446323925635,
+   "new": 8.493446323925635,
+   "error": null
+  },
+  "balance_druid L60": {
+   "old": 142.59349086405862,
+   "new": 142.59349086405862,
+   "error": null
+  },
+  "elemental_shaman L20": {
+   "old": 11.364754759996227,
+   "new": 11.364754759996227,
+   "error": null
+  },
+  "elemental_shaman L60": {
+   "old": 126.45040088665482,
+   "new": 126.45040088665482,
+   "error": null
+  },
+  "enhancement_shaman L20": {
+   "old": 26.00531440938413,
+   "new": 26.00531440938413,
+   "error": null
+  },
+  "enhancement_shaman L60": {
+   "old": 164.14010803149804,
+   "new": 164.14010803149804,
+   "error": null
+  },
+  "feral_druid L20": {
+   "old": 59.948250861888155,
+   "new": 59.948250861888155,
+   "error": null
+  },
+  "feral_druid L60": {
+   "old": 159.8891596071947,
+   "new": 159.8891596071947,
+   "error": null
+  },
+  "hunter L20": {
+   "old": 37.73467054046739,
+   "new": 37.73467054046739,
+   "error": null
+  },
+  "hunter L60": {
+   "old": 190.1549742689594,
+   "new": 190.1549742689594,
+   "error": null
+  },
+  "mage L20": {
+   "old": 11.37456176205222,
+   "new": 11.37456176205222,
+   "error": null
+  },
+  "mage L60": {
+   "old": 134.0565439595464,
+   "new": 134.0565439595464,
+   "error": null
+  },
+  "retribution_paladin L20": {
+   "old": 25.6749064928956,
+   "new": 25.6749064928956,
+   "error": null
+  },
+  "retribution_paladin L60": {
+   "old": 73.41683883238188,
+   "new": 73.41683883238188,
+   "error": null
+  },
+  "rogue L20": {
+   "old": 32.484686476019036,
+   "new": 32.484686476019036,
+   "error": null
+  },
+  "rogue L60": {
+   "old": 249.9932238112377,
+   "new": 249.9932238112377,
+   "error": null
+  },
+  "shadow_priest L20": {
+   "old": 13.13503519308591,
+   "new": 13.13503519308591,
+   "error": null
+  },
+  "shadow_priest L60": {
+   "old": 248.75599343044362,
+   "new": 248.75599343044362,
+   "error": null
+  },
+  "warlock L20": {
+   "old": 23.853985204249476,
+   "new": 23.853985204249476,
+   "error": null
+  },
+  "warlock L60": {
+   "old": 187.31855555997964,
+   "new": 187.31855555997964,
+   "error": null
+  },
+  "warrior L20": {
+   "old": 37.149052988865215,
+   "new": 37.149052988865215,
+   "error": null
+  },
+  "warrior L60": {
+   "old": 414.1362462990469,
+   "new": 414.1362462990469,
+   "error": null
+  }
+ },
+ "validation": {
+  "tests": {
+   "ok": true,
+   "baselines_regenerated": []
+  },
+  "python": {
+   "ok": true,
+   "failures": []
+  }
+ }
+}

@@ -108,7 +108,91 @@
      "build": 69913
     }
    }
+  },
+  {
+   "build": "1.60.1.69913+f17ec5ea",
+   "client_build": "1.60.1.69913",
+   "file": "1.60.1.69913+f17ec5ea.json.gz",
+   "sha256": "f17ec5ea422702e96208bcf83bd8dea2add5a832f27486291f912799f4251f94",
+   "bytes": 1276660,
+   "created_at": "2026-09-21T08:55:10.141154+00:00",
+   "counts": {
+    "spells": 14825,
+    "talents": 471,
+    "legacy_perks": 31,
+    "classic_talents": 432,
+    "items": 12222,
+    "item_sets": 532,
+    "enchants": 2216
+   },
+   "source": {
+    "type": "client_data",
+    "product": "wow_classic_beta",
+    "build_name": "WOW-69913patch1.60.1_ForeverBeta",
+    "build_config": "6c0df97e8e481a9a41600e373367c200",
+    "extracted_at": "2026-09-21T08:55:06.7740415Z",
+    "hotfix_cache": {
+     "path": "D:\\Games\\World of Warcraft\\_classic_beta_\\Cache\\ADB\\enUS\\DBCache.bin",
+     "build": 69913
+    }
+   }
+  },
+  {
+   "build": "1.60.1.69913+a212ac75",
+   "client_build": "1.60.1.69913",
+   "file": "1.60.1.69913+a212ac75.json.gz",
+   "sha256": "a212ac75868adbf29c251d04dfb7cf75d34b9e7c82099a0a251b2b73bfc491d4",
+   "bytes": 1276660,
+   "created_at": "2026-09-21T08:58:16.308890+00:00",
+   "counts": {
+    "spells": 14825,
+    "talents": 471,
+    "legacy_perks": 31,
+    "classic_talents": 432,
+    "items": 12222,
+    "item_sets": 532,
+    "enchants": 2216
+   },
+   "source": {
+    "type": "client_data",
+    "product": "wow_classic_beta",
+    "build_name": "WOW-69913patch1.60.1_ForeverBeta",
+    "build_config": "6c0df97e8e481a9a41600e373367c200",
+    "extracted_at": "2026-09-21T08:58:12.9390605Z",
+    "hotfix_cache": {
+     "path": "D:\\Games\\World of Warcraft\\_classic_beta_\\Cache\\ADB\\enUS\\DBCache.bin",
+     "build": 69913
+    }
+   }
+  },
+  {
+   "build": "1.60.1.69913+db0b012f",
+   "client_build": "1.60.1.69913",
+   "file": "1.60.1.69913+db0b012f.json.gz",
+   "sha256": "db0b012f103409da47a34a72e07181308445f33ddd55de01fd2163954cca7e44",
+   "bytes": 1276664,
+   "created_at": "2026-09-21T09:02:33.372358+00:00",
+   "counts": {
+    "spells": 14825,
+    "talents": 471,
+    "legacy_perks": 31,
+    "classic_talents": 432,
+    "items": 12222,
+    "item_sets": 532,
+    "enchants": 2216
+   },
+   "source": {
+    "type": "client_data",
+    "product": "wow_classic_beta",
+    "build_name": "WOW-69913patch1.60.1_ForeverBeta",
+    "build_config": "6c0df97e8e481a9a41600e373367c200",
+    "extracted_at": "2026-09-21T09:02:30.0054651Z",
+    "hotfix_cache": {
+     "path": "D:\\Games\\World of Warcraft\\_classic_beta_\\Cache\\ADB\\enUS\\DBCache.bin",
+     "build": 69913
+    }
+   }
   }
  ],
- "current": "1.60.1.69913+54e9f6c8"
+ "current": "1.60.1.69913+db0b012f"
 }
