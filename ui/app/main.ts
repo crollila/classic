@@ -1,7 +1,13 @@
 // Forever Sim: one page for every DPS spec, laid out like the classic WarriorSim.
 // Character sheet and actions on the left, the paper doll across the top, and for the
 // selected slot every Forever item the character can wear, ranked by simulated DPS.
-import { ComputeStatsRequest, ForeverMode, ForeverOptions, Player, RaidSimRequest, RaidSimResult, StatWeightsRequest } from '../core/proto/api';
+import { ComputeStatsRequest, ForeverMode, ForeverOptions, Player, RaidSimRequest, RaidSimResult, RaidSimRequestSplitRequest, RaidSimResultCombinationRequest, StatWeightsRequest, UnitMetadata } from '../core/proto/api';
+import { APLRotation } from '../core/proto/apl';
+import { ActionID } from '../core/proto/common';
+import { optimize, canonical } from '../forever/optimizer.mjs';
+import { explainRotation } from '../forever/optimizer-explain.mjs';
+import { learnedRotation } from './rotation-context.mjs';
+import { runQueue } from './work-queue.mjs';
 import {
 	Consumes,
 	Cooldowns,
@@ -20,7 +26,7 @@ import {
 } from '../core/proto/common';
 import { Party, Raid } from '../core/proto/api';
 import { raceNames } from '../core/proto_utils/names';
-import { SimSignals } from '../core/sim_signal_manager';
+import { SimSignalManager, RequestTypes } from '../core/sim_signal_manager';
 import { WorkerPool } from '../core/worker_pool';
 import { foreverClassName, foreverDiscoveryTalents, foreverRaces, ForeverTalent } from '../forever/discovery';
 import mobArmor from './data/mob-armor.json';
@@ -64,14 +70,15 @@ const CLASS_BIT: Record<string, number> = { DRUID: 1, HUNTER: 2, MAGE: 3, PALADI
 // ---------------------------------------------------------------- state
 
 interface State {
+	autoRotation: boolean;
 	spec: string; level: number; race: Race; targetLevel: number; duration: number; iterations: number; itemIterations: number;
 	rotation: number; gear: number[]; talents: Record<string, number>; qualities: number[]; aboveLevel: boolean; slot: number;
 }
 const STORE = 'forever-app-v1';
 function defaults(spec: SpecDef): State {
 	return {
-		spec: spec.key, level: 20, race: foreverRaces(spec.cls)[0], targetLevel: 22, duration: 120, iterations: 3000, itemIterations: 600,
-		rotation: 0, gear: Array(17).fill(0), talents: {}, qualities: [1, 2, 3, 4, 5], aboveLevel: false, slot: 14,
+		spec: spec.key, level: 20, race: foreverRaces(spec.cls)[0], targetLevel: 22, duration: 120, iterations: 1000, itemIterations: 100,
+		autoRotation: false, rotation: 0, gear: Array(17).fill(0), talents: {}, qualities: [1, 2, 3, 4, 5], aboveLevel: false, slot: 14,
 	};
 }
 function load(key: string): State | null {
@@ -90,7 +97,17 @@ let items: Item[] = [];
 let byId = new Map<number, Item>();
 let def = SPECS.find(s => s.key === lastSpec()) || SPECS[1];
 let state: State = { ...defaults(def), ...(load(def.key) || {}) };
-const pool = new WorkerPool(Math.max(1, Math.min(8, (navigator.hardwareConcurrency || 4) - 1)));
+const pool = new WorkerPool(Math.max(1, Math.min(3, (navigator.hardwareConcurrency || 4) - 1)));
+const itemSignals = new SimSignalManager();
+const foregroundSignals = new SimSignalManager();
+let foregroundBusy = false;
+let setupRevision = 0;
+let optimizerController: AbortController | undefined;
+let optimized: { key: string; apl: APLRotation; result: Awaited<ReturnType<typeof optimize>> } | undefined;
+const optimizerCache = new Map();
+const setupKey = () => canonical([state.spec, state.level, state.race, state.targetLevel, state.duration, state.rotation, state.talents, state.gear]);
+const activeRotation = () => optimized && optimized.key === setupKey() ? APLRotation.clone(optimized.apl) : rotation(def, state.rotation);
+function stopItemWork() { ++runToken; void itemSignals.abortType(RequestTypes.All); }
 let runToken = 0;
 
 // ---------------------------------------------------------------- request building
@@ -117,7 +134,7 @@ function player(gear = state.gear): Player {
 		equipment: EquipmentSpec.create({ items: gear.map(id => ItemSpec.create({ id })) }),
 		consumes: Consumes.create(), buffs: IndividualBuffs.create(), cooldowns: Cooldowns.create(),
 		talentsString: "", forever,
-		rotation: rotation(def, state.rotation), spec: def.spec(state.level),
+		rotation: activeRotation(), spec: def.spec(state.level),
 		reactionTimeMs: 100, distanceFromTarget: def.role === 'melee' ? 5 : 25,
 	});
 }
@@ -133,10 +150,6 @@ function request(iterations: number, gear = state.gear): RaidSimRequest {
 		encounter: encounter(),
 		simOptions: { iterations, randomSeed: BigInt(Math.floor(Math.random() * 2 ** 31)), debug: false, debugFirstIteration: false, isTest: false, saveAllValues: false, interactive: false, useLabeledRands: false },
 	});
-}
-const signals = (): SimSignals => ({ abort: { isTriggered: () => false, trigger: () => {}, onTrigger: () => () => {} } } as unknown as SimSignals);
-async function simulate(iterations: number, gear = state.gear) {
-	return pool.raidSimAsync(request(iterations, gear), () => {}, signals());
 }
 const dps = (r: RaidSimResult) => r.raidMetrics?.dps?.avg || 0;
 
@@ -196,9 +209,13 @@ const heading = el('div', 'fa-heading');
 const statsTable = el('table', 'fa-stats');
 const dpsBox = el('div', 'fa-dps');
 const buttons = el('div', 'fa-buttons');
-const dpsButton = el('button', 'fa-btn', 'DPS');
+const dpsButton = el('button', 'fa-btn', 'Sim equipped DPS');
+const optimizeButton = el('button', 'fa-btn', 'Find best rotation');
+const cancelButton = el('button', 'fa-btn', 'Cancel');
+cancelButton.hidden = true;
+cancelButton.onclick = () => { optimizerController?.abort(); void foregroundSignals.abortType(RequestTypes.All); };
 const weightsButton = el('button', 'fa-btn', 'Stat Weights');
-buttons.append(dpsButton, weightsButton);
+buttons.append(dpsButton, optimizeButton, weightsButton, cancelButton);
 const settings = el('div', 'fa-settings');
 side.append(specSelect, heading, statsTable, dpsBox, buttons, settings);
 
@@ -212,6 +229,9 @@ function numberInput(value: number, min: number, max: number, onChange: (v: numb
 }
 function renderSettings() {
 	settings.replaceChildren();
+	const auto = el('input'); auto.type = 'checkbox'; auto.checked = state.autoRotation;
+	auto.onchange = () => { state.autoRotation = auto.checked; changed(); };
+	settings.append(field('Deep rotation search before DPS (slower)', auto));
 	const level = el('input'); level.type = 'range'; level.min = '10'; level.max = '60'; level.value = String(state.level);
 	const levelOut = el('output', '', String(state.level));
 	level.addEventListener('input', () => { levelOut.textContent = level.value; });
@@ -259,15 +279,17 @@ const STAT_ROWS: Array<[string, (s: number[]) => string, SpecDef['role'][]]> = [
 	['Armor', s => fmt(s[Stat.StatArmor], 0), ['melee', 'ranged', 'caster']],
 ];
 async function renderStats() {
+	const revision = setupRevision;
 	heading.replaceChildren(el('strong', '', `${raceNames.get(state.race)} ${def.label}`), el('span', '', `Level ${state.level} · ${pointsSpent()}/${pointsAllowed()} talent points`));
 	try {
 		const result = await pool.computeStats(ComputeStatsRequest.create({ raid: request(1).raid, encounter: encounter() }));
+		if (revision !== setupRevision) return;
 		const s = result.raidStats?.parties[0]?.players[0]?.finalStats?.stats || [];
 		statsTable.replaceChildren(...STAT_ROWS.filter(r => r[2].includes(def.role)).map(([label, value]) => {
 			const tr = el('tr'); tr.append(el('th', '', label), el('td', '', s.length ? value(s) : '—')); return tr;
 		}));
 		if (result.errorResult) statsTable.append(Object.assign(el('tr'), { textContent: result.errorResult }));
-	} catch (e) { statsTable.replaceChildren(el('tr', '', String(e))); }
+	} catch (e) { if (revision === setupRevision) statsTable.replaceChildren(el('tr', '', String(e))); }
 }
 
 // ---------------------------------------------------------------- top: paper doll + tabs
@@ -279,7 +301,7 @@ main.append(doll, tabs, panel);
 const TAB_NAMES = ['Gear', 'Talents', 'Results', 'Rotation'] as const;
 let tab: (typeof TAB_NAMES)[number] = 'Gear';
 for (const name of TAB_NAMES) {
-	const b = el('button', 'fa-tab', name); b.addEventListener('click', () => { tab = name; renderPanel(); }); tabs.append(b);
+	const b = el('button', 'fa-tab', name); b.addEventListener('click', () => { if (tab === name) return; stopItemWork(); tab = name; renderPanel(); }); tabs.append(b);
 }
 
 function renderDoll() {
@@ -290,7 +312,7 @@ function renderDoll() {
 		b.title = item ? `${slot.label}: ${item.name}` : `${slot.label}: empty`;
 		const img = el('img'); img.alt = ''; img.src = item ? ICON(item.icon) : `https://wow.zamimg.com/images/wow/icons/medium/${slot.icon}.jpg`;
 		b.append(img);
-		b.addEventListener('click', () => { state.slot = slot.key; tab = 'Gear'; save(); renderDoll(); renderPanel(); });
+		b.addEventListener('click', () => { state.slot = slot.key; itemPage = 0; tab = 'Gear'; save(); renderPanel(); });
 		doll.append(b);
 	}
 }
@@ -300,8 +322,10 @@ function renderDoll() {
 const itemCache = new Map<string, number>();
 let sortKey: 'dps' | 'ilvl' | 'name' = 'dps';
 let search = '';
+let itemPage = 0;
+const PAGE_SIZE = 75;
 function gearKey(gear: number[]) {
-	return JSON.stringify([state.spec, state.level, state.race, state.targetLevel, state.duration, state.rotation, state.talents, state.itemIterations, gear]);
+	return canonical([state.spec, state.level, state.race, state.targetLevel, state.duration, APLRotation.toJson(activeRotation()), state.talents, state.itemIterations, gear]);
 }
 function withItem(slot: number, id: number): number[] {
 	const gear = [...state.gear]; gear[slot] = id;
@@ -316,11 +340,14 @@ function equip(slot: number, id: number) {
 }
 function renderItems() {
 	if (tab !== 'Gear') return;
+	stopItemWork();
 	const slot = state.slot;
-	const list = candidates(slot).filter(i => !search || i.name.toLowerCase().includes(search));
+	const eligible = candidates(slot);
+	const list = eligible.filter(i => !search || i.name.toLowerCase().includes(search));
 	const head = el('div', 'fa-itemhead');
 	const find = el('input', 'fa-search'); find.placeholder = 'Search'; find.value = search;
-	find.addEventListener('input', () => { search = find.value.toLowerCase(); renderItems(); setTimeout(() => (panel.querySelector('.fa-search') as HTMLInputElement)?.focus(), 0); });
+	let searchTimer: ReturnType<typeof setTimeout>;
+	find.addEventListener('input', () => { clearTimeout(searchTimer); searchTimer = setTimeout(() => { if (!find.isConnected) return; search = find.value.toLowerCase(); itemPage = 0; renderItems(); (panel.querySelector('.fa-search') as HTMLInputElement)?.focus(); }, 150); });
 	const filters = el('div', 'fa-filters');
 	[['Commons', 1], ['Greens', 2], ['Blues', 3], ['Epics', 4]].forEach(([label, q]) => {
 		const l = el('label'), c = el('input'); c.type = 'checkbox'; c.checked = state.qualities.includes(q as number);
@@ -336,20 +363,27 @@ function renderItems() {
 	const thead = el('thead'), hr = el('tr');
 	for (const [key, label] of [['ilvl', 'ilvl'], ['name', 'Name'], ['', 'Req'], ['', 'Source'], ['dps', 'DPS']] as const) {
 		const th = el('th', key ? 'sortable' : '', label);
-		if (key) th.addEventListener('click', () => { sortKey = key; renderItems(); });
+		if (key) th.addEventListener('click', () => { sortKey = key; itemPage = 0; renderItems(); });
 		if (key === sortKey) th.classList.add('sorted');
 		hr.append(th);
 	}
 	thead.append(hr); table.append(thead);
 	const tbody = el('tbody');
 	const rows: Array<{ id: number; item?: Item; row: HTMLTableRowElement; cell: HTMLTableCellElement }> = [];
-	for (const item of [undefined, ...list]) {
+	const context = gearKey([]);
+	const keys = new Map([0, ...eligible.map(i => i.id)].map(id => [id, context + JSON.stringify(withItem(slot, id))]));
+	const score = (id: number) => itemCache.get(keys.get(id)!);
+	const sorted: Array<Item | undefined> = [undefined, ...list];
+	sorted.sort((a, b) => sortKey === 'name' ? (a?.name || '').localeCompare(b?.name || '') : sortKey === 'ilvl'
+		? (b?.ilvl || 0) - (a?.ilvl || 0) : (score(b?.id || 0) ?? -1) - (score(a?.id || 0) ?? -1));
+	itemPage = Math.min(itemPage, Math.max(0, Math.ceil(sorted.length / PAGE_SIZE) - 1));
+	for (const item of sorted.slice(itemPage * PAGE_SIZE, (itemPage + 1) * PAGE_SIZE)) {
 		const id = item?.id || 0;
 		const tr = el('tr', `${state.gear[slot] === id ? 'equipped' : ''}`);
 		const name = el('td', 'name');
 		if (item) {
 			const a = el('a', `q-${QUALITY[item.quality]}`); wowhead(a, 'item', item.id);
-			const img = el('img'); img.src = ICON(item.icon); img.alt = '';
+			const img = el('img'); img.loading = 'lazy'; img.src = ICON(item.icon); img.alt = '';
 			a.append(img, item.name); a.addEventListener('click', e => e.preventDefault()); name.append(a);
 		} else name.append(el('span', 'none', '— None —'));
 		const cell = el('td', 'dps', '');
@@ -358,38 +392,58 @@ function renderItems() {
 		tr.addEventListener('click', () => equip(slot, id));
 		rows.push({ id, item, row: tr, cell });
 	}
-	const score = (id: number) => itemCache.get(gearKey(withItem(slot, id)));
-	const order = () => rows.sort((a, b) => {
-		if (sortKey === 'ilvl') return (b.item?.ilvl || 0) - (a.item?.ilvl || 0);
-		if (sortKey === 'name') return (a.item?.name || '').localeCompare(b.item?.name || '');
-		return (score(b.id) ?? -1) - (score(a.id) ?? -1);
-	});
-	order();
 	const paint = () => {
 		const base = score(state.gear[slot]);
 		for (const r of rows) {
 			const v = score(r.id);
-			r.cell.textContent = v === undefined ? '…' : fmt(v, 2);
+			r.cell.textContent = v === undefined ? '—' : fmt(v, 2);
 			r.cell.title = v !== undefined && base !== undefined ? `${v - base >= 0 ? '+' : ''}${fmt(v - base, 2)} vs equipped` : '';
 		}
 	};
 	tbody.append(...rows.map(r => r.row)); table.append(tbody);
 	paint();
-	panel.replaceChildren(head, table, el('p', 'fa-note', list.length ? `${list.length} Forever items fit this slot. DPS is simulated with ${state.itemIterations} iterations each, everything else as equipped.` : 'No Forever item fits this slot at your level and filters.'));
-
-	// Simulate every row that has no score yet; newest render wins.
-	const token = ++runToken;
-	const missing = rows.filter(r => score(r.id) === undefined);
-	let done = 0;
-	void Promise.all(missing.map(async r => {
-		const gear = withItem(slot, r.id);
-		try {
-			const result = await simulate(state.itemIterations, gear);
-			if (!result.error) itemCache.set(gearKey(gear), dps(result));
-		} catch { /* a failed sim leaves the row unscored */ }
-		done++;
-		if (token === runToken) { paint(); if (done === missing.length && sortKey === 'dps') { order(); tbody.append(...rows.map(x => x.row)); } }
-	}));
+	const simSlot = el('button', 'fa-btn', 'Sim this slot'); simSlot.disabled = foregroundBusy;
+	const stop = el('button', 'fa-btn', 'Stop'); stop.hidden = true;
+	const progress = el('span', 'fa-note', `${eligible.length} eligible items. Search only filters the display.`);
+	progress.setAttribute('role', 'status');
+	stop.onclick = () => { stopItemWork(); stop.hidden = true; simSlot.disabled = false; progress.textContent = 'Stopped. Completed scores are kept.'; };
+	const navigation = el('div', 'fa-itemhead');
+	const prev = el('button', 'fa-btn', 'Previous'), next = el('button', 'fa-btn', 'Next');
+	prev.disabled = itemPage === 0; next.disabled = (itemPage + 1) * PAGE_SIZE >= sorted.length;
+	prev.onclick = () => { --itemPage; renderItems(); }; next.onclick = () => { ++itemPage; renderItems(); };
+	navigation.append(prev, el('span', '', `Page ${itemPage + 1} of ${Math.max(1, Math.ceil(sorted.length / PAGE_SIZE))}`), next);
+	head.append(simSlot, stop, progress);
+	panel.replaceChildren(head, table, navigation, el('p', 'fa-note', `DPS uses ${state.itemIterations} iterations per item and the displayed rotation, with other slots as equipped. Switching tabs stops scoring; completed results are cached. Click DPS to sort cached results instantly.`));
+	simSlot.onclick = async () => {
+		const token = ++runToken;
+		const missing = [...new Set([state.gear[slot], 0, ...eligible.map(i => i.id)])].filter(id => keys.has(id) && score(id) === undefined);
+		const baseRequest = request(state.itemIterations);
+		const jobs = missing.map(id => ({ key: keys.get(id)!, gear: withItem(slot, id) }));
+		baseRequest.simOptions!.randomSeed = 20260921n;
+		let done = 0, failed = 0, lastPaint = 0;
+		simSlot.disabled = true; stop.hidden = false;
+		const worker = async (job: {key: string; gear: number[]}) => {
+				const signal = itemSignals.registerRunning(RequestTypes.RaidSim);
+				const req = RaidSimRequest.clone(baseRequest);
+				req.raid!.parties[0].players[0].equipment = EquipmentSpec.create({ items: job.gear.map(id => ItemSpec.create({ id })) });
+				try {
+					const result = await pool.raidSimAsync(req, () => {}, signal);
+					if (!signal.abort.isTriggered() && !result.error && result.iterationsDone === req.simOptions!.iterations) {
+						if (itemCache.size >= 4000) itemCache.delete(itemCache.keys().next().value!);
+						itemCache.set(job.key, dps(result));
+					} else if (!signal.abort.isTriggered()) failed++;
+				} catch { failed++; } finally { itemSignals.unregisterRunning(signal); }
+				done++;
+				if (token !== runToken) return;
+				progress.textContent = `${done}/${jobs.length} scored${failed ? ` · ${failed} failed` : ''}`;
+				if (performance.now() - lastPaint > 150) { paint(); lastPaint = performance.now(); }
+		};
+		await runQueue(jobs, Math.min(2, pool.getNumWorkers()), () => token === runToken, worker);
+		if (token !== runToken) return;
+		sortKey = 'dps'; itemPage = 0; renderItems();
+		const status = panel.querySelector('[role="status"]');
+		if (status) status.textContent = `Complete: ${jobs.length - failed} new scores${failed ? `; ${failed} failed, click again to retry` : ''}. Sorted by DPS.`;
+	};
 }
 
 // ---------------------------------------------------------------- talents tab
@@ -534,18 +588,27 @@ function provenanceBlock() {
 }
 
 function renderRotation() {
-	const apl = rotation(def, state.rotation);
-	const list = el('ol', 'fa-rotation');
-	for (const entry of apl.priorityList) {
-		const action = entry.action?.action;
-		let text = action?.oneofKind || 'action';
-		const cast = action && 'castSpell' in action ? (action as { castSpell?: { spellId?: { rawId?: { oneofKind?: string; spellId?: number } } } }).castSpell : undefined;
-		if (cast?.spellId) text = `Cast ${actionName(cast.spellId)}`;
-		if (entry.action?.condition) text += ' — when its condition holds';
-		if (entry.hide) continue;
-		list.append(el('li', '', text));
+	const apl = APLRotation.toJson(activeRotation());
+	const names: Record<string, string> = {};
+	const collect = (value: any) => {
+		if (!value || typeof value !== 'object') return;
+		for (const [key, child] of Object.entries(value)) {
+			if ((key === 'spellId' || key === 'auraId') && typeof child === 'object') names[canonical(child)] = actionName(ActionID.fromJson(child as any)).replace(/\s*\(Rank \d+\)/, '');
+			else collect(child);
+		}
+	};
+	collect(apl);
+	const explanation = explainRotation(apl, names);
+	const selected = optimized && optimized.key === setupKey() ? optimized.result : undefined;
+	panel.replaceChildren(el('p', 'fa-note', selected
+		? `Using the best validated rotation found for this gear, talents and ${state.duration}s encounter. ${selected.search.evaluated} candidates tested; ${selected.search.iterationsPerRotation} independent validation iterations per finalist. ${fmt(selected.improvement, 2)} DPS improvement over the selected preset.`
+		: `Using the ${def.rotations[state.rotation]?.label || 'default'} preset. Choose Find best rotation to search for this gear and encounter.`), el('p', 'fa-note', explanation.instructions));
+	for (const section of ['opening', 'priority', 'cooldowns', 'execute'] as const) {
+		const list = el('ol', 'fa-rotation');
+		for (const line of explanation[section]) list.append(el('li', '', line));
+		if (list.children.length) panel.append(el('h3', '', section[0].toUpperCase() + section.slice(1)), list);
 	}
-	panel.replaceChildren(el('p', 'fa-note', `The ${def.rotations[state.rotation]?.label || 'default'} priority list. Spells you have not learned yet at level ${state.level} use your highest rank or are skipped. Edit rotations in the advanced simulator.`), list);
+	panel.append(el('p', 'fa-note', 'The engine uses your highest learned spell rank. Search compares presets, priorities, resource thresholds and cooldown timing using your fight and gear. It finds the best supported strategy within a bounded search; a global maximum is not guaranteed.'));
 }
 function renderPanel() {
 	for (const b of tabs.querySelectorAll('button')) b.classList.toggle('active', b.textContent === tab);
@@ -558,22 +621,105 @@ function renderPanel() {
 
 // ---------------------------------------------------------------- actions
 
+function busy(value: boolean) {
+	foregroundBusy = value;
+	dpsButton.disabled = optimizeButton.disabled = weightsButton.disabled = value;
+	cancelButton.hidden = !value;
+	if (value) stopItemWork();
+	if (tab === 'Gear') renderItems();
+}
+
+async function findRotation() {
+	const key = setupKey();
+	if (optimized?.key === key) return;
+	optimizerController = new AbortController();
+	const controller = optimizerController;
+	dpsBox.textContent = 'Preparing rotation search…';
+	const release = await fetch(`${BASE}release.json?v=${import.meta.env.VITE_ENGINE_VERSION || ''}`).then(r => { if (!r.ok) throw Error('Unable to load engine version'); return r.json(); });
+	const req = request(1);
+	// Search starts from the user-selected preset and holds gear/talents/encounter fixed.
+	req.raid!.parties[0].players[0].rotation = rotation(def, state.rotation);
+	const templates = [];
+	for (let i = 0; i < def.rotations.length; i++) {
+		if (controller.signal.aborted) throw Error('Optimization cancelled');
+		const candidate = RaidSimRequest.clone(req);
+		candidate.raid!.parties[0].players[0].rotation = rotation(def, i);
+		const stats = await pool.computeStats(ComputeStatsRequest.create({ raid: candidate.raid, encounter: candidate.encounter }));
+		if (stats.errorResult) throw Error(stats.errorResult);
+		templates.push(learnedRotation(APLRotation.toJson(candidate.raid!.parties[0].players[0].rotation!), stats.raidStats?.parties[0]?.players[0]?.rotationStats));
+	}
+	req.raid!.parties[0].players[0].rotation = APLRotation.fromJson(templates[state.rotation] || templates[0]);
+	const result = await optimize({ request: RaidSimRequest.toJson(req),
+		pins: { engine: release.engineSha256, database: release.databaseSha256, mechanics: foreverDiscoveryTalents.manifest_sha256 },
+		templates, seed: 20260921,
+		signal: controller.signal, cache: optimizerCache,
+		backend: {
+			validate: async (r: any) => {
+				const stats = await pool.computeStats(ComputeStatsRequest.fromJson({ raid: r.raid, encounter: r.encounter }));
+				const unit = stats.raidStats?.parties[0]?.players[0];
+				const warnings = [stats.errorResult, ...(unit?.rotationStats?.prepullActions || []).flatMap(x => x.warnings), ...(unit?.rotationStats?.priorityList || []).flatMap(x => x.warnings)].filter(Boolean);
+				return { valid: !!unit && !warnings.length, warnings, metadata: unit?.metadata ? UnitMetadata.toJson(unit.metadata) : {} };
+			},
+			run: async (r: any) => {
+				const signal = foregroundSignals.registerRunning(RequestTypes.RaidSim);
+				const abort = () => { void signal.abort.trigger(); };
+				controller.signal.addEventListener('abort', abort, { once: true });
+				if (controller.signal.aborted) abort();
+				try { return RaidSimResult.toJson(await pool.raidSimAsync(RaidSimRequest.fromJson(r), () => {}, signal)); }
+				finally { foregroundSignals.unregisterRunning(signal); controller.signal.removeEventListener('abort', abort); }
+			},
+		},
+		onProgress: (p: any) => { if (key !== setupKey()) return; dpsBox.textContent = p.phase === 'search' ? `Searching rotations: ${p.evaluated}/90 (${p.rejected} rejected)` : `Validating rotation: ${p.completed}/${p.total}`; },
+	});
+	if (controller.signal.aborted || key !== setupKey()) throw Error('Setup changed or search cancelled. Run again for the current setup.');
+	optimized = { key, apl: APLRotation.fromJson(result.apl), result };
+	lastResult = null; lastRequest = null;
+}
+
+optimizeButton.onclick = async () => {
+	busy(true);
+	try { await findRotation(); dpsBox.textContent = 'Rotation search complete.'; tab = 'Rotation'; renderPanel(); }
+	catch (e) { dpsBox.textContent = String(e); }
+	finally { busy(false); }
+};
+
 dpsButton.addEventListener('click', async () => {
-	dpsButton.disabled = true; dpsBox.textContent = 'Simulating…';
+	busy(true); dpsBox.textContent = 'Simulating…';
+	const revision = setupRevision;
 	try {
+		if (state.autoRotation) await findRotation();
+		if (revision !== setupRevision) return;
 		const req = request(state.iterations);
-		lastRequest = req;
-		const result = await pool.raidSimAsync(req, p => { dpsBox.textContent = `Simulating… ${p.completedIterations}/${p.totalIterations}`; }, signals());
+		const signal = foregroundSignals.registerRunning(RequestTypes.RaidSim);
+		let result: RaidSimResult;
+		const started = performance.now();
+		try {
+			const split = await pool.raidSimRequestSplit(RaidSimRequestSplitRequest.create({ splitCount: pool.getNumWorkers(), request: req }));
+			if (split.errorResult || !split.requests.length) throw Error(split.errorResult || 'Unable to split simulation');
+			if (signal.abort.isTriggered()) return;
+			const counts = split.requests.map(() => 0), estimates = split.requests.map(() => 0);
+			const results = await Promise.all(split.requests.map((part, i) => pool.raidSimAsync(part, p => {
+				counts[i] = p.completedIterations; estimates[i] = p.dps;
+				const completed = counts.reduce((a, b) => a + b, 0);
+				if (revision === setupRevision) dpsBox.textContent = `${fmt(completed ? estimates.reduce((sum, v, j) => sum + v * counts[j], 0) / completed : 0, 1)} DPS · ${completed}/${req.simOptions!.iterations} · ${fmt((performance.now() - started) / 1000, 1)}s`;
+			}, signal)));
+			const error = results.find(r => r.error);
+			result = error || await pool.raidSimResultCombination(RaidSimResultCombinationRequest.create({ results }));
+		}
+		finally { foregroundSignals.unregisterRunning(signal); }
+		if (revision !== setupRevision || signal.abort.isTriggered()) { dpsBox.textContent = 'Simulation cancelled.'; return; }
 		if (result.error) { dpsBox.textContent = result.error.message; return; }
-		lastResult = result; lastIterations = state.iterations;
+		lastRequest = req; lastResult = result; lastIterations = req.simOptions!.iterations;
 		const unit = result.raidMetrics?.parties[0]?.players[0];
-		dpsBox.replaceChildren(el('strong', '', fmt(unit?.dps?.avg || 0, 2)), el('span', '', ` DPS ± ${fmt(unit?.dps?.stdev || 0, 1)}`));
+		dpsBox.replaceChildren(el('strong', '', fmt(unit?.dps?.avg || 0, 2)), el('span', '', ` DPS · ${fmt((performance.now() - started) / 1000, 1)}s`));
 		tab = 'Results'; renderPanel();
 	} catch (e) { dpsBox.textContent = String(e); }
-	finally { dpsButton.disabled = false; }
+	finally { busy(false); }
 });
 weightsButton.addEventListener('click', async () => {
-	weightsButton.disabled = true; dpsBox.textContent = 'Computing stat weights…';
+	busy(true); dpsBox.textContent = 'Computing stat weights…';
+	const revision = setupRevision;
+	const signal = foregroundSignals.registerRunning(RequestTypes.StatWeights);
 	const stats = def.role === 'caster' ? [Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatSpellHit, Stat.StatSpellCrit]
 		: [Stat.StatStrength, Stat.StatAgility, Stat.StatAttackPower, Stat.StatMeleeHit, Stat.StatMeleeCrit];
 	if (def.role === 'ranged') stats.push(Stat.StatRangedAttackPower);
@@ -582,17 +728,20 @@ weightsButton.addEventListener('click', async () => {
 		const result = await pool.statWeightsAsync(StatWeightsRequest.create({
 			player: req.raid!.parties[0].players[0], raidBuffs: RaidBuffs.create(), partyBuffs: PartyBuffs.create(), debuffs: Debuffs.create(),
 			encounter: req.encounter, simOptions: req.simOptions, statsToWeigh: stats, epReferenceStat: stats[def.role === 'caster' ? 2 : 2], tanks: [] as UnitReference[],
-		}), () => {}, signals());
+		}), () => {}, signal);
+		if (revision !== setupRevision || signal.abort.isTriggered()) return;
 		const w = result.dps?.weights?.stats || [];
 		const tbl = el('table', 'fa-stats');
 		for (const s of stats) { const tr = el('tr'); tr.append(el('th', '', Stat[s].replace('Stat', '').replace(/([a-z])([A-Z])/g, '$1 $2')), el('td', '', fmt(w[s] || 0, 3))); tbl.append(tr); }
 		dpsBox.replaceChildren(el('span', '', 'DPS per point'), tbl);
 	} catch (e) { dpsBox.textContent = String(e); }
-	finally { weightsButton.disabled = false; }
+	finally { foregroundSignals.unregisterRunning(signal); busy(false); }
 });
 
 function changed() {
-	save(); itemCache.clear(); renderSettings(); void renderStats(); renderPanel();
+	++setupRevision; stopItemWork(); optimizerController?.abort(); void foregroundSignals.abortType(RequestTypes.All);
+	lastResult = null; lastRequest = null; dpsBox.textContent = '';
+	save(); renderSettings(); void renderStats(); renderPanel();
 }
 function switchSpec(key: string) {
 	def = SPECS.find(s => s.key === key) || def;

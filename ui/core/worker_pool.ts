@@ -151,7 +151,7 @@ export class WorkerPool {
 
 	async raidSimAsync(request: RaidSimRequest, onProgress: WorkerProgressCallback, signals: SimSignals): Promise<RaidSimResult> {
 		const worker = this.getLeastBusyWorker();
-		worker.log('Raid sim request: ' + RaidSimRequest.toJsonString(request));
+		if (import.meta.env.DEV) worker.log('Raid sim request: ' + RaidSimRequest.toJsonString(request));
 		const id = generateRequestId(SimRequest.raidSimAsync);
 
 		signals.abort.onTrigger(async () => {
@@ -162,9 +162,11 @@ export class WorkerPool {
 		const result = await this.doAsyncRequest(SimRequest.raidSimAsync, RaidSimRequest.toBinary(request), id, worker, onProgress, iterations);
 
 		// Don't print the logs because it just clogs the console.
-		const resultJson = RaidSimResult.toJson(result.finalRaidResult!) as any;
-		delete resultJson!['logs'];
-		worker.log('Raid sim result: ' + JSON.stringify(resultJson));
+		if (import.meta.env.DEV) {
+			const resultJson = RaidSimResult.toJson(result.finalRaidResult!) as any;
+			delete resultJson!['logs'];
+			worker.log('Raid sim result: ' + JSON.stringify(resultJson));
+		}
 		return result.finalRaidResult!;
 	}
 
