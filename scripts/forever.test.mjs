@@ -43,6 +43,7 @@ test('path adaptation preserves external Classic references', () => {
 test('built entry points load only existing local bundles and keep analytics out', t => {
   const dist = new URL('../dist/forever-sim/', import.meta.url);
   if (!existsSync(new URL('index.html', dist))) { t.skip('Run build:forever first'); return; }
+  assert.ok(existsSync(new URL('app/index.html', dist)), 'The primary Forever app entry point must be built');
   const pages = [new URL('index.html', dist), ...readdirSync(dist, { withFileTypes:true }).filter(e => e.isDirectory() && existsSync(new URL(`${e.name}/index.html`, dist))).map(e => new URL(`${e.name}/index.html`, dist))];
   assert.ok(pages.length >= 15, 'Launcher plus shared spec pages must be built');
   for (const page of pages) {
@@ -63,7 +64,7 @@ test('static application preserves deep routes, WASM MIME, and real 404s', async
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
   t.after(() => new Promise(resolve => server.close(resolve)));
   const base = `http://127.0.0.1:${server.address().port}`;
-  for (const route of ['/forever-sim/', '/forever-sim/warrior/', '/forever-sim/mage/', '/forever-sim/release.json', '/forever-sim/assets/database/db.json']) {
+  for (const route of ['/forever-sim/', '/forever-sim/app/', '/forever-sim/warrior/', '/forever-sim/mage/', '/forever-sim/release.json', '/forever-sim/assets/database/db.json']) {
     const response = await fetch(base + route); assert.equal(response.status, 200, route); await response.arrayBuffer();
   }
   const wasm = await fetch(base + '/forever-sim/lib.wasm', { method:'HEAD' });

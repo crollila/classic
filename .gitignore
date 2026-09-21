@@ -4,6 +4,7 @@ node_modules
 .artifacts/
 ui/core/index.ts
 ui/*/index.html
+!ui/app/index.html
 .dirstamp
 
 # IDE folders
