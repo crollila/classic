@@ -6,6 +6,24 @@ import {parallelism} from '../ui/app/parallelism.mjs';
 import {defaultScenario, scenarioRotation, scenarioDebuffs} from '../ui/app/scenario.mjs';
 import {classifyGear, gearAllowed, defaultGearFilter} from '../ui/app/gear-availability.mjs';
 import {readFileSync} from 'node:fs';
+import {normalizeWeapons, replaceWeapon, weaponViewId} from '../ui/app/weapon-slots.mjs';
+
+test('two-hand and dual-wield choices are mutually exclusive in every candidate', () => {
+  const items = new Map([[1,{handType:4}],[2,{handType:2}],[3,{handType:2}]]); // Synthetic.
+  const itemFor = id => items.get(id);
+  const dual = Array(17).fill(0); dual[14] = 2; dual[15] = 3;
+  const two = replaceWeapon(dual,17,1,itemFor);
+  assert.equal(two.length,17); assert.deepEqual(two.slice(14,16),[1,0]);
+  assert.deepEqual(dual.slice(14,16),[2,3]); // Comparison cannot mutate equipped gear.
+  assert.equal(weaponViewId(two,17,itemFor,true),1);
+  assert.equal(weaponViewId(two,14,itemFor,true),0);
+  assert.deepEqual(replaceWeapon(two,15,3,itemFor).slice(14,16),[0,3]);
+  assert.deepEqual(replaceWeapon(two,14,2,itemFor).slice(14,16),[2,0]);
+  assert.deepEqual(replaceWeapon(dual,17,0,itemFor),dual);
+  assert.deepEqual(replaceWeapon(two,17,0,itemFor).slice(14,16),[0,0]);
+  assert.deepEqual(normalizeWeapons([...two.slice(0,15),3,0,1],itemFor),two);
+  assert.throws(() => replaceWeapon(dual,17,2,itemFor));
+});
 
 test('client presence and legacy phases never imply Forever obtainability', () => {
   const legacy = new Set([1]); // Synthetic IDs, not game evidence.

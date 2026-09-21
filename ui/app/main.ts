@@ -12,6 +12,7 @@ import { PARALLEL_OPTIONS, parallelism } from './parallelism.mjs';
 import { defaultScenario, scenarioRotation, scenarioDebuffs } from './scenario.mjs';
 import { renderScenarioSettings } from './scenario-settings';
 import { defaultGearFilter, gearAllowed, evidenceLabel } from './gear-availability.mjs';
+import { normalizeWeapons, replaceWeapon, weaponViewId } from './weapon-slots.mjs';
 import {
 	Consumes,
 	Cooldowns,
@@ -67,6 +68,7 @@ const SLOTS = [
 	{ key: 12, label: 'Trinket 1', type: 12, icon: 'inventoryslot_trinket' }, { key: 13, label: 'Trinket 2', type: 12, icon: 'inventoryslot_trinket' },
 	{ key: 14, label: 'Main Hand', type: 13, icon: 'inventoryslot_mainhand' }, { key: 15, label: 'Off Hand', type: 13, icon: 'inventoryslot_offhand' },
 	{ key: 16, label: 'Ranged', type: 14, icon: 'inventoryslot_ranged' },
+	{ key: 17, label: 'Two-hand', type: 13, icon: 'inv_sword_04' },
 ];
 const QUALITY = ['poor', 'common', 'uncommon', 'rare', 'epic', 'legendary'];
 const CLASS_BIT: Record<string, number> = { DRUID: 1, HUNTER: 2, MAGE: 3, PALADIN: 4, PRIEST: 5, ROGUE: 6, SHAMAN: 7, WARLOCK: 8, WARRIOR: 9 };
@@ -156,7 +158,7 @@ function player(gear = state.gear): Player {
 	}
 	return Player.create({
 		name: 'Forever', class: def.cls, race: state.race, level: state.level,
-		equipment: EquipmentSpec.create({ items: gear.map(id => ItemSpec.create({ id })) }),
+		equipment: EquipmentSpec.create({ items: normalizeWeapons(gear, (id: number) => byId.get(id)).map(id => ItemSpec.create({ id })) }),
 		consumes: Consumes.create(state.scenario.consumes), buffs: IndividualBuffs.create(state.scenario.buffs), cooldowns: Cooldowns.create(),
 		profession1: state.scenario.profession1, profession2: state.scenario.profession2,
 		talentsString: "", forever,
@@ -201,15 +203,18 @@ function canUse(item: Item, slot: number): boolean {
 	if (item.type === 1 || item.type === 3) { if (item.armorType && item.armorType > def.armor(state.level)) return false; }
 	if (item.type === 13) {
 		const wt = item.weaponType || 0, ht = item.handType || 0;
+		if (slot === 17) return def.key === 'warrior' && def.twoHand && ht === 4 && def.weapons.includes(wt);
 		if (slot === 14) {
 			if (ht === 3) return false;
+			if (def.key === 'warrior' && ht === 4) return false;
 			if (ht === 4 && !def.twoHand) return false;
 			return def.weapons.includes(wt);
 		}
 		// Off hand: shields, held-in-off-hand, or a one-hander when the class dual wields.
-		if (wt === 7) return def.shield && !twoHanded();
-		if (wt === 5) return def.weapons.includes(5) && !twoHanded();
-		if (ht === 4 || twoHanded()) return false;
+		const blocked = twoHanded() && def.key !== 'warrior';
+		if (wt === 7) return def.shield && !blocked;
+		if (wt === 5) return def.weapons.includes(5) && !blocked;
+		if (ht === 4 || blocked) return false;
 		return def.dualWield(state.level) && (ht === 2 || ht === 3) && def.weapons.includes(wt);
 	}
 	if (item.type === 14) return def.ranged.includes(item.rangedWeaponType || 0);
@@ -353,12 +358,14 @@ for (const name of TAB_NAMES) {
 
 function renderDoll() {
 	doll.replaceChildren();
-	for (const slot of SLOTS) {
-		const item = byId.get(state.gear[slot.key]);
+	const visibleSlots = def.key === 'warrior' ? [...SLOTS.slice(0, 14), SLOTS[17], SLOTS[14], SLOTS[15], SLOTS[16]] : SLOTS.slice(0, 17);
+	for (const slot of visibleSlots) {
+		const item = byId.get(weaponViewId(state.gear, slot.key, (id: number) => byId.get(id), def.key === 'warrior'));
 		const b = el('button', `fa-slot${state.slot === slot.key && tab === 'Gear' ? ' active' : ''}${item ? ` q-${QUALITY[item.quality]}` : ''}`);
 		b.title = item ? `${slot.label}: ${item.name}` : `${slot.label}: empty`;
 		const img = el('img'); img.alt = ''; img.src = item ? ICON(item.icon) : `https://wow.zamimg.com/images/wow/icons/medium/${slot.icon}.jpg`;
 		b.append(img);
+		if (def.key === 'warrior' && [14, 15, 17].includes(slot.key)) b.append(el('span', 'fa-slot-label', slot.key === 17 ? '2H' : slot.key === 14 ? 'MH' : 'OH'));
 		b.addEventListener('click', () => { state.slot = slot.key; tab = 'Gear'; save(); renderPanel(); });
 		doll.append(b);
 	}
@@ -373,9 +380,8 @@ function gearKey(gear: number[]) {
 	return canonical([state.spec, state.level, state.race, state.targetLevel, state.duration, APLRotation.toJson(activeRotation()), state.talents, state.itemIterations, gear, state.scenario]);
 }
 function withItem(slot: number, id: number): number[] {
-	const gear = [...state.gear]; gear[slot] = id;
+	const gear = replaceWeapon(state.gear, slot, id, (itemId: number) => byId.get(itemId));
 	const item = byId.get(id);
-	if (slot === 14 && item?.handType === 4) gear[15] = 0;
 	// A unique item cannot be worn twice.
 	if (id && item?.unique) { const twin = slot === 10 ? 11 : slot === 11 ? 10 : slot === 12 ? 13 : slot === 13 ? 12 : -1; if (twin >= 0 && gear[twin] === id) gear[twin] = 0; }
 	return gear;
@@ -387,6 +393,7 @@ function renderItems() {
 	if (tab !== 'Gear') return;
 	stopItemWork();
 	const slot = state.slot;
+	const selectedId = weaponViewId(state.gear, slot, (id: number) => byId.get(id), def.key === 'warrior');
 	const eligible = candidates(slot);
 	const list = eligible.filter(i => !search || i.name.toLowerCase().includes(search));
 	const head = el('div', 'fa-itemhead');
@@ -437,7 +444,7 @@ function renderItems() {
 		? (b?.ilvl || 0) - (a?.ilvl || 0) : (score(b?.id || 0) ?? -1) - (score(a?.id || 0) ?? -1));
 	for (const item of sorted) {
 		const id = item?.id || 0;
-		const tr = el('tr', `${state.gear[slot] === id ? 'equipped' : ''}`);
+		const tr = el('tr', `${selectedId === id ? 'equipped' : ''}`);
 		const name = el('td', 'name');
 		if (item) {
 			const a = el('a', `q-${QUALITY[item.quality]}`); wowhead(a, 'item', item.id);
@@ -451,7 +458,7 @@ function renderItems() {
 		rows.push({ id, item, row: tr, cell });
 	}
 	const paint = () => {
-		const base = score(state.gear[slot]);
+		const base = itemCache.get(context + JSON.stringify(state.gear));
 		for (const r of rows) {
 			const v = score(r.id);
 			const text = v === undefined ? '—' : fmt(v, 2);
@@ -471,9 +478,11 @@ function renderItems() {
 	panel.replaceChildren(head, availabilityFilters, el('p', 'fa-note', `${availabilityStatus} Client presence does not prove obtainability. Legacy phases are inherited Classic/SoD labels, not a Forever roadmap. Filters do not unequip saved gear. New-to-catalog does not mean Forever-exclusive.`), table, el('p', 'fa-note', `All ${list.length} matching items are on this page. DPS uses ${state.itemIterations} iterations per item and the displayed rotation, with other slots as equipped. Switching tabs stops scoring; completed results are cached. Click DPS to sort cached results instantly.`));
 	simSlot.onclick = async () => {
 		const token = ++runToken;
-		const missing = [...new Set([state.gear[slot], 0, ...eligible.map(i => i.id)])].filter(id => keys.has(id) && score(id) === undefined);
+		const missing = [...new Set([selectedId, 0, ...eligible.map(i => i.id)])].filter(id => keys.has(id) && score(id) === undefined);
 		const baseRequest = request(state.itemIterations);
 		const jobs = missing.map(id => ({ key: keys.get(id)!, gear: withItem(slot, id) }));
+		const baselineKey = context + JSON.stringify(state.gear);
+		if (!itemCache.has(baselineKey) && !jobs.some(job => job.key === baselineKey)) jobs.unshift({ key: baselineKey, gear: [...state.gear] });
 		const concurrency = Math.min(slotWorkers(), Math.max(1, jobs.length));
 		pool.setNumWorkers(Math.max(idleWorkers, concurrency));
 		slotBatches++;
@@ -807,6 +816,8 @@ weightsButton.addEventListener('click', async () => {
 });
 
 function changed() {
+	state.gear = normalizeWeapons(state.gear, (id: number) => byId.get(id));
+	if (state.slot === 17 && def.key !== 'warrior') state.slot = 14;
 	++setupRevision; stopItemWork(); optimizerController?.abort(); void foregroundSignals.abortType(RequestTypes.All);
 	lastResult = null; lastRequest = null; dpsBox.textContent = '';
 	save(); renderSettings(); void renderStats(); renderPanel();
