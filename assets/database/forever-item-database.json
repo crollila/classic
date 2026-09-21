@@ -1,6 +1,6 @@
 {
   "version": "forever-sim-database-1",
-  "built_at": "2026-09-21T09:02:36.060746+00:00",
+  "built_at": "2026-09-21T23:43:33.761753+00:00",
   "dry_run": false,
   "sources": {
     "values": {
@@ -94,7 +94,7 @@
   },
   "pool": "all",
   "source_counts": {
-    "unknown": 9162,
+    "unknown": 9182,
     "drop": 1123,
     "quest": 71,
     "crafted": 1334
@@ -150,13 +150,13 @@
     "stats": "only stats with a verified simulator unit; the rest are listed per item, never converted"
   },
   "counts": {
-    "client_data": 10817,
+    "client_data": 10839,
     "skipped": 1489,
-    "with_effect": 862,
-    "from_data_site": 873,
-    "kept_for_the_engine": 397
+    "with_effect": 865,
+    "from_data_site": 871,
+    "kept_for_the_engine": 396
   },
-  "items": 12087,
+  "items": 12106,
   "removed_classic_ids": [
     753,
     812,
@@ -169,7 +169,6 @@
     1351,
     1443,
     1447,
-    1493,
     1521,
     1522,
     1602,
@@ -193,14 +192,11 @@
     2033,
     2084,
     2099,
-    2233,
     2234,
     2244,
-    2245,
     2246,
     2273,
     2291,
-    2564,
     2566,
     2620,
     2622,
@@ -224,12 +220,8 @@
     3985,
     4116,
     4197,
-    4447,
-    4454,
     4462,
-    4463,
     4464,
-    4465,
     4476,
     4477,
     4478,
@@ -259,7 +251,6 @@
     5755,
     5968,
     6198,
-    6315,
     6327,
     6331,
     6723,
@@ -358,11 +349,9 @@
     12945,
     13006,
     13039,
-    13070,
     13075,
     13089,
     13091,
-    13096,
     13116,
     13133,
     13171,
@@ -863,17 +852,17 @@
     23667,
     23668
   ],
-  "removed_count": 704,
+  "removed_count": 693,
   "keep_unproven": false,
-  "unproven_count": 704,
+  "unproven_count": 693,
   "evidence_note": "Absence from the Forever client tables is not proof of removal: the client ships only part of the item table and the server sends the rest in game. Items with no Forever evidence either way are dropped here because the rebuild was asked for a Forever-only pool.",
   "unrepresented_stat_vocabulary": {
     "stat_46": 50,
     "stat_131": 14,
     "stat_83": 13,
     "stat_127": 9,
+    "stat_125": 8,
     "stat_128": 7,
-    "stat_125": 7,
     "stat_113": 4,
     "stat_124": 4,
     "stat_112": 3,
@@ -893,6 +882,7 @@
     "stat_98": 1,
     "stat_92": 1,
     "stat_115": 1,
+    "stat_129": 1,
     "stat_44": 1
   },
   "item_notes": {
@@ -1506,6 +1496,18 @@
           "spell": "Fireball"
         }
       ]
+    },
+    "2564": {
+      "status": "client_data",
+      "source": "client datamine",
+      "carried": {
+        "icon": "client datamine",
+        "phase": "previous database entry",
+        "weaponSkills": "previous database entry"
+      },
+      "provisional_stat_units": {
+        "stat_86": "school order 84-89 (nature)"
+      }
     },
     "2565": {
       "status": "client_data",
@@ -3737,6 +3739,24 @@
           "trigger": "use",
           "spell_id": 11654,
           "spell": "Call of Sul'thraze"
+        }
+      ]
+    },
+    "9446": {
+      "status": "client_data",
+      "source": "client datamine",
+      "carried": {
+        "icon": "client datamine",
+        "phase": "previous database entry",
+        "weaponSkills": "previous database entry",
+        "expansion": "previous database entry",
+        "sources": "Forever sources: drop"
+      },
+      "effects": [
+        {
+          "trigger": "chance_on_hit",
+          "spell_id": 1292851,
+          "spell": "Lightning Bolt"
         }
       ]
     },
@@ -22126,6 +22146,21 @@
         "stat_112": 5
       }
     },
+    "282778": {
+      "status": "client_data",
+      "source": "client datamine",
+      "carried": {},
+      "unrepresented_stats": {
+        "stat_129": 12
+      },
+      "effects": [
+        {
+          "trigger": "use",
+          "spell_id": 1314412,
+          "spell": "Renewing Flame"
+        }
+      ]
+    },
     "284187": {
       "status": "client_data",
       "source": "client datamine",
@@ -22186,6 +22221,20 @@
         }
       ]
     },
+    "284266": {
+      "status": "client_data",
+      "source": "client datamine",
+      "carried": {
+        "icon": "client datamine"
+      },
+      "effects": [
+        {
+          "trigger": "equip",
+          "spell_id": 1315778,
+          "spell": "Mount Speed"
+        }
+      ]
+    },
     "284386": {
       "status": "client_data",
       "source": "client datamine",
@@ -22227,6 +22276,16 @@
       },
       "unrepresented_stats": {
         "stat_46": 5
+      }
+    },
+    "284702": {
+      "status": "client_data",
+      "source": "client datamine",
+      "carried": {
+        "icon": "client datamine"
+      },
+      "unrepresented_stats": {
+        "stat_125": 5
       }
     },
     "284704": {
@@ -24104,19 +24163,6 @@
       "reason_present": "in a Forever loot table the client extract does not carry",
       "unparsed_tooltip_lines": []
     },
-    "9446": {
-      "status": "info",
-      "source": "foreverchanges.pro tooltip",
-      "carried": {
-        "icon": "foreverchanges.pro loot row",
-        "phase": "previous database entry",
-        "weaponSkills": "previous database entry",
-        "expansion": "previous database entry",
-        "sources": "foreverchanges.pro loot table (names only)"
-      },
-      "reason_present": "in a Forever loot table the client extract does not carry",
-      "unparsed_tooltip_lines": []
-    },
     "9447": {
       "status": "info",
       "source": "foreverchanges.pro tooltip",
@@ -24131,19 +24177,6 @@
       "unparsed_tooltip_lines": []
     },
     "9448": {
-      "status": "info",
-      "source": "foreverchanges.pro tooltip",
-      "carried": {
-        "icon": "foreverchanges.pro loot row",
-        "phase": "previous database entry",
-        "weaponSkills": "previous database entry",
-        "expansion": "previous database entry",
-        "sources": "foreverchanges.pro loot table (names only)"
-      },
-      "reason_present": "in a Forever loot table the client extract does not carry",
-      "unparsed_tooltip_lines": []
-    },
-    "9450": {
       "status": "info",
       "source": "foreverchanges.pro tooltip",
       "carried": {
@@ -34356,10 +34389,6 @@
       "reason": "the engine names this item id in its own code; no Forever source mentions it either way"
     },
     "1982": {
-      "source": "previous database entry, kept unchanged",
-      "reason": "the engine names this item id in its own code; no Forever source mentions it either way"
-    },
-    "2017": {
       "source": "previous database entry, kept unchanged",
       "reason": "the engine names this item id in its own code; no Forever source mentions it either way"
     },
