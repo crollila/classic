@@ -23,7 +23,10 @@ import {
 import { SimSignals } from './sim_signal_manager';
 import { noop } from './utils';
 
-const SIM_WORKER_URL = `/${REPO_NAME}/sim_worker.js`;
+// The engine version pins the worker and the engine it downloads, so a deploy is never masked by a
+// cached older engine (both are served with a multi-hour browser cache).
+const ENGINE_VERSION = import.meta.env.VITE_ENGINE_VERSION || '';
+const SIM_WORKER_URL = `/${REPO_NAME}/sim_worker.js${ENGINE_VERSION ? `?v=${ENGINE_VERSION}` : ''}`;
 export type WorkerProgressCallback = (progressMetrics: ProgressMetrics) => void;
 
 /**

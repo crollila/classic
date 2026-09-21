@@ -50,7 +50,7 @@ const go = new Go();
 let inst: WebAssembly.Instance | null = null;
 
 const instantiate = import.meta.env.VITE_FOREVER
-	? fetch('lib.wasm.gz').then(r=>{if(!r.ok)throw new Error(`Forever engine download failed: ${r.status}`);return r.arrayBuffer()}).then(bytes=>WebAssembly.instantiate(ungzip(new Uint8Array(bytes)),go.importObject))
+	? fetch(`lib.wasm.gz${self.location.search}`).then(r=>{if(!r.ok)throw new Error(`Forever engine download failed: ${r.status}`);return r.arrayBuffer()}).then(bytes=>WebAssembly.instantiate(ungzip(new Uint8Array(bytes)),go.importObject))
 	: WebAssembly.instantiateStreaming(fetch('lib.wasm'), go.importObject);
 instantiate.then(async result => {
 	inst = result.instance;

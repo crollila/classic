@@ -99,7 +99,9 @@ function foreverAdapter(): Plugin {
 export default defineConfig({
   root: ui,
   base,
-  define: { 'import.meta.env.VITE_FOREVER': '"true"', 'import.meta.env.VITE_FOREVER_LIVE_DATA_URL': JSON.stringify(liveDataUrl) },
+  define: { 'import.meta.env.VITE_FOREVER': '"true"', 'import.meta.env.VITE_FOREVER_LIVE_DATA_URL': JSON.stringify(liveDataUrl),
+    // Content hash of the engine this bundle ships with; versions the worker and engine URLs.
+    'import.meta.env.VITE_ENGINE_VERSION': JSON.stringify(createHash('sha256').update(fs.existsSync(path.join(output, 'lib.wasm')) ? fs.readFileSync(path.join(output, 'lib.wasm')) : Buffer.from('dev')).digest('hex').slice(0, 16)) },
   plugins: [foreverAdapter()],
   esbuild: { jsxInject: "import { element, fragment } from 'tsx-vanilla';" },
   css: { postcss: { plugins: [{ postcssPlugin: 'forever-local-assets', Declaration(decl) { decl.value = rewriteLocalPaths(decl.value); } }] } },
