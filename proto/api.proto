@@ -102,6 +102,9 @@ message ForeverOptions {
 	map<string, int32> mechanic_ranks = 6;
 	// Named, bounded scenario inputs; descriptors and provenance live with adapters.
 	map<string, double> parameters = 7;
+	// Forever client build whose game data to simulate with. Empty means the build the
+	// simulator was published with (sim/core/gamedata/current.json.gz).
+	string game_data_build = 8;
 }
 
 enum ForeverMode {

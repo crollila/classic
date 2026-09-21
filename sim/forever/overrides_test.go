@@ -9,6 +9,7 @@ import (
 
 	"github.com/wowsims/classic/sim/core"
 	"github.com/wowsims/classic/sim/core/foreverdata"
+	"github.com/wowsims/classic/sim/core/gamedata"
 	"github.com/wowsims/classic/sim/core/proto"
 	"github.com/wowsims/classic/sim/core/stats"
 	"google.golang.org/protobuf/encoding/protojson"
@@ -19,6 +20,8 @@ import (
 // pipeline rewrites; engine semantics are tested against explicit fixtures only.
 func withoutOverrides(t *testing.T) {
 	t.Helper()
+	// These tests are about the override document; the client-data layer is tested on its own.
+	t.Cleanup(gamedata.DisableForTesting())
 	o, err := foreverdata.ParseOverrides([]byte(`{"version":"forever-overrides-1","generated_at":"2026-01-01T00:00:00Z","source_hash":"` + strings.Repeat("0", 64) + `","spells":{},"items":{},"talents":{},"parameters":{}}`))
 	if err != nil {
 		t.Fatal(err)

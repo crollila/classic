@@ -2,12 +2,14 @@ package sim
 
 import (
 	"fmt"
+	"math"
 	"os"
 	"sort"
 	"strings"
 	"testing"
 
 	"github.com/wowsims/classic/sim/core"
+	"github.com/wowsims/classic/sim/core/foreverdata"
 	"github.com/wowsims/classic/sim/core/proto"
 	"github.com/wowsims/classic/sim/core/stats"
 )
@@ -131,4 +133,47 @@ func TestLevel20Specs(t *testing.T) {
 	if os.Getenv("LEVEL_REPORT") != "" {
 		fmt.Println(strings.Join(report, "\n"))
 	}
+}
+
+// TestClientDataAudit lists, per spec at level 60 in Forever mode, what the client-data layer did
+// with each registered spell's cost, cooldown and cast time. Run with CLIENT_AUDIT=1 to print.
+func TestClientDataAudit(t *testing.T) {
+	for _, c := range levelCases() {
+		player := levelPlayer(c, 60)
+		player.Forever = &proto.ForeverOptions{RulesetId: foreverdata.RulesetID, Mode: proto.ForeverMode_BEST_GUESS, Talents: map[string]int32{}}
+		target := &proto.Target{Level: 63, MobType: proto.MobType_MobTypeHumanoid, Stats: stats.Stats{stats.Armor: 3731}.ToFloatArray()}
+		result, report := core.RunRaidSimWithForeverOverrideReport(&proto.RaidSimRequest{
+			Raid:       &proto.Raid{Parties: []*proto.Party{{Players: []*proto.Player{player}}}, Buffs: &proto.RaidBuffs{}, Debuffs: &proto.Debuffs{}},
+			Encounter:  &proto.Encounter{Duration: 60, Targets: []*proto.Target{target}},
+			SimOptions: &proto.SimOptions{Iterations: 10, RandomSeed: 7},
+		})
+		if result.Error != nil {
+			t.Fatalf("%s: %s", c.name, result.Error.Message)
+		}
+		applied, disagreements := 0, 0
+		var lines []string
+		for _, p := range report.Players {
+			for _, ev := range append(append([]foreverdata.OverrideEvent{}, p.Applied...), p.Rejected...) {
+				if ev.Scope != "client_data" {
+					continue
+				}
+				if ev.Applied {
+					applied++
+				} else {
+					disagreements++
+				}
+				lines = append(lines, fmt.Sprintf("    %s %s applied=%v registered=%v forever=%v %s", ev.ID, ev.Field, ev.Applied, deref(ev.Registered), deref(ev.Forever), ev.Reason))
+			}
+		}
+		if os.Getenv("CLIENT_AUDIT") != "" {
+			fmt.Printf("%s: %d applied, %d disagreements\n%s\n", c.name, applied, disagreements, strings.Join(lines, "\n"))
+		}
+	}
+}
+
+func deref(p *float64) float64 {
+	if p == nil {
+		return math.NaN()
+	}
+	return *p
 }

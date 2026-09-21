@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	"github.com/wowsims/classic/sim/core/gamedata"
 	"slices"
 	"strconv"
 	"strings"
@@ -42,7 +43,9 @@ type Character struct {
 	Class proto.Class
 	Spec  proto.Spec
 	// Per-character opt-in. Never a process-wide game flag.
-	Forever            *proto.ForeverOptions
+	Forever *proto.ForeverOptions
+	// Forever client game data this character simulates with; nil in Classic mode.
+	GameData           *gamedata.Snapshot
 	foreverFlaskStats  stats.Stats
 	foreverElixirStats stats.Stats
 
@@ -123,11 +126,12 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 			StartDistanceFromTarget: player.DistanceFromTarget,
 		},
 
-		Name:    player.Name,
-		Race:    player.Race,
-		Class:   player.Class,
-		Spec:    PlayerProtoToSpec(player),
-		Forever: player.Forever,
+		Name:     player.Name,
+		Race:     player.Race,
+		Class:    player.Class,
+		Spec:     PlayerProtoToSpec(player),
+		Forever:  player.Forever,
+		GameData: foreverGameData(player),
 
 		Equipment: classicEquipmentOrEmpty(player),
 

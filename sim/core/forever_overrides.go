@@ -10,6 +10,7 @@ package core
 
 import (
 	"fmt"
+	"github.com/wowsims/classic/sim/core/gamedata"
 	"math"
 	"strconv"
 	"time"
@@ -27,6 +28,7 @@ const (
 )
 
 type foreverOverrideState struct {
+	gameData  *gamedata.Snapshot
 	overrides *foreverdata.Overrides
 	diag      *foreverdata.Diagnostics
 	strict    bool
@@ -34,7 +36,7 @@ type foreverOverrideState struct {
 
 func (character *Character) initForeverOverrides(player *proto.Player) {
 	o := foreverdata.ActiveOverrides()
-	st := &foreverOverrideState{overrides: o, diag: foreverdata.NewDiagnostics(), strict: foreverdata.IsStrict(player.Forever)}
+	st := &foreverOverrideState{gameData: character.GameData, overrides: o, diag: foreverdata.NewDiagnostics(), strict: foreverdata.IsStrict(player.Forever)}
 	character.Unit.foreverOverrides = st
 
 	// Talent overrides are applied inside foreverdata.Lookup; record the ones this build uses.
@@ -224,7 +226,7 @@ func (unit *Unit) ForeverSpellValue(spellID int32, effectIndex int, classicValue
 	if st == nil {
 		return classicValue
 	}
-	spell, ok := st.overrides.Spell(spellID)
+	spell, ok := st.spellOverride(spellID)
 	if !ok {
 		return classicValue
 	}
@@ -305,7 +307,7 @@ func (st *foreverOverrideState) patchSpellConfig(unit *Unit, config *SpellConfig
 	if config.ActionID.SpellID == 0 {
 		return nil
 	}
-	spell, ok := st.overrides.Spell(config.ActionID.SpellID)
+	spell, ok := st.spellOverride(config.ActionID.SpellID)
 	if !ok {
 		return nil
 	}
@@ -616,7 +618,7 @@ func (st *foreverOverrideState) patchAuraDuration(unit *Unit, aura *Aura) {
 	if aura.ActionID.SpellID == 0 || aura.Duration <= 0 {
 		return
 	}
-	spell, ok := st.overrides.Spell(aura.ActionID.SpellID)
+	spell, ok := st.spellOverride(aura.ActionID.SpellID)
 	if !ok || spell.DurationMs == nil {
 		return
 	}

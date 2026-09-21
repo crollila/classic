@@ -200,6 +200,7 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 
 	var foreverPatch *foreverSpellPatch
 	if unit.foreverOverrides != nil {
+		unit.foreverOverrides.applyClientData(unit, &config)
 		foreverPatch = unit.foreverOverrides.patchSpellConfig(unit, &config)
 	}
 
