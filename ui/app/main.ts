@@ -280,7 +280,7 @@ function renderSettings() {
 	}
 	settings.append(field('Fight length (s)', numberInput(state.duration, 20, 600, v => { state.duration = v; changed(); })));
 	settings.append(field('Iterations', numberInput(state.iterations, 100, 50000, v => { state.iterations = v; save(); })));
-	settings.append(field('Item sim iterations', numberInput(state.itemIterations, 100, 10000, v => { state.itemIterations = v; itemCache.clear(); save(); renderItems(); })));
+	settings.append(field('Item sim iterations', numberInput(state.itemIterations, 100, 10000, v => { stopItemWork(); state.itemIterations = v; itemCache.clear(); save(); if (tab === 'Gear') renderItems(); })));
 	const parallel = el('select');
 	for (const mode of PARALLEL_OPTIONS) {
 		const option = el('option', '', mode === 'auto' ? `Auto (${parallelism('auto', navigator.hardwareConcurrency)} at a time)` : `${mode} at a time`);
@@ -289,7 +289,7 @@ function renderSettings() {
 	parallel.addEventListener('change', () => {
 		parallelMode = parallel.value;
 		try { localStorage.setItem('forever-slot-parallelism', parallelMode); } catch { /* private mode */ }
-		stopItemWork(); renderItems();
+		stopItemWork(); if (tab === 'Gear') renderItems();
 	});
 	settings.append(field('Parallel gear simulations', parallel), el('p', 'fa-note', 'Auto estimates CPU capacity and reserves threads for responsiveness. Manual settings up to 64 use more CPU and memory; too many can be slower. Changes stop the current slot run; click Sim this slot to resume cached progress.'));
 	const armorNote = el('p', 'fa-note', `Base target armor ${encounter().targets[0].stats[Stat.StatArmor]} · ${state.scenario.targets} target(s). Buffs and debuffs: Settings tab.`);
