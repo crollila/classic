@@ -83,6 +83,10 @@ html, body { margin: 0; background: var(--fa-bg); color: var(--fa-text); font: 1
 .fa-summary { margin: 4px 0 10px; }
 .fa-summary strong { font-size: 22px; color: var(--fa-good); }
 .fa-rotation li { padding: 3px 0; }
+.fa-scenario-section { border: 1px solid var(--fa-line); padding: 12px; margin-bottom: 12px; }
+.fa-scenario-section > summary { cursor: pointer; color: var(--fa-accent); font-weight: bold; margin-bottom: 10px; }
+.fa-scenario-section .fa-field { max-width: 650px; gap: 16px; grid-template-columns: minmax(130px, 1fr) minmax(120px, 1fr); margin-bottom: 6px; }
+.fa-scenario-section select, .fa-scenario-section input { max-width: 330px; background: #172330; color: var(--fa-text); border: 1px solid #445; padding: 5px; }
 .fa-footer { padding: 8px 16px; color: var(--fa-dim); font-size: 12px; border-top: 1px solid var(--fa-line); background: #0a1520; }
 .fa-footer a { color: var(--fa-accent); }
 @media (max-width: 860px) {

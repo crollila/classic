@@ -3,6 +3,37 @@ import assert from 'node:assert/strict';
 import {runQueue} from '../ui/app/work-queue.mjs';
 import {learnedRotation} from '../ui/app/rotation-context.mjs';
 import {parallelism} from '../ui/app/parallelism.mjs';
+import {defaultScenario, scenarioRotation, scenarioDebuffs} from '../ui/app/scenario.mjs';
+
+test('external Sunder removes every rank and nested cast without mutating presets', () => {
+  const cast = id => ({castSpell:{spellId:{spellId:id}}});
+  const apl = {prepullActions:[{action:cast(7386)}], priorityList:[
+    ...[7386,7405,8380,11596,11597].map(id => ({action:cast(id)})),
+    {action:{sequence:{actions:[cast(11597),cast(78)]}}}, {action:cast(23894)},
+  ]};
+  const s = defaultScenario(); s.sunder = 'external';
+  const out = scenarioRotation(apl, s, true);
+  assert.equal(out.prepullActions.length, 0);
+  assert.equal(out.priorityList.length, 2);
+  assert.deepEqual(out.priorityList[0].action.sequence.actions, [cast(78)]);
+  assert.equal(apl.priorityList.length, 7);
+  assert.equal(scenarioDebuffs(s).sunderArmor, true);
+  assert.deepEqual(scenarioRotation(apl, defaultScenario(), true), apl);
+  assert.deepEqual(scenarioRotation(apl, s, false), apl);
+});
+test('external Battle Shout avoids self-casts and Expose takes precedence over Sunder', () => {
+  const s = defaultScenario(); s.sunder = 'external'; s.debuffs.exposeArmor = 1; s.raidBuffs.battleShout = 1;
+  const apl = {priorityList:[25289,11597,78].map(spellId => ({action:{castSpell:{spellId:{spellId}}}}))};
+  assert.equal(scenarioDebuffs(s).sunderArmor, false);
+  assert.equal(scenarioRotation(apl,s,true).priorityList.length, 1);
+  assert.equal(scenarioRotation(apl,s,true).priorityList[0].action.castSpell.spellId.spellId, 78);
+});
+test('scenario settings have independent defaults and preserve explicit zero values', () => {
+  const a = defaultScenario(), b = defaultScenario();
+  a.debuffs.faerieFire = true; a.armor = 0; a.execute20 = 0;
+  assert.equal(b.debuffs.faerieFire, undefined);
+  assert.equal(a.armor, 0); assert.equal(a.execute20, 0);
+});
 
 test('auto reserves CPU capacity and bounds missing or extreme hardware hints', () => {
   assert.equal(parallelism('auto', 24), 21);

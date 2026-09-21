@@ -9,6 +9,8 @@ import { explainRotation } from '../forever/optimizer-explain.mjs';
 import { learnedRotation } from './rotation-context.mjs';
 import { runQueue } from './work-queue.mjs';
 import { PARALLEL_OPTIONS, parallelism } from './parallelism.mjs';
+import { defaultScenario, scenarioRotation, scenarioDebuffs } from './scenario.mjs';
+import { renderScenarioSettings } from './scenario-settings';
 import {
 	Consumes,
 	Cooldowns,
@@ -71,6 +73,7 @@ const CLASS_BIT: Record<string, number> = { DRUID: 1, HUNTER: 2, MAGE: 3, PALADI
 // ---------------------------------------------------------------- state
 
 interface State {
+	scenario: ReturnType<typeof defaultScenario>;
 	autoRotation: boolean;
 	spec: string; level: number; race: Race; targetLevel: number; duration: number; iterations: number; itemIterations: number;
 	rotation: number; gear: number[]; talents: Record<string, number>; qualities: number[]; aboveLevel: boolean; slot: number;
@@ -78,6 +81,7 @@ interface State {
 const STORE = 'forever-app-v1';
 function defaults(spec: SpecDef): State {
 	return {
+		scenario: defaultScenario(),
 		spec: spec.key, level: 20, race: foreverRaces(spec.cls)[0], targetLevel: 22, duration: 120, iterations: 1000, itemIterations: 100,
 		autoRotation: false, rotation: 0, gear: Array(17).fill(0), talents: {}, qualities: [1, 2, 3, 4, 5], aboveLevel: false, slot: 14,
 	};
@@ -98,6 +102,7 @@ let items: Item[] = [];
 let byId = new Map<number, Item>();
 let def = SPECS.find(s => s.key === lastSpec()) || SPECS[1];
 let state: State = { ...defaults(def), ...(load(def.key) || {}) };
+state.scenario = { ...defaultScenario(), ...state.scenario };
 const idleWorkers = Math.max(1, Math.min(3, (navigator.hardwareConcurrency || 4) - 1));
 const pool = new WorkerPool(idleWorkers);
 let parallelMode = 'auto';
@@ -111,8 +116,9 @@ let setupRevision = 0;
 let optimizerController: AbortController | undefined;
 let optimized: { key: string; apl: APLRotation; result: Awaited<ReturnType<typeof optimize>> } | undefined;
 const optimizerCache = new Map();
-const setupKey = () => canonical([state.spec, state.level, state.race, state.targetLevel, state.duration, state.rotation, state.talents, state.gear]);
-const activeRotation = () => optimized && optimized.key === setupKey() ? APLRotation.clone(optimized.apl) : rotation(def, state.rotation);
+const setupKey = () => canonical([state.spec, state.level, state.race, state.targetLevel, state.duration, state.rotation, state.talents, state.gear, state.scenario]);
+const contextualRotation = (apl: APLRotation) => APLRotation.fromJson(scenarioRotation(APLRotation.toJson(apl), state.scenario, def.key === 'warrior'));
+const activeRotation = () => contextualRotation(optimized && optimized.key === setupKey() ? APLRotation.clone(optimized.apl) : rotation(def, state.rotation));
 function stopItemWork() { ++runToken; void itemSignals.abortType(RequestTypes.All); }
 let runToken = 0;
 
@@ -129,32 +135,46 @@ function foreverOptions(): ForeverOptions {
 		rulesetId: foreverDiscoveryTalents.ruleset_id, mode: ForeverMode.BEST_GUESS, talents: { ...state.talents },
 		mechanics: foreverDiscoveryTalents.mechanics
 			.filter(m => m.mode !== 'blocked' && m.mode !== 'non-sim' && ((m.kind === 'racial' && m.id.startsWith(`racials.${raceKey[state.race]}.`)) || (m.category === cls && m.mode === 'ability')))
-			.map(m => m.id),
+			.map(m => m.id).concat(foreverDiscoveryTalents.mechanics.filter(m => m.mode !== 'blocked' && m.mode !== 'non-sim' && (state.scenario.mechanicRanks[m.id] || 0) > 0).map(m => m.id)),
+		mechanicRanks: state.scenario.mechanicRanks, parameters: state.scenario.parameters,
 	});
 }
 
 function player(gear = state.gear): Player {
 	const forever = foreverOptions();
+	const spec = def.spec(state.level);
+	if (spec.oneofKind === 'warrior' && spec.warrior.options) {
+		spec.warrior.options.startingRage = state.scenario.startingRage;
+		spec.warrior.options.queueDelay = state.scenario.queueDelay;
+	}
 	return Player.create({
 		name: 'Forever', class: def.cls, race: state.race, level: state.level,
 		equipment: EquipmentSpec.create({ items: gear.map(id => ItemSpec.create({ id })) }),
-		consumes: Consumes.create(), buffs: IndividualBuffs.create(), cooldowns: Cooldowns.create(),
+		consumes: Consumes.create(state.scenario.consumes), buffs: IndividualBuffs.create(state.scenario.buffs), cooldowns: Cooldowns.create(),
+		profession1: state.scenario.profession1, profession2: state.scenario.profession2,
 		talentsString: "", forever,
-		rotation: activeRotation(), spec: def.spec(state.level),
-		reactionTimeMs: 100, distanceFromTarget: def.role === 'melee' ? 5 : 25,
+		rotation: activeRotation(), spec,
+		reactionTimeMs: state.scenario.reactionMs, inFrontOfTarget: state.scenario.inFront,
+		distanceFromTarget: state.scenario.distance < 0 ? (def.role === 'melee' ? 5 : 25) : state.scenario.distance,
 	});
 }
 function encounter(): Encounter {
 	const stats = Array(Object.keys(Stat).length / 2).fill(0);
-	stats[Stat.StatArmor] = state.targetLevel > 60 ? 3731 : ARMOR[String(state.targetLevel)] || 0;
-	return Encounter.create({ duration: state.duration, durationVariation: 10, executeProportion20: 0.2, executeProportion35: 0.35,
-		targets: [Target.create({ level: state.targetLevel, mobType: MobType.MobTypeHumanoid, stats })] });
+	const s = state.scenario;
+	stats[Stat.StatArmor] = s.armor < 0 ? (state.targetLevel > 60 ? 3731 : ARMOR[String(state.targetLevel)] || 0) : s.armor;
+	for (const stat of [Stat.StatArcaneResistance, Stat.StatFireResistance, Stat.StatFrostResistance, Stat.StatNatureResistance, Stat.StatShadowResistance]) stats[stat] = s.resistance;
+	return Encounter.create({ duration: state.duration, durationVariation: Math.min(s.durationVariation, state.duration - 1), executeProportion20: s.execute20 / 100, executeProportion35: Math.max(s.execute20, s.execute35) / 100,
+		targets: Array.from({ length: s.targets }, () => Target.create({ level: state.targetLevel, mobType: s.mobType, stats,
+			tankIndex: s.tanking ? 0 : -1, swingSpeed: s.targetSwingMs / 1000, minBaseDamage: s.targetMinDamage,
+			damageSpread: s.targetMinDamage > 0 ? Math.max(0, s.targetMaxDamage / s.targetMinDamage - 1) : 0,
+		})) });
 }
 function request(iterations: number, gear = state.gear): RaidSimRequest {
 	return RaidSimRequest.create({
-		raid: Raid.create({ parties: [Party.create({ players: [player(gear)] })], buffs: RaidBuffs.create(), debuffs: Debuffs.create() }),
+		raid: Raid.create({ parties: [Party.create({ players: [player(gear)], buffs: PartyBuffs.create(state.scenario.partyBuffs) })], buffs: RaidBuffs.create(state.scenario.raidBuffs), debuffs: Debuffs.create(scenarioDebuffs(state.scenario)),
+			tanks: state.scenario.tanking ? [UnitReference.create({ type: 1, index: 0 })] : [], }),
 		encounter: encounter(),
-		simOptions: { iterations, randomSeed: BigInt(Math.floor(Math.random() * 2 ** 31)), debug: false, debugFirstIteration: false, isTest: false, saveAllValues: false, interactive: false, useLabeledRands: false },
+		simOptions: { iterations, randomSeed: BigInt(state.scenario.seed), debug: false, debugFirstIteration: false, isTest: false, saveAllValues: false, interactive: false, useLabeledRands: false },
 	});
 }
 const dps = (r: RaidSimResult) => r.raidMetrics?.dps?.avg || 0;
@@ -272,7 +292,7 @@ function renderSettings() {
 		stopItemWork(); renderItems();
 	});
 	settings.append(field('Parallel gear simulations', parallel), el('p', 'fa-note', 'Auto estimates CPU capacity and reserves threads for responsiveness. Manual settings up to 64 use more CPU and memory; too many can be slower. Changes stop the current slot run; click Sim this slot to resume cached progress.'));
-	const armorNote = el('p', 'fa-note', `Target armor ${state.targetLevel > 60 ? 3731 : ARMOR[String(state.targetLevel)] || 0} (level ${state.targetLevel} mob)`);
+	const armorNote = el('p', 'fa-note', `Base target armor ${encounter().targets[0].stats[Stat.StatArmor]} · ${state.scenario.targets} target(s). Buffs and debuffs: Settings tab.`);
 	const reset = el('button', 'fa-link', 'Reset this spec'); reset.addEventListener('click', () => { state = defaults(def); changed(); });
 	const advanced = el('a', 'fa-link', 'Advanced simulator ↗'); advanced.href = `${BASE}${def.key}/`;
 	settings.append(armorNote, reset, advanced);
@@ -315,7 +335,7 @@ const doll = el('nav', 'fa-doll');
 const tabs = el('div', 'fa-tabs');
 const panel = el('section', 'fa-panel');
 main.append(doll, tabs, panel);
-const TAB_NAMES = ['Gear', 'Talents', 'Results', 'Rotation'] as const;
+const TAB_NAMES = ['Gear', 'Talents', 'Results', 'Rotation', 'Settings'] as const;
 let tab: (typeof TAB_NAMES)[number] = 'Gear';
 for (const name of TAB_NAMES) {
 	const b = el('button', 'fa-tab', name); b.addEventListener('click', () => { if (tab === name) return; stopItemWork(); tab = name; renderPanel(); }); tabs.append(b);
@@ -342,7 +362,7 @@ let search = '';
 let itemPage = 0;
 const PAGE_SIZE = 75;
 function gearKey(gear: number[]) {
-	return canonical([state.spec, state.level, state.race, state.targetLevel, state.duration, APLRotation.toJson(activeRotation()), state.talents, state.itemIterations, gear]);
+	return canonical([state.spec, state.level, state.race, state.targetLevel, state.duration, APLRotation.toJson(activeRotation()), state.talents, state.itemIterations, gear, state.scenario]);
 }
 function withItem(slot: number, id: number): number[] {
 	const gear = [...state.gear]; gear[slot] = id;
@@ -439,7 +459,7 @@ function renderItems() {
 		const concurrency = Math.min(slotWorkers(), Math.max(1, jobs.length));
 		pool.setNumWorkers(Math.max(idleWorkers, concurrency));
 		slotBatches++;
-		baseRequest.simOptions!.randomSeed = 20260921n;
+		baseRequest.simOptions!.randomSeed = BigInt(state.scenario.seed);
 		let done = 0, failed = 0, lastPaint = 0;
 		simSlot.disabled = true; stop.hidden = false;
 		progress.textContent = `Starting ${concurrency} parallel simulations · 0/${jobs.length} scored`;
@@ -638,6 +658,7 @@ function renderPanel() {
 	if (tab === 'Gear') renderItems();
 	else if (tab === 'Talents') renderTalents();
 	else if (tab === 'Results') renderResults();
+	else if (tab === 'Settings') renderScenarioSettings(panel, state.scenario, def.key === 'warrior', changed);
 	else renderRotation();
 }
 
@@ -660,12 +681,12 @@ async function findRotation() {
 	const release = await fetch(`${BASE}release.json?v=${import.meta.env.VITE_ENGINE_VERSION || ''}`).then(r => { if (!r.ok) throw Error('Unable to load engine version'); return r.json(); });
 	const req = request(1);
 	// Search starts from the user-selected preset and holds gear/talents/encounter fixed.
-	req.raid!.parties[0].players[0].rotation = rotation(def, state.rotation);
+	req.raid!.parties[0].players[0].rotation = contextualRotation(rotation(def, state.rotation));
 	const templates = [];
 	for (let i = 0; i < def.rotations.length; i++) {
 		if (controller.signal.aborted) throw Error('Optimization cancelled');
 		const candidate = RaidSimRequest.clone(req);
-		candidate.raid!.parties[0].players[0].rotation = rotation(def, i);
+		candidate.raid!.parties[0].players[0].rotation = contextualRotation(rotation(def, i));
 		const stats = await pool.computeStats(ComputeStatsRequest.create({ raid: candidate.raid, encounter: candidate.encounter }));
 		if (stats.errorResult) throw Error(stats.errorResult);
 		templates.push(learnedRotation(APLRotation.toJson(candidate.raid!.parties[0].players[0].rotation!), stats.raidStats?.parties[0]?.players[0]?.rotationStats));
@@ -673,7 +694,7 @@ async function findRotation() {
 	req.raid!.parties[0].players[0].rotation = APLRotation.fromJson(templates[state.rotation] || templates[0]);
 	const result = await optimize({ request: RaidSimRequest.toJson(req),
 		pins: { engine: release.engineSha256, database: release.databaseSha256, mechanics: foreverDiscoveryTalents.manifest_sha256 },
-		templates, seed: 20260921,
+		templates, seed: state.scenario.seed,
 		signal: controller.signal, cache: optimizerCache,
 		backend: {
 			validate: async (r: any) => {
@@ -748,8 +769,8 @@ weightsButton.addEventListener('click', async () => {
 	try {
 		const req = request(Math.max(1000, state.iterations));
 		const result = await pool.statWeightsAsync(StatWeightsRequest.create({
-			player: req.raid!.parties[0].players[0], raidBuffs: RaidBuffs.create(), partyBuffs: PartyBuffs.create(), debuffs: Debuffs.create(),
-			encounter: req.encounter, simOptions: req.simOptions, statsToWeigh: stats, epReferenceStat: stats[def.role === 'caster' ? 2 : 2], tanks: [] as UnitReference[],
+			player: req.raid!.parties[0].players[0], raidBuffs: req.raid!.buffs, partyBuffs: req.raid!.parties[0].buffs, debuffs: req.raid!.debuffs,
+			encounter: req.encounter, simOptions: req.simOptions, statsToWeigh: stats, epReferenceStat: stats[2], tanks: req.raid!.tanks,
 		}), () => {}, signal);
 		if (revision !== setupRevision || signal.abort.isTriggered()) return;
 		const w = result.dps?.weights?.stats || [];
@@ -768,6 +789,7 @@ function changed() {
 function switchSpec(key: string) {
 	def = SPECS.find(s => s.key === key) || def;
 	state = { ...defaults(def), ...(load(def.key) || {}) };
+	state.scenario = { ...defaultScenario(), ...state.scenario };
 	location.hash = def.key; specSelect.value = def.key; lastResult = null; changed();
 }
 
