@@ -48,8 +48,17 @@ func GetRageConversion(attacker_level int32) float64 {
 	} else {
 		// Rage conversion is adjusted according to target stats (https://web.archive.org/web/20201118213002/https://blue.mmo-champion.com/topic/18325-the-new-rage-formula-by-kalgan/)\
 		// So this is probably only the base value formula and will be slightly wrong for most target
-		return 0.0091107836*float64(attacker_level^2) + 3.225598133*float64(attacker_level) + 4.2652911
+		return 0.0091107836*float64(attacker_level*attacker_level) + 3.225598133*float64(attacker_level) + 4.2652911
 	}
+}
+
+func (unit *Unit) rageConversion(level int32) float64 {
+	if unit.foreverOverrides == nil && level >= 45 {
+		// Frozen upstream Classic compatibility only. Forever uses the corrected
+		// squared-level formula; do not silently change historical Classic replays.
+		return 0.0091107836*float64(level^2) + 3.225598133*float64(level) + 4.2652911
+	}
+	return GetRageConversion(level)
 }
 
 func (unit *Unit) EnableRageBar(options RageBarOptions) {
@@ -58,7 +67,7 @@ func (unit *Unit) EnableRageBar(options RageBarOptions) {
 		capacity = MaxRage
 	}
 	rageFromDamageTakenMetrics := unit.NewRageMetrics(ActionID{OtherID: proto.OtherAction_OtherActionDamageTaken})
-	rageConversion := GetRageConversion(unit.Level)
+	rageConversion := unit.rageConversion(unit.Level)
 
 	unit.SetCurrentPowerBar(RageBar)
 	unit.RegisterAura(Aura{
@@ -119,7 +128,7 @@ func (unit *Unit) EnableRageBar(options RageBarOptions) {
 			if unit.GetCurrentPowerBar() != RageBar {
 				return
 			}
-			rageConversionDamageTaken := GetRageConversion(spell.Unit.Level)
+			rageConversionDamageTaken := unit.rageConversion(spell.Unit.Level)
 			generatedRage := result.Damage * 2.5 / rageConversionDamageTaken
 			generatedRage *= unit.rageBar.damageTakenMultiplier
 			generatedRage += unit.rageBar.flatDamageTakenBonusRage

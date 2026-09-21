@@ -17,6 +17,15 @@ type ItemSet struct {
 	Bonuses map[int32]ApplyEffect
 }
 
+// IDs are authoritative when both are known. Names support legacy registrations
+// that predate client set IDs, but must not join different sets with the same name.
+func itemMatchesSet(item Item, set *ItemSet) bool {
+	if item.SetID > 0 && set.ID > 0 {
+		return item.SetID == set.ID
+	}
+	return item.SetName != "" && (item.SetName == set.Name || item.SetName == set.AlternativeName)
+}
+
 func (set ItemSet) Items() []Item {
 	var items []Item
 	for _, item := range ItemsByID {
@@ -80,10 +89,7 @@ func (character *Character) HasSetBonus(set *ItemSet, numItems int32) bool {
 
 	var count int32
 	for _, item := range character.Equipment {
-		if item.SetName == "" {
-			continue
-		}
-		if item.SetName == set.Name || item.SetName == set.AlternativeName || (item.SetID > 0 && item.SetID == set.ID) {
+		if itemMatchesSet(item, set) {
 			count++
 			if count >= numItems {
 				return true
@@ -111,7 +117,7 @@ func (character *Character) GetActiveSetBonuses() []ActiveSetBonus {
 
 	setItemCount := make(map[*ItemSet]int32)
 	for _, item := range character.Equipment {
-		if item.SetName == "" {
+		if item.SetName == "" && item.SetID == 0 {
 			continue
 		}
 
@@ -129,7 +135,7 @@ func (character *Character) GetActiveSetBonuses() []ActiveSetBonus {
 
 		if foundSet == nil {
 			for _, set := range sets {
-				if set.Name == item.SetName || set.AlternativeName == item.SetName {
+				if itemMatchesSet(item, set) {
 					foundSet = set
 					break
 				}

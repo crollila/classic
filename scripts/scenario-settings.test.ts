@@ -13,6 +13,7 @@ class Element {
   append(...children: Element[]) { this.children.push(...children); }
   replaceChildren(...children: Element[]) { this.children = children; }
   querySelectorAll() { return []; }
+  setAttribute() {}
 }
 const walk = (e: Element): Element[] => [e, ...e.children.flatMap(walk)];
 function form(warrior = true) {

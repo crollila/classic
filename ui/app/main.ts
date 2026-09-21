@@ -11,6 +11,7 @@ import { runQueue } from './work-queue.mjs';
 import { PARALLEL_OPTIONS, parallelism } from './parallelism.mjs';
 import { defaultScenario, scenarioRotation, scenarioDebuffs } from './scenario.mjs';
 import { renderScenarioSettings } from './scenario-settings';
+import { defaultGearFilter, gearAllowed, evidenceLabel } from './gear-availability.mjs';
 import {
 	Consumes,
 	Cooldowns,
@@ -73,6 +74,7 @@ const CLASS_BIT: Record<string, number> = { DRUID: 1, HUNTER: 2, MAGE: 3, PALADI
 // ---------------------------------------------------------------- state
 
 interface State {
+	gearFilter: ReturnType<typeof defaultGearFilter>;
 	scenario: ReturnType<typeof defaultScenario>;
 	autoRotation: boolean;
 	spec: string; level: number; race: Race; targetLevel: number; duration: number; iterations: number; itemIterations: number;
@@ -81,6 +83,7 @@ interface State {
 const STORE = 'forever-app-v1';
 function defaults(spec: SpecDef): State {
 	return {
+		gearFilter: defaultGearFilter(),
 		scenario: defaultScenario(),
 		spec: spec.key, level: 20, race: foreverRaces(spec.cls)[0], targetLevel: 22, duration: 120, iterations: 1000, itemIterations: 100,
 		autoRotation: false, rotation: 0, gear: Array(17).fill(0), talents: {}, qualities: [1, 2, 3, 4, 5], aboveLevel: false, slot: 14,
@@ -100,6 +103,10 @@ function lastSpec(): string | null {
 
 let items: Item[] = [];
 let byId = new Map<number, Item>();
+let availability: Record<string, any> = {};
+let availabilityStatus = 'Loading item evidence…';
+const settingIcons = new Map<string, string>();
+const iconKey = (name: string) => name.toLowerCase().replace(/[^a-z0-9]/g, '');
 let def = SPECS.find(s => s.key === lastSpec()) || SPECS[1];
 let state: State = { ...defaults(def), ...(load(def.key) || {}) };
 state.scenario = { ...defaultScenario(), ...state.scenario };
@@ -182,6 +189,7 @@ const dps = (r: RaidSimResult) => r.raidMetrics?.dps?.avg || 0;
 // ---------------------------------------------------------------- item rules
 
 function canUse(item: Item, slot: number): boolean {
+	if (!gearAllowed(availability[String(item.id)], state.gearFilter)) return false;
 	const slotDef = SLOTS[slot];
 	if (item.hidden || item.type !== slotDef.type) return false;
 	if (item.classAllowlist?.length && !item.classAllowlist.includes(CLASS_BIT[foreverClassName(def.cls)])) return false;
@@ -325,6 +333,8 @@ async function renderStats() {
 		statsTable.replaceChildren(...STAT_ROWS.filter(r => r[2].includes(def.role)).map(([label, value]) => {
 			const tr = el('tr'); tr.append(el('th', '', label), el('td', '', s.length ? value(s) : '—')); return tr;
 		}));
+		const sets = result.raidStats?.parties[0]?.players[0]?.sets || [];
+		const setRow = el('tr'); setRow.append(el('th', '', 'Active modeled sets'), el('td', '', sets.join(', ') || 'None')); statsTable.append(setRow);
 		if (result.errorResult) statsTable.append(Object.assign(el('tr'), { textContent: result.errorResult }));
 	} catch (e) { if (revision === setupRevision) statsTable.replaceChildren(el('tr', '', String(e))); }
 }
@@ -349,7 +359,7 @@ function renderDoll() {
 		b.title = item ? `${slot.label}: ${item.name}` : `${slot.label}: empty`;
 		const img = el('img'); img.alt = ''; img.src = item ? ICON(item.icon) : `https://wow.zamimg.com/images/wow/icons/medium/${slot.icon}.jpg`;
 		b.append(img);
-		b.addEventListener('click', () => { state.slot = slot.key; itemPage = 0; tab = 'Gear'; save(); renderPanel(); });
+		b.addEventListener('click', () => { state.slot = slot.key; tab = 'Gear'; save(); renderPanel(); });
 		doll.append(b);
 	}
 }
@@ -359,8 +369,6 @@ function renderDoll() {
 const itemCache = new Map<string, number>();
 let sortKey: 'dps' | 'ilvl' | 'name' = 'dps';
 let search = '';
-let itemPage = 0;
-const PAGE_SIZE = 75;
 function gearKey(gear: number[]) {
 	return canonical([state.spec, state.level, state.race, state.targetLevel, state.duration, APLRotation.toJson(activeRotation()), state.talents, state.itemIterations, gear, state.scenario]);
 }
@@ -384,7 +392,7 @@ function renderItems() {
 	const head = el('div', 'fa-itemhead');
 	const find = el('input', 'fa-search'); find.placeholder = 'Search'; find.value = search;
 	let searchTimer: ReturnType<typeof setTimeout>;
-	find.addEventListener('input', () => { clearTimeout(searchTimer); searchTimer = setTimeout(() => { if (!find.isConnected) return; search = find.value.toLowerCase(); itemPage = 0; renderItems(); (panel.querySelector('.fa-search') as HTMLInputElement)?.focus(); }, 150); });
+	find.addEventListener('input', () => { clearTimeout(searchTimer); searchTimer = setTimeout(() => { if (!find.isConnected) return; search = find.value.toLowerCase(); renderItems(); (panel.querySelector('.fa-search') as HTMLInputElement)?.focus(); }, 150); });
 	const filters = el('div', 'fa-filters');
 	[['Commons', 1], ['Greens', 2], ['Blues', 3], ['Epics', 4]].forEach(([label, q]) => {
 		const l = el('label'), c = el('input'); c.type = 'checkbox'; c.checked = state.qualities.includes(q as number);
@@ -395,12 +403,26 @@ function renderItems() {
 	ac.addEventListener('change', () => { state.aboveLevel = ac.checked; save(); renderItems(); });
 	above.append(ac, ' Above my level'); filters.append(above);
 	head.append(el('h2', '', SLOTS[slot].label), find, filters);
+	const availabilityFilters = el('div', 'fa-filters');
+	const evidence = el('select'); evidence.setAttribute('aria-label', 'Gear availability preset');
+	for (const [value, text] of [['listed', 'Forever source-listed'], ['client', 'All client records (unconfirmed)'], ['all', 'Everything (experimental)']]) {
+		const option = el('option', '', text); option.value = value; option.selected = state.gearFilter.evidence === value; evidence.append(option);
+	}
+	evidence.onchange = () => { state.gearFilter.evidence = evidence.value; save(); renderItems(); };
+	availabilityFilters.append(evidence);
+	for (const [key, text] of [['legacy', 'Classic / SoD catalog items'], ['unclassified', 'New-to-catalog / unclassified items']] as const) {
+		const label = el('label'), input = el('input'); input.type = 'checkbox'; input.checked = state.gearFilter[key];
+		input.onchange = () => { state.gearFilter[key] = input.checked; save(); renderItems(); }; label.append(input, text); availabilityFilters.append(label);
+	}
+	const phase = el('select'); phase.setAttribute('aria-label', 'Legacy catalog phase cap');
+	for (const n of [0, ...Array.from(new Set<number>(Object.values(availability).map(m => Number(m.legacyPhase)).filter(n => n > 0))).sort((a, b) => a - b)]) { const option = el('option', '', n ? `Legacy phase ≤ ${n} (planning only)` : 'All legacy phases'); option.value = String(n); option.selected = state.gearFilter.maxPhase === n; phase.append(option); }
+	phase.onchange = () => { state.gearFilter.maxPhase = Number(phase.value); save(); renderItems(); }; availabilityFilters.append(phase);
 
 	const table = el('table', 'fa-items');
 	const thead = el('thead'), hr = el('tr');
 	for (const [key, label] of [['ilvl', 'ilvl'], ['name', 'Name'], ['', 'Req'], ['', 'Source'], ['dps', 'DPS']] as const) {
 		const th = el('th', key ? 'sortable' : '', label);
-		if (key) th.addEventListener('click', () => { sortKey = key; itemPage = 0; renderItems(); });
+		if (key) th.addEventListener('click', () => { sortKey = key; renderItems(); });
 		if (key === sortKey) th.classList.add('sorted');
 		hr.append(th);
 	}
@@ -413,8 +435,7 @@ function renderItems() {
 	const sorted: Array<Item | undefined> = [undefined, ...list];
 	sorted.sort((a, b) => sortKey === 'name' ? (a?.name || '').localeCompare(b?.name || '') : sortKey === 'ilvl'
 		? (b?.ilvl || 0) - (a?.ilvl || 0) : (score(b?.id || 0) ?? -1) - (score(a?.id || 0) ?? -1));
-	itemPage = Math.min(itemPage, Math.max(0, Math.ceil(sorted.length / PAGE_SIZE) - 1));
-	for (const item of sorted.slice(itemPage * PAGE_SIZE, (itemPage + 1) * PAGE_SIZE)) {
+	for (const item of sorted) {
 		const id = item?.id || 0;
 		const tr = el('tr', `${state.gear[slot] === id ? 'equipped' : ''}`);
 		const name = el('td', 'name');
@@ -425,7 +446,7 @@ function renderItems() {
 		} else name.append(el('span', 'none', '— None —'));
 		const cell = el('td', 'dps', '');
 		tr.append(el('td', 'ilvl', item ? String(item.ilvl) : ''), name, el('td', 'req', item?.requiredLevel ? String(item.requiredLevel) : ''),
-			el('td', 'src', item?.sources?.[0]?.drop?.otherName || ''), cell);
+			el('td', 'src', item ? `${item.sources?.[0]?.drop?.otherName || ''} · ${evidenceLabel(availability[String(id)])}` : ''), cell);
 		tr.addEventListener('click', () => equip(slot, id));
 		rows.push({ id, item, row: tr, cell });
 	}
@@ -433,8 +454,10 @@ function renderItems() {
 		const base = score(state.gear[slot]);
 		for (const r of rows) {
 			const v = score(r.id);
-			r.cell.textContent = v === undefined ? '—' : fmt(v, 2);
-			r.cell.title = v !== undefined && base !== undefined ? `${v - base >= 0 ? '+' : ''}${fmt(v - base, 2)} vs equipped` : '';
+			const text = v === undefined ? '—' : fmt(v, 2);
+			const title = v !== undefined && base !== undefined ? `${v - base >= 0 ? '+' : ''}${fmt(v - base, 2)} vs equipped` : '';
+			if (r.cell.textContent !== text) r.cell.textContent = text;
+			if (r.cell.title !== title) r.cell.title = title;
 		}
 	};
 	tbody.append(...rows.map(r => r.row)); table.append(tbody);
@@ -444,13 +467,8 @@ function renderItems() {
 	const progress = el('span', 'fa-note', `${eligible.length} eligible items. Search only filters the display.`);
 	progress.setAttribute('role', 'status');
 	stop.onclick = () => { stopItemWork(); stop.hidden = true; simSlot.disabled = false; progress.textContent = 'Stopped. Completed scores are kept.'; };
-	const navigation = el('div', 'fa-itemhead');
-	const prev = el('button', 'fa-btn', 'Previous'), next = el('button', 'fa-btn', 'Next');
-	prev.disabled = itemPage === 0; next.disabled = (itemPage + 1) * PAGE_SIZE >= sorted.length;
-	prev.onclick = () => { --itemPage; renderItems(); }; next.onclick = () => { ++itemPage; renderItems(); };
-	navigation.append(prev, el('span', '', `Page ${itemPage + 1} of ${Math.max(1, Math.ceil(sorted.length / PAGE_SIZE))}`), next);
 	head.append(simSlot, stop, progress);
-	panel.replaceChildren(head, table, navigation, el('p', 'fa-note', `DPS uses ${state.itemIterations} iterations per item and the displayed rotation, with other slots as equipped. Switching tabs stops scoring; completed results are cached. Click DPS to sort cached results instantly.`));
+	panel.replaceChildren(head, availabilityFilters, el('p', 'fa-note', `${availabilityStatus} Client presence does not prove obtainability. Legacy phases are inherited Classic/SoD labels, not a Forever roadmap. Filters do not unequip saved gear. New-to-catalog does not mean Forever-exclusive.`), table, el('p', 'fa-note', `All ${list.length} matching items are on this page. DPS uses ${state.itemIterations} iterations per item and the displayed rotation, with other slots as equipped. Switching tabs stops scoring; completed results are cached. Click DPS to sort cached results instantly.`));
 	simSlot.onclick = async () => {
 		const token = ++runToken;
 		const missing = [...new Set([state.gear[slot], 0, ...eligible.map(i => i.id)])].filter(id => keys.has(id) && score(id) === undefined);
@@ -482,7 +500,7 @@ function renderItems() {
 		try { await runQueue(jobs, concurrency, () => token === runToken, worker); }
 		finally { if (--slotBatches === 0) pool.setNumWorkers(idleWorkers); }
 		if (token !== runToken) return;
-		sortKey = 'dps'; itemPage = 0; renderItems();
+		sortKey = 'dps'; renderItems();
 		const status = panel.querySelector('[role="status"]');
 		if (status) status.textContent = `Complete: ${jobs.length - failed} new scores${failed ? `; ${failed} failed, click again to retry` : ''}. Sorted by DPS.`;
 	};
@@ -509,7 +527,7 @@ function legal(next: Record<string, number>): string | null {
 	}
 	return null;
 }
-function renderTalents() {
+function renderTalents(target = panel) {
 	const wrap = el('div', 'fa-talents');
 	const top = el('div', 'fa-talenttop');
 	top.append(el('strong', '', `${pointsSpent()} / ${pointsAllowed()} points`), el('span', 'fa-note', 'Left click adds a point, right click removes one. Talent text is the Forever beta client\'s.'));
@@ -556,7 +574,7 @@ function renderTalents() {
 		t.append(grid); trees.append(t);
 	}
 	wrap.append(msg, trees);
-	panel.replaceChildren(wrap);
+	target.replaceChildren(wrap);
 }
 
 // ---------------------------------------------------------------- results + rotation tabs
@@ -629,7 +647,7 @@ function provenanceBlock() {
 	return box;
 }
 
-function renderRotation() {
+function renderRotation(target = panel) {
 	const apl = APLRotation.toJson(activeRotation());
 	const names: Record<string, string> = {};
 	const collect = (value: any) => {
@@ -642,15 +660,15 @@ function renderRotation() {
 	collect(apl);
 	const explanation = explainRotation(apl, names);
 	const selected = optimized && optimized.key === setupKey() ? optimized.result : undefined;
-	panel.replaceChildren(el('p', 'fa-note', selected
+	target.replaceChildren(el('p', 'fa-note', selected
 		? `Using the best validated rotation found for this gear, talents and ${state.duration}s encounter. ${selected.search.evaluated} candidates tested; ${selected.search.iterationsPerRotation} independent validation iterations per finalist. ${fmt(selected.improvement, 2)} DPS improvement over the selected preset.`
 		: `Using the ${def.rotations[state.rotation]?.label || 'default'} preset. Choose Find best rotation to search for this gear and encounter.`), el('p', 'fa-note', explanation.instructions));
 	for (const section of ['opening', 'priority', 'cooldowns', 'execute'] as const) {
 		const list = el('ol', 'fa-rotation');
 		for (const line of explanation[section]) list.append(el('li', '', line));
-		if (list.children.length) panel.append(el('h3', '', section[0].toUpperCase() + section.slice(1)), list);
+		if (list.children.length) target.append(el('h3', '', section[0].toUpperCase() + section.slice(1)), list);
 	}
-	panel.append(el('p', 'fa-note', 'The engine uses your highest learned spell rank. Search compares presets, priorities, resource thresholds and cooldown timing using your fight and gear. It finds the best supported strategy within a bounded search; a global maximum is not guaranteed.'));
+	target.append(el('p', 'fa-note', 'The engine uses your highest learned spell rank. Search compares presets, priorities, resource thresholds and cooldown timing using your fight and gear. It finds the best supported strategy within a bounded search; a global maximum is not guaranteed.'));
 }
 function renderPanel() {
 	for (const b of tabs.querySelectorAll('button')) b.classList.toggle('active', b.textContent === tab);
@@ -658,7 +676,14 @@ function renderPanel() {
 	if (tab === 'Gear') renderItems();
 	else if (tab === 'Talents') renderTalents();
 	else if (tab === 'Results') renderResults();
-	else if (tab === 'Settings') renderScenarioSettings(panel, state.scenario, def.key === 'warrior', changed);
+	else if (tab === 'Settings') {
+		const rotationView = el('div'), talentView = el('div');
+		renderRotation(rotationView); renderTalents(talentView);
+		renderScenarioSettings(panel, state.scenario, def.key === 'warrior', changed, {
+			rotation: rotationView, talents: talentView,
+			iconFor: name => settingIcons.get(iconKey(name)) || '',
+		});
+	}
 	else renderRotation();
 }
 
@@ -798,8 +823,15 @@ function switchSpec(key: string) {
 (async () => {
 	specSelect.value = def.key;
 	const db = await fetch(`${BASE}assets/database/db.json`).then(r => r.json());
+	try {
+		const data = await fetch(`${BASE}assets/database/gear-availability.json`).then(r => { if (!r.ok) throw Error('Missing evidence'); return r.json(); });
+		const hash = Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(JSON.stringify(db))))).map(b => b.toString(16).padStart(2, '0')).join('');
+		if (data.version !== 1 || data.databaseSha256 !== hash || !data.items) throw Error('Item evidence does not match this database');
+		availability = data.items; availabilityStatus = `Evidence build ${data.build}. Source-listed is not live-confirmed.`;
+	} catch { availabilityStatus = 'Item evidence unavailable: default view hides unverified items. Experimental view is available explicitly.'; }
 	items = (db.items as Item[]).filter(i => !i.hidden);
 	byId = new Map(items.map(i => [i.id, i]));
+	for (const entry of [...(db.spellIcons || []), ...(db.itemIcons || [])]) if (entry.name && entry.icon) settingIcons.set(iconKey(entry.name), ICON(entry.icon));
 	// Drop anything saved from an older pool.
 	state.gear = state.gear.map(id => (byId.has(id) ? id : 0));
 	changed();

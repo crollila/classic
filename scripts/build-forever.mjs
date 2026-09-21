@@ -39,5 +39,6 @@ await build({
 });
 node('scripts/vite-forever.mjs');
 cpSync('assets', 'dist/forever-sim/assets', { recursive: true, filter: p => !p.split(path.sep).includes('db_inputs') });
+node('scripts/build-gear-availability.mjs');
 cpSync('LICENSE', 'dist/forever-sim/LICENSE.txt');
 console.log('Forever Simulator built in dist/forever-sim. Serve dist with npm run preview:forever.');

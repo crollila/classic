@@ -4,6 +4,30 @@ import {runQueue} from '../ui/app/work-queue.mjs';
 import {learnedRotation} from '../ui/app/rotation-context.mjs';
 import {parallelism} from '../ui/app/parallelism.mjs';
 import {defaultScenario, scenarioRotation, scenarioDebuffs} from '../ui/app/scenario.mjs';
+import {classifyGear, gearAllowed, defaultGearFilter} from '../ui/app/gear-availability.mjs';
+import {readFileSync} from 'node:fs';
+
+test('client presence and legacy phases never imply Forever obtainability', () => {
+  const legacy = new Set([1]); // Synthetic IDs, not game evidence.
+  const snapshot = {items:{1:{},2:{}}};
+  const old = classifyGear({id:1,phase:6}, snapshot, {}, legacy);
+  assert.equal(old.evidence, 'client'); assert.equal(old.origin, 'legacy');
+  assert.equal(gearAllowed(old, defaultGearFilter()), false);
+  const listed = classifyGear({id:2}, snapshot, {'2':{carried:{sources:'foreverchanges.pro loot table (names only)'}}}, legacy);
+  assert.equal(gearAllowed(listed, defaultGearFilter()), true);
+  assert.equal(listed.origin, 'unclassified');
+  assert.equal(gearAllowed(old, {...defaultGearFilter(),evidence:'client',maxPhase:5}), false);
+  assert.equal(gearAllowed(old, {...defaultGearFilter(),evidence:'client',maxPhase:6}), true);
+  assert.equal(gearAllowed(listed, {...defaultGearFilter(),unclassified:false}), false);
+  assert.equal(gearAllowed(undefined, defaultGearFilter()), false);
+  assert.equal(gearAllowed(undefined, {...defaultGearFilter(),evidence:'all'}), true);
+});
+
+test('all matching gear renders continuously without page slicing', () => {
+  const app = readFileSync(new URL('../ui/app/main.ts',import.meta.url),'utf8');
+  assert.match(app, /for \(const item of sorted\)/);
+  assert.doesNotMatch(app, /PAGE_SIZE|itemPage|sorted\.slice/);
+});
 
 test('external Sunder removes every rank and nested cast without mutating presets', () => {
   const cast = id => ({castSpell:{spellId:{spellId:id}}});

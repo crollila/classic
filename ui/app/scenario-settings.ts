@@ -3,16 +3,26 @@ import { foreverDiscoveryTalents } from '../forever/discovery';
 
 const readable = (name: string) => name.replace(/([a-z0-9])([A-Z])/g, '$1 $2').replace(/_/g, ' ').replace(/^./, c => c.toUpperCase());
 
-export function renderScenarioSettings(root: HTMLElement, s: any, warrior: boolean, change: () => void) {
+export function renderScenarioSettings(root: HTMLElement, s: any, warrior: boolean, change: () => void,
+  extras: { iconFor?: (name: string) => string; rotation?: HTMLElement; talents?: HTMLElement } = {}) {
   const opened = new Set(Array.from(root.querySelectorAll('details[open] > summary')).map(e => e.textContent));
   root.replaceChildren();
+  const layout = document.createElement('div'); layout.className = 'fa-settings-dashboard';
+  const columns = ['Encounter', 'Buffs', 'Rotation'].map(name => { const column = document.createElement('div'); column.className = 'fa-settings-column'; column.setAttribute('aria-label', name); layout.append(column); return column; });
   const note = (parent: HTMLElement, text: string) => { const p = document.createElement('p'); p.className = 'fa-note'; p.textContent = text; parent.append(p); };
   const section = (title: string, open = false) => {
     const d = document.createElement('details'); d.className = 'fa-scenario-section'; d.open = opened.size ? opened.has(title) : open;
-    const h = document.createElement('summary'); h.textContent = title; d.append(h); root.append(d); return d;
+    const h = document.createElement('summary'); h.textContent = title; d.append(h);
+    const target = title === 'Fight and target' || title === 'Character and execution' ? columns[0]
+      : ['Target debuffs and responsibilities', 'Raid, party and world buffs', 'Consumables and weapon imbues'].includes(title) ? columns[1] : root;
+    target.append(d); return d;
   };
-  const field = (parent: HTMLElement, label: string, input: HTMLElement) => {
-    const row = document.createElement('label'); row.className = 'fa-field'; const span = document.createElement('span'); span.textContent = label; row.append(span, input); parent.append(row);
+  const field = (parent: HTMLElement, label: string, input: HTMLElement, active = false, iconLabel = label) => {
+    const tile = parent.className === 'fa-buff-grid';
+    const row = document.createElement('label'); row.className = tile ? `fa-field fa-buff-tile${active ? ' is-selected' : ''}` : 'fa-field';
+    row.title = label; const span = document.createElement('span'); span.textContent = label;
+    if (tile) { const img = document.createElement('img'); img.src = extras.iconFor?.(iconLabel) || extras.iconFor?.(label) || 'https://wow.zamimg.com/images/wow/icons/medium/inv_misc_questionmark.jpg'; img.alt = ''; img.loading = 'lazy'; span.append(img); }
+    row.append(span, input); parent.append(row);
   };
   const number = (parent: HTMLElement, label: string, obj: any, key: string, min: number, max: number, step = 1, fallback = min) => {
     const i = document.createElement('input'); i.type = 'number'; i.min = String(min); i.max = String(max); i.step = String(step); i.value = String(obj[key] ?? fallback);
@@ -21,11 +31,13 @@ export function renderScenarioSettings(root: HTMLElement, s: any, warrior: boole
   const choice = (parent: HTMLElement, label: string, obj: any, key: string, values: Array<[string, string]>, numeric = false) => {
     const select = document.createElement('select');
     for (const [value, text] of values) { const o = document.createElement('option'); o.value = value; o.textContent = text; o.selected = String(obj[key] ?? 0) === value; select.append(o); }
-    select.onchange = () => { obj[key] = numeric ? Number(select.value) : select.value; change(); }; field(parent, label, select);
+    select.onchange = () => { obj[key] = numeric ? Number(select.value) : select.value; change(); }; field(parent, label, select, Number(obj[key] || 0) > 0, values.find(([v]) => v === String(obj[key]))?.[1] || label);
   };
-  const check = (parent: HTMLElement, label: string, obj: any, key: string) => { const i = document.createElement('input'); i.type = 'checkbox'; i.checked = !!obj[key]; i.onchange = () => { obj[key] = i.checked; change(); }; field(parent, label, i); };
+  const check = (parent: HTMLElement, label: string, obj: any, key: string) => { const i = document.createElement('input'); i.type = 'checkbox'; i.checked = !!obj[key]; i.onchange = () => { obj[key] = i.checked; change(); }; field(parent, label, i, !!obj[key]); };
   const enumValues = (values: any): Array<[string, string]> => Object.entries(values).filter(([, v]) => typeof v === 'number').map(([k, v]) => [String(v), Number(v) === 0 ? 'None' : readable(k)]);
-  note(root, 'All enabled controls are sent to equipped DPS, slot comparisons, stat weights and rotation search. Changes discard old results and invalidate the best-rotation selection. Settings are saved per spec.');
+  note(root, 'Configure the fight → choose buffs → find your best rotation. Gold tiles are selected. Settings save automatically for this spec.');
+  root.append(layout);
+  if (extras.rotation) { const box = document.createElement('section'); box.className = 'fa-scenario-section fa-settings-rotation'; const title = document.createElement('h3'); title.textContent = 'Rotation'; box.append(title, extras.rotation); columns[2].append(box); }
   const fight = section('Fight and target', true);
   number(fight, 'Fight variation (± seconds)', s, 'durationVariation', 0, 300);
   number(fight, 'Below 20% health (% of fight)', s, 'execute20', 0, 100);
@@ -40,7 +52,7 @@ export function renderScenarioSettings(root: HTMLElement, s: any, warrior: boole
   number(fight, 'Target minimum swing damage', s, 'targetMinDamage', 0, 100000);
   number(fight, 'Target maximum swing damage', s, 'targetMaxDamage', 0, 100000);
   note(fight, 'Other targets share these stats. Incoming swings require “Target attacks this character”; zero damage adds no incoming-damage rage. Fight duration is the sidebar value ± variation, clamped to stay positive.');
-  const character = section('Character and execution');
+  const character = section('Character and execution', true);
   number(character, 'Reaction delay (ms)', s, 'reactionMs', 0, 2000);
   number(character, 'Distance (yards; -1 = spec default)', s, 'distance', -1, 100);
   number(character, 'Reproducible random seed', s, 'seed', 1, 2147483647);
@@ -55,6 +67,7 @@ export function renderScenarioSettings(root: HTMLElement, s: any, warrior: boole
   note(debuffs, 'External Sunder uses the engine’s max-rank, five-stack debuff (0.8-second initial ramp). Expose Armor takes precedence. External debuffs are max-rank raid assumptions, not automatically level-matched providers.');
   // Schema-backed forms avoid inventing unsupported settings or losing enum choices.
   const message = (parent: HTMLElement, type: any, obj: any, excluded: string[] = []) => {
+    const grid = document.createElement('div'); grid.className = 'fa-buff-grid'; parent.append(grid);
     for (const f of type.fields) {
       const key = f.localName;
       if (excluded.includes(key) || f.options?.deprecated || f.repeat || f.oneof) continue;
@@ -64,14 +77,14 @@ export function renderScenarioSettings(root: HTMLElement, s: any, warrior: boole
         if (f.T()[0].endsWith('TristateEffect')) values = [['0', 'None'], ['1', 'Regular'], ['2', 'Improved']];
         // These talents were removed in Forever. Do not offer their Classic improved ranks.
         if (['battleShout', 'demoralizingShout'].includes(key)) values = values.filter(([v]) => v !== '2');
-        choice(parent, label, obj, key, values, true);
-      } else if (f.kind === 'scalar' && f.T === 8) check(parent, label, obj, key);
+        choice(grid, label, obj, key, values, true);
+      } else if (f.kind === 'scalar' && f.T === 8) check(grid, label, obj, key);
       else if (f.kind === 'scalar') number(parent, label, obj, key, 0, 20);
       else if (f.kind === 'message') { obj[key] ??= {}; const nested = document.createElement('details'); const title = document.createElement('summary'); title.textContent = label; nested.append(title); parent.append(nested); message(nested, f.T(), obj[key]); }
     }
   };
   message(debuffs, Debuffs, s.debuffs, ['sunderArmor', 'judgementOfLight']);
-  const buffs = section('Raid, party and world buffs');
+  const buffs = section('Raid, party and world buffs', true);
   note(buffs, 'These are externally supplied buffs. External Battle Shout removes self-casts from warrior rotations. Faction restrictions and exclusive-effect rules are enforced by the engine. Improved Battle Shout and Improved Demoralizing Shout are unavailable in Forever.');
   message(buffs, RaidBuffs, s.raidBuffs);
   message(buffs, PartyBuffs, s.partyBuffs);
@@ -79,6 +92,7 @@ export function renderScenarioSettings(root: HTMLElement, s: any, warrior: boole
   const consumes = section('Consumables and weapon imbues');
   note(consumes, 'This list exposes the currently implemented engine catalog, not every new Forever consumable. Availability, level restrictions and changed effects still require coverage review.');
   message(consumes, Consumes, s.consumes, ['boglingRoot']);
+  if (extras.talents) { const box = document.createElement('section'); box.className = 'fa-scenario-section fa-settings-talents'; const title = document.createElement('h3'); title.textContent = 'Talents'; box.append(title, extras.talents); root.append(box); }
   const forever = section('Forever Legacy, camps and profession effects');
   note(forever, 'Options come from the versioned Forever manifest. Predicted behavior is identified below; unavailable/non-combat entries cannot be selected. Profession effects may also require the matching profession and gear.');
   for (const m of foreverDiscoveryTalents.mechanics.filter(m => ['legacy_perk', 'profession_claim'].includes(m.kind) || m.category === 'BUFFS' || m.id.startsWith('buffs.'))) {
@@ -91,7 +105,7 @@ export function renderScenarioSettings(root: HTMLElement, s: any, warrior: boole
   }
   const gaps = section('Coverage and differences from Classic');
   note(gaps, 'Uses Forever race/talent data and the existing versioned mechanics layer. This page does not claim complete validation of every buff, consumable or beta mechanic. Classic AQ-book toggles are replaced by the engine’s learned-rank selection.');
-  note(gaps, 'Not adjustable yet: engine spell batching (fixed 10 ms), randomized reaction-delay ranges, arbitrary bleed reduction, or a separate spell-queueing on/off switch. Reaction delay is the engine’s fixed player setting, not a universal delay applied to every action. Enchant comparison and item-source/phase filters remain separate coverage gaps.');
+  note(gaps, 'Not adjustable yet: engine spell batching (fixed 10 ms), randomized reaction-delay ranges, arbitrary bleed reduction, or a separate spell-queueing on/off switch. Reaction delay is the engine’s fixed player setting, not a universal delay applied to every action. Enchant comparison remains a coverage gap. Gear availability and legacy phase planning filters are on the Gear tab; client presence is not proof of availability.');
   for (const [label, href] of [['Forever changes and evidence', 'https://foreverchanges.pro/'], ['Reference settings', 'https://guybrushgit.github.io/WarriorSim/classic.html']]) {
     const a = document.createElement('a'); a.textContent = label; a.href = href; a.target = '_blank'; a.rel = 'noopener'; gaps.append(a, document.createElement('br'));
   }
