@@ -97,6 +97,8 @@ type Spell struct {
 	SpellLevel         int32     `json:"spell_level"`
 	MaxLevel           int32     `json:"max_level"`
 	SpellClass         string    `json:"spell_class"`
+	SpellClassMask     []int64   `json:"spell_class_mask"`
+	RequiresItemClass  *int      `json:"requires_item_class"`
 	ProcChance         float64   `json:"proc_chance"`
 	ProcCharges        int       `json:"proc_charges"`
 	ProcsPerMinute     float64   `json:"procs_per_minute"`
@@ -350,8 +352,9 @@ func ForBuild(build string) (*Snapshot, error) {
 	}
 	Current()
 	mu.RLock()
-	defer mu.RUnlock()
-	if snapshot, ok := loaded[build]; ok {
+	snapshot, ok := loaded[build]
+	mu.RUnlock()
+	if ok {
 		return snapshot, nil
 	}
 	return nil, fmt.Errorf("gamedata: build %q is not loaded (have %v)", build, Builds())
@@ -384,6 +387,8 @@ func Register(snapshot *Snapshot) {
 
 // Builds lists the loaded build labels.
 func Builds() []string {
+	mu.RLock()
+	defer mu.RUnlock()
 	out := make([]string, 0, len(loaded))
 	for build := range loaded {
 		out = append(out, build)
@@ -410,6 +415,8 @@ func RegisterVariant(label string, mutate func(*Snapshot)) *Snapshot {
 	if mutate != nil {
 		mutate(variant)
 	}
+	// Mutations may add or replace records, not just edit existing pointers.
+	variant.index()
 	Register(variant)
 	return variant
 }

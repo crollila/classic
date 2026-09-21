@@ -96,9 +96,17 @@ func TestHistoricalBuildSelectable(t *testing.T) {
 
 // Every DPS spec simulates in Forever mode at level 20 with client data.
 func TestLevel20SpecsForever(t *testing.T) {
+	testLevelSpecsForever(t, 20)
+}
+
+func TestLevel60SpecsForever(t *testing.T) {
+	testLevelSpecsForever(t, 60)
+}
+
+func testLevelSpecsForever(t *testing.T, level int32) {
 	for _, c := range levelCases() {
 		t.Run(c.name, func(t *testing.T) {
-			result, _ := runForever(t, foreverPlayer(c, 20, "", nil), 20, 100)
+			result, _ := runForever(t, foreverPlayer(c, level, "", nil), level, 100)
 			if dpsOf(result) <= 0 {
 				t.Fatalf("%s: no damage", c.name)
 			}

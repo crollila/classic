@@ -5,6 +5,7 @@ import { ForeverMode,ForeverOptions } from '../ui/core/proto/api';
 import {foreverDiscoveryTalents as data,foreverBuildErrors,sampleForeverBuild,effectiveForeverRank} from '../ui/forever/discovery';
 import {classRecords,treeNames,rankChange,encodeTalents,decodeTalents,talentURL,readTalentURL} from '../ui/forever/talent-build';
 import art from '../ui/forever/data/talent-presentation.json';
+import engineData from '../sim/core/foreverdata/trees.json';
 
 for(const cls of Object.values(Class).filter((v):v is Class=>typeof v==='number'&&v!==Class.ClassUnknown)){
  for(const tree of treeNames(cls))for(const mode of [ForeverMode.STRICT,ForeverMode.BEST_GUESS]){
@@ -30,8 +31,12 @@ for(const cls of Object.values(Class).filter((v):v is Class=>typeof v==='number'
   });
  }
 }
-test('all 470 talents / 27 trees covered; malformed imports leave caller state intact',()=>{
- assert.equal(data.records.length,470);assert.equal(new Set(data.records.map(r=>r.class+':'+r.tree)).size,27);
+test('all versioned engine talents / 27 trees covered; malformed imports leave caller state intact',()=>{
+ // Vitality was removed from the client-backed tree. Compare the complete
+ // versioned records rather than freezing an obsolete talent count forever.
+ assert.deepEqual(data.records,engineData.records);
+ assert.equal(new Set(data.records.map(r=>r.id)).size,data.records.length);
+ assert.equal(new Set(data.records.map(r=>r.class+':'+r.tree)).size,27);
  const cls=Class.ClassWarrior,build=sampleForeverBuild(cls,'Arms'),original=structuredClone(build),valid=encodeTalents(cls,build);
  for(const bad of ['',valid.replace('F1:','F9:'),valid.replace('WARRIOR','DRUID'),valid+'0',valid.replace(/:[0-5]/,':9'),'000-000-000'])assert.throws(()=>decodeTalents(cls,bad));
  assert.deepEqual(build,original);assert.throws(()=>readTalentURL('https://example.test/?ft='+encodeURIComponent(valid)+'&fm=INVALID',cls));

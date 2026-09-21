@@ -16,7 +16,7 @@
     "pack:db": "go run ./tools/database/pack_db -dbDir=assets/database",
     "dev:forever": "node scripts/vite-forever.mjs --dev",
     "preview:forever": "node scripts/serve-forever.mjs",
-    "test:forever": "node --test scripts/forever.test.mjs scripts/forever-live-data.test.mjs scripts/rotation-optimizer.test.mjs scripts/app-performance.test.mjs && node --import tsx --test scripts/scenario-settings.test.ts",
+    "test:forever": "node --test scripts/forever.test.mjs scripts/forever-live-data.test.mjs scripts/rotation-optimizer.test.mjs scripts/app-performance.test.mjs scripts/check-classic.test.mjs && node --import tsx --test scripts/scenario-settings.test.ts",
     "build": "node scripts/build.mjs build",
     "test": "node scripts/build.mjs test",
     "generate": "node scripts/build.mjs generate",

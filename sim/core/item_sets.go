@@ -79,6 +79,11 @@ func NewItemSet(set ItemSet) *ItemSet {
 }
 
 func (character *Character) HasSetBonus(set *ItemSet, numItems int32) bool {
+	// This API asks for a code-backed Classic bonus. Forever bonuses are
+	// selected by client set membership and spell IDs, never by the old name.
+	if character.GameData != nil {
+		return false
+	}
 	if character.Env != nil && character.Env.IsFinalized() {
 		panic("HasSetBonus is very slow and should never be called after finalization. Try caching the value during construction instead!")
 	}
@@ -113,6 +118,9 @@ type ActiveSetBonus struct {
 
 // Returns a list describing all active set bonuses.
 func (character *Character) GetActiveSetBonuses() []ActiveSetBonus {
+	if character.GameData != nil {
+		return character.clientSetBonuses()
+	}
 	var activeBonuses []ActiveSetBonus
 
 	setItemCount := make(map[*ItemSet]int32)

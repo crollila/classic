@@ -8,6 +8,14 @@ import {classifyGear, gearAllowed, defaultGearFilter} from '../ui/app/gear-avail
 import {readFileSync} from 'node:fs';
 import {normalizeWeapons, replaceWeapon, weaponViewId} from '../ui/app/weapon-slots.mjs';
 
+test('set coverage warnings remain attached to cached gear scores and visible results', () => {
+  const source=readFileSync(new URL('../ui/app/main.ts',import.meta.url),'utf8');
+  assert(source.includes('itemSetWarnings.set(job.key, setCoverageWarnings(result))'));
+  assert(source.includes('itemSetWarnings.delete(oldest)'));
+  assert(source.includes("warnings.length ? ' ⚠' : ''"));
+  assert(source.includes('Incomplete set effects: this DPS excludes'));
+});
+
 test('two-hand and dual-wield choices are mutually exclusive in every candidate', () => {
   const items = new Map([[1,{handType:4}],[2,{handType:2}],[3,{handType:2}]]); // Synthetic.
   const itemFor = id => items.get(id);

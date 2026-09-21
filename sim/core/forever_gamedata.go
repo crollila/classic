@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/wowsims/classic/sim/core/gamedata"
 	"github.com/wowsims/classic/sim/core/proto"
@@ -80,15 +81,27 @@ func (character *Character) ClientTalentValue(recordID string, effect int, class
 // player, the seed actually used, and every non-client value the process has used.
 func (sim *Simulation) provenance() *proto.SimProvenance {
 	out := &proto.SimProvenance{RandomSeed: sim.rseed}
+	foundBuild := false
 	for _, party := range sim.Raid.Parties {
 		for _, agent := range party.Players {
 			if data := agent.GetCharacter().GameData; data != nil {
-				out.GameDataBuild, out.GameDataSha256, out.ClassicReferenceBuild = data.Build, data.SnapshotSHA256, data.ClassicBuild
-				for _, f := range gamedata.Fallbacks() {
-					out.NonClientValues = append(out.NonClientValues, fmt.Sprintf("%s | %s = %g (%s)", f.Owner, f.What, f.Value, f.Confidence))
+				if !foundBuild {
+					out.GameDataBuild, out.GameDataSha256, out.ClassicReferenceBuild = data.Build, data.SnapshotSHA256, data.ClassicBuild
+					foundBuild = true
+				} else if data.Build != out.GameDataBuild || data.SnapshotSHA256 != out.GameDataSha256 {
+					out.NonClientValues = append(out.NonClientValues, fmt.Sprintf("Additional player build: %s | %s | %s", agent.GetCharacter().Label, data.Build, data.SnapshotSHA256))
 				}
-				return out
+				for _, bonus := range agent.GetCharacter().GetActiveSetBonuses() {
+					if strings.Contains(bonus.Name, "[incomplete:") {
+						out.NonClientValues = append(out.NonClientValues, fmt.Sprintf("Set coverage: %s | %s (%dpc); unsupported effects are NOT applied", agent.GetCharacter().Label, bonus.Name, bonus.NumPieces))
+					}
+				}
 			}
+		}
+	}
+	if foundBuild {
+		for _, f := range gamedata.Fallbacks() {
+			out.NonClientValues = append(out.NonClientValues, fmt.Sprintf("%s | %s = %g (%s)", f.Owner, f.What, f.Value, f.Confidence))
 		}
 	}
 	return out

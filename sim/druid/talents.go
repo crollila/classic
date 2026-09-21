@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/classic/sim/core"
+	"github.com/wowsims/classic/sim/core/gamedata"
 	"github.com/wowsims/classic/sim/core/stats"
 )
 
@@ -464,7 +465,7 @@ func (druid *Druid) applyForeverOmenOfClarity() {
 	if druid.Level < 20 {
 		return
 	}
-	const ppm = 2.0
+	ppm := gamedata.Use("druid: Omen of Clarity", "ppm", 2, "PREDICTED", "client rate unavailable; Classic PPM analogue")
 	affected := func(spell *core.Spell) bool {
 		if spell.Cost == nil || spell.SpellCode == SpellCode_DruidWrath {
 			return false
@@ -505,7 +506,7 @@ func (druid *Druid) applyForeverOmenOfClarity() {
 	})
 
 	ppmm := druid.AutoAttacks.NewPPMManager(ppm, core.ProcMaskMelee)
-	icd := core.Cooldown{Timer: druid.NewTimer(), Duration: time.Second * 10}
+	icd := core.Cooldown{Timer: druid.NewTimer(), Duration: time.Duration(gamedata.Use("druid: Omen of Clarity", "icd_s", 10, "PREDICTED", "client internal cooldown unavailable; Classic analogue")) * time.Second}
 	moonkinFactor := func() float64 {
 		if druid.InForm(Moonkin) && druid.fr("moonkin-form") > 0 {
 			return 2
@@ -518,10 +519,8 @@ func (druid *Druid) applyForeverOmenOfClarity() {
 			if !result.Landed() || !icd.IsReady(sim) || !spell.ProcMask.Matches(core.ProcMaskMelee) {
 				return
 			}
-			procced := ppmm.ProcWithWeaponSpecials(sim, spell.ProcMask, "Omen of Clarity")
-			if !procced && moonkinFactor() > 1 {
-				procced = ppmm.ProcWithWeaponSpecials(sim, spell.ProcMask, "Omen of Clarity")
-			}
+			// +100% chance means 2p, not two attempts (2p-p²).
+			procced := sim.Proc(ppmm.ChanceWithWeaponSpecials(spell.ProcMask)*moonkinFactor(), "Omen of Clarity")
 			if procced {
 				icd.Use(sim)
 				druid.ClearcastingAura.Activate(sim)

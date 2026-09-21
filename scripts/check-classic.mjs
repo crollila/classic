@@ -15,13 +15,42 @@ const protectedPaths = [
 ];
 const reviewed=JSON.parse(readFileSync('sim/forever/reviewed-boundary.json','utf8'));
 if(reviewed.upstream_commit!==upstream)throw new Error('Reviewed boundary uses the wrong upstream');
-for(const [file,expected]of Object.entries(reviewed.files)){
- const normalized=readFileSync(file,'utf8').replaceAll('\r\n','\n');
- const actual=createHash('sha256').update(normalized).digest('hex');
- if(actual!==expected)throw new Error(`Unreviewed changes in ${file}; review behavior and rerun regression checks before updating its pinned hash.`);
+const issues = [];
+const binaryFiles=reviewed.binary_files || {};
+if(Object.keys(binaryFiles).some(file=>Object.hasOwn(reviewed.files,file)))throw new Error('A reviewed file cannot have both text and binary hashes');
+const allFiles={...reviewed.files,...binaryFiles};
+for(const [file,expected]of Object.entries(allFiles)){
+ try {
+  const normalized=Object.hasOwn(binaryFiles,file) ? readFileSync(file) : readFileSync(file,'utf8').replaceAll('\r\n','\n');
+  const actual=createHash('sha256').update(normalized).digest('hex');
+  if(actual!==expected)issues.push({file, kind:'changed-review-pin', expected, actual});
+ } catch (error) {
+  if(error.code!=='ENOENT')throw error;
+  issues.push({file, kind:'missing-reviewed-file'});
+ }
 }
-const exclusions=Object.keys(reviewed.files).map(file=>`:(exclude)${file}`);
-const check = spawnSync('git', ['diff', '--exit-code', upstream, '--', ...protectedPaths,...exclusions], { stdio: 'inherit' });
-if (check.error) throw check.error;
-if (check.status !== 0) process.exit(check.status ?? 1);
-console.log(`Classic protected files match ${upstream}; ${Object.keys(reviewed.files).length} explicit discovery extension files match their reviewed hashes. Behavioral parity is checked by npm test.`);
+const exclusions=Object.keys(allFiles).map(file=>`:(exclude)${file}`);
+function gitFiles(args) {
+ const result=spawnSync('git',args,{encoding:'utf8'});
+ if(result.error)throw result.error;
+ if(result.status!==0)throw new Error(result.stderr || `git failed (${result.status})`);
+ return result.stdout.split('\0').filter(Boolean);
+}
+for(const file of gitFiles(['diff','--name-only','-z',upstream,'--',...protectedPaths,...exclusions])){
+ issues.push({file,kind:'unreviewed-protected-change'});
+}
+// git diff alone omits newly created, untracked engine files.
+for(const file of gitFiles(['ls-files','--others','--exclude-standard','-z','--',...protectedPaths,...exclusions])){
+ issues.push({file,kind:'untracked-protected-file'});
+}
+issues.sort((a,b)=>a.file.localeCompare(b.file));
+if(process.argv.includes('--json')){
+ console.log(JSON.stringify({upstream,acceptedBaseline:reviewed.accepted_baseline_commit || null,reviewedFiles:Object.keys(allFiles).length,passed:issues.length===0,issues},null,2));
+}else if(issues.length){
+ console.error(`${issues.length} Classic boundary review issues (no pins were changed):`);
+ for(const issue of issues)console.error(`  ${issue.kind}: ${issue.file}`);
+ console.error('Review behavior and regression evidence before updating pins. Use --json for the full inventory.');
+}else{
+ console.log(`Protected files outside the accepted review match ${upstream}; ${Object.keys(allFiles).length} reviewed files match their pinned hashes. Retained-baseline regressions are checked by npm test.`);
+}
+process.exitCode=issues.length ? 1 : 0;

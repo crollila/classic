@@ -293,7 +293,7 @@ function renderSettings() {
 	}
 	settings.append(field('Fight length (s)', numberInput(state.duration, 20, 600, v => { state.duration = v; changed(); })));
 	settings.append(field('Iterations', numberInput(state.iterations, 100, 50000, v => { state.iterations = v; save(); })));
-	settings.append(field('Item sim iterations', numberInput(state.itemIterations, 100, 10000, v => { stopItemWork(); state.itemIterations = v; itemCache.clear(); save(); if (tab === 'Gear') renderItems(); })));
+	settings.append(field('Item sim iterations', numberInput(state.itemIterations, 100, 10000, v => { stopItemWork(); state.itemIterations = v; itemCache.clear(); itemSetWarnings.clear(); save(); if (tab === 'Gear') renderItems(); })));
 	const parallel = el('select');
 	for (const mode of PARALLEL_OPTIONS) {
 		const option = el('option', '', mode === 'auto' ? `Auto (${parallelism('auto', navigator.hardwareConcurrency)} at a time)` : `${mode} at a time`);
@@ -339,7 +339,7 @@ async function renderStats() {
 			const tr = el('tr'); tr.append(el('th', '', label), el('td', '', s.length ? value(s) : '—')); return tr;
 		}));
 		const sets = result.raidStats?.parties[0]?.players[0]?.sets || [];
-		const setRow = el('tr'); setRow.append(el('th', '', 'Active modeled sets'), el('td', '', sets.join(', ') || 'None')); statsTable.append(setRow);
+		const setRow = el('tr'); setRow.append(el('th', '', 'Equipped set bonuses'), el('td', '', sets.join(', ') || 'None')); statsTable.append(setRow);
 		if (result.errorResult) statsTable.append(Object.assign(el('tr'), { textContent: result.errorResult }));
 	} catch (e) { if (revision === setupRevision) statsTable.replaceChildren(el('tr', '', String(e))); }
 }
@@ -374,6 +374,8 @@ function renderDoll() {
 // ---------------------------------------------------------------- gear tab: item table with simulated DPS
 
 const itemCache = new Map<string, number>();
+const itemSetWarnings = new Map<string, string[]>();
+const setCoverageWarnings = (result: RaidSimResult) => (result.provenance?.nonClientValues || []).filter(value => value.startsWith('Set coverage:'));
 let sortKey: 'dps' | 'ilvl' | 'name' = 'dps';
 let search = '';
 function gearKey(gear: number[]) {
@@ -461,8 +463,10 @@ function renderItems() {
 		const base = itemCache.get(context + JSON.stringify(state.gear));
 		for (const r of rows) {
 			const v = score(r.id);
-			const text = v === undefined ? '—' : fmt(v, 2);
-			const title = v !== undefined && base !== undefined ? `${v - base >= 0 ? '+' : ''}${fmt(v - base, 2)} vs equipped` : '';
+			const warnings = itemSetWarnings.get(keys.get(r.id)!) || [];
+			const text = v === undefined ? '—' : fmt(v, 2) + (warnings.length ? ' ⚠' : '');
+			const delta = v !== undefined && base !== undefined ? `${v - base >= 0 ? '+' : ''}${fmt(v - base, 2)} vs equipped` : '';
+			const title = [delta, ...warnings].filter(Boolean).join('\n');
 			if (r.cell.textContent !== text) r.cell.textContent = text;
 			if (r.cell.title !== title) r.cell.title = title;
 		}
@@ -475,6 +479,7 @@ function renderItems() {
 	progress.setAttribute('role', 'status');
 	stop.onclick = () => { stopItemWork(); stop.hidden = true; simSlot.disabled = false; progress.textContent = 'Stopped. Completed scores are kept.'; };
 	head.append(simSlot, stop, progress);
+	head.append(el('span', 'fa-note', '⚠ beside DPS means an equipped set has unmodeled effects. Hover the score for details; that comparison is incomplete.'));
 	panel.replaceChildren(head, availabilityFilters, el('p', 'fa-note', `${availabilityStatus} Client presence does not prove obtainability. Legacy phases are inherited Classic/SoD labels, not a Forever roadmap. Filters do not unequip saved gear. New-to-catalog does not mean Forever-exclusive.`), table, el('p', 'fa-note', `All ${list.length} matching items are on this page. DPS uses ${state.itemIterations} iterations per item and the displayed rotation, with other slots as equipped. Switching tabs stops scoring; completed results are cached. Click DPS to sort cached results instantly.`));
 	simSlot.onclick = async () => {
 		const token = ++runToken;
@@ -497,8 +502,9 @@ function renderItems() {
 				try {
 					const result = await pool.raidSimAsync(req, () => {}, signal);
 					if (!signal.abort.isTriggered() && !result.error && result.iterationsDone === req.simOptions!.iterations) {
-						if (itemCache.size >= 4000) itemCache.delete(itemCache.keys().next().value!);
+						if (itemCache.size >= 4000) { const oldest = itemCache.keys().next().value!; itemCache.delete(oldest); itemSetWarnings.delete(oldest); }
 						itemCache.set(job.key, dps(result));
+						itemSetWarnings.set(job.key, setCoverageWarnings(result));
 					} else if (!signal.abort.isTriggered()) failed++;
 				} catch { failed++; } finally { itemSignals.unregisterRunning(signal); }
 				done++;
@@ -635,6 +641,8 @@ function renderResults() {
 function provenanceBlock() {
 	const p = lastResult?.provenance;
 	const box = el('div', 'fa-note');
+	const setGaps = lastResult ? setCoverageWarnings(lastResult) : [];
+	if (setGaps.length) box.append(el('p', '', '⚠ Incomplete set effects: this DPS excludes the effects listed below.'), ...setGaps.map(value => el('div', '', value)));
 	const data = p?.gameDataBuild ? `Forever client data ${p.gameDataBuild} (${(p.gameDataSha256 || '').slice(0, 12)})` : 'Classic data';
 	box.append(el('span', '', `${data} · engine ${String(import.meta.env.VITE_ENGINE_VERSION || 'dev')} · seed ${p?.randomSeed ?? '?'}`));
 	if (p?.nonClientValues?.length) box.append(el('span', '', ` · ${p.nonClientValues.length} non-client values used`));

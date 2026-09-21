@@ -72,13 +72,13 @@ func TestMageForeverLevel20Ranks(t *testing.T) {
 		// Frost Nova 1, Fire Ward 1, Mana Shield 1.
 		[]int32{122, 543, 1463},
 		// Top ranks, Cone of Cold (26), Frost Ward (22) and Frostfire Bolt (40).
-		[]int32{10230, 10161, 120, 10223, 10225, 6143, 10193, 401502})
+		[]int32{10230, 10161, 120, 10223, 10225, 28609, 6143, 10193, 401502})
 	if c.GetSpell(c.ForeverAction("mage.baseline.frostfire-bolt")) != nil {
 		t.Error("Frostfire Bolt is learned at 40 and must not be castable at 20")
 	}
 
 	c = levelMageCharacter(t, levelMage(60, true, "mage.baseline.frostfire-bolt"))
-	checkKnown(t, c, []int32{10230, 10161, 10223, 10225, 10193}, []int32{122, 543, 1463})
+	checkKnown(t, c, []int32{10230, 10161, 10225, 28609, 10193}, []int32{122, 543, 1463, 10223})
 	if c.GetSpell(c.ForeverAction("mage.baseline.frostfire-bolt")) == nil {
 		t.Error("level 60 Frostfire Bolt keeps its Forever action")
 	}

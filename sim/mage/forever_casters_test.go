@@ -314,7 +314,7 @@ func TestForeverClassicIdentityUtilityCasts(t *testing.T) {
 		goal   string
 		summon proto.WarlockOptions_Summon
 	}{
-		{proto.Class_ClassMage, 10230, "", 0}, {proto.Class_ClassMage, 10161, "", 0}, {proto.Class_ClassMage, 10223, "", 0}, {proto.Class_ClassMage, 10225, "", 0}, {proto.Class_ClassMage, 10193, "", 0},
+		{proto.Class_ClassMage, 10230, "", 0}, {proto.Class_ClassMage, 10161, "", 0}, {proto.Class_ClassMage, 10225, "", 0}, {proto.Class_ClassMage, 28609, "", 0}, {proto.Class_ClassMage, 10193, "", 0},
 		{proto.Class_ClassPriest, 10965, "", 0}, {proto.Class_ClassPriest, 10929, "", 0}, {proto.Class_ClassPriest, 10961, "", 0}, {proto.Class_ClassPriest, 10890, "", 0}, {proto.Class_ClassPriest, 10942, "", 0}, {proto.Class_ClassPriest, 10952, "", 0},
 		{proto.Class_ClassWarlock, 11775, "warlock.talent.improved-voidwalker", proto.WarlockOptions_Voidwalker}, {proto.Class_ClassWarlock, 17752, "warlock.talent.improved-voidwalker", proto.WarlockOptions_Voidwalker}, {proto.Class_ClassWarlock, 17854, "warlock.talent.improved-voidwalker", proto.WarlockOptions_Voidwalker}, {proto.Class_ClassWarlock, 19443, "warlock.talent.improved-voidwalker", proto.WarlockOptions_Voidwalker},
 		{proto.Class_ClassWarlock, 6358, "warlock.talent.improved-sayaad", proto.WarlockOptions_Succubus}, {proto.Class_ClassWarlock, 7870, "warlock.talent.improved-sayaad", proto.WarlockOptions_Succubus}, {proto.Class_ClassWarlock, 11785, "warlock.talent.improved-sayaad", proto.WarlockOptions_Succubus},

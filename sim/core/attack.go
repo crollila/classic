@@ -932,6 +932,19 @@ func (ppmm *PPMManager) Chance(procMask ProcMask) float64 {
 	return 0
 }
 
+// ChanceWithWeaponSpecials uses the same weapon-speed selection as
+// ProcWithWeaponSpecials, without drawing RNG, so a chance modifier can be
+// applied once instead of approximated with multiple independent rolls.
+func (ppmm *PPMManager) ChanceWithWeaponSpecials(procMask ProcMask) float64 {
+	if procMask.Matches(ProcMaskMeleeMHSpecial) {
+		return ppmm.mhSpecialProcChance
+	}
+	if procMask.Matches(ProcMaskMeleeOHSpecial) {
+		return ppmm.ohSpecialProcChance
+	}
+	return ppmm.Chance(procMask)
+}
+
 func (ppmm *PPMManager) GetPPM() float64 {
 	return ppmm.ppm
 }
