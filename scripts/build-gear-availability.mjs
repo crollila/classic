@@ -8,7 +8,9 @@ const raw = readFileSync('sim/core/gamedata/current.json.gz');
 const snapshot = JSON.parse(gunzipSync(raw));
 const database = JSON.parse(readFileSync('assets/database/db.json'));
 const manifest = JSON.parse(readFileSync('assets/database/forever-item-database.json'));
-if (manifest.sources?.values?.build !== snapshot.build) throw Error('Item evidence and snapshot builds differ');
+// Snapshot revisions append a content suffix; the extraction manifest stores
+// the base client build. Preserve the full revision in the output below.
+if (manifest.sources?.values?.build !== snapshot.build.split('+')[0]) throw Error('Item evidence and snapshot builds differ');
 const baseline = JSON.parse(readFileSync('sim/forever/baseline.json')).upstream_commit;
 const legacy = JSON.parse(execFileSync('git', ['-c', 'safe.directory=*', 'show', `${baseline}:assets/database/db.json`], {maxBuffer: 100 * 1024 * 1024}));
 const ids = new Set(legacy.items.map(i => i.id));
