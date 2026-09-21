@@ -12,6 +12,8 @@ import { PARALLEL_OPTIONS, parallelism } from './parallelism.mjs';
 import { defaultScenario, scenarioRotation, scenarioDebuffs } from './scenario.mjs';
 import { renderScenarioSettings } from './scenario-settings';
 import { addSettingHelp, settingHelp } from './setting-help';
+import { scenarioMechanics } from './scenario-mechanics.mjs';
+import { createActionNames } from './action-names.mjs';
 import { defaultGearFilter, gearAllowed, evidenceLabel } from './gear-availability.mjs';
 import { normalizeWeapons, replaceWeapon, weaponViewId } from './weapon-slots.mjs';
 import {
@@ -53,6 +55,7 @@ interface Item {
 type TalentInfo = { icon: string; desc: string[]; tree: string; row: number; col: number; max: number };
 const TALENTS = (talentText as unknown as { talents: Record<string, Record<string, TalentInfo> & { __trees: Array<{ name: string; icon: string }> }> }).talents;
 const NAMES = (spellNames as unknown as { names: Record<string, string> }).names;
+let resolveActionName = createActionNames(NAMES);
 const ARMOR = (mobArmor as unknown as { armor: Record<string, number> }).armor;
 const PRESETS = presetData as unknown as Record<string, Array<{ label: string; talents: Record<string, number> }>>;
 const ICON = (icon: string) => `https://wow.zamimg.com/images/wow/icons/medium/${icon || 'inv_misc_questionmark'}.jpg`;
@@ -141,12 +144,13 @@ function pointsSpent(t = state.talents) { return Object.values(t).reduce((a, b) 
 function foreverOptions(): ForeverOptions {
 	const raceKey: Record<number, string> = { 1: 'dwarf', 2: 'gnome', 3: 'human', 4: 'night-elf', 5: 'orc', 6: 'tauren', 7: 'troll', 8: 'undead', 9: 'skyborne-windshaper', 10: 'skyborne-high-order' };
 	const cls = foreverClassName(def.cls);
+	const selected = scenarioMechanics(state.scenario, foreverDiscoveryTalents.mechanics);
 	return ForeverOptions.create({
 		rulesetId: foreverDiscoveryTalents.ruleset_id, mode: ForeverMode.BEST_GUESS, talents: { ...state.talents },
 		mechanics: foreverDiscoveryTalents.mechanics
 			.filter(m => m.mode !== 'blocked' && m.mode !== 'non-sim' && ((m.kind === 'racial' && m.id.startsWith(`racials.${raceKey[state.race]}.`)) || (m.category === cls && m.mode === 'ability')))
-			.map(m => m.id).concat(foreverDiscoveryTalents.mechanics.filter(m => m.mode !== 'blocked' && m.mode !== 'non-sim' && (state.scenario.mechanicRanks[m.id] || 0) > 0).map(m => m.id)),
-		mechanicRanks: state.scenario.mechanicRanks, parameters: state.scenario.parameters,
+			.map(m => m.id).concat(Object.keys(selected.ranks)),
+		mechanicRanks: selected.ranks, parameters: selected.parameters,
 	});
 }
 
@@ -612,8 +616,7 @@ const OTHER = ['', 'Wait', 'Mana regen', 'Energy regen', 'Focus regen', 'Mana ga
 	'Damage taken', 'Healing model', 'Potion', 'Move', 'Combo points', 'Explosives', 'On-use trinket', 'Defensive trinket', 'Forever ability'];
 function actionName(id: { rawId?: { oneofKind?: string; spellId?: number; itemId?: number; otherId?: number }; tag?: number } | undefined) {
 	const raw = id?.rawId;
-	if (raw?.oneofKind === 'spellId') return NAMES[String(raw.spellId)] || `Spell ${raw.spellId}`;
-	if (raw?.oneofKind === 'itemId') return byId.get(raw.itemId || 0)?.name || `Item ${raw.itemId}`;
+	if (raw?.oneofKind === 'spellId' || raw?.oneofKind === 'itemId') return resolveActionName(raw)!;
 	if (raw?.oneofKind === 'otherId') {
 		if (raw.otherId === 19) return foreverDiscoveryTalents.records.find(r => r.action_tag === id?.tag)?.name || foreverDiscoveryTalents.mechanics.find(m => m.action_tag === id?.tag)?.name || 'Forever ability';
 		return OTHER[raw.otherId || 0] || 'Other';
@@ -696,6 +699,10 @@ function renderRotation(target = panel) {
 		if (list.children.length) target.append(el('h3', '', section[0].toUpperCase() + section.slice(1)), list);
 	}
 	target.append(el('p', 'fa-note', 'The engine uses your highest learned spell rank. Search compares presets, priorities, resource thresholds and cooldown timing using your fight and gear. It finds the best supported strategy within a bounded search; a global maximum is not guaranteed.'));
+	const technical = el('details', 'fa-note');
+	technical.append(el('summary', '', 'Technical details: ability and item IDs'));
+	for (const [id, name] of Object.entries(names)) technical.append(el('div', '', `${name} — ${id}`));
+	target.append(technical);
 }
 function renderPanel() {
 	for (const b of tabs.querySelectorAll('button')) b.classList.toggle('active', b.textContent === tab);
@@ -710,6 +717,8 @@ function renderPanel() {
 			rotation: rotationView, talents: talentView,
 			iconFor: name => settingIcons.get(iconKey(name)) || '',
 		});
+		const corrections = scenarioMechanics(state.scenario, foreverDiscoveryTalents.mechanics).corrections;
+		if (corrections.length) panel.prepend(el('p', 'fa-note', `Saved settings need attention: ${corrections.join('; ')}.`));
 	}
 	else renderRotation();
 }
@@ -852,6 +861,7 @@ function switchSpec(key: string) {
 (async () => {
 	specSelect.value = def.key;
 	const db = await fetch(`${BASE}assets/database/db.json`).then(r => r.json());
+	resolveActionName = createActionNames(NAMES, db);
 	try {
 		const data = await fetch(`${BASE}assets/database/gear-availability.json`).then(r => { if (!r.ok) throw Error('Missing evidence'); return r.json(); });
 		const hash = Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(JSON.stringify(db))))).map(b => b.toString(16).padStart(2, '0')).join('');
