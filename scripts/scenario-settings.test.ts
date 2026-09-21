@@ -3,17 +3,21 @@ import assert from 'node:assert/strict';
 import { renderScenarioSettings } from '../ui/app/scenario-settings';
 import { defaultScenario, scenarioDebuffs } from '../ui/app/scenario.mjs';
 import { RaidBuffs, Debuffs, Consumes } from '../ui/core/proto/common';
+import { SETTING_HELP } from '../ui/app/setting-help';
 
 // Small DOM fixture: test schema-generated forms and input bindings without a browser.
 class Element {
   children: Element[] = [];
   textContent = ''; value = ''; checked = false;
+  id = ''; title = ''; hidden = false; className = '';
+  attributes: Record<string, string> = {};
   onchange?: () => void;
   constructor(public tagName: string) {}
   append(...children: Element[]) { this.children.push(...children); }
   replaceChildren(...children: Element[]) { this.children = children; }
   querySelectorAll() { return []; }
-  setAttribute() {}
+  setAttribute(key: string, value: string) { this.attributes[key] = value; }
+  addEventListener() {}
 }
 const walk = (e: Element): Element[] => [e, ...e.children.flatMap(walk)];
 function form(warrior = true) {
@@ -47,6 +51,7 @@ test('opening settings does not alter the scenario or expose unsupported no-op b
   assert.ok(!labels.includes('Blessing Of Sanctuary'));
   assert.ok(!labels.includes('Judgement Of Light'));
   assert.ok(labels.length > 100, `only ${labels.length} settings rendered`);
+  assert.equal(labels.filter(label => label === 'Blessing Of Wisdom').length, 1, 'only the functional individual Wisdom control is offered');
 });
 test('fight input bounds and warrior options are applied on change', () => {
   const f = form();
@@ -56,4 +61,29 @@ test('fight input bounds and warrior options are applied on change', () => {
   assert.equal(f.scenario.startingRage, 40);
   const armor = f.control('Base armor (-1 = level default)'); armor.value = '0'; armor.onchange!();
   assert.equal(f.scenario.armor, 0);
+});
+
+test('every rendered setting has descriptive help, an accessible association and touch help', () => {
+  const f = form();
+  for (const row of walk(f.root).filter(e => e.tagName === 'label')) {
+    const input = row.children[1], help = row.children[2], tip = row.children[3];
+    assert.ok(tip.textContent.length > 25, row.children[0].textContent);
+    assert.ok(!tip.textContent.includes('has not yet been documented'), row.children[0].textContent);
+    assert.equal(input.attributes['aria-describedby'], tip.id);
+    assert.equal(tip.attributes.role, 'tooltip');
+    assert.equal(help.tagName, 'button');
+    assert.equal(help.attributes['aria-expanded'], 'false');
+    assert.equal(tip.hidden, true);
+  }
+  assert.match(SETTING_HELP.sunder, /removes all self-casts/);
+  assert.match(SETTING_HELP.scorpidSting, /no stat reduction/);
+  assert.deepEqual(f.scenario, defaultScenario(), 'help must not change the setup');
+});
+
+test('pet consume selection codes cannot exceed engine table bounds', () => {
+  const f = form();
+  for (const [label, key, max] of [['Pet Agility Consumable', 'petAgilityConsumable', 4], ['Pet Strength Consumable', 'petStrengthConsumable', 5], ['Pet Attack Power Consumable', 'petAttackPowerConsumable', 1]] as const) {
+    const control = f.control(label); control.value = '20'; control.onchange!();
+    assert.equal((f.scenario.consumes as Record<string, unknown>)[key], max);
+  }
 });

@@ -11,6 +11,7 @@ import { runQueue } from './work-queue.mjs';
 import { PARALLEL_OPTIONS, parallelism } from './parallelism.mjs';
 import { defaultScenario, scenarioRotation, scenarioDebuffs } from './scenario.mjs';
 import { renderScenarioSettings } from './scenario-settings';
+import { addSettingHelp, settingHelp } from './setting-help';
 import { defaultGearFilter, gearAllowed, evidenceLabel } from './gear-availability.mjs';
 import { normalizeWeapons, replaceWeapon, weaponViewId } from './weapon-slots.mjs';
 import {
@@ -254,12 +255,17 @@ const cancelButton = el('button', 'fa-btn', 'Cancel');
 cancelButton.hidden = true;
 cancelButton.onclick = () => { optimizerController?.abort(); void foregroundSignals.abortType(RequestTypes.All); };
 const weightsButton = el('button', 'fa-btn', 'Stat Weights');
+specSelect.title = 'Choose the class/spec to configure. Each spec keeps its own saved settings.';
+dpsButton.title = 'Simulate only the currently equipped character with the selected fight settings.';
+optimizeButton.title = 'Search supported rotations for this gear, talents and encounter; does not optimize gear or talents.';
+cancelButton.title = 'Stop the current simulation or search. Completed cached gear results are retained.';
+weightsButton.title = 'Estimate how small stat changes affect this setup’s DPS. Weights depend on gear, fight and rotation.';
 buttons.append(dpsButton, optimizeButton, weightsButton, cancelButton);
 const settings = el('div', 'fa-settings');
 side.append(specSelect, heading, statsTable, dpsBox, buttons, settings);
 
 function field(label: string, input: HTMLElement) {
-	const row = el('label', 'fa-field'); row.append(el('span', '', label), input); return row;
+	const row = el('label', 'fa-field'); row.append(el('span', '', label), input); addSettingHelp(row, input, label, settingHelp(label)); return row;
 }
 function numberInput(value: number, min: number, max: number, onChange: (v: number) => void) {
 	const i = el('input'); i.type = 'number'; i.min = String(min); i.max = String(max); i.value = String(value);
@@ -307,7 +313,9 @@ function renderSettings() {
 	settings.append(field('Parallel gear simulations', parallel), el('p', 'fa-note', 'Auto estimates CPU capacity and reserves threads for responsiveness. Manual settings up to 64 use more CPU and memory; too many can be slower. Changes stop the current slot run; click Sim this slot to resume cached progress.'));
 	const armorNote = el('p', 'fa-note', `Base target armor ${encounter().targets[0].stats[Stat.StatArmor]} · ${state.scenario.targets} target(s). Buffs and debuffs: Settings tab.`);
 	const reset = el('button', 'fa-link', 'Reset this spec'); reset.addEventListener('click', () => { state = defaults(def); changed(); });
+	reset.title = 'Replace this spec’s saved gear, talents and settings with its defaults. Other specs are unchanged.';
 	const advanced = el('a', 'fa-link', 'Advanced simulator ↗'); advanced.href = `${BASE}${def.key}/`;
+	advanced.title = 'Open the full simulator interface for this class with additional advanced controls.';
 	settings.append(armorNote, reset, advanced);
 }
 
@@ -549,6 +557,7 @@ function renderTalents(target = panel) {
 	const presets = PRESETS[def.key] || [];
 	if (presets.length) {
 		const p = el('select'); p.append(Object.assign(el('option', '', 'Load a build…'), { value: '' }));
+		p.title = 'Replace the current talents with a popular preset, stopping at your level’s point limit. Popular does not mean mathematically optimal.';
 		presets.forEach((b, i) => { const o = el('option', '', b.label); o.value = String(i); p.append(o); });
 		p.addEventListener('change', () => {
 			const b = presets[Number(p.value)]; if (!b) return;
@@ -561,6 +570,7 @@ function renderTalents(target = panel) {
 		top.append(p);
 	}
 	const clear = el('button', 'fa-link', 'Reset talents'); clear.addEventListener('click', () => { state.talents = {}; changed(); });
+	clear.title = 'Remove all selected talent points for this spec without changing gear or encounter settings.';
 	top.append(clear); wrap.append(top);
 	const msg = el('p', 'fa-talentmsg');
 	const trees = el('div', 'fa-trees');

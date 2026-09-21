@@ -25,6 +25,11 @@ html, body { margin: 0; background: var(--fa-bg); color: var(--fa-text); font: 1
 .fa-settings { display: grid; gap: 8px; }
 .fa-field { display: grid; grid-template-columns: 1fr 120px; align-items: center; gap: 8px; color: var(--fa-dim); }
 .fa-field input, .fa-field select { width: 100%; box-sizing: border-box; padding: 4px 6px; background: #222; color: var(--fa-text); border: 1px solid #333; }
+.fa-field { position: relative; padding-right: 23px; }
+.fa-field > .fa-help-button { position: absolute; right: 1px; top: 2px; width: 19px; height: 19px; padding: 0; border: 1px solid #817257; border-radius: 50%; background: #24211c; color: #e3c990; cursor: help; font: bold 12px/17px system-ui, sans-serif; }
+.fa-help-button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.fa-setting-tooltip { position: fixed; z-index: 10000; box-sizing: border-box; padding: 12px 14px; max-height: calc(100vh - 24px); overflow: auto; background: #121212; color: #eee; border: 1px solid #c9a35a; border-radius: 5px; box-shadow: 0 5px 22px #000a; font: 13px/1.5 system-ui, sans-serif; text-align: left; white-space: normal; cursor: default; }
+.fa-setting-tooltip[hidden] { display: none; }
 .fa-level { display: flex; gap: 6px; align-items: center; }
 .fa-level input { padding: 0; }
 .fa-level output { min-width: 22px; color: var(--fa-accent); font-weight: 700; }

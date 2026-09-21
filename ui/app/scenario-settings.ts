@@ -1,5 +1,6 @@
 import { Consumes, Debuffs, IndividualBuffs, RaidBuffs, PartyBuffs, Profession, MobType } from '../core/proto/common';
 import { foreverDiscoveryTalents } from '../forever/discovery';
+import { addSettingHelp, settingHelp } from './setting-help';
 
 const readable = (name: string) => name.replace(/([a-z0-9])([A-Z])/g, '$1 $2').replace(/_/g, ' ').replace(/^./, c => c.toUpperCase());
 
@@ -17,25 +18,25 @@ export function renderScenarioSettings(root: HTMLElement, s: any, warrior: boole
       : ['Target debuffs and responsibilities', 'Raid, party and world buffs', 'Consumables and weapon imbues'].includes(title) ? columns[1] : root;
     target.append(d); return d;
   };
-  const field = (parent: HTMLElement, label: string, input: HTMLElement, active = false, iconLabel = label) => {
+  const field = (parent: HTMLElement, label: string, input: HTMLElement, active = false, iconLabel = label, help = settingHelp(label)) => {
     const tile = parent.className === 'fa-buff-grid';
     const row = document.createElement('label'); row.className = tile ? `fa-field fa-buff-tile${active ? ' is-selected' : ''}` : 'fa-field';
-    row.title = label; const span = document.createElement('span'); span.textContent = label;
+    const span = document.createElement('span'); span.textContent = label;
     if (tile) { const img = document.createElement('img'); img.src = extras.iconFor?.(iconLabel) || extras.iconFor?.(label) || 'https://wow.zamimg.com/images/wow/icons/medium/inv_misc_questionmark.jpg'; img.alt = ''; img.loading = 'lazy'; span.append(img); }
-    row.append(span, input); parent.append(row);
+    row.append(span, input); addSettingHelp(row, input, label, help); parent.append(row);
   };
-  const number = (parent: HTMLElement, label: string, obj: any, key: string, min: number, max: number, step = 1, fallback = min) => {
+  const number = (parent: HTMLElement, label: string, obj: any, key: string, min: number, max: number, step = 1, fallback = min, help = settingHelp(key)) => {
     const i = document.createElement('input'); i.type = 'number'; i.min = String(min); i.max = String(max); i.step = String(step); i.value = String(obj[key] ?? fallback);
-    i.onchange = () => { const v = Number(i.value); if (!Number.isFinite(v)) return; obj[key] = Math.max(min, Math.min(max, Math.round(v / step) * step)); change(); }; field(parent, label, i);
+    i.onchange = () => { const v = Number(i.value); if (!Number.isFinite(v)) return; obj[key] = Math.max(min, Math.min(max, Math.round(v / step) * step)); change(); }; field(parent, label, i, false, label, help);
   };
   const choice = (parent: HTMLElement, label: string, obj: any, key: string, values: Array<[string, string]>, numeric = false) => {
     const select = document.createElement('select');
     for (const [value, text] of values) { const o = document.createElement('option'); o.value = value; o.textContent = text; o.selected = String(obj[key] ?? 0) === value; select.append(o); }
-    select.onchange = () => { obj[key] = numeric ? Number(select.value) : select.value; change(); }; field(parent, label, select, Number(obj[key] || 0) > 0, values.find(([v]) => v === String(obj[key]))?.[1] || label);
+    select.onchange = () => { obj[key] = numeric ? Number(select.value) : select.value; change(); }; field(parent, label, select, Number(obj[key] || 0) > 0, values.find(([v]) => v === String(obj[key]))?.[1] || label, settingHelp(key));
   };
-  const check = (parent: HTMLElement, label: string, obj: any, key: string) => { const i = document.createElement('input'); i.type = 'checkbox'; i.checked = !!obj[key]; i.onchange = () => { obj[key] = i.checked; change(); }; field(parent, label, i, !!obj[key]); };
+  const check = (parent: HTMLElement, label: string, obj: any, key: string) => { const i = document.createElement('input'); i.type = 'checkbox'; i.checked = !!obj[key]; i.onchange = () => { obj[key] = i.checked; change(); }; field(parent, label, i, !!obj[key], label, settingHelp(key)); };
   const enumValues = (values: any): Array<[string, string]> => Object.entries(values).filter(([, v]) => typeof v === 'number').map(([k, v]) => [String(v), Number(v) === 0 ? 'None' : readable(k)]);
-  note(root, 'Configure the fight → choose buffs → find your best rotation. Gold tiles are selected. Settings save automatically for this spec.');
+  note(root, 'Configure the fight → choose buffs → find your best rotation. Hover or focus any setting for help, or tap its ? button. Gold tiles are selected. Settings save automatically for this spec.');
   root.append(layout);
   if (extras.rotation) { const box = document.createElement('section'); box.className = 'fa-scenario-section fa-settings-rotation'; const title = document.createElement('h3'); title.textContent = 'Rotation'; box.append(title, extras.rotation); columns[2].append(box); }
   const fight = section('Fight and target', true);
@@ -79,14 +80,15 @@ export function renderScenarioSettings(root: HTMLElement, s: any, warrior: boole
         if (['battleShout', 'demoralizingShout'].includes(key)) values = values.filter(([v]) => v !== '2');
         choice(grid, label, obj, key, values, true);
       } else if (f.kind === 'scalar' && f.T === 8) check(grid, label, obj, key);
-      else if (f.kind === 'scalar') number(parent, label, obj, key, 0, 20);
+      else if (f.kind === 'scalar') number(parent, label, obj, key, 0, ({petAgilityConsumable: 4, petStrengthConsumable: 5, petAttackPowerConsumable: 1} as Record<string, number>)[key] ?? 20);
       else if (f.kind === 'message') { obj[key] ??= {}; const nested = document.createElement('details'); const title = document.createElement('summary'); title.textContent = label; nested.append(title); parent.append(nested); message(nested, f.T(), obj[key]); }
     }
   };
   message(debuffs, Debuffs, s.debuffs, ['sunderArmor', 'judgementOfLight']);
   const buffs = section('Raid, party and world buffs', true);
   note(buffs, 'These are externally supplied buffs. External Battle Shout removes self-casts from warrior rotations. Faction restrictions and exclusive-effect rules are enforced by the engine. Improved Battle Shout and Improved Demoralizing Shout are unavailable in Forever.');
-  message(buffs, RaidBuffs, s.raidBuffs);
+  // The engine reads Wisdom from IndividualBuffs only; avoid a duplicate no-op switch.
+  message(buffs, RaidBuffs, s.raidBuffs, ['blessingOfWisdom']);
   message(buffs, PartyBuffs, s.partyBuffs);
   message(buffs, IndividualBuffs, s.buffs, ['blessingOfSanctuary']);
   const consumes = section('Consumables and weapon imbues');
@@ -97,10 +99,10 @@ export function renderScenarioSettings(root: HTMLElement, s: any, warrior: boole
   note(forever, 'Options come from the versioned Forever manifest. Predicted behavior is identified below; unavailable/non-combat entries cannot be selected. Profession effects may also require the matching profession and gear.');
   for (const m of foreverDiscoveryTalents.mechanics.filter(m => ['legacy_perk', 'profession_claim'].includes(m.kind) || m.category === 'BUFFS' || m.id.startsWith('buffs.'))) {
     if (m.mode === 'blocked' || m.mode === 'non-sim' || m.mode === 'baseline') { note(forever, `${m.name}: ${m.mode === 'blocked' ? 'not implemented' : m.mode === 'baseline' ? 'baseline behavior; no adjustable combat effect' : 'not modeled in combat'}`); continue; }
-    number(forever, `${m.name} (${m.confidence})`, s.mechanicRanks, m.id, 0, m.max_rank);
+    number(forever, `${m.name} (${m.confidence})`, s.mechanicRanks, m.id, 0, m.max_rank, 1, 0, `${m.effect} Confidence: ${m.confidence}. ${m.adapter?.remaining_unknowns?.length ? 'Unknown: ' + m.adapter.remaining_unknowns.join('; ') : 'Uses the versioned Forever manifest; this is not proof of server behavior.'}`);
     note(forever, `${m.effect}${m.adapter?.remaining_unknowns?.length ? ' Unknown: ' + m.adapter.remaining_unknowns.join('; ') : ''}`);
     if (s.mechanicRanks[m.id]) for (const p of m.adapter?.parameters || []) {
-      number(forever, `${p.label} (${p.confidence})`, s.parameters, p.key, p.min, p.max, 0.01, p.default);
+      number(forever, `${p.label} (${p.confidence})`, s.parameters, p.key, p.min, p.max, 0.01, p.default, `${p.label}: adjusts ${m.name}. ${m.effect} Allowed range ${p.min}–${p.max}; default ${p.default}. Confidence: ${p.confidence}.`);
     }
   }
   const gaps = section('Coverage and differences from Classic');
