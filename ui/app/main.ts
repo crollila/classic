@@ -8,6 +8,7 @@ import { optimize, canonical } from '../forever/optimizer.mjs';
 import { explainRotation } from '../forever/optimizer-explain.mjs';
 import { learnedRotation } from './rotation-context.mjs';
 import { runQueue } from './work-queue.mjs';
+import { PARALLEL_OPTIONS, parallelism } from './parallelism.mjs';
 import {
 	Consumes,
 	Cooldowns,
@@ -97,7 +98,12 @@ let items: Item[] = [];
 let byId = new Map<number, Item>();
 let def = SPECS.find(s => s.key === lastSpec()) || SPECS[1];
 let state: State = { ...defaults(def), ...(load(def.key) || {}) };
-const pool = new WorkerPool(Math.max(1, Math.min(3, (navigator.hardwareConcurrency || 4) - 1)));
+const idleWorkers = Math.max(1, Math.min(3, (navigator.hardwareConcurrency || 4) - 1));
+const pool = new WorkerPool(idleWorkers);
+let parallelMode = 'auto';
+try { const saved = localStorage.getItem('forever-slot-parallelism'); if (saved && PARALLEL_OPTIONS.includes(saved)) parallelMode = saved; } catch { /* private mode */ }
+const slotWorkers = () => parallelism(parallelMode, navigator.hardwareConcurrency);
+let slotBatches = 0;
 const itemSignals = new SimSignalManager();
 const foregroundSignals = new SimSignalManager();
 let foregroundBusy = false;
@@ -255,6 +261,17 @@ function renderSettings() {
 	settings.append(field('Fight length (s)', numberInput(state.duration, 20, 600, v => { state.duration = v; changed(); })));
 	settings.append(field('Iterations', numberInput(state.iterations, 100, 50000, v => { state.iterations = v; save(); })));
 	settings.append(field('Item sim iterations', numberInput(state.itemIterations, 100, 10000, v => { state.itemIterations = v; itemCache.clear(); save(); renderItems(); })));
+	const parallel = el('select');
+	for (const mode of PARALLEL_OPTIONS) {
+		const option = el('option', '', mode === 'auto' ? `Auto (${parallelism('auto', navigator.hardwareConcurrency)} at a time)` : `${mode} at a time`);
+		option.value = mode; option.selected = mode === parallelMode; parallel.append(option);
+	}
+	parallel.addEventListener('change', () => {
+		parallelMode = parallel.value;
+		try { localStorage.setItem('forever-slot-parallelism', parallelMode); } catch { /* private mode */ }
+		stopItemWork(); renderItems();
+	});
+	settings.append(field('Parallel gear simulations', parallel), el('p', 'fa-note', 'Auto estimates CPU capacity and reserves threads for responsiveness. Manual settings up to 64 use more CPU and memory; too many can be slower. Changes stop the current slot run; click Sim this slot to resume cached progress.'));
 	const armorNote = el('p', 'fa-note', `Target armor ${state.targetLevel > 60 ? 3731 : ARMOR[String(state.targetLevel)] || 0} (level ${state.targetLevel} mob)`);
 	const reset = el('button', 'fa-link', 'Reset this spec'); reset.addEventListener('click', () => { state = defaults(def); changed(); });
 	const advanced = el('a', 'fa-link', 'Advanced simulator ↗'); advanced.href = `${BASE}${def.key}/`;
@@ -419,9 +436,13 @@ function renderItems() {
 		const missing = [...new Set([state.gear[slot], 0, ...eligible.map(i => i.id)])].filter(id => keys.has(id) && score(id) === undefined);
 		const baseRequest = request(state.itemIterations);
 		const jobs = missing.map(id => ({ key: keys.get(id)!, gear: withItem(slot, id) }));
+		const concurrency = Math.min(slotWorkers(), Math.max(1, jobs.length));
+		pool.setNumWorkers(Math.max(idleWorkers, concurrency));
+		slotBatches++;
 		baseRequest.simOptions!.randomSeed = 20260921n;
 		let done = 0, failed = 0, lastPaint = 0;
 		simSlot.disabled = true; stop.hidden = false;
+		progress.textContent = `Starting ${concurrency} parallel simulations · 0/${jobs.length} scored`;
 		const worker = async (job: {key: string; gear: number[]}) => {
 				const signal = itemSignals.registerRunning(RequestTypes.RaidSim);
 				const req = RaidSimRequest.clone(baseRequest);
@@ -435,10 +456,11 @@ function renderItems() {
 				} catch { failed++; } finally { itemSignals.unregisterRunning(signal); }
 				done++;
 				if (token !== runToken) return;
-				progress.textContent = `${done}/${jobs.length} scored${failed ? ` · ${failed} failed` : ''}`;
+				progress.textContent = `${done}/${jobs.length} scored · up to ${concurrency} at a time${failed ? ` · ${failed} failed` : ''}`;
 				if (performance.now() - lastPaint > 150) { paint(); lastPaint = performance.now(); }
 		};
-		await runQueue(jobs, Math.min(2, pool.getNumWorkers()), () => token === runToken, worker);
+		try { await runQueue(jobs, concurrency, () => token === runToken, worker); }
+		finally { if (--slotBatches === 0) pool.setNumWorkers(idleWorkers); }
 		if (token !== runToken) return;
 		sortKey = 'dps'; itemPage = 0; renderItems();
 		const status = panel.querySelector('[role="status"]');

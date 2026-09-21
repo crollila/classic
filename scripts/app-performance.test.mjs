@@ -2,6 +2,37 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {runQueue} from '../ui/app/work-queue.mjs';
 import {learnedRotation} from '../ui/app/rotation-context.mjs';
+import {parallelism} from '../ui/app/parallelism.mjs';
+
+test('auto reserves CPU capacity and bounds missing or extreme hardware hints', () => {
+  assert.equal(parallelism('auto', 24), 21);
+  assert.equal(parallelism('auto', 8), 7);
+  assert.equal(parallelism('auto', 1), 1);
+  assert.equal(parallelism('auto', undefined), 3);
+  assert.equal(parallelism('auto', NaN), 3);
+  assert.equal(parallelism('auto', 256), 64);
+  assert.equal(parallelism('invalid', 8), 7);
+});
+test('manual modes permit 20 and 64 even when CPU reports fewer threads', () => {
+  assert.equal(parallelism('20', 8), 20);
+  assert.equal(parallelism('64', 8), 64);
+  assert.equal(parallelism('0', 8), 7);
+});
+test('high concurrency runs each item exactly once and stops pending work on cancellation', async () => {
+  for (const concurrency of [1, 20, 64]) {
+    const seen = new Set(); let active = 0, peak = 0;
+    await runQueue(Array.from({length: 100}, (_, i) => i), concurrency, () => true, async id => {
+      assert.equal(seen.has(id), false); seen.add(id); peak = Math.max(peak, ++active);
+      await new Promise(resolve => setTimeout(resolve, 0)); active--;
+    });
+    assert.equal(seen.size, 100); assert.equal(peak, concurrency);
+    let current = true, started = 0;
+    await runQueue(Array(100).fill(0), concurrency, () => current, async () => {
+      started++; await new Promise(resolve => setTimeout(resolve, 0)); current = false;
+    });
+    assert.equal(started, concurrency);
+  }
+});
 
 test('large slot queues keep at most two simulations in flight', async () => {
   let active = 0, peak = 0, completed = 0;
