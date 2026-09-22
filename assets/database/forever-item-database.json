@@ -1,6 +1,6 @@
 {
   "version": "forever-sim-database-1",
-  "built_at": "2026-09-21T23:43:33.761753+00:00",
+  "built_at": "2026-09-22T00:13:27.184800+00:00",
   "dry_run": false,
   "sources": {
     "values": {
@@ -22149,7 +22149,11 @@
     "282778": {
       "status": "client_data",
       "source": "client datamine",
-      "carried": {},
+      "carried": {
+        "phase": "previous database entry",
+        "weaponSkills": "previous database entry",
+        "requiredLevel": "previous database entry"
+      },
       "unrepresented_stats": {
         "stat_129": 12
       },
@@ -22225,7 +22229,10 @@
       "status": "client_data",
       "source": "client datamine",
       "carried": {
-        "icon": "client datamine"
+        "icon": "client datamine",
+        "phase": "previous database entry",
+        "weaponSkills": "previous database entry",
+        "requiredLevel": "previous database entry"
       },
       "effects": [
         {
@@ -22282,7 +22289,10 @@
       "status": "client_data",
       "source": "client datamine",
       "carried": {
-        "icon": "client datamine"
+        "icon": "client datamine",
+        "phase": "previous database entry",
+        "weaponSkills": "previous database entry",
+        "requiredLevel": "previous database entry"
       },
       "unrepresented_stats": {
         "stat_125": 5
